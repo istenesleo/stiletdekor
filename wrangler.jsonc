@@ -3,12 +3,15 @@
 //
 // This file is the *input* config. `astro build` (via @cloudflare/vite-plugin) writes the
 // deployable config to dist/server/wrangler.json and a redirect in .wrangler/deploy/config.json,
-// so `wrangler deploy` / `wrangler versions upload` from the repo root pick up the built worker.
+// so `wrangler deploy` / `wrangler preview` from the repo root pick up the built worker.
+//
+// Workers Builds (Cloudflare dashboard, Git integration): production branch main -> `npx wrangler deploy`
+// (this top-level dev site); every other branch -> `npx wrangler preview` (a Preview, see "previews").
 //
 // Filling in real resource IDs (once per environment):
 //   npx wrangler d1 create stiletdekor-dev          -> copy "database_id" into d1_databases below
 //   npx wrangler d1 create stiletdekor-prod         -> copy into env.production.d1_databases
-//   npx wrangler r2 bucket create stiletdekor-uploads-dev
+//   npx wrangler r2 bucket create stiletdekor-uploads-dev   (once R2 is enabled on the account)
 //   npx wrangler r2 bucket create stiletdekor-uploads-prod
 // Then apply migrations remotely:
 //   npx wrangler d1 migrations apply DB --remote
@@ -28,10 +31,10 @@
   "observability": {
     "enabled": true
   },
-  // Branch preview URLs for `wrangler versions upload` / Workers Builds.
+  // Version preview URLs (one per uploaded version).
   "preview_urls": true,
 
-  // ---- dev / preview environment (default, top level) ----
+  // ---- dev site (default, top level): deployed by Workers Builds from the main branch ----
   "d1_databases": [
     {
       "binding": "DB",
@@ -41,12 +44,11 @@
       "migrations_dir": "migrations"
     }
   ],
-  "r2_buckets": [
-    {
-      "binding": "UPLOADS",
-      "bucket_name": "stiletdekor-uploads-dev"
-    }
-  ],
+  // R2 (customer uploads) is not bound yet: R2 is not enabled on the Cloudflare account, and a binding
+  // to a bucket that does not exist makes the deploy fail. Nothing uses env.UPLOADS yet. When file
+  // upload is built: enable R2 in the dashboard, create the bucket, then restore this block here, in
+  // "previews" and in env.production, and make UPLOADS required again in src/env.d.ts.
+  // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-dev" }],
   "vars": {
     "PUBLIC_SITE_ENV": "dev",
     "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
@@ -54,8 +56,30 @@
     "ALLOWED_ORIGINS": ""
   },
 
+  // ---- Workers Previews (`npx wrangler preview`, the Workers Builds preview command) ----
+  // Every branch other than the production branch (main) gets its own Preview URL.
+  // Previews do not inherit top-level vars or bindings, so they are declared again here.
+  // All Previews share the dev D1 database as their staging database (test data only).
+  // Docs: https://developers.cloudflare.com/workers/previews/configuration/
+  "previews": {
+    "vars": {
+      "PUBLIC_SITE_ENV": "dev",
+      "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
+      "ALLOWED_ORIGINS": ""
+    },
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "stiletdekor-dev",
+        "database_id": "fb3e2883-e461-42ac-94d9-81d3a4f1f2d2",
+        "migrations_dir": "migrations"
+      }
+    ]
+  },
+
   "env": {
-    // ---- production (main branch): `wrangler deploy --env production` ----
+    // ---- production: the future live site (www.stiletdekor.hu), not deployed yet ----
+    // Build with CLOUDFLARE_ENV=production, then `npx wrangler deploy` (the environment is fixed at build time).
     // Bindings and vars are not inherited from the top level, so they are repeated here.
     "production": {
       "name": "stiletdekor-production",
@@ -67,12 +91,7 @@
           "migrations_dir": "migrations"
         }
       ],
-      "r2_buckets": [
-        {
-          "binding": "UPLOADS",
-          "bucket_name": "stiletdekor-uploads-prod"
-        }
-      ],
+      // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-prod" }],  (see top-level note)
       "vars": {
         "PUBLIC_SITE_ENV": "production",
         "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",

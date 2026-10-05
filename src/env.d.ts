@@ -14,11 +14,15 @@ declare namespace Cloudflare {
   interface Env {
     /** D1: orders, quote requests, upload metadata. */
     DB: D1Database;
-    /** R2: customer uploads (artwork, photos, 3D files). Never public. */
-    UPLOADS: R2Bucket;
+    /**
+     * R2: customer uploads (artwork, photos, 3D files). Never public.
+     * Not bound yet (R2 is not enabled on the account, see wrangler.jsonc); make it required again
+     * when the binding is restored.
+     */
+    UPLOADS?: R2Bucket;
     /** Static assets of the site; used by the Astro adapter. */
     ASSETS: Fetcher;
-    /** "dev" for local and branch previews, "production" on main. */
+    /** "dev" for the dev site (main branch), Previews and local dev; "production" for the live site. */
     PUBLIC_SITE_ENV: 'dev' | 'production';
     /** Where new order and quote notifications are sent. */
     ORDER_NOTIFY_EMAIL: string;
