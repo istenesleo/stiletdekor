@@ -1,0 +1,8 @@
+# Local-only overrides and secrets for `astro dev` / `wrangler dev`.
+# Copy to .dev.vars (gitignored). Values here override "vars" from wrangler.jsonc.
+# Production secrets go in with: npx wrangler secret put NAME --env production
+
+# PUBLIC_SITE_ENV=dev
+# ORDER_NOTIFY_EMAIL=stiletdekor@gmail.com
+# Comma-separated extra origins accepted by POST /api/* (the site's own origin is always allowed).
+# ALLOWED_ORIGINS=http://localhost:4321
