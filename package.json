@@ -17,6 +17,8 @@
     "db:migrate:local": "wrangler d1 migrations apply DB --local",
     "cf-typegen": "wrangler types --include-env=false",
     "cf-typegen:check": "wrangler types --include-env=false --check",
+    "tokens": "node scripts/build-tokens.mjs",
+    "tokens:check": "node scripts/build-tokens.mjs --check",
     "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {

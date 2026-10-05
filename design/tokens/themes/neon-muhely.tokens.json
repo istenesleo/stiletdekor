@@ -1,0 +1,33 @@
+{
+  "$description": "Direction A, 'Neon műhely': deep black, the brand pink as neon light, cutting-mat grid, rulers and dimension lines, measuring-tape yellow for measurements. Values taken from design/mockups/a-neon-muhely.html. Overrides stilet.tokens.json; preview with: npm run tokens -- --theme neon-muhely",
+  "$extensions": {
+    "hu.stiletdekor.fonts": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@300;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+  },
+  "color": {
+    "bg": { "$value": "#0a0a0c" },
+    "surface": { "$value": "color-mix(in oklab, {color.bg} 94%, {color.text})" },
+    "surface-raised": { "$value": "color-mix(in oklab, {color.bg} 89%, {color.text})" },
+    "line": { "$value": "color-mix(in oklab, {color.bg} 78%, {color.text})" },
+    "text": { "$value": "#f3f0ea" },
+    "text-muted": { "$value": "#9d9aa5" },
+    "measure": { "$value": "#f0c43c", "$description": "Measuring-tape yellow: dimension lines, rulers, focus of measurements." },
+    "signal": {
+      "ok": { "$value": "#3fd68f" },
+      "warn": { "$value": "#f0c43c" },
+      "bad": { "$value": "#ff5b4d" }
+    }
+  },
+  "font": {
+    "display": { "$value": ["Big Shoulders Display", "Oswald", "Arial Narrow", "Impact", "sans-serif"] },
+    "body": { "$value": ["Archivo", "Helvetica Neue", "Arial", "sans-serif"] },
+    "mono": { "$value": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"] }
+  },
+  "radius": {
+    "md": { "$value": "2px" }
+  },
+  "effect": {
+    "brand-glow": {
+      "$value": "0 0 0 1px color-mix(in oklab, {color.brand} 55%, transparent), 0 0 22px -4px color-mix(in oklab, {color.brand} 75%, transparent)"
+    }
+  }
+}

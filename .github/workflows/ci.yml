@@ -31,6 +31,9 @@ jobs:
       # worker-configuration.d.ts must match wrangler.jsonc (run `npm run cf-typegen` to fix).
       - run: npm run cf-typegen:check
 
+      # src/styles/tokens.css must match design/tokens (run `npm run tokens` to fix).
+      - run: npm run tokens:check
+
       - run: npm run check
 
       - run: npm test

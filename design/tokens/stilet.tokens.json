@@ -1,0 +1,115 @@
+{
+  "$description": "Stilet Dekor design tokens: the single source of the site's colors, type, spacing and motion. DTCG-style ($value, $type, $description); references use {group.token}. Values are PROVISIONAL until the design system is finalized with Claude Design (see DESIGN.md). Token names are a contract: keep them, change values. Build: npm run tokens.",
+  "color": {
+    "$type": "color",
+    "brand": {
+      "$value": "#ff2e8a",
+      "$description": "Brand pink. Placeholder shade, finalized in the design system work. Every pink on the site derives from this one token. Must keep >= 4.5:1 contrast on color.bg."
+    },
+    "on-brand": { "$value": "#0a0a0b", "$description": "Text and icons on a brand-pink surface (buttons)." },
+    "bg": { "$value": "#0a0a0b", "$description": "Page background. The brand is black-based." },
+    "surface": { "$value": "#121214", "$description": "Panels, cards, configurator areas." },
+    "surface-raised": { "$value": "#1a1a1d", "$description": "Hover and raised elements on a surface." },
+    "line": { "$value": "#2a2a2e", "$description": "Borders, rules, dividers." },
+    "text": { "$value": "#f3f0ea", "$description": "Primary text." },
+    "text-muted": { "$value": "#a3a1a8", "$description": "Secondary text, captions. Must keep >= 4.5:1 on color.bg." },
+    "focus": { "$value": "{color.brand}", "$description": "Keyboard focus ring." },
+    "measure": {
+      "$value": "{color.text-muted}",
+      "$description": "Dimension lines, rulers, technical data: the workshop's measuring language."
+    },
+    "signal": {
+      "ok": { "$value": "#3fd68f", "$description": "Print-ready check: excellent; success messages." },
+      "warn": { "$value": "#f0c43c", "$description": "Print-ready check: acceptable; warnings." },
+      "bad": { "$value": "#ff5b4d", "$description": "Print-ready check: poor; validation errors." }
+    }
+  },
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "Headlines. Must support Latin Extended (Hungarian ő ű Ő Ű)."
+    },
+    "body": {
+      "$value": ["system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "Running text and UI. Must support Latin Extended."
+    },
+    "mono": {
+      "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+      "$description": "Prices, sizes, measurements, technical captions. Use tabular numbers."
+    }
+  },
+  "weight": {
+    "$type": "fontWeight",
+    "regular": { "$value": 400 },
+    "medium": { "$value": 500 },
+    "semibold": { "$value": 600 },
+    "bold": { "$value": 700 }
+  },
+  "text": {
+    "$type": "dimension",
+    "$description": "Type scale. The larger steps are fluid (CSS clamp).",
+    "xs": { "$value": "0.75rem" },
+    "sm": { "$value": "0.875rem" },
+    "md": { "$value": "1rem" },
+    "lg": { "$value": "1.1875rem" },
+    "xl": { "$value": "clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem)" },
+    "2xl": { "$value": "clamp(2.3rem, 1.5rem + 3.2vw, 4rem)" },
+    "hero": { "$value": "clamp(3rem, 1.6rem + 5.6vw, 6.4rem)" }
+  },
+  "leading": {
+    "$type": "number",
+    "tight": { "$value": 1.05 },
+    "snug": { "$value": 1.2 },
+    "body": { "$value": 1.55 }
+  },
+  "tracking": {
+    "$type": "dimension",
+    "caps": { "$value": "0.08em", "$description": "Letter-spacing for uppercase labels." }
+  },
+  "space": {
+    "$type": "dimension",
+    "1": { "$value": "0.25rem" },
+    "2": { "$value": "0.5rem" },
+    "3": { "$value": "0.75rem" },
+    "4": { "$value": "1rem" },
+    "5": { "$value": "1.5rem" },
+    "6": { "$value": "2rem" },
+    "7": { "$value": "3rem" },
+    "8": { "$value": "4rem" },
+    "9": { "$value": "6rem" }
+  },
+  "radius": {
+    "$type": "dimension",
+    "none": { "$value": "0" },
+    "sm": { "$value": "2px" },
+    "md": { "$value": "4px" },
+    "pill": { "$value": "999px" }
+  },
+  "layout": {
+    "$type": "dimension",
+    "gutter": { "$value": "clamp(16px, 3.4vw, 48px)", "$description": "Side gutter; never below 16px." },
+    "container": { "$value": "75rem" },
+    "header-height": { "$value": "64px" },
+    "section-gap": { "$value": "clamp(64px, 9vw, 140px)" }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "fast": { "$value": "120ms" },
+      "base": { "$value": "200ms" },
+      "slow": { "$value": "400ms" }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": { "$value": [0.2, 0.7, 0.2, 1] }
+    }
+  },
+  "effect": {
+    "$type": "shadow",
+    "brand-glow": {
+      "$value": "none",
+      "$description": "Glow of brand elements (direction A uses a neon glow). Plain CSS box-shadow value."
+    }
+  }
+}

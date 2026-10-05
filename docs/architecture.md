@@ -32,7 +32,9 @@ src/
   pages/api/       # JSON API
 migrations/        # D1 SQL migrációk
 docs/              # brief, architektúra, design-döntések
+design/tokens/     # design tokenek (DTCG-szerű JSON) → src/styles/tokens.css (npm run tokens)
 design/mockups/    # látványtervek (önálló HTML)
+scripts/           # build-tokens.mjs (token → CSS, kontrasztellenőrzés)
 ```
 
 ## Oldalak (magyar slugok)
@@ -58,7 +60,11 @@ design/mockups/    # látványtervek (önálló HTML)
 
 ## Környezetek
 
-- **dev / preview:** minden GitHub-ágra automatikus Cloudflare előnézeti URL (Workers Builds), külön D1 és R2.
-- **production:** `main` ág, a `stiletdekor.hu` domainre kötve (élesítéskor).
+- **dev:** a `main` ág, Workers Builds telepíti a `stiletdekor` Workerre (`npx wrangler deploy`); D1: `stiletdekor-dev`.
+- **Previews:** minden más ág saját Preview URL-t kap (`npx wrangler preview`); a `previews` blokk szerint a dev
+  D1-et használják közös tesztadatbázisként. Minden nem éles oldal `noindex`.
+- **production:** később, az `env.production` blokk (`stiletdekor-production`), a `stiletdekor.hu` domainre
+  kötve; build `CLOUDFLARE_ENV=production` mellett.
+- Az R2 (feltöltések) a fiókban még nincs bekapcsolva, ezért a kötés egyelőre ki van kommentelve.
 
 A részletes beállítási lépések a `README.md`-ben.

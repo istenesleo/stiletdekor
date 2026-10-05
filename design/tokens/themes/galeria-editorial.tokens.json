@@ -1,0 +1,42 @@
+{
+  "$description": "Direction B, 'Galéria / editorial': magazine-like and calm, warm print black, off-white type, the brand pink only as a small accent, steel grey for technical data. Values taken from design/mockups/b-galeria-editorial.html. Overrides stilet.tokens.json; preview with: npm run tokens -- --theme galeria-editorial",
+  "$extensions": {
+    "hu.stiletdekor.fonts": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400&display=swap",
+    "hu.stiletdekor.note": "Bodoni Moda: above optical size ~20 its hairlines vanish on 1x screens ('felszereljük' reads 'fclszcrcljük'). Pin font-variation-settings 'opsz' to 12 for text up to ~30px and 20 for large display type."
+  },
+  "color": {
+    "bg": { "$value": "#0b0b0a", "$description": "Warm print black." },
+    "surface": { "$value": "#151513" },
+    "surface-raised": { "$value": "color-mix(in oklab, {color.surface} 88%, {color.text})" },
+    "line": { "$value": "#2d2c29", "$description": "Hairline rules." },
+    "text": { "$value": "#ece8df", "$description": "Off-white, like paper." },
+    "text-muted": { "$value": "#959088", "$description": "Warm grey for secondary text." },
+    "measure": { "$value": "#9ea8b2", "$description": "Cool steel grey: aluminium, dimension lines, technical data." },
+    "signal": {
+      "ok": { "$value": "#8fc79c" },
+      "warn": { "$value": "#e2b866" },
+      "bad": { "$value": "color-mix(in srgb, {color.brand} 62%, #ff5a3a)" }
+    }
+  },
+  "font": {
+    "display": { "$value": ["Bodoni Moda", "Bodoni 72", "Didot", "Times New Roman", "serif"] },
+    "body": { "$value": ["Schibsted Grotesk", "Helvetica Neue", "Arial", "sans-serif"] },
+    "mono": { "$value": ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "Consolas", "monospace"] }
+  },
+  "text": {
+    "md": { "$value": "1.0625rem" },
+    "lg": { "$value": "clamp(1.125rem, 1rem + 0.5vw, 1.375rem)" },
+    "xl": { "$value": "clamp(1.5rem, 1.25rem + 1vw, 2.125rem)" },
+    "2xl": { "$value": "clamp(2.375rem, 1.4rem + 3.4vw, 4.75rem)" },
+    "hero": { "$value": "clamp(3rem, 0.9rem + 7.4vw, 8rem)" }
+  },
+  "radius": {
+    "sm": { "$value": "0" },
+    "md": { "$value": "0" }
+  },
+  "layout": {
+    "gutter": { "$value": "clamp(16px, 4vw, 64px)" },
+    "header-height": { "$value": "68px" },
+    "section-gap": { "$value": "clamp(88px, 11vw, 168px)" }
+  }
+}
