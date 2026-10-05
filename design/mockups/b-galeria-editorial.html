@@ -174,14 +174,6 @@ p{text-wrap:pretty}
 .promise-t em{font-style:italic}
 .promise-d{grid-column:9/-1;color:var(--stone);font-size:var(--t-sm)}
 
-/* ——— nagy kép + elv ——— */
-.spread{margin-top:var(--sec)}
-.spread-frame{aspect-ratio:16/7}
-.spread-cap{padding-top:clamp(24px,3vw,40px);align-items:baseline}
-.spread-cap .cap{grid-column:1/3}
-.statement{grid-column:3/11;font:400 clamp(1.75rem,1.1rem + 2.4vw,3.25rem)/1.12 var(--f-display);letter-spacing:-.018em;text-wrap:balance}
-.statement em{font-style:italic}
-.spread-cap .data{grid-column:3/11;margin-top:18px}
 
 /* ——— webshop ——— */
 .shop-head{align-items:end;margin-bottom:clamp(32px,4vw,56px)}
@@ -602,8 +594,6 @@ fieldset.f>legend+*{clear:both}
   .h1 .l3{padding-left:0}
   .hero-txt{margin-bottom:28px}
   .hero-frame{aspect-ratio:4/5}
-  .spread-frame{aspect-ratio:4/5}
-  .statement{margin-top:12px}
   .promise .cap{margin-bottom:10px}
   .promise-d{margin-top:16px}
   .shop-head .lead,.wz-head .lead,.about-head .lead{margin-top:18px}
@@ -639,7 +629,7 @@ fieldset.f>legend+*{clear:both}
    "fclszcrcljük", "Hálós" reads "Ilálós"). Text up to ~30px needs opsz <= 12; large display
    type stays legible up to opsz 20. Other faces have no opsz axis, so they ignore this. */
 *,*::before,*::after{font-variation-settings:"opsz" 12 !important}
-.h1,.h1 *,.h2,.h2 *,.promise-t,.promise-t *,.statement,.statement *,.total,.step .num,.ftr-wm,.ftr-wm *,.mnav nav a,.mnav nav a *{font-variation-settings:"opsz" 20 !important}
+.h1,.h1 *,.h2,.h2 *,.promise-t,.promise-t *,.total,.step .num,.ftr-wm,.ftr-wm *,.mnav nav a,.mnav nav a *{font-variation-settings:"opsz" 20 !important}
 </style>
 
 <div class="page" id="top">
@@ -780,14 +770,6 @@ fieldset.f>legend+*{clear:both}
   </div>
 </section>
 
-<figure class="spread bleed rv" aria-labelledby="st1">
-  <div class="frame spread-frame"><canvas data-scene="van" role="img" aria-label="Illusztráció: fóliázott kisbusz oldalnézetből"></canvas><span class="ph">Referenciakép helye</span></div>
-  <figcaption class="g in-gut spread-cap">
-    <p class="cap">Műhelyelv</p>
-    <p class="statement" id="st1">Amit megtervezünk, a saját műhelyünkben gyártjuk le, <em>és</em> mi is szereljük fel.</p>
-    <p class="data"><b>Flotta-dekor</b> · Felület: kisbusz oldalfal · Anyag: polimer fólia · Méret: [méret] · Helyszín: [helyszín]</p>
-  </figcaption>
-</figure>
 
 <!-- WEBSHOP -->
 <section class="sec" id="webshop" aria-labelledby="shopTitle">
@@ -1233,14 +1215,6 @@ fieldset.f>legend+*{clear:both}
     </article>
   </div>
 
-  <figure class="spread bleed rv" aria-labelledby="st2">
-    <div class="frame spread-frame"><canvas data-scene="ledwall" role="img" aria-label="Illusztráció: LED-fal rendezvényszínpadon"></canvas><span class="ph">Referenciakép helye</span></div>
-    <figcaption class="g in-gut spread-cap">
-      <p class="cap">Műhelyelv</p>
-      <p class="statement" id="st2">Mérőszalaggal kezdünk. A grafika a felület <em>pontos</em> ismeretében készül.</p>
-      <p class="data"><b>LED-fal</b> · Felület: színpad · Anyag: LED-modulok · Méret: [méret] · Helyszín: [helyszín]</p>
-    </figcaption>
-  </figure>
 
   <div class="strip-head">
     <div><p class="cap">Anyagminták</p><h3 class="h3">A műhely anyagai</h3></div>
