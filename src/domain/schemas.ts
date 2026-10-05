@@ -1,0 +1,487 @@
+// Zod schemas shared by the client (forms, islands) and the server (API routes).
+// Every message a customer can see is Hungarian (magázó). Range checks for product configurations
+// live in pricing.validateConfiguration, so the schema and the price engine cannot disagree.
+
+import { z } from 'zod';
+import {
+  BUDGET_BANDS,
+  MATRICA,
+  MOLINO,
+  PARTS_OF_DAY,
+  PLAKAT,
+  QUOTE_TYPE_IDS,
+  ROLLUP,
+  SHIPPING_METHOD_IDS,
+  TABLA,
+  VASZONKEP,
+  MAX_QUOTE_UPLOADS,
+  getQuoteType,
+  type QuoteFieldDef,
+} from './catalog';
+import { budapestToday, formatHuDate, isBusinessDay, isValidIsoDate, nextBusinessDay, type IsoDate } from './leadtime';
+import { formatNumberHu } from './money';
+import { validateConfiguration, type ProductConfig } from './pricing';
+
+// ─── Building blocks ─────────────────────────────────────────────────────────────────────────────
+
+const idsOf = <T extends readonly { readonly id: string }[]>(list: T) =>
+  list.map((entry) => entry.id) as unknown as readonly [T[number]['id'], ...T[number]['id'][]];
+
+/** Trimmed, non-empty string with a length cap. */
+const requiredText = (requiredMessage: string, max: number, maxMessage: string, min = 1) =>
+  z.string({ error: requiredMessage }).trim().min(min, requiredMessage).max(max, maxMessage);
+
+/** Optional free text: missing, empty or whitespace-only becomes undefined. */
+const optionalText = (max: number, maxMessage: string) =>
+  z
+    .string({ error: 'Érvénytelen szöveg.' })
+    .trim()
+    .max(max, maxMessage)
+    .optional()
+    .transform((value) => (value ? value : undefined));
+
+const isoDate = (requiredMessage: string) =>
+  z.iso.date({ error: (issue) => (issue.input === undefined ? requiredMessage : 'Érvénytelen dátum.') });
+
+export const UploadIdSchema = z.uuid({ error: 'Érvénytelen feltöltés-azonosító.' });
+export const MAX_UPLOADS_PER_ITEM = 10;
+
+// ─── Product configuration ───────────────────────────────────────────────────────────────────────
+
+const quantity = z.number({ error: 'Adja meg a darabszámot.' });
+const express = z.boolean({ error: 'Adja meg, kér-e expressz gyártást.' });
+const widthCm = z.number({ error: 'Adja meg a szélességet centiméterben.' });
+const heightCm = z.number({ error: 'Adja meg a magasságot centiméterben.' });
+const orientation = z.enum(['allo', 'fekvo'], { error: 'Válasszon tájolást.' });
+const materialOf = <T extends readonly { readonly id: string }[]>(list: T) =>
+  z.enum(idsOf(list), { error: 'Válasszon anyagot.' });
+const formatOf = <T extends readonly { readonly id: string }[]>(list: T) =>
+  z.enum(idsOf(list), { error: 'Válasszon méretet.' });
+const addOnCount = z.number({ error: 'Adja meg a darabszámot.' });
+
+const MolinoConfigSchema = z.object({
+  productId: z.literal('molino'),
+  materialId: materialOf(MOLINO.materials),
+  edgeFinishId: z.enum(idsOf(MOLINO.edgeFinishes), { error: 'Válasszon szélkidolgozást.' }),
+  widthCm,
+  heightCm,
+  quantity,
+  express,
+});
+
+const RollupConfigSchema = z.object({
+  productId: z.literal('rollup'),
+  formatId: formatOf(ROLLUP.formats),
+  graphicOnly: z.boolean({ error: 'Adja meg, hogy teljes roll-upot vagy csak cseregrafikát kér.' }),
+  quantity,
+  express,
+});
+
+const MatricaConfigSchema = z.object({
+  productId: z.literal('matrica'),
+  materialId: materialOf(MATRICA.materials),
+  widthCm,
+  heightCm,
+  addOnIds: z.array(z.enum(idsOf(MATRICA.areaAddOns), { error: 'Ismeretlen opció.' }), {
+    error: 'Érvénytelen opciólista.',
+  }),
+  quantity,
+  express,
+});
+
+const PlakatConfigSchema = z.discriminatedUnion(
+  'formatId',
+  [
+    z.object({
+      productId: z.literal('plakat'),
+      formatId: formatOf(PLAKAT.formats),
+      paperFinish: z.enum(idsOf(PLAKAT.paperFinishes), { error: 'Válasszon papírfelületet (matt vagy fényes).' }),
+      orientation,
+      quantity,
+      express,
+    }),
+    z.object({
+      productId: z.literal('plakat'),
+      formatId: z.literal(PLAKAT.blueback.id),
+      widthCm,
+      heightCm,
+      quantity,
+      express,
+    }),
+  ],
+  { error: 'Válasszon méretet.' },
+);
+
+const TablaConfigSchema = z.object({
+  productId: z.literal('tabla'),
+  materialId: materialOf(TABLA.materials),
+  widthCm,
+  heightCm,
+  addOnCounts: z.object({ furat: addOnCount, tavtarto: addOnCount }, { error: 'Érvénytelen opciók.' }),
+  quantity,
+  express,
+});
+
+const VaszonkepConfigSchema = z.discriminatedUnion(
+  'formatId',
+  [
+    z.object({ productId: z.literal('vaszonkep'), formatId: formatOf(VASZONKEP.formats), orientation, quantity, express }),
+    z.object({ productId: z.literal('vaszonkep'), formatId: z.literal('egyedi'), widthCm, heightCm, quantity, express }),
+  ],
+  { error: 'Válasszon méretet.' },
+);
+
+export const ProductConfigSchema = z
+  .discriminatedUnion(
+    'productId',
+    [MolinoConfigSchema, RollupConfigSchema, MatricaConfigSchema, PlakatConfigSchema, TablaConfigSchema, VaszonkepConfigSchema],
+    { error: 'Ismeretlen termék.' },
+  )
+  .superRefine((config, ctx) => {
+    for (const issue of validateConfiguration(config)) {
+      ctx.addIssue({ code: 'custom', path: issue.path, message: issue.message });
+    }
+  });
+
+// Compile-time guard: the schema's output must be exactly the domain's ProductConfig
+// (a mismatch fails `tsc`). Exported only so that unused-type lint rules stay quiet.
+type Equivalent<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+type Assert<T extends true> = T;
+/** @internal */
+export type _ProductConfigSchemaMatchesDomain = Assert<Equivalent<z.output<typeof ProductConfigSchema>, ProductConfig>>;
+
+// ─── Cart item ───────────────────────────────────────────────────────────────────────────────────
+
+/** Client-side preflight result, stored for the workshop; informational only (not trusted). */
+export const PreflightSummarySchema = z.object({
+  dpi: z.number({ error: 'Érvénytelen felbontás.' }).int('Érvénytelen felbontás.').min(0, 'Érvénytelen felbontás.').max(100_000, 'Érvénytelen felbontás.'),
+  rating: z.enum(['kivalo', 'megfelelo', 'gyenge'], { error: 'Érvénytelen minősítés.' }),
+  aspectMismatch: z.boolean({ error: 'Érvénytelen arányadat.' }),
+  fitMode: z.enum(['fill', 'fit'], { error: 'Válassza ki, hogyan illesszük a képet.' }).optional(),
+});
+
+export const CartItemSchema = z.object(
+  {
+    config: ProductConfigSchema,
+    uploadIds: z
+      .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
+      .max(MAX_UPLOADS_PER_ITEM, `Tételenként legfeljebb ${MAX_UPLOADS_PER_ITEM} fájl tölthető fel.`)
+      .default([]),
+    preflight: PreflightSummarySchema.optional(),
+  },
+  { error: 'Érvénytelen kosártétel.' },
+);
+
+// ─── Customer data ───────────────────────────────────────────────────────────────────────────────
+
+const PHONE_SEPARATORS = /[\s\-()./]/g;
+
+/**
+ * Loose phone check: Hungarian numbers with or without +36 / 0036 / 06 / 36 prefix (8–9 digits after it),
+ * or a foreign number in international form. Separators (space, -, /, ., parentheses) are ignored.
+ */
+export function isPlausiblePhone(value: string): boolean {
+  const compact = value.replace(PHONE_SEPARATORS, '');
+  return /^(?:\+36|0036|06|36)?\d{8,9}$/.test(compact) || /^(?:\+|00)(?!36)\d{7,14}$/.test(compact);
+}
+
+const TAX_NUMBER_FORMAT = /^(\d{8})-([1-5])-(\d{2})$/;
+const TAX_CHECK_WEIGHTS = [9, 7, 3, 1, 9, 7, 3] as const;
+
+/**
+ * Hungarian tax number (adószám) "12345678-1-12": 8-digit base number whose last digit is a
+ * check digit (weights 9-7-3-1-9-7-3), VAT code 1–5, two-digit area code.
+ */
+export function isValidHuTaxNumber(value: string): boolean {
+  const match = TAX_NUMBER_FORMAT.exec(value);
+  if (!match?.[1]) return false;
+  const digits = [...match[1]].map(Number);
+  const sum = TAX_CHECK_WEIGHTS.reduce((acc, weight, i) => acc + weight * (digits[i] ?? 0), 0);
+  return (10 - (sum % 10)) % 10 === digits[7];
+}
+
+/** Accepts "12345678-1-12", "12345678 1 12" or "12345678112"; outputs the dashed form. */
+const TaxNumberSchema = z
+  .string({ error: 'Érvénytelen adószám.' })
+  .trim()
+  .optional()
+  .transform((value) => {
+    if (!value) return undefined;
+    const digits = value.replace(/[\s-]/g, '');
+    return /^\d{11}$/.test(digits) ? `${digits.slice(0, 8)}-${digits.slice(8, 9)}-${digits.slice(9)}` : value;
+  })
+  .superRefine((value, ctx) => {
+    if (value === undefined) return;
+    if (!/^\d{8}-\d-\d{2}$/.test(value)) {
+      ctx.addIssue({ code: 'custom', message: 'Az adószám formátuma: 12345678-1-12.' });
+    } else if (!isValidHuTaxNumber(value)) {
+      ctx.addIssue({ code: 'custom', message: 'Ez az adószám nem érvényes. Kérjük, ellenőrizze.' });
+    }
+  });
+
+const PersonNameSchema = requiredText('Adja meg a nevét.', 100, 'A név legfeljebb 100 karakter lehet.', 2);
+
+const EmailSchema = z
+  .string({ error: 'Adja meg az e-mail-címét.' })
+  .trim()
+  .min(1, 'Adja meg az e-mail-címét.')
+  .max(254, 'Az e-mail-cím túl hosszú.')
+  .pipe(z.email({ error: 'Kérjük, érvényes e-mail-címet adjon meg.' }));
+
+const PhoneSchema = z
+  .string({ error: 'Adja meg a telefonszámát.' })
+  .trim()
+  .min(1, 'Adja meg a telefonszámát.')
+  .max(30, 'A telefonszám túl hosszú.')
+  .refine(isPlausiblePhone, 'Kérjük, érvényes telefonszámot adjon meg, például +36 70 123 4567.');
+
+export const ContactSchema = z.object(
+  {
+    name: PersonNameSchema,
+    email: EmailSchema,
+    phone: PhoneSchema,
+    company: optionalText(150, 'A cégnév legfeljebb 150 karakter lehet.'),
+  },
+  { error: 'Adja meg a kapcsolattartó adatait.' },
+);
+
+export const AddressSchema = z.object(
+  {
+    postalCode: z
+      .string({ error: 'Adja meg az irányítószámot.' })
+      .trim()
+      .regex(/^[1-9]\d{3}$/, 'Az irányítószám 4 számjegyből áll.'),
+    city: requiredText('Adja meg a települést.', 100, 'A település neve legfeljebb 100 karakter lehet.'),
+    address: requiredText('Adja meg az utcát és a házszámot.', 200, 'A cím legfeljebb 200 karakter lehet.'),
+  },
+  { error: 'Adja meg a címet.' },
+);
+
+// ─── Order ───────────────────────────────────────────────────────────────────────────────────────
+
+export const MAX_ORDER_ITEMS = 50;
+export const MAX_ORDER_NOTE_LENGTH = 2000;
+
+export const OrderRequestSchema = z.object(
+  {
+    customer: ContactSchema.extend({
+      taxNumber: TaxNumberSchema,
+      billingAddress: AddressSchema,
+    }).superRefine((customer, ctx) => {
+      if (customer.taxNumber && !customer.company) {
+        ctx.addIssue({ code: 'custom', path: ['company'], message: 'Adószám megadásakor a cégnevet is adja meg.' });
+      }
+    }),
+    /** Delivery address for courier shipping; the billing address is used when omitted. */
+    shippingAddress: AddressSchema.optional(),
+    shippingMethod: z.enum(SHIPPING_METHOD_IDS, { error: 'Válasszon szállítási módot.' }),
+    items: z
+      .array(CartItemSchema, { error: 'A kosár üres.' })
+      .min(1, 'A kosár üres.')
+      .max(MAX_ORDER_ITEMS, `Egy rendelésben legfeljebb ${MAX_ORDER_ITEMS} tétel lehet.`),
+    note: optionalText(MAX_ORDER_NOTE_LENGTH, `A megjegyzés legfeljebb ${MAX_ORDER_NOTE_LENGTH} karakter lehet.`),
+    acceptTerms: z.literal(true, { error: 'A rendeléshez fogadja el az Általános Szerződési Feltételeket.' }),
+  },
+  { error: 'Érvénytelen rendelési adatok.' },
+);
+
+// ─── Quote request ───────────────────────────────────────────────────────────────────────────────
+
+export type QuoteFieldValue = string | number | string[] | null;
+
+const QuoteFieldValueSchema = z.union([z.string(), z.number(), z.array(z.string()), z.null()], {
+  error: 'Érvénytelen érték.',
+});
+
+export interface FieldIssue {
+  path: (string | number)[];
+  message: string;
+}
+
+const isEmptyValue = (value: unknown): boolean =>
+  value === undefined || value === null || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0);
+
+function isFieldVisible(def: QuoteFieldDef, fields: Readonly<Record<string, unknown>>): boolean {
+  if (!def.visibleWhen) return true;
+  const controller = fields[def.visibleWhen.field];
+  return typeof controller === 'string' && def.visibleWhen.equals.includes(controller);
+}
+
+function requiredMessage(def: QuoteFieldDef): string {
+  switch (def.type) {
+    case 'select':
+    case 'multiselect':
+      return 'Kérjük, válasszon a lehetőségek közül.';
+    case 'file':
+      return 'Kérjük, töltsön fel legalább egy fájlt.';
+    case 'date':
+      return 'Kérjük, adja meg a dátumot.';
+    case 'number':
+      return 'Kérjük, adjon meg egy számot.';
+    default:
+      return 'Kérjük, töltse ki ezt a mezőt.';
+  }
+}
+
+/** Returns an error message for a non-empty value, or null if it is valid. */
+function checkFieldValue(def: QuoteFieldDef, value: unknown, today: IsoDate): string | null {
+  switch (def.type) {
+    case 'text':
+    case 'textarea':
+      if (typeof value !== 'string') return 'Kérjük, szöveget adjon meg.';
+      return value.trim().length > def.maxLength ? `Legfeljebb ${def.maxLength} karakter lehet.` : null;
+    case 'number': {
+      if (typeof value !== 'number' || !Number.isFinite(value)) return 'Kérjük, számot adjon meg.';
+      if (def.integer && !Number.isInteger(value)) return 'Kérjük, egész számot adjon meg.';
+      if (value < def.min || value > def.max) {
+        const unit = def.unit ? ` ${def.unit}` : '';
+        return `Az érték ${formatNumberHu(def.min)} és ${formatNumberHu(def.max)}${unit} között lehet.`;
+      }
+      return null;
+    }
+    case 'select':
+      return typeof value === 'string' && def.options.some((o) => o.value === value)
+        ? null
+        : 'Kérjük, a felsorolt lehetőségek közül válasszon.';
+    case 'multiselect': {
+      if (!Array.isArray(value) || !value.every((v) => typeof v === 'string' && def.options.some((o) => o.value === v))) {
+        return 'Kérjük, a felsorolt lehetőségek közül válasszon.';
+      }
+      return new Set(value).size === value.length ? null : 'Minden lehetőség csak egyszer választható.';
+    }
+    case 'date':
+      if (typeof value !== 'string' || !isValidIsoDate(value)) return 'Érvénytelen dátum.';
+      return value < today ? 'A dátum nem lehet a múltban.' : null;
+    case 'file':
+      if (!Array.isArray(value) || !value.every((v) => UploadIdSchema.safeParse(v).success)) {
+        return 'Érvénytelen feltöltés-azonosító.';
+      }
+      if (value.length > def.maxFiles) return `Legfeljebb ${def.maxFiles} fájl tölthető fel.`;
+      return new Set(value).size === value.length ? null : 'Ugyanaz a fájl kétszer szerepel.';
+  }
+}
+
+/**
+ * Validates the type-specific wizard answers against the quote type's field definitions:
+ * unknown fields, required fields, value types and ranges, visibility rules and "one of" groups.
+ * Usable per wizard step on the client; QuoteRequestSchema runs it on submit.
+ */
+export function validateQuoteFields(
+  quoteTypeId: string,
+  fields: Readonly<Record<string, unknown>>,
+  { today }: { today: IsoDate },
+): FieldIssue[] {
+  const type = getQuoteType(quoteTypeId);
+  if (!type) return [{ path: [], message: 'Ismeretlen munkatípus.' }];
+  const issues: FieldIssue[] = [];
+  const known = new Set(type.fields.map((def) => def.id));
+  for (const key of Object.keys(fields)) {
+    if (!known.has(key)) issues.push({ path: [key], message: 'Ismeretlen mező.' });
+  }
+  for (const def of type.fields) {
+    if (!isFieldVisible(def, fields)) continue;
+    const value = fields[def.id];
+    if (isEmptyValue(value)) {
+      if (def.required) issues.push({ path: [def.id], message: requiredMessage(def) });
+      continue;
+    }
+    const message = checkFieldValue(def, value, today);
+    if (message) issues.push({ path: [def.id], message });
+  }
+  for (const group of type.requireOneOf ?? []) {
+    const visible = type.fields.filter((def) => group.fields.includes(def.id) && isFieldVisible(def, fields));
+    if (visible.length > 0 && visible.every((def) => isEmptyValue(fields[def.id]))) {
+      issues.push({ path: [visible[0]?.id ?? ''], message: group.message });
+    }
+  }
+  return issues;
+}
+
+/** Keeps only known, visible, non-empty answers; trims strings. */
+export function pruneQuoteFields(
+  quoteTypeId: string,
+  fields: Readonly<Record<string, QuoteFieldValue>>,
+): Record<string, Exclude<QuoteFieldValue, null>> {
+  const type = getQuoteType(quoteTypeId);
+  const result: Record<string, Exclude<QuoteFieldValue, null>> = {};
+  if (!type) return result;
+  for (const def of type.fields) {
+    const value = fields[def.id];
+    if (value === undefined || value === null || isEmptyValue(value) || !isFieldVisible(def, fields)) continue;
+    result[def.id] = typeof value === 'string' ? value.trim() : value;
+  }
+  return result;
+}
+
+export interface QuoteSchemaOptions {
+  /** Clock for "not in the past" checks; injectable for tests. */
+  now?: () => Date;
+}
+
+export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchemaOptions = {}) {
+  return z
+    .object(
+      {
+        quoteType: z.enum(QUOTE_TYPE_IDS, { error: 'Válassza ki a munka típusát.' }),
+        fields: z.record(z.string(), QuoteFieldValueSchema, { error: 'Érvénytelen adatok.' }),
+        location: optionalText(300, 'A cím legfeljebb 300 karakter lehet.'),
+        deadline: isoDate('Adja meg a határidőt.'),
+        budgetBand: z.enum(idsOf(BUDGET_BANDS), { error: 'Válasszon a költségkeret-sávok közül.' }).optional(),
+        uploadIds: z
+          .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
+          .max(MAX_QUOTE_UPLOADS, `Legfeljebb ${MAX_QUOTE_UPLOADS} fájl tölthető fel.`)
+          .default([]),
+        contact: ContactSchema,
+        surveyRequest: z
+          .object(
+            {
+              date: isoDate('Adja meg a felmérés napját.'),
+              partOfDay: z.enum(idsOf(PARTS_OF_DAY), { error: 'Válasszon napszakot.' }),
+            },
+            { error: 'Érvénytelen felmérési időpont.' },
+          )
+          .optional(),
+      },
+      { error: 'Érvénytelen ajánlatkérés.' },
+    )
+    .superRefine((request, ctx) => {
+      const today = budapestToday(now());
+      const type = getQuoteType(request.quoteType);
+      for (const issue of validateQuoteFields(request.quoteType, request.fields, { today })) {
+        ctx.addIssue({ code: 'custom', path: ['fields', ...issue.path], message: issue.message });
+      }
+      if (!request.location && (type.locationRequired || request.surveyRequest)) {
+        const message = type.locationRequired ? 'Adja meg a helyszín címét.' : 'A helyszíni felméréshez adja meg a címet.';
+        ctx.addIssue({ code: 'custom', path: ['location'], message });
+      }
+      if (request.deadline < today) {
+        ctx.addIssue({ code: 'custom', path: ['deadline'], message: 'A határidő nem lehet múltbeli dátum.' });
+      }
+      if (request.surveyRequest) {
+        const earliest = nextBusinessDay(today);
+        if (request.surveyRequest.date < earliest) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['surveyRequest', 'date'],
+            message: `A felmérés legkorábban a következő munkanapra (${formatHuDate(earliest)}) kérhető.`,
+          });
+        } else if (!isBusinessDay(request.surveyRequest.date)) {
+          ctx.addIssue({ code: 'custom', path: ['surveyRequest', 'date'], message: 'A felmérés munkanapra kérhető.' });
+        }
+      }
+    })
+    .transform((request) => ({ ...request, fields: pruneQuoteFields(request.quoteType, request.fields) }));
+}
+
+export const QuoteRequestSchema = createQuoteRequestSchema();
+
+// ─── Types ───────────────────────────────────────────────────────────────────────────────────────
+
+export type PreflightSummary = z.output<typeof PreflightSummarySchema>;
+export type CartItem = z.output<typeof CartItemSchema>;
+export type Contact = z.output<typeof ContactSchema>;
+export type Address = z.output<typeof AddressSchema>;
+export type OrderRequest = z.output<typeof OrderRequestSchema>;
+export type OrderRequestInput = z.input<typeof OrderRequestSchema>;
+export type QuoteRequest = z.output<typeof QuoteRequestSchema>;
+export type QuoteRequestInput = z.input<typeof QuoteRequestSchema>;

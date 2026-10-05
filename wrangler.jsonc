@@ -36,7 +36,8 @@
     {
       "binding": "DB",
       "database_name": "stiletdekor-dev",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      // Created 2026-10-05 in EEUR (Eastern Europe).
+      "database_id": "fb3e2883-e461-42ac-94d9-81d3a4f1f2d2",
       "migrations_dir": "migrations"
     }
   ],
