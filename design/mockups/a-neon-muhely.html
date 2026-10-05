@@ -167,12 +167,20 @@ button,input,select,textarea{font:inherit;color:inherit}
 .s-dims .dim-bg{fill:var(--s-wall)}
 .scene .s-wall,.scene .s-panel,.scene .s-glass,.scene .s-frame,.scene .s-base,.scene .s-pave,.scene .s-int,.scene .s-fig,.scene .s-frost,.scene .s-off,.scene .dim-bg{transition:fill .7s ease,stroke .7s ease}
 .scene .lit,.scene .s-sun,.scene .s-sheen,.scene .s-brush,.scene .s-dims{transition:opacity .6s ease}
-.scene.powering .lit{animation:power-on 1.7s linear both;animation-play-state:paused}
+.scene.powering .lit{animation:power-on 1.4s linear both;animation-play-state:paused}
 .scene.powering.go .lit{animation-play-state:running}
-@keyframes power-on{0%{opacity:0}7%{opacity:.85}9%{opacity:.05}14%{opacity:.7}16%{opacity:.1}24%{opacity:.95}27%{opacity:.4}34%{opacity:1}100%{opacity:1}}
+@keyframes power-on{0%{opacity:0}5%{opacity:.8}8%{opacity:.06}13%{opacity:.7}16%{opacity:.12}24%{opacity:.95}27%{opacity:.5}30%{opacity:1}100%{opacity:1}}
 @media (max-width:900px){
-  .hero{grid-template-columns:1fr}
-  .entries{grid-template-columns:1fr}
+  /* keskeny kijelzőn a cégér közvetlenül a cím után jön, hogy a bekapcsolás az első képernyőn látsszon */
+  .hero{grid-template-columns:minmax(0,1fr);row-gap:0}
+  .hero-copy{display:contents}
+  .hero-copy > *{min-width:0}
+  .hero .eyebrow{order:1}
+  .hero h1{order:2}
+  .scene{order:3;margin-block:2px 26px}
+  .hero .lead{order:4}
+  .entries{order:5;grid-template-columns:1fr}
+  .chain{order:6}
 }
 
 /* ---------- vonalzó ---------- */
@@ -591,15 +599,23 @@ input[type="date"].inp{color-scheme:dark}
 .map-col{display:flex;flex-direction:column;min-width:0}
 .map{position:relative;flex:1;min-height:360px;border:1px solid var(--line-soft);background:var(--surface);overflow:hidden}
 .map svg{display:block;width:100%;height:100%}
-.map .road{stroke:color-mix(in oklab,var(--ink) 16%,var(--bg));fill:none;stroke-linecap:round}
-.map .road-s{stroke:color-mix(in oklab,var(--ink) 9%,var(--bg));fill:none}
-.map .blk{fill:color-mix(in oklab,var(--ink) 4%,var(--bg))}
+.map .map-bg{fill:var(--surface)}
+.map .road{stroke:color-mix(in oklab,var(--ink) 21%,var(--bg));fill:none;stroke-linecap:round}
+.map .road-s{stroke:color-mix(in oklab,var(--ink) 13%,var(--bg));fill:none;stroke-width:1}
+.map .blk{fill:color-mix(in oklab,var(--ink) 8%,var(--bg))}
+.map .park{fill:url(#mapDots)}
+.map .dot{fill:color-mix(in oklab,var(--ok) 35%,var(--bg))}
+.map .shop{fill:url(#mapHatch);stroke:var(--brand);stroke-width:1.5}
+.map .hatch{stroke:color-mix(in oklab,var(--brand) 55%,transparent);stroke-width:1.4}
 .map .lab{fill:var(--muted);font-family:var(--font-mono);font-size:11px}
 .map .pin{fill:var(--brand)}
-.map .pin-ring{fill:none;stroke:var(--brand);opacity:.5}
-.map::before,.map::after{content:"";position:absolute;width:16px;height:16px;border-color:var(--measure);border-style:solid;opacity:.7;pointer-events:none}
-.map::before{left:12px;top:12px;border-width:1px 0 0 1px}
-.map::after{right:12px;bottom:12px;border-width:0 1px 1px 0}
+.map .pin-eye{fill:var(--bg)}
+.map .pin-ring{fill:none;stroke:var(--brand);opacity:.45;stroke-dasharray:3 3}
+.map-card{position:absolute;left:16px;top:16px;display:grid;gap:3px;max-width:calc(100% - 80px);padding-block:9px;padding-inline:11px;background:color-mix(in oklab,var(--bg) 84%,transparent);border:1px solid var(--line);font:400 11.5px/1.35 var(--font-mono);color:var(--muted)}
+.map-card b{font:800 1.05rem/1.05 var(--font-display);letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.map-n{position:absolute;right:16px;top:20px;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:color-mix(in oklab,var(--bg) 84%,transparent);font:500 11px/1 var(--font-mono);color:var(--measure)}
+.map-n::before{content:"";position:absolute;top:-7px;left:50%;margin-left:-4px;border-inline:4px solid transparent;border-bottom:7px solid var(--measure)}
+.map::after{content:"";position:absolute;right:12px;bottom:12px;width:16px;height:16px;border:solid var(--measure);border-width:0 1px 1px 0;opacity:.7;pointer-events:none}
 .msg-form{margin-block-start:20px;display:grid;gap:16px;border:1px solid var(--line-soft);padding-block:20px;padding-inline:18px}
 .msg-form h3{font-size:1.5rem}
 .form-ok{display:grid;gap:10px;padding-block:16px;padding-inline:16px;border:1px solid color-mix(in oklab,var(--ok) 50%,var(--line));background:color-mix(in oklab,var(--ok) 6%,var(--bg))}
@@ -1406,24 +1422,33 @@ input[type="date"].inp{color-scheme:dark}
       </form>
     </div>
     <div class="map-col">
-      <div class="map" role="img" aria-label="Térkép helyőrző: a műhely helye a Schweidel József utcában">
+      <div class="map" role="img" aria-label="Térkép helyőrző: a műhely helye, Budapest, Schweidel József u. 1–3.">
         <svg viewBox="0 0 480 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <rect x="-400" y="-400" width="1280" height="1440" style="fill:var(--surface)"/>
+          <defs>
+            <pattern id="mapHatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path class="hatch" d="M0 0V6"/></pattern>
+            <pattern id="mapDots" width="9" height="9" patternUnits="userSpaceOnUse"><circle class="dot" cx="4.5" cy="4.5" r="1"/></pattern>
+          </defs>
+          <rect class="map-bg" x="-400" y="-400" width="1280" height="1440"/>
           <g class="blk">
-            <rect x="20" y="20" width="120" height="130"/><rect x="160" y="20" width="140" height="130"/><rect x="320" y="20" width="140" height="130"/>
-            <rect x="20" y="170" width="120" height="140"/><rect x="160" y="170" width="60" height="140"/><rect x="240" y="170" width="60" height="140"/><rect x="320" y="170" width="140" height="140"/>
-            <rect x="20" y="330" width="120" height="140"/><rect x="160" y="330" width="140" height="140"/><rect x="320" y="330" width="70" height="140"/><rect x="410" y="330" width="50" height="140"/>
-            <rect x="20" y="490" width="120" height="130"/><rect x="160" y="490" width="140" height="130"/><rect x="320" y="490" width="140" height="130"/>
+            <rect x="164" y="10" width="136" height="140"/><rect x="324" y="10" width="146" height="140"/>
+            <rect x="10" y="174" width="130" height="134"/><rect x="164" y="174" width="62" height="134"/><rect x="238" y="174" width="62" height="134"/><rect x="324" y="174" width="146" height="134"/>
+            <rect x="10" y="332" width="130" height="138"/><rect x="164" y="332" width="136" height="138"/><rect x="324" y="332" width="66" height="138"/><rect x="402" y="332" width="68" height="138"/>
+            <rect x="10" y="494" width="130" height="136"/><rect x="164" y="494" width="136" height="136"/><rect x="324" y="494" width="146" height="136"/>
           </g>
-          <path class="road-s" stroke-width="1" d="M-100 160H580M-100 480H580M310 -100V740M230 160V320M400 320V480"/>
-          <path class="road" d="M-100 320H580" stroke-width="8"/>
-          <path class="road" d="M150 -100V740" stroke-width="5"/>
-          <text class="lab" x="262" y="310">Schweidel József u.</text>
-          <circle class="pin-ring" cx="232" cy="320" r="24"/>
-          <circle class="pin-ring" cx="232" cy="320" r="12"/>
-          <path class="pin" d="M232 320c-7-9-11-15-11-21a11 11 0 0 1 22 0c0 6-4 12-11 21z"/>
-          <circle cx="232" cy="299" r="4" style="fill:var(--bg)"/>
+          <rect class="park" x="10" y="10" width="130" height="140"/>
+          <path class="road-s" d="M-100 160H580M-100 482H580M310 -100V740M232 164V316M396 324V478"/>
+          <path class="road" d="M-100 320H580" stroke-width="10"/>
+          <path class="road" d="M150 -100V740" stroke-width="7"/>
+          <path class="road" d="M286 -40 560 250" stroke-width="7"/>
+          <rect class="shop" x="186" y="334" width="82" height="44"/>
+          <text class="lab" x="292" y="312">Schweidel József u.</text>
+          <circle class="pin-ring" cx="227" cy="330" r="30"/>
+          <circle class="pin-ring" cx="227" cy="330" r="16"/>
+          <path class="pin" d="M227 330c-7-9-11-15-11-21a11 11 0 0 1 22 0c0 6-4 12-11 21z"/>
+          <circle class="pin-eye" cx="227" cy="309" r="4"/>
         </svg>
+        <p class="map-card"><b>Stilet Dekor · műhely</b><span>Budapest, Schweidel József u. 1–3.</span></p>
+        <span class="map-n" aria-hidden="true">É</span>
         <span class="ph">Térkép helye · élesben interaktív térkép</span>
       </div>
     </div>
@@ -1541,6 +1566,7 @@ const store = {
 
 /* ---------- formázás ---------- */
 const grp = s => s.replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+const grp5 = n => (Math.abs(n) >= 10000 ? grp(String(n)) : String(n));
 const ft = n => (n < 0 ? '−' : '') + grp(String(Math.round(Math.abs(n)))) + NB + 'Ft';
 const dec = (n, d = 2) => { const [i, f] = Math.abs(n).toFixed(d).split('.'); return (n < 0 ? '−' : '') + grp(i) + (f ? ',' + f : ''); };
 const cmTxt = n => String(Math.round(n * 10) / 10).replace('.', ',');
@@ -1574,7 +1600,7 @@ function easter(y) { const a = y % 19, b = Math.floor(y / 100), c = y % 100, d =
 const holCache = {};
 function holidays(y) {
   if (holCache[y]) return holCache[y];
-  const s = new Set(['01-01', '03-15', '05-01', '08-20', '10-23', '11-01', '12-25', '12-26'].map(md => Date.UTC(y, +md.slice(0, 2) - 1, +md.slice(3))));
+  const s = new Set(['01-01', '03-15', '05-01', '08-20', '10-23', '11-01', '12-24', '12-25', '12-26'].map(md => Date.UTC(y, +md.slice(0, 2) - 1, +md.slice(3))));
   const e = easter(y); [e - 2 * DAYMS, e + DAYMS, e + 50 * DAYMS].forEach(t => s.add(t));
   return (holCache[y] = s);
 }
@@ -1600,10 +1626,10 @@ function parseISO(v) { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ''); retu
 const PROD = {
   molino: { name: 'Molinó', free: true, def: [200, 100], presets: [[100, 50], [200, 100], [300, 100], [300, 150], [500, 200]], minLine: 4990, matTitle: 'Anyag',
     mats: [
-      { id: 'frontlit', name: 'Standard frontlit', price: 3990, per: 'm2', tex: 'frontlit', spec: [['Súly', '440–510 g/m²'], ['Hely', 'kül- és beltér'], ['Ellenálló', 'UV-álló'], ['Élettartam', '2–3 év kültéren*']] },
-      { id: 'mesh', name: 'Hálós (mesh)', price: 4490, per: 'm2', tex: 'mesh', spec: [['Súly', '≈ 270–370 g/m²*'], ['Hely', 'kültér'], ['Ellenálló', 'szélálló'], ['Ide', 'kerítés, állvány']] },
-      { id: 'blockout', name: 'Blockout', price: 6990, per: 'm2', tex: 'blockout', spec: [['Súly', '≈ 550–650 g/m²*'], ['Hely', 'kül- és beltér'], ['Réteg', 'fényzáró'], ['Ide', 'kétoldalas nyomtatás']] },
-      { id: 'textil', name: 'Textil (zászlóanyag)', price: 5490, per: 'm2', tex: 'textil', spec: [['Súly', '≈ 110–120 g/m²*'], ['Hely', 'beltér'], ['Felület', 'gyűrődésmentes'], ['Élettartam', 'beltéren több év*']] }
+      { id: 'frontlit', name: 'Standard frontlit', price: 3990, per: 'm2', tex: 'frontlit', spec: [['Súly', '440–510 g/m²'], ['Hely', 'kül- és beltér'], ['Jellemző', 'UV-álló'], ['Élettartam', '≈ 2–3 év kültéren*']] },
+      { id: 'mesh', name: 'Hálós (mesh)', price: 4490, per: 'm2', tex: 'mesh', spec: [['Súly', '≈ 270–370 g/m²*'], ['Hely', 'kültér, kerítés, állvány'], ['Jellemző', 'szélálló'], ['Élettartam', '≈ 2–3 év kültéren*']] },
+      { id: 'blockout', name: 'Blockout', price: 6990, per: 'm2', tex: 'blockout', spec: [['Súly', '≈ 550–650 g/m²*'], ['Hely', 'kül- és beltér*'], ['Jellemző', 'fényzáró, kétoldalas'], ['Élettartam', '≈ 2–3 év kültéren*']] },
+      { id: 'textil', name: 'Textil (zászlóanyag)', price: 5490, per: 'm2', tex: 'textil', spec: [['Súly', '≈ 110–120 g/m²*'], ['Hely', 'beltér'], ['Jellemző', 'gyűrődésmentes'], ['Élettartam', 'beltéren több év*']] }
     ] },
   rollup: { name: 'Roll-up', fixed: true, matTitle: 'Típus', noRot: true,
     mats: [
@@ -1742,14 +1768,14 @@ function renderOpts() {
   const c = cfg(), m = matOf(c); let h = '';
   if (S.cur === 'molino') {
     h = `<fieldset class="fs"><legend>Szélkidolgozás · kerület folyóméterre</legend><div class="opt-list">${EDGES.map(e => `
-      <label class="opt" for="edge-${e.id}"><input type="radio" name="edge" id="edge-${e.id}" value="${e.id}"${c.edge === e.id ? ' checked' : ''}><span><span class="on">${e.name}</span><span class="rate">${e.rate ? '+' + ft(e.rate) + '/fm' : 'felár nélkül'}</span></span><span class="cost" data-edge="${e.rate}"></span></label>`).join('')}</div></fieldset>`;
+      <label class="opt" for="edge-${e.id}"><input type="radio" name="edge" id="edge-${e.id}" value="${e.id}"${c.edge === e.id ? ' checked' : ''}><span><span class="on">${e.name}</span><span class="rate"${e.rate ? ` data-rate="${e.rate}" data-rate-unit="fm"` : ''}>${e.rate ? '+' + ft(e.rate) + '/fm' : 'felár nélkül'}</span></span><span class="cost" data-edge="${e.rate}"></span></label>`).join('')}</div></fieldset>`;
   } else if (S.cur === 'matrica') {
     h = `<fieldset class="fs"><legend>Opciók</legend><div class="opt-list">${PROD.matrica.opts.map(o => `
-      <label class="opt" for="opt-${o.id}"><input type="checkbox" id="opt-${o.id}" data-opt="${o.id}"${c[o.id] ? ' checked' : ''}><span><span class="on">${o.name}</span><span class="rate">+${ft(o.rate)}/m²</span></span><span class="cost" data-m2="${o.rate}"></span></label>`).join('')}</div></fieldset>`;
+      <label class="opt" for="opt-${o.id}"><input type="checkbox" id="opt-${o.id}" data-opt="${o.id}"${c[o.id] ? ' checked' : ''}><span><span class="on">${o.name}</span><span class="rate" data-rate="${o.rate}" data-rate-unit="m²">+${ft(o.rate)}/m²</span></span><span class="cost" data-m2="${o.rate}"></span></label>`).join('')}</div></fieldset>`;
   } else if (S.cur === 'tabla') {
     h = `<fieldset class="fs"><legend>Szerelés</legend><div class="num-row">
-      <div class="field"><label for="opt-holes">Furatolás <span class="hint">+${ft(500)}/furat</span></label><div class="unit-input"><input id="opt-holes" type="number" min="0" max="40" step="1" value="${c.holes}" data-num="holes"><span>furat</span></div></div>
-      <div class="field"><label for="opt-sets">Távtartó csavar <span class="hint">+${ft(1990)}/szett</span></label><div class="unit-input"><input id="opt-sets" type="number" min="0" max="10" step="1" value="${c.sets}" data-num="sets"><span>szett</span></div></div>
+      <div class="field"><label for="opt-holes">Furatolás <span class="hint" data-rate="500" data-rate-unit="furat">+${ft(500)}/furat</span></label><div class="unit-input"><input id="opt-holes" type="number" min="0" max="40" step="1" value="${c.holes}" data-num="holes"><span>furat</span></div></div>
+      <div class="field"><label for="opt-sets">Távtartó csavar <span class="hint" data-rate="1990" data-rate-unit="szett">+${ft(1990)}/szett</span></label><div class="unit-input"><input id="opt-sets" type="number" min="0" max="10" step="1" value="${c.sets}" data-num="sets"><span>szett</span></div></div>
       </div><p class="hint" style="margin-block-start:8px">Egy szett 4 db távtartó csavar.</p></fieldset>`;
   } else if (S.cur === 'plakat' && !m.area) {
     h = `<fieldset class="fs"><legend>Papír · 150 g/m²</legend><div class="rc-row">${['Matt', 'Fényes'].map((p, i) => `<input class="rc-in" type="radio" name="paper" id="paper-${i}" value="${p}"${c.paper === p ? ' checked' : ''}><label class="rc" for="paper-${i}">${p}</label>`).join('')}</div></fieldset>`;
@@ -1809,11 +1835,12 @@ function updatePrices() {
   const c = cfg(); const valid = cfgValid(c);
   const d = valid ? dims(c) : null;
   $$('.mat-price', el.matGrid).forEach(s => { const n = +s.dataset.net; s.textContent = ft(shown(n)) + (s.dataset.per === 'm2' ? '/m²' : '/db'); });
+  $$('[data-rate]', el.optBox).forEach(s => { s.textContent = '+' + ft(shown(+s.dataset.rate)) + '/' + s.dataset.rateUnit; });
   $$('.cat .pr').forEach(s => { const n = +s.dataset.from; s.textContent = ft(shown(n)) + (s.dataset.unit === 'm2' ? '/m²-től' : '-tól'); });
   if (d) {
     const perim = 2 * (d.w + d.h) / 100, area = d.w * d.h / 1e4;
-    $$('[data-edge]', el.optBox).forEach(s => { s.textContent = ft(rnd(2 * (d.w + d.h) * +s.dataset.edge / 100)); });
-    $$('[data-m2]', el.optBox).forEach(s => { s.textContent = ft(rnd(d.w * d.h * +s.dataset.m2 / 1e4)); });
+    $$('[data-edge]', el.optBox).forEach(s => { s.textContent = ft(shown(rnd(2 * (d.w + d.h) * +s.dataset.edge / 100))); });
+    $$('[data-m2]', el.optBox).forEach(s => { s.textContent = ft(shown(rnd(d.w * d.h * +s.dataset.m2 / 1e4))); });
     let info = `${dec(area)} m² · kerület ${dec(perim)} fm`;
     if (c.p === 'molino' && (c.edge === 'ringli' || c.edge === 'hem')) info += ` · ≈ ${2 * Math.ceil(d.w / 50) + 2 * Math.ceil(d.h / 50)} ringli`;
     if (c.p === 'tabla' && area < 0.1) info += ' · a minimum 0,1 m² számít';
@@ -1925,7 +1952,7 @@ function updatePreflight() {
   lamp.dataset.state = st; ver.dataset.state = st;
   ver.textContent = st === 'ok' ? `${dpi} DPI · kiváló` : st === 'mid' ? `${dpi} DPI · megfelelő` : `${dpi} DPI · gyenge`;
   const needW = Math.ceil(inW * 150), needH = Math.ceil(inH * 150);
-  txt.textContent = st === 'ok' ? 'Közelről nézve is éles lesz a nyomat.' : st === 'mid' ? 'Molinóra és nagy látótávolságra megfelelő. Közelről nézve kissé lágy lehet.' : `Közelről pixeles lesz a nyomat. Kiváló minőséghez legalább ${needW}×${needH} px kell ehhez a mérethez.`;
+  txt.textContent = st === 'ok' ? 'Közelről nézve is éles lesz a nyomat.' : st === 'mid' ? 'Molinóra és nagy látótávolságra megfelelő. Közelről nézve kissé lágy lehet.' : `Közelről pixeles lesz a nyomat. Kiváló minőséghez legalább ${grp5(needW)}×${grp5(needH)} px kell ehhez a mérethez.`;
   data.innerHTML = `<span>Kép: <b>${I.w}×${I.h} px</b></span><span>Nyomat: <b>${cmTxt(d.w)}×${cmTxt(d.h)} cm</b></span><span>Küszöb: ≥150 kiváló · 72–149 megfelelő · &lt;72 gyenge</span>`;
   fitBox.hidden = !mis;
   if (mis) {
@@ -2138,9 +2165,9 @@ function vanBody(x, wrapped) {
     poly(x, [[10, 116], [10, 78], [120, 50], [297, 96], [297, 116]], rgb(T.brand));
     poly(x, [[10, 78], [120, 50], [150, 43], [10, 70]], mx(T.bg, T.ink, .08));
     poly(x, [[150, 43], [297, 88], [297, 96], [120, 50]], mx(T.brand, T.bg, .45));
-    x.fillStyle = rgb(T.bg); x.font = `700 11px ${T.fm}`; x.textAlign = 'left'; x.fillText('[ÜGYFÉL LOGÓJA]', 30, 42);
-    x.fillStyle = mx(T.bg, T.muted, .3); x.font = `500 7.5px ${T.fm}`; x.fillText('[szolgáltatás · telefonszám · web]', 30, 54);
-    x.fillStyle = rgb(T.ink, .9); x.font = `800 15px ${T.fd}`; x.fillText('[SZLOGEN HELYE]', 150, 104);
+    x.fillStyle = rgb(T.bg); x.font = `700 11px ${T.fm}`; x.textAlign = 'left'; x.fillText('[ÜGYFÉL LOGÓJA]', 30, 38);
+    x.fillStyle = mx(T.bg, T.muted, .3); x.font = `500 7px ${T.fm}`; x.fillText('[telefonszám · web]', 30, 48);
+    x.fillStyle = rgb(T.ink, .92); x.font = `800 14px ${T.fd}`; x.textAlign = 'center'; x.fillText('[SZLOGEN HELYE]', 150, 104);
     x.restore();
   }
   x.strokeStyle = mx(T.bg, T.muted, .5, .55); x.lineWidth = .8;
@@ -2191,7 +2218,7 @@ const SCENES = {
     box(x, 0, 0, W, H, mx(T.bg, T.ink, .03));
     box(x, 40, 30, 320, 196, mx(T.ink, T.muted, .1));
     for (let r = 0; r < 7; r++) for (let c = 0; c < 6; c++) {
-      const X = 52 + c * 52 + (r % 2 ? 26 : 0), Y = 44 + r * 27; if (X > 340) continue;
+      const X = 52 + c * 52 + (r % 2 ? 26 : 0), Y = 44 + r * 27; if (X > 320) continue;
       if ((r + c) % 2) { x.fillStyle = rgb(T.brand); x.beginPath(); x.arc(X + 10, Y + 6, 5, 0, Math.PI * 2); x.fill(); }
       else { x.fillStyle = mx(T.bg, T.muted, .3); x.font = `700 9px ${T.fm}`; x.textAlign = 'left'; x.fillText('LOGÓ', X, Y + 9); }
     }
@@ -2519,6 +2546,17 @@ $('#wizSteps').addEventListener('click', e => {
   goStep(n, true);
 });
 wiz.addEventListener('submit', e => e.preventDefault());
+// a hibaüzenet eltűnik, amint a látogató javítja a mezőt
+function clearOnEdit(form) {
+  const h = e => {
+    const t = e.target; if (!t || !t.getAttribute) return;
+    if (t.getAttribute('aria-invalid') === 'true') { t.setAttribute('aria-invalid', 'false'); const m = document.getElementById(t.id + '-msg'); if (m) m.textContent = ''; }
+    const fs = (t.type === 'radio' || t.type === 'checkbox') && t.closest('.qfs.invalid');
+    if (fs) { fs.classList.remove('invalid'); const m = fs.querySelector('.field-msg'); if (m) m.textContent = ''; }
+  };
+  form.addEventListener('input', h); form.addEventListener('change', h);
+}
+clearOnEdit(wiz); clearOnEdit($('#msgForm'));
 $('#wizSurvey').addEventListener('change', () => { $('#surveyFields').hidden = !$('#wizSurvey').checked; });
 (function initDates() { const n = bpNow(); $('#wizDeadline').min = isoOf(n.t); $('#wizSurveyDate').min = isoOf(nextBD(n.t)); })();
 function addPhotos(files) {
@@ -2586,7 +2624,7 @@ const scene = $('#hero-jelenet');
 function powerOn() {
   if (reduceMQ.matches) return;
   scene.classList.remove('powering', 'go'); void scene.offsetWidth; scene.classList.add('powering');
-  const start = () => { scene.classList.add('go'); setTimeout(() => scene.classList.remove('powering', 'go'), 1900); };
+  const start = () => { scene.classList.add('go'); setTimeout(() => scene.classList.remove('powering', 'go'), 1550); };
   return start;
 }
 function setMode(mode, animate) {
@@ -2597,10 +2635,22 @@ function setMode(mode, animate) {
 }
 $$('.scene-cap [data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode, true)));
 (function intro() {
-  const go = powerOn(); if (!go) return;
-  let done = false; const fire = () => { if (done) return; done = true; go(); };
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fire, fire);
-  setTimeout(fire, 1200);
+  if (reduceMQ.matches) return;
+  const r = scene.getBoundingClientRect();
+  if (r.top < window.innerHeight * 0.8 || !('IntersectionObserver' in window)) {
+    const go = powerOn(); if (!go) return;
+    let done = false; const fire = () => { if (done) return; done = true; go(); };
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fire, fire);
+    setTimeout(fire, 1200);
+    return;
+  }
+  // Telefonon a cégér a hajtás alatt van: a felirat addig is ég, és egyszer akkor kapcsol be látványosan, amikor a látogató odaér.
+  const io = new IntersectionObserver(es => {
+    if (!es.some(e => e.isIntersecting)) return;
+    io.disconnect();
+    if (scene.dataset.mode === 'night') { const go = powerOn(); if (go) requestAnimationFrame(go); }
+  }, { threshold: 0.5 });
+  io.observe(scene);
 })();
 
 /* ================= FEJLÉC, MENÜ, JEGYZETEK ================= */
