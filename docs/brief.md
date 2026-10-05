@@ -35,7 +35,8 @@ rendezvényszervezők, magánszemélyek (matrica, vászonkép, molinó).
 
 ## 3. Szolgáltatások (információs architektúra)
 
-Négy fő csoport + egy mindenre érvényes ígéret.
+Négy fő csoport + egy igény szerinti szolgáltatás. A felmérés és a telepítés **igény szerint** jár (döntés, 2026-10-05);
+telepítésnél a műhely dönthet úgy, hogy a méretek miatt felmérés kell.
 
 | Csoport | slug | Elemei |
 |---|---|---|
@@ -43,14 +44,21 @@ Négy fő csoport + egy mindenre érvényes ígéret.
 | **Cégér és világító reklám** | `ceger-vilagito-reklam` | Cégérkészítés · Reklámtáblák vázszerkezettel és belső LED-es világítással · Világító betűk · Plasztik betűk és logók · LED-falak |
 | **Nyomtatás** | `nyomtatas` | Molinók · Feszített ponyva kihelyezéssel · Roll-upok · Táblák · Matricák · Plakátok · Vászonképek |
 | **Rendezvény és egyedi** | `rendezveny-egyedi` | Rendezvény díszletezés és fóliázás · Fotófal építés · 3D nyomtatási munkák · Egyedi reklám- és díszítési megrendelések · Egyéb arculati megoldások |
-| *Mindenre érvényes* | – | **Helyszíni felmérés és telepítés** |
+| *Igény szerint* | – | **Helyszíni felmérés és telepítés** |
 
 ## 4. Webshop – hibrid modell
 
 ### 4.1 Azonnal árazható, kosárba tehető termékek
 
-Minden ár **nettó, helyőrző** (piaci átlag alapján becsülve), a megrendelő átírja. ÁFA: **27%**.
-A felületen **nettó/bruttó kapcsoló**; alapértelmezés: bruttó (magánszemélyek), cégeknek egy kattintás.
+Minden ár **helyőrző** (piaci átlag alapján becsülve), a megrendelő átírja. A katalógus az árakat
+**nettóban tárolja** (ÁFA-változáskor így egy helyen kell módosítani). ÁFA: **27%**.
+
+**A felületen minden ár bruttó, kapcsoló nélkül** (döntés, 2026-10-05). A kosárban és a tételes bontásban
+egy kis sor mutatja a nettó összeget és az ÁFA-t a cégeknek. A rendelési és az ajánlatkérő űrlapon jól látható:
+„A végleges ár eltérhet a kalkulált ártól.” (Lásd 10. fejezet.)
+
+**Határvonal webshop és ajánlatkérés között:** ami méretből, anyagból és opciókból kiszámolható, az webshop-termék
+(például az egyedi méretű plakát is). Ami tervezést, felmérést, vázszerkezetet vagy telepítést igényel, az ajánlatkérés.
 
 **Molinó** (Ft/m², méret cm-ben, bármilyen méret 20 cm és 500 cm között oldalanként, nagyobbat toldással)
 - Standard frontlit molinó 440–510 g/m², kül- és beltéri, UV-álló: **3 990 Ft/m²**
@@ -70,6 +78,9 @@ A felületen **nettó/bruttó kapcsoló**; alapértelmezés: bruttó (magánszem
 
 **Plakát** (darabár, 150 g/m² matt vagy fényes papír)
 - A3: **990** · A2: **1 990** · A1: **3 490** · A0: **5 990** · B1 (70×100): **3 990** · Blueback (utcai plakát, Ft/m²): **2 990**
+- Egyedi méret (döntés, 2026-10-05): m²-ár alapján, helyőrző **4 990 Ft/m²**, minimum **1 990 Ft**; a valós árat a megrendelő adja meg.
+  Ha a feltöltött fájl szabványos formátumú (±1 mm), a kalkulátor arra áll rá, különben egyedi méret.
+- A „blueback” név egyelőre marad. (Kék hátoldalú, átlátszatlan utcai plakátpapír, régi plakátok fölé ragasztható.)
 
 **Táblák** (Ft/m², minimum 0,1 m²)
 - PVC habtábla 3 mm: **9 990** · PVC habtábla 5 mm: **12 990** · Dibond (alu kompozit) 3 mm: **19 990** · Plexi 3 mm: **24 990**
@@ -80,15 +91,20 @@ A felületen **nettó/bruttó kapcsoló**; alapértelmezés: bruttó (magánszem
 
 **Mennyiségi kedvezmény** (azonos tételből): 2–4 db **−5%** · 5–9 db **−10%** · 10+ db **−15%**
 
-**Gyártási idő:** alapból **3 munkanap**; **Expressz (1 munkanap) +30%**. Rendelési határidő aznapi indításhoz:
-**12:00** (Europe/Budapest). Hétvége és magyar munkaszüneti napok nem számítanak.
+**Gyártási idő:** alapból **3 munkanap**; **Expressz (1 munkanap) +30%** (döntés: marad). A gyártási idő
+**a díjbekérő befizetésétől** számít (lásd 10. fejezet); ha a befizetés munkanapon 12:00 előtt (Europe/Budapest)
+beérkezik, aznap indul a gyártás. A kalkulátor **várható** dátumot mutat, és ebbe 1 munkanapot beleszámol a
+visszaigazolásra és a befizetésre. Az expressz is kérés: a visszaigazoláskor dől el, vállalható-e.
+Hétvége és magyar munkaszüneti napok nem számítanak.
 
 **Átvétel:** személyes átvétel a műhelyben **ingyenes** · futár **2 990 Ft** · nagy csomag (roll-up, tábla) **4 990 Ft** ·
-telepítés: felmérés után, egyedi ajánlat.
+**telepítéssel** (ilyenkor nincs átvétel). A telepítés díja egyedi. Telepítésnél a méreteket szükség esetén a műhely
+a helyszínen ellenőrzi, mert gyakori, hogy rossz méret érkezik; ennek alapján véglegesíti az árat.
 
 ### 4.2 Ajánlatkéréses (egyedi) munkák – okos varázsló
 
-Ezeknél nincs fix ár; a varázsló összegyűjti, ami az árazáshoz kell, és **helyszíni felmérési időpontot** is kérhet.
+Ezeknél nincs fix ár; a varázsló összegyűjti, ami az árazáshoz kell. Az ajánlatkérés után a műhely mindenképp
+felveszi a kapcsolatot a megrendelővel, és a felmérés időpontját telefonon egyeztetik.
 
 | Munka | Amit a varázsló kérdez |
 |---|---|
@@ -102,26 +118,35 @@ Ezeknél nincs fix ár; a varázsló összegyűjti, ami az árazáshoz kell, és
 | 3D nyomtatás | fájl (STL/OBJ/3MF) vagy leírás; anyag (PLA, PETG); méret; darabszám |
 | Egyéb arculati megoldás | szabad leírás + fájlok |
 
-Minden varázslóban: helyszín (cím), határidő, költségkeret-sáv (opcionális), fájlok/fotók feltöltése,
-kapcsolattartó adatok, **felmérési időpont kérése** (dátum + napszak).
+Minden varázslóban: helyszín (cím), határidő, fájlok/fotók feltöltése, kapcsolattartó adatok és egy
+„Helyszíni felmérést kérek” jelölő, időpont nélkül. **Nincs költségkeret-kérdés és nincs időpontválasztó**
+(döntés, 2026-10-05: a műhely úgyis visszahív, és a nap végén látja, mikor tud kimenni). Az űrlapon jól látható:
+„A végleges árajánlat eltérhet a kalkulált ártól.” Ajánlás a műhelynek: az árajánlatban érdemes két változatot adni
+(gazdaságos és prémium), mert látva a különbséget nem mindenki a legolcsóbbat választja.
 
 ## 5. Innovációk (a látványtervekben bemutatandó)
 
 1. **Valós léptékű előnézet:** a konfigurátorban a feltöltött grafika a választott arányban jelenik meg,
    mellette 180 cm-es emberi sziluett. Mm-pontos méretvonalak (a műhely és a felmérés nyelve).
-2. **Nyomdakész-ellenőrzés feltöltéskor (preflight):** a kép pixelméretéből és a fizikai méretből becsült
-   felbontás (DPI) közlekedési lámpával: ≥150 kiváló · 72–149 molinóra/nagy távolságra megfelelő · <72 gyenge.
+2. **Méretfelismerés és nyomdakész-ellenőrzés feltöltéskor:** a méretmezők a fájlból felismert méretre állnak
+   (8. fejezet). Raszterképnél a pixelméretből és a fizikai méretből becsült felbontás (DPI) közlekedési lámpával:
+   ≥150 kiváló · 72–149 molinóra/nagy távolságra megfelelő · <72 gyenge.
    Arányeltérés esetén választás: „Kitöltés (vágással)” / „Illesztés (kerettel)”.
-3. **Élő határidő:** „Ha ma 12:00-ig megrendeli, **[dátum]**-ra elkészül.” Expressz kapcsolóval újraszámol.
-4. **Átlátható ár:** tételes bontás (anyag m² × egységár, szélkidolgozás, kedvezmény, ÁFA), nettó/bruttó kapcsoló,
-   mennyiségi kedvezmény kijelzése („még 2 db és −10%”).
+3. **Várható határidő:** „Várhatóan **[dátum]**-ra elkészül” (a befizetéstől számítva, 1 munkanap ráhagyással).
+   Expressz kapcsolóval újraszámol.
+4. **Átlátható ár:** tételes bontás (anyag m² × egységár, szélkidolgozás, kedvezmény), bruttó végösszeg,
+   alatta kis sorban nettó + ÁFA, mennyiségi kedvezmény kijelzése („még 2 db és −10%”).
 5. **„Helyszínen” előnézet:** a látogató feltölt egy fotót a kirakatáról/járművéről, és ráhúzza a tervet
    (nézet: perspektíva-sarkok mozgatása). A látványtervben elég jelezni és egy egyszerű demóval érzékeltetni.
 6. **Nappal / éjjel kapcsoló** a világító reklámoknál: ugyanaz a cégér kikapcsolva és világítva.
-7. **Felmérés-időpontfoglalás** az ajánlatkérő varázsló végén.
+7. ~~Felmérés-időpontfoglalás az ajánlatkérő varázsló végén.~~ Elvetve (2026-10-05): időpontválasztó helyett
+   „Helyszíni felmérést kérek” jelölő és telefonos egyeztetés.
 8. **Referenciák felület szerint szűrve** (autó, kirakat, cégér, rendezvény…), egy-egy munkánál **előtte/utána csúszka**.
 9. **Anyagkártyák** valós adatokkal (g/m², kül-/beltér, várható élettartam) a webshopban.
 10. **Újrarendelés:** a korábbi konfiguráció egy kattintással újra kosárba tehető (fiókos vagy e-mailes link).
+11. **Felületcsomag:** több oldalas PDF esetén (pl. kirakatfólia ablakonként) felületlista, az azonos felületek
+    automatikus összevonása, készletszám (9. fejezet).
+12. *Széljegyzet, később:* **qvik-QR a díjbekérőn** (10. fejezet).
 
 ## 6. Két design-irány a látványtervekhez
 
@@ -159,3 +184,93 @@ Referenciaképek: a jelenlegi portfólió még nem elérhető ebből a környeze
 **illusztrált helyőrzők** szerepelnek (SVG/CSS/canvas jelenetek: éjszakai kirakat világító betűkkel, fóliázott
 kisbusz, roll-up rendezvényen, fotófal, LED-fal, homokfúvott hatású üvegfólia, kínálópult, 3D nyomtatott betűk),
 „Referenciakép helye” jelöléssel. Élesben a valós portfólióképek kerülnek a helyükre.
+
+> A 2026-10-05-i döntések (bruttó árak kapcsoló nélkül, költségkeret és időpontválasztó törlése, méretfelismerés,
+> felületcsomag, új rendelési folyamat) a látványtervekben még nincsenek átvezetve. Az éles oldal ezek szerint épül.
+
+## 8. Méretfelismerés a feltöltött fájlból
+
+Követelmény: **nagyon pontos legyen.** Feltöltéskor a méretmezők automatikusan a fájlból felismert méretre állnak,
+külön jóváhagyó gomb nélkül. Alattuk egy rövid sor jelzi a forrást, pl. „A méret a fájlból: 84,0 × 109,7 cm”.
+A mezők ezután is szerkeszthetők.
+
+**Források, pontossági sorrendben:**
+
+1. **PDF és PDF-kompatibilis Illustrator (.ai):** oldalanként a TrimBox (vágott méret), ha nincs, akkor a
+   CropBox/MediaBox; a BleedBox a kifutóhoz. Kezeljük a /Rotate elforgatást és a /UserUnit szorzót (nagy vásznas
+   Illustrator-fájlok). Több oldal vagy rajztábla = több felület (9. fejezet). Pontosság: 0,1 mm.
+2. **EPS:** %%HiResBoundingBox, ha nincs, %%BoundingBox (a bináris, DOS-fejléces EPS-t is).
+3. **SVG:** width/height mértékegységgel (mm, cm, in, pt). Ha csak viewBox van, nem töltünk ki automatikusan.
+4. **Raszterképek (TIFF, PSD, JPG, PNG):** pixelméret ÷ a fájlba írt felbontás. Ha a felbontás hiányzik vagy
+   72 DPI (webes alapérték), nem töltünk ki automatikusan, csak a DPI-ellenőrzés fut.
+5. **CorelDRAW (.cdr):** fogadjuk, de méretet nem olvasunk ki belőle.
+
+**Szabályok:**
+
+- **Ráhagyás, kifutó:** az árat a teljes nyomtatott méretre számoljuk, ráhagyással együtt (javaslat, megerősítendő).
+  Ha a fájlban van TrimBox/BleedBox, a vágott méretet is megmutatjuk. Ha a fájlnév vagy a PDF címe ráhagyást
+  említ (pl. „10 mm ráhagyással”), azt is jelezzük.
+- **Méretarány:** alapból 1:1. Más arányt (pl. 1:10) akkor javaslunk, ha a fájlnév vagy a cím jelzi („1:10”,
+  „1_10”, „M1-10”), vagy ha a felismert méret a termék minimuma alá esik. Ilyenkor a méretmezők mellett megjelenik
+  egy „Méretarány” választó.
+- **Szabványos formátumok:** plakátnál A/B formátumra, roll-upnál a szélesség alapján a modellre ±1 mm tűréssel
+  automatikusan rááll; ha nem illik szabványra, egyedi méret.
+- **Szerveroldali újraellenőrzés:** feltöltés után a szerver is kiolvassa a méretet, és a rendeléshez menti. Ha a
+  megrendelt méret eltér a fájlétól, az admin felületen figyelmeztetés jelenik meg.
+- **Tesztelés:** valódi ügyfélfájlok mintáján (PDF, AI, EPS, TIFF, 1:10-es molinó) automatikus tesztekkel.
+  Ügyfélgrafikát nem teszünk a repóba, a tesztek szintetikus fájlokat használnak ugyanazokkal a méretekkel.
+
+## 9. Felületcsomag: több felületből álló munka
+
+Példa: HajWellness Szalon, „C változat, felületenként”: 22 oldalas PDF, 1:1, 10 mm ráhagyással.
+**22 felület, ebből 14 különböző terv, összesen 6,46 m².** (Pl. a 4., 5., 13. és 14. oldal tartalma azonos.)
+
+- Ha a feltöltött PDF több oldalas, a kalkulátor felületlistát mutat: előnézet, méret, darab.
+- Az azonos méretű és azonos tartalmú oldalakat automatikusan összevonja (a példában a 4 azonos oldal = 4 db).
+  Felület kihagyható, darabszám módosítható.
+- Az anyag és az opciók a teljes csomagra vonatkoznak.
+- A kosárban egy tétel lesz, pl. „Fóliacsomag – 22 felület, 6,46 m²”, egy **„Készletek száma”** mezővel
+  (ha 3 üzletbe kell ugyanaz, akkor 3 készlet).
+- A mennyiségi kedvezmény a **készletek számára** vonatkozik, nem a felületekre (különben 22 ablak
+  automatikusan −15% lenne).
+- Telepítéssel kért csomagnál felmérés javasolt (méretellenőrzés).
+- A műhely gyártási listát kap: felület, oldalszám, méret, darab.
+
+## 10. Rendelési folyamat
+
+**Webshop-rendelés:**
+
+1. A vásárló a **„Rendelés elküldése ellenőrzésre”** gombbal küldi el a rendelést. Ez még **nem jár fizetési
+   kötelezettséggel**, és az oldal ezt egyértelműen kiírja, a „végleges ár eltérhet” figyelmeztetéssel együtt.
+2. Automatikus e-mail: „Megkaptuk, ellenőrizzük” (a beérkezés visszaigazolása).
+3. A műhely ellenőrzi a fájlt, az anyagot és a határidőt, majd választ:
+   - **Visszaigazolom:** végleges ár (eltérés esetén indoklással) és díjbekérő;
+   - **Módosítást kérek:** pl. gyenge a fájl vagy rossz a méret;
+   - **Nem vállalom:** indoklással, esetleg alternatívával.
+4. **A díjbekérő befizetése a megrendelés elfogadása.** Ha a vásárló nem fogadja el, nincs teendője; a rendelés
+   a megadott idő után automatikusan lezárul. A levélben egy „Nem kérem” link is lehet.
+5. A gyártás a befizetés beérkezése után indul, a gyártási idő innen számít.
+6. Elkészült: átvehető, feladva vagy telepítés egyeztetése.
+7. Számla automatikusan, számlázóprogramon keresztül (pl. Számlázz.hu vagy Billingo).
+
+**Egyedi munka:** ajánlatkérő varázsló → visszahívás → felmérés (igény szerint, illetve ha a műhely szükségesnek
+látja) → árajánlat → elfogadás az előleg vagy a díjbekérő befizetésével → gyártás → telepítés → végszámla.
+
+**Fizetés:** díjbekérő, átutalással. Online kártyás fizetés nem kell.
+*Széljegyzet, később:* qvik-QR a díjbekérőn és a visszaigazoló levélben. A vásárló a telefonjával beolvassa, az
+összeg és a közlemény ki van töltve, az azonnali utalás másodpercek alatt megérkezik. Megvalósítható; a bevezetést
+a műhely bankjával kell egyeztetni.
+
+**Jogi:** az ÁSZF-ben rögzíteni, hogy a szerződés a visszaigazolt ajánlat elfogadásával (a befizetéssel) jön létre,
+és hogy az egyedi, a vásárló kérésére gyártott termékekre nem vonatkozik a 14 napos elállási jog. A végleges
+szöveget jogász nézze át.
+
+## 11. Nyitott kérdések
+
+- Ráhagyásos fájlnál az árat a teljes nyomtatott méretre számoljuk? (Javaslat: igen.)
+- Felületcsomag: legyen felületenkénti kezelési díj (sok kis darab vágása, kezelése)? A kedvezmény a készletek
+  száma vagy az összes m² szerint járjon?
+- Az egyedi méretű plakát valós m²-ára.
+- Hány nap után záruljon le automatikusan a visszaigazolt, de be nem fizetett rendelés? (Javaslat: 8 nap.)
+- Design-irány: A, B vagy keverék (mindkettő tetszik).
+- Mintafájlok a méretfelismerés teszteléséhez (AI, EPS, kifutós PDF, 1:10-es molinó, TIFF).
