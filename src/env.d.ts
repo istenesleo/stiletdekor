@@ -22,8 +22,10 @@ declare namespace Cloudflare {
     UPLOADS?: R2Bucket;
     /** Static assets of the site; used by the Astro adapter. */
     ASSETS: Fetcher;
-    /** "dev" for the dev site (main branch), Previews and local dev; "production" for the live site. */
+    /** "dev" for the dev sites (main branch), Previews and local dev; "production" for the live site. */
     PUBLIC_SITE_ENV: 'dev' | 'production';
+    /** Design direction of this deployment: "neon-muhely" (dev site A) or "galeria-editorial" (dev site B). */
+    SITE_THEME: string;
     /** Where new order and quote notifications are sent. */
     ORDER_NOTIFY_EMAIL: string;
     /** Comma-separated extra origins allowed for POST /api/* besides the site's own origin. */

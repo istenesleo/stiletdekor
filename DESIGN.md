@@ -75,7 +75,9 @@ A megrendelőnek **mindkét irány tetszik**. Mindkettő kattintható látványt
 - A CSS-t a generátor állítja elő: `npm run tokens` → `src/styles/tokens.css` (`--color-brand`,
   `--font-display`, `--text-xl` …). Kézzel nem szerkesztjük.
 - `npm test` ellenőrzi a kontrasztot (szöveg, másodlagos szöveg, márkaszín, gombszöveg) minden témára.
-- Egy irány kipróbálása helyben: `npm run tokens -- --theme neon-muhely` (az eredményt nem commitoljuk).
+- Mindkét irány benne van a generált CSS-ben: az alapértékek a `:root`-on, az irányok felülírásai a
+  `:root[data-theme="neon-muhely"]` és `:root[data-theme="galeria-editorial"]` szabályokban. Az oldal a
+  `SITE_THEME` változóból állítja be a `data-theme`-et; mindkét iránynak saját dev oldala van (README).
 
 | Csoport | Tartalom |
 |---|---|

@@ -3,6 +3,8 @@
 # Production secrets go in with: npx wrangler secret put NAME --env production
 
 # PUBLIC_SITE_ENV=dev
+# Design direction to run locally: neon-muhely (A) or galeria-editorial (B).
+# SITE_THEME=galeria-editorial
 # ORDER_NOTIFY_EMAIL=stiletdekor@gmail.com
 # Comma-separated extra origins accepted by POST /api/* (the site's own origin is always allowed).
 # ALLOWED_ORIGINS=http://localhost:4321

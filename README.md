@@ -62,9 +62,32 @@ változóit és kötéseit a `previews` blokk adja.
 
 **Ágak:**
 
-- `main` → a dev oldal (`stiletdekor` Worker, `workers.dev` címen).
+- `main` → a két dev oldal (lásd lent).
 - Minden más ág → saját Preview URL. Az előnézetek a `wrangler.jsonc` `previews` blokkját használják:
-  ugyanazt a dev adatbázist, csak tesztadattal.
+  ugyanazt a dev adatbázist, csak tesztadattal, és az A irányt mutatják.
+
+### Két dev oldal: a két design-irány
+
+Döntés (2026-10-06): amíg nem dől el a design, mindkét irány él, saját dev oldallal. A kód és a build
+ugyanaz, csak a `SITE_THEME` változó más; ez választja ki a tokenkészletet (`<html data-theme>`) és a
+betűtípusokat. Amíg a kezdőlap nem készül el, a `/` a választott irány látványtervét mutatja
+(`design/mockups/`). Az éles oldalon ez soha nem jelenik meg.
+
+| Dev oldal | Worker | `SITE_THEME` | Build |
+|---|---|---|---|
+| A · Neon műhely | `stiletdekor` | `neon-muhely` | `npm run build` |
+| B · Galéria / editorial | `stiletdekor-galeria` | `galeria-editorial` | `CLOUDFLARE_ENV=galeria npm run build` |
+
+**A B oldal Workerjének létrehozása (egyszer, a dashboardon):**
+
+1. Workers & Pages → Create application → Import a repository → GitHub: `istenesleo/stiletdekor`.
+2. Név: `stiletdekor-galeria`. Ennek egyeznie kell a `wrangler.jsonc` `env.galeria.name` mezőjével.
+3. Build command: `CLOUDFLARE_ENV=galeria npm run build` · Deploy command: `npx wrangler deploy` ·
+   Production branch: `main` · Root directory: `/`.
+4. Létrehozás után: Settings → Builds → **Previews Base** fül → a „Builds for Preview branches” legyen
+   kikapcsolva (az előnézeteket az A oldal készíti).
+
+Helyben: `.dev.vars`-ban `SITE_THEME=galeria-editorial`, vagy `CLOUDFLARE_ENV=galeria npm run preview`.
 
 **Láthatóság:** ami nem az éles oldal, azt a keresők nem indexelik: a `robots.txt` mindent tilt, a válaszokban
 `X-Robots-Tag: noindex, nofollow` fejléc és `noindex` meta van (`src/server/site-policy.ts`, `PUBLIC_SITE_ENV`

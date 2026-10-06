@@ -9,6 +9,7 @@ import {
   collectTokens,
   contrastRatio,
   formatValue,
+  loadThemes,
   loadTree,
   mergeTokens,
 } from './build-tokens.mjs';
@@ -67,6 +68,36 @@ describe('mergeTokens', () => {
   });
 });
 
+describe('buildCss', () => {
+  const base = {
+    color: { $type: 'color', bg: { $value: '#000' }, focus: { $value: '{color.bg}' } },
+    font: { $type: 'fontFamily', body: { $value: ['Arial', 'sans-serif'] } },
+  };
+
+  it('puts the base on :root and only the overridden tokens on each theme, typed by the base', () => {
+    const css = buildCss(base, { themes: [{ name: 'b', tree: { font: { body: { $value: ['Bodoni Moda', 'serif'] } } } }] });
+    expect(css).toContain(':root {\n  color-scheme: dark;');
+    expect(css).toContain('  --color-focus: var(--color-bg);');
+    expect(css).toContain(':root[data-theme="b"] {\n  --font-body: "Bodoni Moda", serif;\n}');
+  });
+
+  it('sorts themes by name and rejects names that cannot be an attribute value', () => {
+    const themes = [
+      { name: 'z', tree: { color: { bg: { $value: '#111' } } } },
+      { name: 'a', tree: { color: { bg: { $value: '#222' } } } },
+    ];
+    const css = buildCss(base, { themes });
+    expect(css.indexOf('data-theme="a"')).toBeLessThan(css.indexOf('data-theme="z"'));
+    expect(() => buildCss(base, { themes: [{ name: 'Neon Műhely', tree: {} }] })).toThrow(/Invalid theme name/);
+  });
+
+  it('checks references inside themes', () => {
+    expect(() => buildCss(base, { themes: [{ name: 'x', tree: { color: { bg: { $value: '{color.nope}' } } } }] })).toThrow(
+      /x: color.bg: unknown reference/,
+    );
+  });
+});
+
 describe('contrast', () => {
   it('computes WCAG ratios', () => {
     expect(contrastRatio('#000000', '#ffffff')).toBeCloseTo(21, 5);
@@ -81,7 +112,13 @@ describe('the repository tokens', () => {
     .map((f) => f.replace('.tokens.json', ''));
 
   it('src/styles/tokens.css is generated from the current JSON (run `npm run tokens`)', () => {
-    expect(fs.readFileSync(CSS_FILE, 'utf8').replaceAll('\r\n', '\n')).toBe(buildCss(loadTree()));
+    expect(fs.readFileSync(CSS_FILE, 'utf8').replaceAll('\r\n', '\n')).toBe(buildCss(loadTree(), { themes: loadThemes() }));
+  });
+
+  it('tokens.css carries both design directions', () => {
+    expect(loadThemes().map((t) => t.name)).toEqual(['galeria-editorial', 'neon-muhely']);
+    const css = fs.readFileSync(CSS_FILE, 'utf8');
+    for (const name of themes) expect(css).toContain(`:root[data-theme="${name}"] {`);
   });
 
   it.each([['base'], ...themes.map((t) => [t])])('%s keeps readable contrast', (name) => {
@@ -101,6 +138,7 @@ describe('the repository tokens', () => {
   });
 
   it.each(themes.map((t) => [t]))('theme %s builds without unknown references', (name) => {
-    expect(() => buildCss(loadTree(name), { theme: name })).not.toThrow();
+    const theme = loadThemes().find((t) => t.name === name);
+    expect(() => buildCss(loadTree(), { themes: [theme] })).not.toThrow();
   });
 });

@@ -7,6 +7,8 @@
 //
 // Workers Builds (Cloudflare dashboard, Git integration): production branch main -> `npx wrangler deploy`
 // (this top-level dev site); every other branch -> `npx wrangler preview` (a Preview, see "previews").
+// Two design directions are kept for now, one dev site each (SITE_THEME): the top level is dev site A
+// ("neon-muhely"); env.galeria is dev site B, a second Worker built from main with CLOUDFLARE_ENV=galeria.
 //
 // Filling in real resource IDs (once per environment):
 //   npx wrangler d1 create stiletdekor-dev          -> copy "database_id" into d1_databases below
@@ -55,6 +57,7 @@
   // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-dev" }],
   "vars": {
     "PUBLIC_SITE_ENV": "dev",
+    "SITE_THEME": "neon-muhely",
     "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
     // Comma-separated extra origins accepted by POST endpoints besides the site's own origin.
     "ALLOWED_ORIGINS": ""
@@ -69,6 +72,7 @@
     "observability": { "enabled": true },
     "vars": {
       "PUBLIC_SITE_ENV": "dev",
+      "SITE_THEME": "neon-muhely",
       "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
       "ALLOWED_ORIGINS": ""
     },
@@ -83,6 +87,32 @@
   },
 
   "env": {
+    // ---- dev site B: the "Galéria / editorial" direction, its own Worker (stiletdekor-galeria) ----
+    // Workers Builds for that Worker: build command `CLOUDFLARE_ENV=galeria npm run build`, deploy command
+    // `npx wrangler deploy`, production branch main, preview builds off (Previews come from dev site A).
+    // Same dev database as dev site A. Vars and bindings are not inherited, so they are repeated here.
+    "galeria": {
+      "name": "stiletdekor-galeria",
+      "observability": {
+        "enabled": true,
+        "issues": { "enabled": true }
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "stiletdekor-dev",
+          "database_id": "fb3e2883-e461-42ac-94d9-81d3a4f1f2d2",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "vars": {
+        "PUBLIC_SITE_ENV": "dev",
+        "SITE_THEME": "galeria-editorial",
+        "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
+        "ALLOWED_ORIGINS": ""
+      }
+    },
+
     // ---- production: the future live site (www.stiletdekor.hu), not deployed yet ----
     // Build with CLOUDFLARE_ENV=production, then `npx wrangler deploy` (the environment is fixed at build time).
     // Bindings and vars are not inherited from the top level, so they are repeated here.
@@ -99,6 +129,8 @@
       // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-prod" }],  (see top-level note)
       "vars": {
         "PUBLIC_SITE_ENV": "production",
+        // The chosen design direction; not decided yet (both directions are kept for now).
+        "SITE_THEME": "neon-muhely",
         "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
         "ALLOWED_ORIGINS": ""
       }

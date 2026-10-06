@@ -16,6 +16,7 @@
 
 ```
 src/
+  site/            # oldalbeállítások: design-irányok (SITE_THEME), átmeneti látványterv-kezdőlap
   domain/          # tiszta, keretrendszer-független üzleti logika (tesztelt)
     catalog.ts     # kategóriák, termékek, anyagok, opciók, helyőrző árak (docs/brief.md 4. fejezet)
     pricing.ts     # árkalkuláció: m², kerület, opciók, mennyiségi kedvezmény, expressz, minimum, ÁFA
@@ -64,7 +65,9 @@ scripts/           # build-tokens.mjs (token → CSS, kontrasztellenőrzés)
 
 ## Környezetek
 
-- **dev:** a `main` ág, Workers Builds telepíti a `stiletdekor` Workerre (`npx wrangler deploy`); D1: `stiletdekor-dev`.
+- **dev (két oldal, a két design-irány):** a `main` ágból Workers Builds telepíti az A oldalt a `stiletdekor`
+  Workerre és a B oldalt a `stiletdekor-galeria` Workerre (`env.galeria`, `CLOUDFLARE_ENV=galeria` buildkor).
+  A különbség csak a `SITE_THEME` változó; D1: mindkettőnél `stiletdekor-dev`.
 - **Previews:** minden más ág saját Preview URL-t kap (`npx wrangler preview`); a `previews` blokk szerint a dev
   D1-et használják közös tesztadatbázisként. Minden nem éles oldal `noindex`.
 - **production:** később, az `env.production` blokk (`stiletdekor-production`), a `stiletdekor.hu` domainre

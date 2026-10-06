@@ -1,5 +1,6 @@
 ---
 import { env } from 'cloudflare:workers';
+import { siteThemeOf } from '@/site/themes';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 
@@ -14,13 +15,18 @@ const { title, description } = Astro.props;
 // Only the production deployment may be indexed; dev and branch previews stay hidden.
 const indexable = env.PUBLIC_SITE_ENV === 'production';
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+// Design direction of this deployment (SITE_THEME var): selects the token set in tokens.css and its fonts.
+const theme = siteThemeOf(env.SITE_THEME);
 ---
 
 <!doctype html>
-<html lang="hu">
+<html lang="hu" data-theme={theme.id}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={theme.fontsHref} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {!indexable && <meta name="robots" content="noindex, nofollow" />}

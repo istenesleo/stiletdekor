@@ -1,5 +1,5 @@
 {
-  "$description": "Direction B, 'Galéria / editorial': magazine-like and calm, warm print black, off-white type, the brand pink only as a small accent, steel grey for technical data. Values taken from design/mockups/b-galeria-editorial.html. Overrides stilet.tokens.json; preview with: npm run tokens -- --theme galeria-editorial",
+  "$description": "Direction B, 'Galéria / editorial': magazine-like and calm, warm print black, off-white type, the brand pink only as a small accent, steel grey for technical data. Values taken from design/mockups/b-galeria-editorial.html. Overrides stilet.tokens.json; selected with SITE_THEME=galeria-editorial (dev site B).",
   "$extensions": {
     "hu.stiletdekor.fonts": "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400&display=swap",
     "hu.stiletdekor.note": "Bodoni Moda: above optical size ~20 its hairlines vanish on 1x screens ('felszereljük' reads 'fclszcrcljük'). Pin font-variation-settings 'opsz' to 12 for text up to ~30px and 20 for large display type."

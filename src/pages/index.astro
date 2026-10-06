@@ -1,7 +1,16 @@
 ---
+import { env } from 'cloudflare:workers';
 import Base from '@/layouts/Base.astro';
+import { designPreviewHtml } from '@/site/design-preview';
+import { siteThemeOf } from '@/site/themes';
 
-// Placeholder until the home page is built from the chosen design direction.
+// Until the home page is built, the dev sites (one per design direction) show their direction's mockup.
+// Production keeps the placeholder below.
+if (env.PUBLIC_SITE_ENV !== 'production') {
+  return new Response(designPreviewHtml(siteThemeOf(env.SITE_THEME)), {
+    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+  });
+}
 ---
 
 <Base
@@ -34,6 +43,7 @@ import Base from '@/layouts/Base.astro';
   }
 
   h1 {
+    font-family: var(--font-display);
     font-size: var(--text-2xl);
     line-height: var(--leading-snug);
   }

@@ -1,5 +1,5 @@
 {
-  "$description": "Direction A, 'Neon műhely': deep black, the brand pink as neon light, cutting-mat grid, rulers and dimension lines, measuring-tape yellow for measurements. Values taken from design/mockups/a-neon-muhely.html. Overrides stilet.tokens.json; preview with: npm run tokens -- --theme neon-muhely",
+  "$description": "Direction A, 'Neon műhely': deep black, the brand pink as neon light, cutting-mat grid, rulers and dimension lines, measuring-tape yellow for measurements. Values taken from design/mockups/a-neon-muhely.html. Overrides stilet.tokens.json; selected with SITE_THEME=neon-muhely (dev site A).",
   "$extensions": {
     "hu.stiletdekor.fonts": "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@300;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
   },

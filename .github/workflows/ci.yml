@@ -39,3 +39,8 @@ jobs:
       - run: npm test
 
       - run: npm run build
+
+      # Dev site B (the Galéria direction) is the same code built for env.galeria.
+      - run: npm run build
+        env:
+          CLOUDFLARE_ENV: galeria
