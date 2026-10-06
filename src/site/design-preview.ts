@@ -9,18 +9,12 @@ const MOCKUPS: Readonly<Record<SiteThemeId, string>> = {
   'galeria-editorial': galeria,
 };
 
-const escape = (text: string) => text.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
-
 /**
  * The mockup as a full document. The mockup files start at <title> (Artifacts add the doctype and head),
- * so the doctype, charset, viewport and noindex are added here, plus a small label naming the direction.
+ * so the doctype, charset, viewport and noindex are added here. Each mockup names its direction itself
+ * (title, footer, designer notes).
  */
 export function designPreviewHtml(theme: SiteTheme): string {
-  const label =
-    '<div role="note" style="position:fixed;left:8px;bottom:8px;z-index:2147483647;pointer-events:none;' +
-    'font:500 12px/1.4 system-ui,sans-serif;color:#f3f0ea;background:rgba(10,10,12,.82);' +
-    'border:1px solid rgba(243,240,234,.25);border-radius:4px;padding:4px 8px">' +
-    `Látványterv · ${escape(theme.label)}</div>`;
   return [
     '<!doctype html>',
     '<html lang="hu">',
@@ -29,7 +23,5 @@ export function designPreviewHtml(theme: SiteTheme): string {
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
     '<meta name="robots" content="noindex, nofollow">',
     MOCKUPS[theme.id],
-    label,
-    '',
   ].join('\n');
 }

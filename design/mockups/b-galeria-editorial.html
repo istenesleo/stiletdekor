@@ -546,6 +546,8 @@ fieldset.f>legend+*{clear:both}
 .drawer .bd{margin-top:18px}
 .drawer .btn.wide{margin-top:18px}
 .done-msg{margin-top:18px;padding:16px;border:1px solid var(--paper)}
+.ship-note{margin-top:10px}
+.order-terms{margin:16px 0}
 .done-msg p+p{margin-top:6px}
 .hist{margin-top:32px;padding-top:16px;border-top:1px solid var(--stone)}
 .hist .data{margin-top:6px}
@@ -959,7 +961,7 @@ fieldset.f>legend+*{clear:both}
 
       <div class="fld sw" id="fExp">
         <input class="sr" type="checkbox" id="cfgExpress">
-        <label for="cfgExpress"><span class="t"><span>Expressz gyártás</span><span class="data">1 munkanap · +30% a kedvezményes nettó árra</span></span><span class="trk" aria-hidden="true"></span></label>
+        <label for="cfgExpress"><span class="t"><span>Expressz gyártás</span><span class="data">1 munkanap · +30% a kedvezményes árra</span></span><span class="trk" aria-hidden="true"></span></label>
       </div>
 
       <fieldset class="fld" id="fArt">
@@ -976,14 +978,12 @@ fieldset.f>legend+*{clear:both}
       <div class="buy" id="arbontas">
         <div class="buy-top">
           <div>
-            <p class="cap" id="totalLbl">Fizetendő, bruttó</p>
+            <p class="cap" id="totalLbl">Kalkulált ár, bruttó</p>
             <p class="total" id="totalMain">0 Ft</p>
             <p class="data total-alt" id="totalAlt"></p>
+            <p class="data total-alt">A végleges ár eltérhet a kalkulált ártól.</p>
           </div>
-          <div class="vat" role="radiogroup" aria-label="Árak megjelenítése">
-            <input type="radio" name="vat" id="vatB" value="brutto" checked><label for="vatB">Bruttó</label>
-            <input type="radio" name="vat" id="vatN" value="netto"><label for="vatN">Nettó</label>
-          </div>
+          <p class="data">bruttó, 27% ÁFA-val</p>
         </div>
         <table class="bd"><caption class="sr">Tételes árbontás</caption><tbody id="bdRows"></tbody></table>
         <div class="leadbox" id="hatarido" aria-live="polite">
@@ -991,7 +991,7 @@ fieldset.f>legend+*{clear:both}
           <p class="data" id="leadMeta"></p>
         </div>
         <button type="submit" class="btn wide" id="addToCart">Kosárba</button>
-        <p class="data note">Helyőrző árak, nettó alapon számolva, 27% ÁFA. Átvétel a műhelyben ingyenes · futár 2&nbsp;990&nbsp;Ft · nagy csomag (roll-up, tábla) 4&nbsp;990&nbsp;Ft.</p>
+        <p class="data note">Helyőrző árak, bruttóban (27% ÁFA-val). Átvétel a műhelyben ingyenes · futár 3&nbsp;797&nbsp;Ft · nagy csomag (roll-up, tábla) 6&nbsp;337&nbsp;Ft · telepítéssel: egyedi ár.</p>
       </div>
     </form>
   </div>
@@ -1035,8 +1035,6 @@ fieldset.f>legend+*{clear:both}
         <div class="f"><label for="wzAddress">A munka helyszíne, cím <span class="req" aria-hidden="true">*</span></label><input type="text" id="wzAddress" autocomplete="street-address" placeholder="Város, utca, házszám" aria-describedby="wzAddress-err"><p class="err" id="wzAddress-err"></p></div>
         <div class="two">
           <div class="f"><label for="wzDeadline">Határidő</label><input type="date" id="wzDeadline" aria-describedby="wzDeadline-err"><p class="err" id="wzDeadline-err"></p></div>
-          <div class="f"><label for="wzBudget">Költségkeret (opcionális)</label>
-            <select id="wzBudget"><option value="">Nem adom meg</option><option>100 000 Ft alatt</option><option>100 000–300 000 Ft</option><option>300 000–1 000 000 Ft</option><option>1 000 000 Ft felett</option></select></div>
         </div>
         <div class="f">
           <label for="wzPhotos" id="wzPhotosLbl">Fotók, fájlok</label>
@@ -1057,29 +1055,18 @@ fieldset.f>legend+*{clear:both}
         <p class="data" style="margin:-8px 0 22px">Telefonszám vagy e-mail-cím közül legalább az egyik kell.</p>
         <div class="f sw" style="border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:20px">
           <input class="sr" type="checkbox" id="wzSurvey" checked>
-          <label for="wzSurvey"><span class="t"><span>Helyszíni felmérést kérek</span><span class="data">Kiszállunk, felmérjük, és utána adunk pontos árat.</span></span><span class="trk" aria-hidden="true"></span></label>
-        </div>
-        <div id="wzSurveyBox">
-          <div class="two">
-            <div class="f"><label for="wzSurveyDate">Felmérés napja <span class="req" aria-hidden="true">*</span></label><input type="date" id="wzSurveyDate" aria-describedby="wzSurveyDate-err"><p class="err" id="wzSurveyDate-err"></p></div>
-            <fieldset class="f" id="wzSlot" aria-describedby="wzSlot-err"><legend>Napszak <span class="req" aria-hidden="true">*</span></legend>
-              <div class="rg-opts">
-                <span class="ro"><input class="sr" type="radio" name="wzSlot" id="wzSlotAm" value="Délelőtt (8:00–12:00)"><label for="wzSlotAm">Délelőtt, 8–12</label></span>
-                <span class="ro"><input class="sr" type="radio" name="wzSlot" id="wzSlotPm" value="Délután (12:00–17:00)"><label for="wzSlotPm">Délután, 12–17</label></span>
-              </div>
-              <p class="err" id="wzSlot-err"></p>
-            </fieldset>
-          </div>
+          <label for="wzSurvey"><span class="t"><span>Helyszíni felmérést kérek</span><span class="data">Kiszállunk, felmérjük, és utána adunk pontos árat. Az időpontot telefonon egyeztetjük.</span></span><span class="trk" aria-hidden="true"></span></label>
         </div>
         <div class="f"><label for="wzMsg">Megjegyzés (opcionális)</label><textarea id="wzMsg" rows="3"></textarea></div>
         <div class="opt" style="margin-bottom:8px"><input class="sr" type="checkbox" id="wzConsent" aria-describedby="wzConsent-err"><label for="wzConsent"><span>Elfogadom az adatkezelési tájékoztatót [helyőrző link]</span></label></div>
         <p class="err" id="wzConsent-err"></p>
+        <p class="data" style="margin-top:14px">A végleges árajánlat eltérhet a kalkulált ártól.</p>
       </div>
 
       <div id="wzDone" hidden tabindex="-1" class="done-box">
         <p class="cap">Demó · semmit nem küldtünk el</p>
         <h3 class="h3" id="wzDoneTitle">Köszönjük!</h3>
-        <p>Ez egy látványterv: az ajánlatkérés nem ment el sehova. Élesben itt visszaigazolást kap, a felmérési időpontot pedig egyeztetjük.</p>
+        <p>Ez egy látványterv: az ajánlatkérés nem ment el sehova. Élesben itt visszaigazolást kap, és hamarosan visszahívjuk; ha kért felmérést, ekkor egyeztetjük az időpontját.</p>
         <ul class="data" id="wzDoneList"></ul>
         <button type="button" class="btn line" id="wzRestart">Új ajánlatkérés</button>
       </div>
@@ -1303,11 +1290,14 @@ fieldset.f>legend+*{clear:both}
         <div class="opts">
           <div class="opt"><input class="sr" type="radio" name="ship" id="shipPickup" value="pickup" checked><label for="shipPickup"><span>Személyes átvétel a műhelyben</span><span class="data">ingyenes</span></label></div>
           <div class="opt"><input class="sr" type="radio" name="ship" id="shipCourier" value="courier"><label for="shipCourier"><span id="shipCourierLbl">Futár</span><span class="data" id="shipCourierPx"></span></label></div>
+          <div class="opt"><input class="sr" type="radio" name="ship" id="shipInstall" value="install"><label for="shipInstall"><span>Telepítéssel</span><span class="data">egyedi ár, a visszaigazoláskor</span></label></div>
         </div>
+        <p class="data ship-note">Telepítésnél a helyszínen felszereljük, illetve felragasztjuk; ilyenkor nincs külön átvétel.</p>
       </fieldset>
       <table class="bd"><caption class="sr">Kosár összesítő</caption><tbody id="cartRows"></tbody></table>
-      <button type="button" class="btn wide" id="checkout">Megrendelés (demó)</button>
-      <div class="done-msg" id="orderOk" hidden tabindex="-1"><p class="cap">Demó · semmit nem küldtünk el</p><p>A megrendelést rögzítettük volna. Élesben itt fizetési módot választ, és e-mailes visszaigazolást kap.</p></div>
+      <p class="data order-terms">A rendelés elküldése még nem jár fizetési kötelezettséggel. Ellenőrizzük a fájlt, az anyagot és a határidőt, majd visszaigazoljuk a végleges árat, és küldjük a díjbekérőt. A megrendelést a díjbekérő befizetésével fogadja el. A végleges ár eltérhet a kalkulált ártól.</p>
+      <button type="button" class="btn wide" id="checkout">Rendelés elküldése ellenőrzésre</button>
+      <div class="done-msg" id="orderOk" hidden tabindex="-1"><p class="cap">Demó · semmit nem küldtünk el</p><p>Élesben itt azt írjuk: megkaptuk a rendelését, ellenőrizzük, és e-mailben küldjük a végleges árat és a díjbekérőt. Fizetni csak akkor kell, ha elfogadja.</p></div>
     </div>
     <section class="hist" id="ujrarendeles" aria-labelledby="histTitle">
       <h3 class="cap" id="histTitle">Újrarendelés</h3>
@@ -1326,11 +1316,11 @@ fieldset.f>legend+*{clear:both}
   <ol>
     <li><a href="#konfigurator">Valós léptékű előnézet 180 cm-es alakkal, mm-es méretvonalakkal</a></li>
     <li><a href="#preflight">Nyomdakész-ellenőrzés: DPI-lámpa, kitöltés vagy illesztés</a></li>
-    <li><a href="#hatarido">Élő határidő 12:00-s budapesti határidővel, munkanapokkal</a></li>
-    <li><a href="#arbontas">Tételes árbontás, nettó/bruttó kapcsoló, „még N db” jelzés</a></li>
+    <li><a href="#hatarido">Várható határidő: a gyártás a befizetéstől indul, munkanapokkal és 12:00-s zárással</a></li>
+    <li><a href="#arbontas">Tételes árbontás bruttóban, „még N db” jelzés</a></li>
     <li><a href="#konfigurator" data-act="site">„Helyszínen” előnézet perspektíva-sarkokkal</a></li>
     <li><a href="#hero-kep">Nappal/éjjel kapcsoló a világító cégérnél</a></li>
-    <li><a href="#ajanlat">Ajánlatkérő varázsló felmérési időponttal</a></li>
+    <li><a href="#ajanlat">Ajánlatkérő varázsló felméréskéréssel, időpont nélkül (visszahívjuk)</a></li>
     <li><a href="#referenciak">Referenciák felület szerint szűrve</a> és <a href="#elotte-utana">előtte/utána csúszka</a></li>
     <li><a href="#anyagok">Anyagkártyák adatokkal</a> és <a href="#anyagminta">anyagminta-sáv</a></li>
     <li><a href="#ujrarendeles" data-act="cart">Újrarendelés a kosárból</a></li>
@@ -1340,7 +1330,7 @@ fieldset.f>legend+*{clear:both}
   <ul>
     <li>Logó: addig tipografikus szómárka</li>
     <li>Referenciaképek: rajzolt illusztrációk; méret, helyszín, ügyfélnév szögletes zárójelben</li>
-    <li>Árak: nettó helyőrzők a briefből</li>
+    <li>Árak: a brief helyőrző árai, bruttóban</li>
     <li>Nyitvatartás: H–P 8:00–17:00, egyeztetendő</li>
     <li>Anyagadatok: a csillagos értékek tájékoztatók, élettartam a gyártói lapról</li>
     <li>Térkép, ÁSZF, adatkezelési tájékoztató</li>
@@ -1457,9 +1447,9 @@ function compute(pid, c) {
   const R = (label, detail, amt) => { q.rows.push({ label, detail, amt }); unit += amt; };
   switch (pid) {
     case 'molino': {
-      R('Anyag', `${m.name} · ${dec(A)} m² × ${ft(m.price)}`, Math.round(A * m.price));
+      R('Anyag', `${m.name} · ${dec(A)} m² × ${ft(gross(m.price))}`, Math.round(A * m.price));
       const e = p.edges.find(x => x.id === c.edge) || p.edges[0]; q.edge = e;
-      R('Szélkidolgozás', `${e.name} · ${dec(per)} fm × ${ft(e.fm)}`, Math.round(per * e.fm));
+      R('Szélkidolgozás', `${e.name} · ${dec(per)} fm × ${ft(gross(e.fm))}`, Math.round(per * e.fm));
       break;
     }
     case 'rollup':
@@ -1467,23 +1457,23 @@ function compute(pid, c) {
       else R('Roll-up', `${m.name} · ${cmf(w)}×${cmf(h)} cm, táskával`, m.price);
       break;
     case 'matrica':
-      R('Fólia', `${m.name} · ${dec(A)} m² × ${ft(m.price)}`, Math.round(A * m.price));
-      if (c.contour) R('Kontúrvágás', `${dec(A)} m² × ${ft(2500)}`, Math.round(A * 2500));
-      if (c.lam) R('UV-laminálás', `${dec(A)} m² × ${ft(2000)}`, Math.round(A * 2000));
+      R('Fólia', `${m.name} · ${dec(A)} m² × ${ft(gross(m.price))}`, Math.round(A * m.price));
+      if (c.contour) R('Kontúrvágás', `${dec(A)} m² × ${ft(gross(2500))}`, Math.round(A * 2500));
+      if (c.lam) R('UV-laminálás', `${dec(A)} m² × ${ft(gross(2000))}`, Math.round(A * 2000));
       break;
     case 'plakat':
-      if (m.area) R('Blueback plakát', `${dec(A)} m² × ${ft(m.price)}`, Math.round(A * m.price));
+      if (m.area) R('Blueback plakát', `${dec(A)} m² × ${ft(gross(m.price))}`, Math.round(A * m.price));
       else R('Plakát', `${m.name}, ${m.short} · ${c.paper === 'gloss' ? 'fényes' : 'matt'}, 150 g/m²`, m.price);
       break;
     case 'tabla': {
       const bA = Math.max(A, p.minArea);
-      R('Lemez', `${m.name} · ${dec(bA)} m²${A < p.minArea ? ' (minimum)' : ''} × ${ft(m.price)}`, Math.round(bA * m.price));
-      if (c.holes > 0) R('Furatolás', `${c.holes} furat × ${ft(500)}`, c.holes * 500);
-      if (c.sets > 0) R('Távtartó csavar szett', `${c.sets} szett × ${ft(1990)}`, c.sets * 1990);
+      R('Lemez', `${m.name} · ${dec(bA)} m²${A < p.minArea ? ' (minimum)' : ''} × ${ft(gross(m.price))}`, Math.round(bA * m.price));
+      if (c.holes > 0) R('Furatolás', `${c.holes} furat × ${ft(gross(500))}`, c.holes * 500);
+      if (c.sets > 0) R('Távtartó csavar szett', `${c.sets} szett × ${ft(gross(1990))}`, c.sets * 1990);
       break;
     }
     case 'vaszon':
-      if (m.area) { const raw = Math.round(A * m.price); R('Vászonkép, egyedi méret', `${dec(A)} m² × ${ft(m.price)}${raw < m.min ? `, minimum ${ft(m.min)}` : ''}`, Math.max(raw, m.min)); }
+      if (m.area) { const raw = Math.round(A * m.price); R('Vászonkép, egyedi méret', `${dec(A)} m² × ${ft(gross(m.price))}${raw < m.min ? `, minimum ${ft(gross(m.min))}` : ''}`, Math.max(raw, m.min)); }
       else R('Vászonkép', `${m.name}, fakeretre feszítve`, m.price);
       break;
   }
@@ -1545,7 +1535,7 @@ const el = {
   w: $('#cfgW'), h: $('#cfgH'), qty: $('#cfgQty'), exp: $('#cfgExpress'), mats: $('#mats'), presets: $('#presets'),
   stage: $('#stage'), banner: $('#stBanner'), img: $('#stImg'), ph: $('#stPh'), person: $('#stPerson')
 };
-const disp = net => S.vat === 'brutto' ? gross(net) : net;
+const disp = net => gross(net); // minden ár bruttó (döntés, 2026-10-05)
 const sufU = (u) => u === 'm2' ? 'Ft/m²-től' : 'Ft-tól';
 
 function renderMats() {
@@ -1644,40 +1634,26 @@ function renderPrice(q) {
   }
   const r = [];
   const row = (k, label, detail, amt, cls = '') => r.push(`<tr class="${cls}" data-k="${k}"><th scope="row">${label}${detail ? `<small>${detail}</small>` : ''}</th><td>${amt}</td></tr>`);
-  q.rows.forEach((x, i) => row('c' + i, x.label, x.detail + (q.qty > 1 || q.rows.length > 1 ? ' · darabonként' : ''), ft(x.amt)));
-  if (q.rows.length > 1) row('unit', 'Darabár', '', ft(q.unit), 'dim2');
-  if (q.qty > 1) row('sub', `${q.qty} db összesen`, `${ft(q.unit)} × ${q.qty}`, ft(q.sub));
-  if (q.pct) row('disc', `Mennyiségi kedvezmény −${q.pct}%`, `${q.qty} db azonos tételből`, ft(-q.disc));
-  if (q.minAdj) row('min', 'Kiegészítés tételminimumra', `minimum rendelési érték: ${ft(q.p.minLine)}`, '+' + ft(q.minAdj));
-  if (q.exp) row('exp', 'Expressz gyártás +30%', '1 munkanap, a kedvezményes nettó árra', '+' + ft(q.exp));
-  row('net', 'Nettó összesen', '', ft(q.net), 'sum' + (S.vat === 'netto' ? ' hl' : ''));
-  row('vat', 'ÁFA 27%', '', ft(q.vat), 'dim2');
-  row('gross', 'Bruttó összesen', '', ft(q.gross), 'sum' + (S.vat === 'brutto' ? ' hl' : ''));
+  q.rows.forEach((x, i) => row('c' + i, x.label, x.detail + (q.qty > 1 || q.rows.length > 1 ? ' · darabonként' : ''), ft(gross(x.amt))));
+  if (q.rows.length > 1) row('unit', 'Darabár', '', ft(gross(q.unit)), 'dim2');
+  if (q.qty > 1) row('sub', `${q.qty} db összesen`, `${ft(gross(q.unit))} × ${q.qty}`, ft(gross(q.sub)));
+  if (q.pct) row('disc', `Mennyiségi kedvezmény −${q.pct}%`, `${q.qty} db azonos tételből`, ft(-gross(q.disc)));
+  if (q.minAdj) row('min', 'Kiegészítés tételminimumra', `minimum rendelési érték: ${ft(gross(q.p.minLine))}`, '+' + ft(gross(q.minAdj)));
+  if (q.exp) row('exp', 'Expressz gyártás +30%', '1 munkanap, a kedvezményes árra', '+' + ft(gross(q.exp)));
+  row('gross', 'Bruttó összesen', '', ft(q.gross), 'sum hl');
   bd.innerHTML = r.join('');
-  if (S.vat === 'brutto') {
-    $('#totalLbl').textContent = 'Fizetendő, bruttó';
-    $('#totalMain').textContent = ft(q.gross);
-    $('#totalAlt').textContent = `Nettó ${ft(q.net)} + 27% ÁFA`;
-  } else {
-    $('#totalLbl').textContent = 'Nettó ár, ÁFA nélkül';
-    $('#totalMain').textContent = ft(q.net);
-    $('#totalAlt').textContent = `Bruttó ${ft(q.gross)}`;
-  }
+  $('#totalMain').textContent = ft(q.gross);
+  $('#totalAlt').textContent = `ebből nettó ${ft(q.net)}, ÁFA ${ft(q.vat)}`;
   const nt = nextTier(q.qty);
   $('#tierHint').innerHTML = (q.pct ? `<b>−${q.pct}% kedvezmény jár.</b> ` : '') + (nt ? `<span class="dot" aria-hidden="true"></span>Még ${nt[0]} db és −${nt[1]}% kedvezmény.` : 'Ez a legnagyobb, −15%-os kedvezmény.');
 }
 
 function renderLead() {
+  // A gyártás a díjbekérő befizetésétől indul; a becslés 1 munkanapot hagy a visszaigazolásra és a befizetésre.
   const ex = cur().express, days = ex ? 1 : 3;
-  const L = leadCalc(days);
-  let txt;
-  if (L.todayOk && L.before) txt = `Ha ma 12:00-ig megrendeli, ${dLabel(L.ready)} elkészül.`;
-  else if (L.todayOk) txt = `A mai déli határidő lejárt. Ha most megrendeli, ${dLabel(L.ready)} elkészül.`;
-  else txt = `Ha most megrendeli, a gyártás ${dLabel(L.start)} indul, és ${dLabel(L.ready)} elkészül.`;
-  $('#leadText').textContent = txt;
-  let meta = `Gyártási idő: ${days} munkanap${ex ? ' (expressz)' : ''} · hétvége és munkaszüneti nap nem számít`;
-  if (L.todayOk && L.before) { const left = 12 * 60 - (L.n.h * 60 + L.n.m); const hh = Math.floor(left / 60), mm = left % 60; meta += ` · a mai indításig ${hh ? hh + ' óra ' : ''}${mm} perc van hátra`; }
-  $('#leadMeta').textContent = meta;
+  const L = leadCalc(days + 1);
+  $('#leadText').textContent = `Várhatóan ${dLabel(L.ready)} elkészül.`;
+  $('#leadMeta').textContent = `Gyártási idő: ${days} munkanap${ex ? ' (expressz)' : ''} a díjbekérő befizetésétől · a dátumban 1 munkanap a visszaigazolásra és a befizetésre · hétvége és munkaszüneti nap nem számít`;
 }
 
 /* --- valós léptékű előnézet --- */
@@ -1861,7 +1837,6 @@ $('#qtyPlus').addEventListener('click', () => setQty(cur().qty + 1));
 el.qty.addEventListener('input', () => { const n = parseInt(el.qty.value, 10); if (n >= 1) { cur().qty = Math.min(999, n); update(); } });
 el.qty.addEventListener('blur', () => setQty(parseInt(el.qty.value, 10) || 1));
 el.exp.addEventListener('change', () => { cur().express = el.exp.checked; update(); });
-$$('input[name="vat"]').forEach(i => i.addEventListener('change', () => { S.vat = i.value; priceLabels(); update(); renderCart(); }));
 $$('input[name="fit"]').forEach(i => i.addEventListener('change', () => { S.fit = i.value; update(); }));
 $('#pfMatch').addEventListener('click', () => {
   const q = S.q, a = S.art; if (!a || !q || !q.areaMode) return;
@@ -1931,12 +1906,13 @@ function renderCart() {
   const big = CART.lines.some(l => l.big), cour = big ? 4990 : 2990;
   $('#shipCourierLbl').textContent = big ? 'Futár, nagy csomag (roll-up, tábla)' : 'Futár';
   $('#shipCourierPx').textContent = ft(disp(cour));
+  // Bruttó, tételenként számolt ÁFA-val (mint a számlán). A telepítés díja egyedi: a visszaigazoláskor adjuk meg.
   const items = CART.lines.reduce((s, l) => s + l.net, 0);
   const ship = CART.ship === 'courier' && n ? cour : 0;
-  const net = items + ship, vat = Math.round(net * VAT);
+  const total = CART.lines.reduce((s, l) => s + gross(l.net), 0) + gross(ship), net = items + ship;
   $('#cartRows').innerHTML = [
-    ['Tételek, nettó', ft(items), ''], ['Szállítás, nettó', ship ? ft(ship) : 'ingyenes', '', 'totShip'],
-    ['Nettó összesen', ft(net), 'sum' + (S.vat === 'netto' ? ' hl' : '')], ['ÁFA 27%', ft(vat), 'dim2'], ['Bruttó összesen', ft(net + vat), 'sum' + (S.vat === 'brutto' ? ' hl' : '')]
+    ['Tételek', ft(total - gross(ship)), ''], ['Átvétel', CART.ship === 'install' ? 'egyedi' : ship ? ft(gross(ship)) : 'ingyenes', '', 'totShip'],
+    ['Kalkulált végösszeg, bruttó', ft(total), 'sum hl'], ['Ebből nettó · ÁFA 27%', `${ft(net)} · ${ft(total - net)}`, 'dim2']
   ].map(r => `<tr class="${r[2]}"><th scope="row">${r[0]}</th><td${r[3] ? ` id="${r[3]}"` : ''}>${r[1]}</td></tr>`).join('');
   $('#checkout').disabled = !n;
   $('#histList').innerHTML = CART.hist.length ? CART.hist.map((h, i) => `<li><div><p class="ln-t">${esc(h.title)}</p><p class="data">${esc(h.spec)}</p></div><div class="hb"><button type="button" class="x" data-re="${i}">Újra kosárba</button><button type="button" class="x" data-edit="${i}">Szerkesztés</button></div></li>`).join('') : '<li><p class="data">Még nincs korábbi konfiguráció.</p></li>';
@@ -2097,18 +2073,12 @@ function validate(step) {
     const d = $('#wzDeadline').value; if (d && d < todayIso()) fail('wzDeadline', 'A határidő nem lehet múltbeli dátum.');
   }
   if (step === 4) {
-    ['wzName', 'wzPhone', 'wzEmail', 'wzSurveyDate', 'wzSlot', 'wzConsent'].forEach(id => setErr(id, ''));
+    ['wzName', 'wzPhone', 'wzEmail', 'wzConsent'].forEach(id => setErr(id, ''));
     if (!$('#wzName').value.trim()) fail('wzName', 'Adja meg a nevét.');
     const ph = $('#wzPhone').value.trim(), em = $('#wzEmail').value.trim();
     if (!ph && !em) fail('wzPhone', 'Adjon meg telefonszámot vagy e-mail-címet.');
     if (ph && ph.replace(/\D/g, '').length < 9) fail('wzPhone', 'Ellenőrizze a telefonszámot.');
     if (em && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) fail('wzEmail', 'Ellenőrizze az e-mail-címet.');
-    if ($('#wzSurvey').checked) {
-      const d = $('#wzSurveyDate').value;
-      if (!d) fail('wzSurveyDate', 'Válassza ki a felmérés napját.');
-      else { const t = Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10)); if (d <= todayIso()) fail('wzSurveyDate', 'A felmérés legkorábban holnapra kérhető.'); else if (!isWork(t)) fail('wzSurveyDate', 'Felmérést munkanapra kérhet.'); }
-      if (!$('input[name="wzSlot"]:checked')) fail('wzSlotAm', 'Válasszon napszakot.'), setErr('wzSlot', 'Válasszon napszakot.');
-    }
     if (!$('#wzConsent').checked) fail('wzConsent', 'Az ajánlatkéréshez fogadja el az adatkezelési tájékoztatót.');
   }
   if (first) { const n = $('#' + CSS.escape(first)); if (n) n.focus({ preventScroll: false }); }
@@ -2136,14 +2106,12 @@ function wzGo(n, focus = true) {
 $('#wzNext').addEventListener('click', () => { if (validate(W$.step)) wzGo(W$.step + 1); });
 $('#wzBack').addEventListener('click', () => wzGo(Math.max(1, W$.step - 1)));
 $('#wzSteps').addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; const g = +b.dataset.go; if (g > W$.step) { for (let s = W$.step; s < g; s++) { if (!validate(s)) { wzGo(s); return; } } } wzGo(g); });
-$('#wzSurvey').addEventListener('change', e => { $('#wzSurveyBox').hidden = !e.target.checked; wzSummary(); });
 $('#wzForm').addEventListener('input', wzSummary);
 $('#wzForm').addEventListener('change', wzSummary);
 $('#wzPhotos').addEventListener('change', e => { Array.from(e.target.files).forEach(f => { if (/^image\//.test(f.type)) W$.photos.push({ name: f.name, url: URL.createObjectURL(f) }); }); e.target.value = ''; renderThumbs(); });
 function renderThumbs() { $('#wzThumbs').innerHTML = W$.photos.map((p, i) => `<li><img src="${esc(p.url)}" alt="${esc(p.name)}"><button type="button" data-rm="${i}" aria-label="Fotó törlése: ${esc(p.name)}">Törlés</button></li>`).join(''); wzSummary(); }
 $('#wzThumbs').addEventListener('click', e => { const b = e.target.closest('[data-rm]'); if (!b) return; W$.photos.splice(+b.dataset.rm, 1); renderThumbs(); });
-function slotTxt() { const s = $('input[name="wzSlot"]:checked'); return s ? s.value.split(' (')[0].toLowerCase() : ''; }
-function survTxt() { if (!$('#wzSurvey').checked) return 'nem kér'; const d = $('#wzSurveyDate').value; if (!d) return 'kér, időpont még nincs'; const t = Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10)); const dd = new Date(t); return `${MONTHS[dd.getUTCMonth()]} ${dd.getUTCDate()}.${slotTxt() ? ', ' + slotTxt() : ''}`; }
+function survTxt() { return $('#wzSurvey').checked ? 'kér, az időpontot telefonon egyeztetjük' : 'nem kér'; }
 function wzSummary() {
   const t = W$.type;
   let filled = 0, total = 0;
@@ -2153,7 +2121,6 @@ function wzSummary() {
     ['Részletek', t ? `${filled} / ${total} kitöltve` : '—'],
     ['Helyszín', $('#wzAddress').value.trim() || '—'],
     ['Határidő', $('#wzDeadline').value ? $('#wzDeadline').value.replace(/-/g, '. ') + '.' : '—'],
-    ['Költségkeret', $('#wzBudget').value || '—'],
     ['Fotók', W$.photos.length ? W$.photos.length + ' db' : '—'],
     ['Felmérés', survTxt()]
   ];
@@ -2173,9 +2140,9 @@ $('#wzForm').addEventListener('submit', e => {
 });
 $('#wzRestart').addEventListener('click', () => {
   $('#wzForm').reset(); W$.type = null; W$.max = 1; W$.photos = []; renderThumbs(); $('#wzFields').innerHTML = '';
-  $('#wzDone').hidden = true; $('#wzActions').hidden = false; $('#wzSurveyBox').hidden = false; wzGo(1);
+  $('#wzDone').hidden = true; $('#wzActions').hidden = false; wzGo(1);
 });
-(function initSurveyMin() { const n = bpNow(); const t = nextWork(n.t); $('#wzSurveyDate').min = iso(t); $('#wzDeadline').min = iso(n.t); })();
+(function initDeadlineMin() { $('#wzDeadline').min = iso(bpNow().t); })();
 
 /* ================= REFERENCIÁK ================= */
 $$('.chip[data-f]').forEach(b => b.addEventListener('click', () => {
