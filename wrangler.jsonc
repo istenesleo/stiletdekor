@@ -28,8 +28,12 @@
   "assets": {
     "binding": "ASSETS"
   },
+  // Settings in this file win on every deploy: a dashboard-only change (e.g. turning Issues on there) is undone
+  // by the next `wrangler deploy`, so observability is set here.
   "observability": {
-    "enabled": true
+    "enabled": true,
+    // Issues: groups uncaught exceptions, failed invocations, 5xx responses and logged errors (dashboard: Issues).
+    "issues": { "enabled": true }
   },
   // Version preview URLs (one per uploaded version).
   "preview_urls": true,
@@ -62,6 +66,7 @@
   // All Previews share the dev D1 database as their staging database (test data only).
   // Docs: https://developers.cloudflare.com/workers/previews/configuration/
   "previews": {
+    "observability": { "enabled": true },
     "vars": {
       "PUBLIC_SITE_ENV": "dev",
       "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",

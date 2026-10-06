@@ -53,6 +53,13 @@ A Cloudflare a GitHub-repóból automatikusan buildel és telepít. Beállítás
 | Root directory | `/` |
 | Build variables | nem kell (a Node-verzió a `.nvmrc`-ből jön) |
 
+A Preview-beállítások (Builds for Preview branches, Preview command) a Builds szakasz **Previews Base**
+fülén vannak, a többi a **Production** fülön.
+
+**Ami a `wrangler.jsonc`-ben van, azt minden deploy felülírja:** változók, kötések, kompatibilitási dátum és
+flagek, observability (naplók és Issues). Ezeket ne a dashboardon módosítsd, hanem a fájlban. A Previews Base
+változóit és kötéseit a `previews` blokk adja.
+
 **Ágak:**
 
 - `main` → a dev oldal (`stiletdekor` Worker, `workers.dev` címen).
@@ -88,6 +95,9 @@ helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jog
 Az `env.production` blokk a végleges oldalé (`stiletdekor-production` Worker, www.stiletdekor.hu).
 A Cloudflare Vite-plugin miatt a környezet buildkor dől el:
 `CLOUDFLARE_ENV=production npm run build`, majd `npx wrangler deploy`.
+
+A Workers Cache (Settings → Runtime → Cache) szándékosan ki van kapcsolva. Élesben megfontolandó
+(`"cache": { "enabled": true }` és oldalanként megfelelő `Cache-Control` fejléc), a dev oldalon nem kell.
 
 ## Design system
 
