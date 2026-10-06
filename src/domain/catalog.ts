@@ -26,6 +26,8 @@ export const PRICES = {
   plakat: {
     formats: { a3: 990, a2: 1990, a1: 3490, a0: 5990, b1: 3990 },
     bluebackPerM2: 2990,
+    customPerM2: 4990,
+    customMinimum: 1990,
   },
   tabla: {
     perM2: { 'pvc-3mm': 9990, 'pvc-5mm': 12990, 'dibond-3mm': 19990, 'plexi-3mm': 24990 },
@@ -45,6 +47,7 @@ export const SIZE_LIMITS = {
   molino: { minCm: 20, maxCm: 500 },
   matrica: { minCm: 5, maxCm: 500 }, // placeholder
   plakatBlueback: { minCm: 20, maxCm: 500 }, // placeholder
+  plakatCustom: { minCm: 10, maxCm: 150 }, // placeholder (paper roll width)
   tabla: { minCm: 5, maxCm: 300, minBillableM2: 0.1 }, // side limits are placeholders
   vaszonkepCustom: { minCm: 20, maxCm: 200 }, // placeholder
 } as const;
@@ -78,6 +81,8 @@ export const EXPRESS_SURCHARGE_PERCENT = 30;
 export const STANDARD_LEAD_BUSINESS_DAYS = 3;
 export const EXPRESS_LEAD_BUSINESS_DAYS = 1;
 export const ORDER_CUTOFF_HOUR = 12;
+/** Production starts when the proforma invoice is paid; estimates allow this much for confirmation and payment. */
+export const CONFIRMATION_BUFFER_BUSINESS_DAYS = 1;
 export const BUSINESS_TIME_ZONE = 'Europe/Budapest';
 
 // ─── Shared building blocks ──────────────────────────────────────────────────────────────────────
@@ -345,7 +350,8 @@ export const MATRICA = {
 export const PLAKAT = {
   id: 'plakat',
   name: 'Plakát',
-  shortDescription: 'Plakát 150 g/m²-es matt vagy fényes papírra, szabványos méretekben; utcai blueback plakát m²-re.',
+  shortDescription:
+    'Plakát 150 g/m²-es matt vagy fényes papírra, szabványos vagy egyedi méretben; utcai blueback plakát m²-re.',
   serviceItemSlug: 'plakatok',
   pricingModel: 'formats-and-area',
   parcel: 'standard',
@@ -381,6 +387,15 @@ export const PLAKAT = {
     priceNetPerM2: PRICES.plakat.bluebackPerM2,
   },
   bluebackSize: SIZE_LIMITS.plakatBlueback,
+  /** Any size on the same paper, priced per m² with a per-piece minimum. */
+  custom: {
+    id: 'egyedi',
+    name: 'Egyedi méret',
+    description: 'Tetszőleges méret plakátpapírra, m²-ár alapján.',
+    priceNetPerM2: PRICES.plakat.customPerM2,
+    size: SIZE_LIMITS.plakatCustom,
+    minimumNet: PRICES.plakat.customMinimum,
+  },
 } as const satisfies {
   paper: MaterialSpec;
   formats: readonly FixedFormat[];
@@ -519,15 +534,18 @@ export const isShopProductId = (value: unknown): value is ShopProductId =>
 
 // ─── Shipping ────────────────────────────────────────────────────────────────────────────────────
 
-export type ShippingMethodId = 'szemelyes' | 'futar';
+export type ShippingMethodId = 'szemelyes' | 'futar' | 'telepites';
 
 export interface ShippingMethod {
   readonly id: ShippingMethodId;
   readonly name: string;
   readonly description: string;
-  readonly priceNet: number;
+  /** null: priced individually, the workshop states the fee when it confirms the order. */
+  readonly priceNet: number | null;
   /** Price when the cart holds a large-parcel product (roll-up, tábla). */
-  readonly largeParcelPriceNet: number;
+  readonly largeParcelPriceNet: number | null;
+  /** What the address entered for this method is used for; null when no address is needed. */
+  readonly addressLabel: string | null;
 }
 
 export const SHIPPING_METHODS: readonly ShippingMethod[] = [
@@ -537,6 +555,7 @@ export const SHIPPING_METHODS: readonly ShippingMethod[] = [
     description: 'Ingyenes. Budapest, Schweidel József u. 1–3.',
     priceNet: PRICES.shipping.szemelyes,
     largeParcelPriceNet: PRICES.shipping.szemelyes,
+    addressLabel: null,
   },
   {
     id: 'futar',
@@ -544,13 +563,23 @@ export const SHIPPING_METHODS: readonly ShippingMethod[] = [
     description: 'Nagy csomag (roll-up, tábla) esetén magasabb díjjal.',
     priceNet: PRICES.shipping.futar,
     largeParcelPriceNet: PRICES.shipping.futarNagyCsomag,
+    addressLabel: 'Szállítási cím',
+  },
+  {
+    id: 'telepites',
+    name: 'Telepítéssel',
+    description: 'A helyszínen felszereljük, illetve felragasztjuk. Ilyenkor nincs külön átvétel.',
+    priceNet: null,
+    largeParcelPriceNet: null,
+    addressLabel: 'A telepítés helyszíne',
   },
 ];
 
-export const SHIPPING_METHOD_IDS = ['szemelyes', 'futar'] as const satisfies readonly ShippingMethodId[];
+export const SHIPPING_METHOD_IDS = ['szemelyes', 'futar', 'telepites'] as const satisfies readonly ShippingMethodId[];
 
-/** Installation is not a cart option: it is quoted after an on-site survey. */
-export const INSTALLATION_NOTE = 'Telepítés: helyszíni felmérés után, egyedi ajánlat alapján.';
+/** Shown with the installation option: its fee is set when the workshop confirms the order. */
+export const INSTALLATION_NOTE =
+  'A telepítés díja egyedi: a rendelés visszaigazolásakor adjuk meg. Ha szükséges, a méreteket a helyszínen ellenőrizzük.';
 
 // ─── Quote (custom work) wizard ──────────────────────────────────────────────────────────────────
 
@@ -936,28 +965,12 @@ export function getQuoteType(id: string): QuoteType | undefined {
   return (QUOTE_TYPES as readonly QuoteType[]).find((t) => t.id === id);
 }
 
-export const BUDGET_BANDS = [
-  { id: 'max-100e', label: '100 000 Ft alatt' },
-  { id: '100e-300e', label: '100 000 – 300 000 Ft' },
-  { id: '300e-1m', label: '300 000 – 1 000 000 Ft' },
-  { id: '1m-3m', label: '1 – 3 millió Ft' },
-  { id: '3m-felett', label: '3 millió Ft felett' },
-] as const;
-export type BudgetBandId = (typeof BUDGET_BANDS)[number]['id'];
-
-export const PARTS_OF_DAY = [
-  { id: 'delelott', label: 'Délelőtt' },
-  { id: 'delutan', label: 'Délután' },
-] as const;
-export type PartOfDay = (typeof PARTS_OF_DAY)[number]['id'];
-
 export const MAX_QUOTE_UPLOADS = 20;
 
 /** Labels and help for the fields every quote wizard asks (validated by QuoteRequestSchema). */
 export const QUOTE_COMMON_FIELDS = {
   location: { label: 'Helyszín (cím)', help: 'Ahol a munkát el kell végezni, illetve ahová felmérni megyünk.' },
   deadline: { label: 'Határidő', help: 'Mikorra van szüksége az elkészült munkára?' },
-  budgetBand: { label: 'Költségkeret (nettó)', help: 'Nem kötelező, de segít a megfelelő megoldás kiválasztásában.' },
   uploads: { label: 'Fájlok, fotók', help: 'Grafika, fotó a helyszínről, vázlat, bármi, ami segít.' },
   contact: {
     name: { label: 'Név' },
@@ -967,18 +980,19 @@ export const QUOTE_COMMON_FIELDS = {
   },
   survey: {
     label: 'Helyszíni felmérést kérek',
-    help: 'Kiszállunk, felmérjük, és pontos ajánlatot adunk.',
-    date: { label: 'Felmérés napja' },
-    partOfDay: { label: 'Napszak' },
+    help: 'Kiszállunk, felmérjük, és pontos ajánlatot adunk. Az időpontot telefonon egyeztetjük.',
   },
 } as const;
+
+/** Shown on the quote form (brief 4.2). */
+export const QUOTE_PRICE_NOTICE = 'A végleges árajánlat eltérhet a kalkulált ártól.';
 
 /** The wizard's steps, in order (brief 7.5). */
 export const QUOTE_WIZARD_STEPS = [
   { id: 'tipus', title: 'Munka típusa' },
   { id: 'reszletek', title: 'Részletek' },
   { id: 'helyszin', title: 'Helyszín és fotók' },
-  { id: 'kapcsolat', title: 'Kapcsolat és felmérési időpont' },
+  { id: 'kapcsolat', title: 'Kapcsolat és felmérés' },
 ] as const;
 
 // ─── Service taxonomy (brief 3) ──────────────────────────────────────────────────────────────────

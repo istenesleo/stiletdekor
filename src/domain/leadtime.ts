@@ -1,10 +1,12 @@
 // Ready-date estimation in Europe/Budapest business days.
 //
-// Rules (docs/brief.md 4.1):
-//   start day = today, if today is a business day and Budapest local time is before 12:00;
+// Rules (docs/brief.md 4.1). Production starts when the proforma invoice is paid:
+//   start day = the payment day, if it is a business day and Budapest local time is before 12:00;
 //               otherwise the next business day.
 //   ready day = the Nth business day after the start day (N = 3 standard, 1 express).
-//   e.g. Monday 10:00 → standard Thursday, express Tuesday; Monday 13:00 → standard Friday.
+//   e.g. paid Monday 10:00 → standard Thursday, express Tuesday; paid Monday 13:00 → standard Friday.
+// Before payment (calculator, order confirmation) the estimate allows CONFIRMATION_BUFFER_BUSINESS_DAYS
+// more for the workshop's confirmation and the payment: ordered Monday 10:00 → standard Friday.
 //
 // Dates are handled as ISO calendar dates ("YYYY-MM-DD") and day numbers (days since 1970-01-01, UTC).
 // The only time-zone conversion is reading "now" in Budapest via Intl, so DST and the host's
@@ -12,6 +14,7 @@
 
 import {
   BUSINESS_TIME_ZONE,
+  CONFIRMATION_BUFFER_BUSINESS_DAYS,
   EXPRESS_LEAD_BUSINESS_DAYS,
   ORDER_CUTOFF_HOUR,
   STANDARD_LEAD_BUSINESS_DAYS,
@@ -204,30 +207,49 @@ export const budapestToday = (now: Date): IsoDate => budapestDateTime(now).date;
 
 export interface LeadTimeOptions {
   express: boolean;
+  /** Business days added before production can start, e.g. for confirmation and payment. Default 0. */
+  bufferBusinessDays?: number;
 }
 
 export interface LeadTime {
-  /** Budapest calendar date of the order instant. */
+  /** Budapest calendar date of `now`. */
   orderDate: IsoDate;
-  /** True if production can start today (business day, before the 12:00 cutoff). */
-  startsToday: boolean;
-  /** Day production starts. */
+  /** True if the day of `now` counts as the first day (business day, before the 12:00 cutoff). */
+  countsToday: boolean;
+  /** Day production starts, after the buffer. */
   startDate: IsoDate;
   readyDate: IsoDate;
   businessDays: number;
+  bufferBusinessDays: number;
 }
 
-export function leadTime(now: Date, { express }: LeadTimeOptions): LeadTime {
+/** Lead time from `now`; with no buffer, `now` is the moment the payment arrives. */
+export function leadTime(now: Date, { express, bufferBusinessDays = 0 }: LeadTimeOptions): LeadTime {
   const { date, hour } = budapestDateTime(now);
-  const startsToday = isBusinessDay(date) && hour < ORDER_CUTOFF_HOUR;
-  const startDate = startsToday ? date : nextBusinessDay(date);
+  const countsToday = isBusinessDay(date) && hour < ORDER_CUTOFF_HOUR;
+  const startDate = addBusinessDays(countsToday ? date : nextBusinessDay(date), bufferBusinessDays);
   const businessDays = express ? EXPRESS_LEAD_BUSINESS_DAYS : STANDARD_LEAD_BUSINESS_DAYS;
-  return { orderDate: date, startsToday, startDate, readyDate: addBusinessDays(startDate, businessDays), businessDays };
+  return {
+    orderDate: date,
+    countsToday,
+    startDate,
+    readyDate: addBusinessDays(startDate, businessDays),
+    businessDays,
+    bufferBusinessDays,
+  };
 }
 
-/** Estimated ready date (ISO, Budapest calendar) for an order placed at `now`. */
-export function estimateReadyDate(now: Date, options: LeadTimeOptions): IsoDate {
-  return leadTime(now, options).readyDate;
+/** Ready date (ISO, Budapest calendar) when the payment arrives at `paidAt`: production starts from it. */
+export function estimateReadyDate(paidAt: Date, options: LeadTimeOptions): IsoDate {
+  return leadTime(paidAt, options).readyDate;
+}
+
+/**
+ * The date the calculator and the order confirmation show ("Várhatóan … elkészül") for an order placed
+ * at `orderedAt`: allows CONFIRMATION_BUFFER_BUSINESS_DAYS for the confirmation and the payment.
+ */
+export function estimateOrderReadyDate(orderedAt: Date, { express }: { express: boolean }): IsoDate {
+  return leadTime(orderedAt, { express, bufferBusinessDays: CONFIRMATION_BUFFER_BUSINESS_DAYS }).readyDate;
 }
 
 // ─── Formatting ──────────────────────────────────────────────────────────────────────────────────

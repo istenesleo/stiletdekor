@@ -284,6 +284,18 @@ describe('priceConfiguration – other products', () => {
     expect(blueback.itemNet).toBe(17940);
   });
 
+  it('plakát: custom size per m² on poster paper, with a 1 990 minimum per piece', () => {
+    const small = priceConfiguration({ productId: 'plakat', formatId: 'egyedi', paperFinish: 'matt', widthCm: 50, heightCm: 70, quantity: 1, express: false });
+    expect(small.lines[0]).toMatchObject({ label: 'Plakát, egyedi méret, matt', quantity: 0.35, unitPriceNet: 4990, amountNet: 1747 });
+    expect(small).toMatchObject({ itemNet: 1990, minimumNet: 1990, minimumApplied: true });
+    const large = priceConfiguration({ productId: 'plakat', formatId: 'egyedi', paperFinish: 'fenyes', widthCm: 100, heightCm: 140, quantity: 2, express: false });
+    expect(large).toMatchObject({ itemNet: 6986, minimumApplied: false, subtotalNet: 13972, discountPct: 5 });
+    expect(thrownMessages({ productId: 'plakat', formatId: 'egyedi', widthCm: 9.9, heightCm: 20, quantity: 1, express: false })).toEqual([
+      'Válasszon papírfelületet (matt vagy fényes).',
+      'A szélesség 10 és 150 cm között lehet.',
+    ]);
+  });
+
   it('plakát: blueback needs a size, formats need paper and orientation', () => {
     expect(thrownMessages({ productId: 'plakat', formatId: 'blueback', quantity: 1, express: false })).toEqual([
       'Adja meg a szélességet centiméterben.',
@@ -402,7 +414,7 @@ describe('validation of common fields', () => {
 describe('priceCart', () => {
   it('personal pickup is free', () => {
     const cart = priceCart([{ config: molino() }], 'szemelyes');
-    expect(cart.shipping).toMatchObject({ methodId: 'szemelyes', net: 0, vat: 0, gross: 0, largeParcel: false });
+    expect(cart.shipping).toMatchObject({ methodId: 'szemelyes', net: 0, vat: 0, gross: 0, largeParcel: false, priceOnRequest: false });
     expect([cart.netTotal, cart.vatTotal, cart.grossTotal]).toEqual([7980, 2155, 10135]);
   });
 
@@ -418,6 +430,13 @@ describe('priceCart', () => {
 
     expect(priceCart([{ config: tabla() }], 'futar').shipping.net).toBe(4990);
     expect(priceCart([{ config: rollup() }], 'szemelyes').shipping.net).toBe(0);
+  });
+
+  it('installation has no list price: 0 in the totals, flagged for the workshop to quote', () => {
+    const cart = priceCart([{ config: molino() }, { config: tabla() }], 'telepites');
+    expect(cart.shipping).toMatchObject({ methodId: 'telepites', name: 'Telepítéssel', priceOnRequest: true, net: 0, vat: 0, gross: 0 });
+    expect(cart.netTotal).toBe(cart.itemsNet);
+    expect(cart.grossTotal).toBe(cart.items.reduce((sum, item) => sum + item.grossTotal, 0));
   });
 
   it('cart totals equal the sum of the lines the customer sees', () => {
@@ -446,7 +465,7 @@ describe('priceCart', () => {
     expect((error as ConfigurationError).issues).toEqual([
       { path: ['items', 1, 'config', 'widthCm'], message: 'A szélesség 20 és 500 cm között lehet.' },
     ]);
-    expect(() => priceCart([{ config: molino() }], 'drone' as 'futar')).toThrow('Válasszon szállítási módot.');
+    expect(() => priceCart([{ config: molino() }], 'drone' as 'futar')).toThrow('Válasszon átvételi módot.');
   });
 });
 
@@ -466,6 +485,9 @@ describe('helpers', () => {
     expect(
       configDimensionsCm({ productId: 'vaszonkep', formatId: '30x40', orientation: 'fekvo', quantity: 1, express: false }),
     ).toEqual({ widthCm: 40, heightCm: 30 });
+    expect(
+      configDimensionsCm({ productId: 'plakat', formatId: 'egyedi', paperFinish: 'matt', widthCm: 50, heightCm: 70, quantity: 1, express: false }),
+    ).toEqual({ widthCm: 50, heightCm: 70 });
   });
 
   it('describeConfiguration gives a one-line summary', () => {
@@ -476,5 +498,8 @@ describe('helpers', () => {
     expect(describeConfiguration(tabla({ widthCm: 29.7, addOnCounts: { furat: 4, tavtarto: 0 } }))).toBe(
       'Tábla · PVC habtábla 3 mm · 29,7 × 50 cm · Furatolás × 4',
     );
+    expect(
+      describeConfiguration({ productId: 'plakat', formatId: 'egyedi', paperFinish: 'fenyes', widthCm: 50, heightCm: 70, quantity: 1, express: false }),
+    ).toBe('Plakát · Egyedi méret, 50 × 70 cm · Fényes');
   });
 });

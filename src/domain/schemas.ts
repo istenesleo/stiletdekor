@@ -4,10 +4,8 @@
 
 import { z } from 'zod';
 import {
-  BUDGET_BANDS,
   MATRICA,
   MOLINO,
-  PARTS_OF_DAY,
   PLAKAT,
   QUOTE_TYPE_IDS,
   ROLLUP,
@@ -18,7 +16,7 @@ import {
   getQuoteType,
   type QuoteFieldDef,
 } from './catalog';
-import { budapestToday, formatHuDate, isBusinessDay, isValidIsoDate, nextBusinessDay, type IsoDate } from './leadtime';
+import { budapestToday, isValidIsoDate, type IsoDate } from './leadtime';
 import { formatNumberHu } from './money';
 import { validateConfiguration, type ProductConfig } from './pricing';
 
@@ -89,13 +87,15 @@ const MatricaConfigSchema = z.object({
   express,
 });
 
+const paperFinish = z.enum(idsOf(PLAKAT.paperFinishes), { error: 'Válasszon papírfelületet (matt vagy fényes).' });
+
 const PlakatConfigSchema = z.discriminatedUnion(
   'formatId',
   [
     z.object({
       productId: z.literal('plakat'),
       formatId: formatOf(PLAKAT.formats),
-      paperFinish: z.enum(idsOf(PLAKAT.paperFinishes), { error: 'Válasszon papírfelületet (matt vagy fényes).' }),
+      paperFinish,
       orientation,
       quantity,
       express,
@@ -103,6 +103,15 @@ const PlakatConfigSchema = z.discriminatedUnion(
     z.object({
       productId: z.literal('plakat'),
       formatId: z.literal(PLAKAT.blueback.id),
+      widthCm,
+      heightCm,
+      quantity,
+      express,
+    }),
+    z.object({
+      productId: z.literal('plakat'),
+      formatId: z.literal(PLAKAT.custom.id),
+      paperFinish,
       widthCm,
       heightCm,
       quantity,
@@ -262,28 +271,40 @@ export const AddressSchema = z.object(
 export const MAX_ORDER_ITEMS = 50;
 export const MAX_ORDER_NOTE_LENGTH = 2000;
 
-export const OrderRequestSchema = z.object(
-  {
-    customer: ContactSchema.extend({
-      taxNumber: TaxNumberSchema,
-      billingAddress: AddressSchema,
-    }).superRefine((customer, ctx) => {
-      if (customer.taxNumber && !customer.company) {
-        ctx.addIssue({ code: 'custom', path: ['company'], message: 'Adószám megadásakor a cégnevet is adja meg.' });
-      }
-    }),
-    /** Delivery address for courier shipping; the billing address is used when omitted. */
-    shippingAddress: AddressSchema.optional(),
-    shippingMethod: z.enum(SHIPPING_METHOD_IDS, { error: 'Válasszon szállítási módot.' }),
-    items: z
-      .array(CartItemSchema, { error: 'A kosár üres.' })
-      .min(1, 'A kosár üres.')
-      .max(MAX_ORDER_ITEMS, `Egy rendelésben legfeljebb ${MAX_ORDER_ITEMS} tétel lehet.`),
-    note: optionalText(MAX_ORDER_NOTE_LENGTH, `A megjegyzés legfeljebb ${MAX_ORDER_NOTE_LENGTH} karakter lehet.`),
-    acceptTerms: z.literal(true, { error: 'A rendeléshez fogadja el az Általános Szerződési Feltételeket.' }),
-  },
-  { error: 'Érvénytelen rendelési adatok.' },
-);
+/**
+ * Sending an order is free of obligation: the workshop checks it and sends a proforma invoice, and
+ * paying that invoice is the acceptance (docs/brief.md chapter 10).
+ */
+export const OrderRequestSchema = z
+  .object(
+    {
+      customer: ContactSchema.extend({
+        taxNumber: TaxNumberSchema,
+        billingAddress: AddressSchema,
+      }).superRefine((customer, ctx) => {
+        if (customer.taxNumber && !customer.company) {
+          ctx.addIssue({ code: 'custom', path: ['company'], message: 'Adószám megadásakor a cégnevet is adja meg.' });
+        }
+      }),
+      /** Courier delivery or installation address; the billing address is used when omitted. */
+      shippingAddress: AddressSchema.optional(),
+      shippingMethod: z.enum(SHIPPING_METHOD_IDS, { error: 'Válasszon átvételi módot.' }),
+      /** With installation only: the customer asks for an on-site survey before production. */
+      surveyRequested: z.boolean({ error: 'Érvénytelen érték.' }).default(false),
+      items: z
+        .array(CartItemSchema, { error: 'A kosár üres.' })
+        .min(1, 'A kosár üres.')
+        .max(MAX_ORDER_ITEMS, `Egy rendelésben legfeljebb ${MAX_ORDER_ITEMS} tétel lehet.`),
+      note: optionalText(MAX_ORDER_NOTE_LENGTH, `A megjegyzés legfeljebb ${MAX_ORDER_NOTE_LENGTH} karakter lehet.`),
+      acceptTerms: z.literal(true, { error: 'A rendeléshez fogadja el az Általános Szerződési Feltételeket.' }),
+    },
+    { error: 'Érvénytelen rendelési adatok.' },
+  )
+  .superRefine((order, ctx) => {
+    if (order.surveyRequested && order.shippingMethod !== 'telepites') {
+      ctx.addIssue({ code: 'custom', path: ['surveyRequested'], message: 'Helyszíni felmérést telepítéssel együtt kérhet.' });
+    }
+  });
 
 // ─── Quote request ───────────────────────────────────────────────────────────────────────────────
 
@@ -426,21 +447,13 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
         fields: z.record(z.string(), QuoteFieldValueSchema, { error: 'Érvénytelen adatok.' }),
         location: optionalText(300, 'A cím legfeljebb 300 karakter lehet.'),
         deadline: isoDate('Adja meg a határidőt.'),
-        budgetBand: z.enum(idsOf(BUDGET_BANDS), { error: 'Válasszon a költségkeret-sávok közül.' }).optional(),
         uploadIds: z
           .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
           .max(MAX_QUOTE_UPLOADS, `Legfeljebb ${MAX_QUOTE_UPLOADS} fájl tölthető fel.`)
           .default([]),
         contact: ContactSchema,
-        surveyRequest: z
-          .object(
-            {
-              date: isoDate('Adja meg a felmérés napját.'),
-              partOfDay: z.enum(idsOf(PARTS_OF_DAY), { error: 'Válasszon napszakot.' }),
-            },
-            { error: 'Érvénytelen felmérési időpont.' },
-          )
-          .optional(),
+        /** No date: the workshop calls back and arranges the survey by phone (decision of 2026-10-05). */
+        surveyRequested: z.boolean({ error: 'Érvénytelen érték.' }).default(false),
       },
       { error: 'Érvénytelen ajánlatkérés.' },
     )
@@ -450,24 +463,12 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
       for (const issue of validateQuoteFields(request.quoteType, request.fields, { today })) {
         ctx.addIssue({ code: 'custom', path: ['fields', ...issue.path], message: issue.message });
       }
-      if (!request.location && (type.locationRequired || request.surveyRequest)) {
+      if (!request.location && (type.locationRequired || request.surveyRequested)) {
         const message = type.locationRequired ? 'Adja meg a helyszín címét.' : 'A helyszíni felméréshez adja meg a címet.';
         ctx.addIssue({ code: 'custom', path: ['location'], message });
       }
       if (request.deadline < today) {
         ctx.addIssue({ code: 'custom', path: ['deadline'], message: 'A határidő nem lehet múltbeli dátum.' });
-      }
-      if (request.surveyRequest) {
-        const earliest = nextBusinessDay(today);
-        if (request.surveyRequest.date < earliest) {
-          ctx.addIssue({
-            code: 'custom',
-            path: ['surveyRequest', 'date'],
-            message: `A felmérés legkorábban a következő munkanapra (${formatHuDate(earliest)}) kérhető.`,
-          });
-        } else if (!isBusinessDay(request.surveyRequest.date)) {
-          ctx.addIssue({ code: 'custom', path: ['surveyRequest', 'date'], message: 'A felmérés munkanapra kérhető.' });
-        }
       }
     })
     .transform((request) => ({ ...request, fields: pruneQuoteFields(request.quoteType, request.fields) }));

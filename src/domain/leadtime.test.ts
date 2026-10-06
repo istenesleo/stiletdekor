@@ -4,6 +4,7 @@ import {
   budapestDateTime,
   budapestToday,
   easterSunday,
+  estimateOrderReadyDate,
   estimateReadyDate,
   formatHuDate,
   hungarianPublicHolidays,
@@ -19,7 +20,7 @@ const at = (isoWithOffset: string) => new Date(isoWithOffset);
 const standard = (isoWithOffset: string) => estimateReadyDate(at(isoWithOffset), { express: false });
 const express = (isoWithOffset: string) => estimateReadyDate(at(isoWithOffset), { express: true });
 
-describe('estimateReadyDate – brief examples', () => {
+describe('estimateReadyDate – brief examples (counted from the payment)', () => {
   it('Monday 10:00 → standard Thursday, express Tuesday', () => {
     expect(standard('2026-10-05T10:00:00+02:00')).toBe('2026-10-08');
     expect(express('2026-10-05T10:00:00+02:00')).toBe('2026-10-06');
@@ -38,14 +39,14 @@ describe('estimateReadyDate – brief examples', () => {
 describe('estimateReadyDate – 12:00 cutoff', () => {
   it('11:59:59.999 still starts today', () => {
     const lt = leadTime(at('2026-10-05T11:59:59.999+02:00'), { express: false });
-    expect(lt.startsToday).toBe(true);
+    expect(lt.countsToday).toBe(true);
     expect(lt.startDate).toBe('2026-10-05');
     expect(lt.readyDate).toBe('2026-10-08');
   });
 
   it('exactly 12:00:00 starts the next business day', () => {
     const lt = leadTime(at('2026-10-05T12:00:00+02:00'), { express: false });
-    expect(lt.startsToday).toBe(false);
+    expect(lt.countsToday).toBe(false);
     expect(lt.startDate).toBe('2026-10-06');
     expect(lt.readyDate).toBe('2026-10-09');
   });
@@ -53,7 +54,7 @@ describe('estimateReadyDate – 12:00 cutoff', () => {
   it('just after midnight belongs to the new Budapest day, even though UTC is still on the previous day', () => {
     const lt = leadTime(at('2026-10-05T22:30:00Z'), { express: false }); // 2026-10-06 00:30 in Budapest
     expect(lt.orderDate).toBe('2026-10-06');
-    expect(lt.startsToday).toBe(true);
+    expect(lt.countsToday).toBe(true);
     expect(lt.readyDate).toBe('2026-10-09');
   });
 
@@ -136,18 +137,18 @@ describe('estimateReadyDate – Hungarian holidays', () => {
 describe('estimateReadyDate – DST switches', () => {
   it('spring forward 2026 (Mar 29): the cutoff follows Budapest wall-clock time', () => {
     // 10:30 UTC is 11:30 CET on Friday, but 12:30 CEST on Monday.
-    expect(leadTime(at('2026-03-27T10:30:00Z'), { express: false }).startsToday).toBe(true);
-    expect(leadTime(at('2026-03-30T10:30:00Z'), { express: false }).startsToday).toBe(false);
-    expect(leadTime(at('2026-03-30T09:59:59Z'), { express: false }).startsToday).toBe(true);
-    expect(leadTime(at('2026-03-30T10:00:00Z'), { express: false }).startsToday).toBe(false);
+    expect(leadTime(at('2026-03-27T10:30:00Z'), { express: false }).countsToday).toBe(true);
+    expect(leadTime(at('2026-03-30T10:30:00Z'), { express: false }).countsToday).toBe(false);
+    expect(leadTime(at('2026-03-30T09:59:59Z'), { express: false }).countsToday).toBe(true);
+    expect(leadTime(at('2026-03-30T10:00:00Z'), { express: false }).countsToday).toBe(false);
     // Monday after the cutoff → start Tuesday Mar 31; Apr 3 and Apr 6 are Easter holidays.
     expect(estimateReadyDate(at('2026-03-30T10:30:00Z'), { express: false })).toBe('2026-04-07');
   });
 
   it('fall back 2026 (Oct 25)', () => {
     // 10:30 UTC is 12:30 CEST on Thursday Oct 22, but 11:30 CET on Monday Oct 26.
-    expect(leadTime(at('2026-10-22T10:30:00Z'), { express: false }).startsToday).toBe(false);
-    expect(leadTime(at('2026-10-26T10:30:00Z'), { express: false }).startsToday).toBe(true);
+    expect(leadTime(at('2026-10-22T10:30:00Z'), { express: false }).countsToday).toBe(false);
+    expect(leadTime(at('2026-10-26T10:30:00Z'), { express: false }).countsToday).toBe(true);
     expect(estimateReadyDate(at('2026-10-26T10:59:00Z'), { express: false })).toBe('2026-10-29');
     expect(estimateReadyDate(at('2026-10-26T11:00:00Z'), { express: false })).toBe('2026-10-30');
   });
@@ -161,8 +162,8 @@ describe('estimateReadyDate – DST switches', () => {
     expect(leadTime(at('2027-03-29T10:30:00Z'), { express: false }).orderDate).toBe('2027-03-29');
     // Mar 29, 2027 is Húsvéthétfő → start Tuesday Mar 30.
     expect(estimateReadyDate(at('2027-03-29T09:00:00Z'), { express: true })).toBe('2027-03-31');
-    expect(leadTime(at('2027-11-02T10:30:00Z'), { express: false }).startsToday).toBe(true); // 11:30 CET
-    expect(leadTime(at('2027-10-29T10:30:00Z'), { express: false }).startsToday).toBe(false); // 12:30 CEST
+    expect(leadTime(at('2027-11-02T10:30:00Z'), { express: false }).countsToday).toBe(true); // 11:30 CET
+    expect(leadTime(at('2027-10-29T10:30:00Z'), { express: false }).countsToday).toBe(false); // 12:30 CEST
   });
 
   it('midnight is hour 0, not 24', () => {
@@ -246,6 +247,29 @@ describe('formatHuDate', () => {
     expect(() => formatHuDate('holnap')).toThrow(RangeError);
     expect(isValidIsoDate('2026-02-28')).toBe(true);
     expect(isValidIsoDate('2027-02-29')).toBe(false);
+  });
+});
+
+describe('estimateOrderReadyDate – what the calculator shows before payment', () => {
+  const order = (isoWithOffset: string, isExpress = false) => estimateOrderReadyDate(at(isoWithOffset), { express: isExpress });
+
+  it('adds one business day for the confirmation and the payment', () => {
+    expect(order('2026-10-05T10:00:00+02:00')).toBe('2026-10-09'); // Monday morning → Friday
+    expect(order('2026-10-05T10:00:00+02:00', true)).toBe('2026-10-07'); // express → Wednesday
+    expect(order('2026-10-05T13:00:00+02:00')).toBe('2026-10-12'); // after the cutoff → next Monday
+  });
+
+  it('skips weekends and holidays in the buffer too', () => {
+    expect(order('2026-10-10T10:00:00+02:00')).toBe('2026-10-16'); // Saturday → buffer Monday, start Tuesday
+    // Thursday 22 Oct after the cutoff: 23 Oct is a holiday, so Monday 26 counts, production starts Tuesday 27.
+    expect(order('2026-10-22T13:00:00+02:00')).toBe('2026-10-30');
+  });
+
+  it('reports the buffer in the lead time', () => {
+    const lt = leadTime(at('2026-10-05T10:00:00+02:00'), { express: false, bufferBusinessDays: 1 });
+    expect(lt).toMatchObject({ countsToday: true, startDate: '2026-10-06', readyDate: '2026-10-09', bufferBusinessDays: 1 });
+    expect(leadTime(at('2026-10-05T10:00:00+02:00'), { express: false }).bufferBusinessDays).toBe(0);
+    expect(() => leadTime(at('2026-10-05T10:00:00+02:00'), { express: false, bufferBusinessDays: -1 })).toThrow(RangeError);
   });
 });
 

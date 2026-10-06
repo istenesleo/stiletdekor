@@ -19,7 +19,9 @@ src/
   domain/          # tiszta, keretrendszer-független üzleti logika (tesztelt)
     catalog.ts     # kategóriák, termékek, anyagok, opciók, helyőrző árak (docs/brief.md 4. fejezet)
     pricing.ts     # árkalkuláció: m², kerület, opciók, mennyiségi kedvezmény, expressz, minimum, ÁFA
-    leadtime.ts    # elkészülési dátum: munkanapok, 12:00-s határidő, Europe/Budapest, magyar ünnepnapok
+    leadtime.ts    # elkészülési dátum: munkanapok, 12:00-s határidő, Europe/Budapest, magyar ünnepnapok;
+                   # a gyártás a befizetéstől indul, a becslés +1 munkanapot számol visszaigazolásra és fizetésre
+    orders.ts      # rendelési státuszok és átmenetek, kötelező szövegek („Rendelés elküldése ellenőrzésre”)
     preflight.ts   # DPI-becslés, arányeltérés
     artwork/       # méretfelismerés a feltöltött fájlból: PDF/AI dobozok, EPS, SVG, raszter-DPI, fájlnév-jelzések,
                    # szabványformátum, azonos felületek csoportosítása (docs/brief.md 8–9. fejezet)
@@ -50,8 +52,8 @@ scripts/           # build-tokens.mjs (token → CSS, kontrasztellenőrzés)
 |---|---|
 | `POST /api/uploads` | Fájl feltöltése R2-be (méret- és típusellenőrzés, magic bytes), metaadat D1-be, visszaad egy feltöltés-azonosítót |
 | `POST /api/price` | Szerveroldali árkalkuláció egy konfigurációra (ugyanaz a `domain/pricing.ts`) |
-| `POST /api/orders` | Rendelés leadása: **a szerver újraáraz**, a kliens által küldött árat nem fogadja el |
-| `POST /api/quotes` | Egyedi ajánlatkérés (varázsló), felmérési időpont-kéréssel |
+| `POST /api/orders` | Rendelés elküldése ellenőrzésre (fizetési kötelezettség nélkül): **a szerver újraáraz**, a kliens által küldött árat nem fogadja el |
+| `POST /api/quotes` | Egyedi ajánlatkérés (varázsló), igény szerint felméréssel (időpont nélkül, a műhely visszahív) |
 
 ## Biztonsági alapelvek
 

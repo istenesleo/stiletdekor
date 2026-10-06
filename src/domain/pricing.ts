@@ -14,7 +14,8 @@
 //
 // Cart (priceCart): every item is priced as above; shipping is a separate net line with its own VAT.
 // Cart VAT is the sum of the item and shipping VAT amounts (invoice-line style), so the cart gross
-// always equals the sum of the gross amounts the customer sees per line.
+// always equals the sum of the gross amounts the customer sees per line. Installation has no list
+// price: it counts as 0 in the totals and is flagged priceOnRequest; the workshop adds it on confirmation.
 
 import {
   EXPRESS_SURCHARGE_PERCENT,
@@ -92,7 +93,15 @@ export interface PlakatBluebackConfig extends ConfigCommon {
   heightCm: number;
 }
 
-export type PlakatConfig = PlakatFormatConfig | PlakatBluebackConfig;
+export interface PlakatCustomConfig extends ConfigCommon {
+  productId: 'plakat';
+  formatId: 'egyedi';
+  paperFinish: PaperFinishId;
+  widthCm: number;
+  heightCm: number;
+}
+
+export type PlakatConfig = PlakatFormatConfig | PlakatBluebackConfig | PlakatCustomConfig;
 
 export interface TablaConfig extends ConfigCommon {
   productId: 'tabla';
@@ -161,6 +170,8 @@ export interface ShippingPrice {
   methodId: ShippingMethodId;
   name: string;
   largeParcel: boolean;
+  /** True for installation: no list price, net/vat/gross are 0 until the workshop quotes it. */
+  priceOnRequest: boolean;
   net: number;
   vat: number;
   gross: number;
@@ -286,18 +297,26 @@ export function validateConfiguration(config: ProductConfig): ConfigIssue[] {
       break;
     }
 
-    case 'plakat':
-      if (c.formatId === PLAKAT.blueback.id) {
-        checkSide(issues, 'widthCm', c.widthCm, PLAKAT.bluebackSize);
-        checkSide(issues, 'heightCm', c.heightCm, PLAKAT.bluebackSize);
-      } else {
-        if (!findById(PLAKAT.formats, c.formatId)) issues.push({ path: ['formatId'], message: 'Válasszon méretet.' });
+    case 'plakat': {
+      const checkFinish = () => {
         if (!findById(PLAKAT.paperFinishes, c.paperFinish)) {
           issues.push({ path: ['paperFinish'], message: 'Válasszon papírfelületet (matt vagy fényes).' });
         }
+      };
+      if (c.formatId === PLAKAT.blueback.id) {
+        checkSide(issues, 'widthCm', c.widthCm, PLAKAT.bluebackSize);
+        checkSide(issues, 'heightCm', c.heightCm, PLAKAT.bluebackSize);
+      } else if (c.formatId === PLAKAT.custom.id) {
+        checkFinish();
+        checkSide(issues, 'widthCm', c.widthCm, PLAKAT.custom.size);
+        checkSide(issues, 'heightCm', c.heightCm, PLAKAT.custom.size);
+      } else {
+        if (!findById(PLAKAT.formats, c.formatId)) issues.push({ path: ['formatId'], message: 'Válasszon méretet.' });
+        checkFinish();
         checkOrientation(issues, c.orientation);
       }
       break;
+    }
 
     case 'tabla': {
       if (!findById(TABLA.materials, c.materialId)) issues.push({ path: ['materialId'], message: 'Válasszon anyagot.' });
@@ -416,6 +435,14 @@ function baseLines(config: ProductConfig): { lines: PriceLine[]; minimumNet: num
           minimumNet: PLAKAT.minimumNet,
         };
       }
+      if (config.formatId === 'egyedi') {
+        const finish = mustFind(PLAKAT.paperFinishes, config.paperFinish);
+        const label = `Plakát, ${PLAKAT.custom.name.toLowerCase()}, ${finish.name.toLowerCase()}`;
+        return {
+          lines: [areaLine(label, config.widthCm, config.heightCm, PLAKAT.custom.priceNetPerM2)],
+          minimumNet: PLAKAT.custom.minimumNet,
+        };
+      }
       const format = mustFind(PLAKAT.formats, config.formatId);
       const finish = mustFind(PLAKAT.paperFinishes, config.paperFinish);
       return {
@@ -526,7 +553,7 @@ export function priceCart(
   shippingMethodId: ShippingMethodId,
 ): CartPrice {
   const method = SHIPPING_METHODS.find((m) => m.id === shippingMethodId);
-  const issues: ConfigIssue[] = method ? [] : [{ path: ['shippingMethod'], message: 'Válasszon szállítási módot.' }];
+  const issues: ConfigIssue[] = method ? [] : [{ path: ['shippingMethod'], message: 'Válasszon átvételi módot.' }];
   items.forEach((item, index) => {
     for (const issue of validateConfiguration(item.config)) {
       issues.push({ path: ['items', index, 'config', ...issue.path], message: issue.message });
@@ -539,7 +566,9 @@ export function priceCart(
   const itemsVat = priced.reduce((sum, p) => sum + p.vatTotal, 0);
 
   const largeParcel = items.some((item) => SHOP_PRODUCTS[item.config.productId].parcel === 'large');
-  const shippingNet = items.length === 0 ? 0 : largeParcel ? method.largeParcelPriceNet : method.priceNet;
+  const listPrice = largeParcel ? method.largeParcelPriceNet : method.priceNet;
+  const priceOnRequest = listPrice === null;
+  const shippingNet = items.length === 0 || listPrice === null ? 0 : listPrice;
   const shippingVat = vatOf(shippingNet);
   const netTotal = itemsNet + shippingNet;
   const vatTotal = itemsVat + shippingVat;
@@ -551,6 +580,7 @@ export function priceCart(
       methodId: method.id,
       name: method.name,
       largeParcel,
+      priceOnRequest,
       net: shippingNet,
       vat: shippingVat,
       gross: shippingNet + shippingVat,
@@ -576,7 +606,7 @@ export function configDimensionsCm(config: ProductConfig): { widthCm: number; he
       return { widthCm: format.widthCm, heightCm: format.heightCm };
     }
     case 'plakat':
-      return config.formatId === 'blueback'
+      return config.formatId === 'blueback' || config.formatId === 'egyedi'
         ? { widthCm: config.widthCm, heightCm: config.heightCm }
         : oriented(mustFind(PLAKAT.formats, config.formatId), config.orientation);
     case 'vaszonkep':
@@ -612,6 +642,8 @@ export function describeConfiguration(config: ProductConfig): string {
     case 'plakat':
       if (config.formatId === 'blueback') {
         parts.push(PLAKAT.blueback.name, sizeLabel(widthCm, heightCm));
+      } else if (config.formatId === 'egyedi') {
+        parts.push(`${PLAKAT.custom.name}, ${sizeLabel(widthCm, heightCm)}`, mustFind(PLAKAT.paperFinishes, config.paperFinish).name);
       } else {
         parts.push(mustFind(PLAKAT.formats, config.formatId).name, mustFind(PLAKAT.paperFinishes, config.paperFinish).name);
         parts.push(config.orientation === 'allo' ? 'álló' : 'fekvő');

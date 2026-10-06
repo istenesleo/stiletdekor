@@ -16,6 +16,7 @@ import {
   SERVICE_GROUPS,
   SHIPPING_METHODS,
   SHIPPING_METHOD_IDS,
+  CONFIRMATION_BUFFER_BUSINESS_DAYS,
   SHOP_PRODUCTS,
   SHOP_PRODUCT_IDS,
   STANDARD_LEAD_BUSINESS_DAYS,
@@ -126,6 +127,7 @@ describe('prices (brief 4.1, placeholders)', () => {
     ]);
     expect(PLAKAT.formats.find((f) => f.id === 'b1')).toMatchObject({ widthCm: 70, heightCm: 100 });
     expect(PLAKAT.blueback.priceNetPerM2).toBe(2990);
+    expect(PLAKAT.custom).toMatchObject({ id: 'egyedi', priceNetPerM2: 4990, minimumNet: 1990 });
     expect(PLAKAT.paper.grammageGsm).toEqual({ min: 150, max: 150 });
   });
 
@@ -157,7 +159,9 @@ describe('prices (brief 4.1, placeholders)', () => {
     expect(SHIPPING_METHODS.map((m) => [m.id, m.priceNet, m.largeParcelPriceNet])).toEqual([
       ['szemelyes', 0, 0],
       ['futar', 2990, 4990],
+      ['telepites', null, null], // priced individually on confirmation
     ]);
+    expect(SHIPPING_METHODS.filter((m) => m.addressLabel !== null).map((m) => m.id)).toEqual(['futar', 'telepites']);
     expect(SHIPPING_METHODS.map((m) => m.id)).toEqual([...SHIPPING_METHOD_IDS]);
     expect(Object.entries(SHOP_PRODUCTS).filter(([, p]) => p.parcel === 'large').map(([id]) => id)).toEqual(['rollup', 'tabla']);
     expect(VAT_PERCENT).toBe(27);
@@ -170,6 +174,7 @@ describe('prices (brief 4.1, placeholders)', () => {
     ]);
     expect(EXPRESS_SURCHARGE_PERCENT).toBe(30);
     expect([STANDARD_LEAD_BUSINESS_DAYS, EXPRESS_LEAD_BUSINESS_DAYS, ORDER_CUTOFF_HOUR]).toEqual([3, 1, 12]);
+    expect(CONFIRMATION_BUFFER_BUSINESS_DAYS).toBe(1);
     expect(BUSINESS_TIME_ZONE).toBe('Europe/Budapest');
   });
 

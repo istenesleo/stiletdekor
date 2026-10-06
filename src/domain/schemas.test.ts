@@ -44,6 +44,10 @@ describe('ProductConfigSchema', () => {
     ['plakát', { productId: 'plakat', formatId: 'a2', paperFinish: 'fenyes', orientation: 'fekvo', quantity: 1, express: false }],
     ['blueback', { productId: 'plakat', formatId: 'blueback', widthCm: 500, heightCm: 238, quantity: 1, express: false }],
     [
+      'egyedi plakát',
+      { productId: 'plakat', formatId: 'egyedi', paperFinish: 'matt', widthCm: 59.4, heightCm: 120, quantity: 2, express: false },
+    ],
+    [
       'tábla',
       { productId: 'tabla', materialId: 'dibond-3mm', widthCm: 60, heightCm: 40, addOnCounts: { furat: 4, tavtarto: 1 }, quantity: 1, express: false },
     ],
@@ -69,6 +73,14 @@ describe('ProductConfigSchema', () => {
     [
       { productId: 'plakat', formatId: 'blueback', widthCm: 300, quantity: 1, express: false },
       [['heightCm', 'Adja meg a magasságot centiméterben.']],
+    ],
+    [
+      { productId: 'plakat', formatId: 'egyedi', widthCm: 50, heightCm: 70, quantity: 1, express: false },
+      [['paperFinish', 'Válasszon papírfelületet (matt vagy fényes).']],
+    ],
+    [
+      { productId: 'plakat', formatId: 'egyedi', paperFinish: 'fenyes', widthCm: 50, heightCm: 160, quantity: 1, express: false },
+      [['heightCm', 'A magasság 10 és 150 cm között lehet.']],
     ],
     [
       { productId: 'tabla', materialId: 'pvc-3mm', widthCm: 60, heightCm: 40, addOnCounts: { furat: 51, tavtarto: 0 }, quantity: 1, express: false },
@@ -192,7 +204,9 @@ describe('OrderRequestSchema', () => {
       { customer: { ...order.customer, taxNumber: '12345676-1-42' } },
       [['customer.company', 'Adószám megadásakor a cégnevet is adja meg.']],
     ],
-    [{ shippingMethod: 'dron' }, [['shippingMethod', 'Válasszon szállítási módot.']]],
+    [{ shippingMethod: 'dron' }, [['shippingMethod', 'Válasszon átvételi módot.']]],
+    [{ surveyRequested: true }, [['surveyRequested', 'Helyszíni felmérést telepítéssel együtt kérhet.']]],
+    [{ surveyRequested: 'igen' }, [['surveyRequested', 'Érvénytelen érték.']]],
     [{ items: [] }, [['items', 'A kosár üres.']]],
     [{ items: Array.from({ length: 51 }, () => order.items[0]) }, [['items', 'Egy rendelésben legfeljebb 50 tétel lehet.']]],
     [{ note: 'x'.repeat(2001) }, [['note', 'A megjegyzés legfeljebb 2000 karakter lehet.']]],
@@ -200,6 +214,17 @@ describe('OrderRequestSchema', () => {
     [{ acceptTerms: undefined }, [['acceptTerms', 'A rendeléshez fogadja el az Általános Szerződési Feltételeket.']]],
   ])('rejects %j', (patch, expected) => {
     expect(issuesOf(OrderRequestSchema, { ...order, ...patch })).toEqual(expected);
+  });
+
+  it('accepts installation with an on-site survey; the survey defaults to not requested', () => {
+    expect(OrderRequestSchema.parse(order).surveyRequested).toBe(false);
+    const installed = OrderRequestSchema.parse({
+      ...order,
+      shippingMethod: 'telepites',
+      shippingAddress: { postalCode: '1052', city: 'Budapest', address: 'Minta köz 3.' },
+      surveyRequested: true,
+    });
+    expect(installed).toMatchObject({ shippingMethod: 'telepites', surveyRequested: true });
   });
 
   it('accepts a 2000-character note and 50 items', () => {
@@ -221,21 +246,27 @@ describe('QuoteRequestSchema', () => {
     fields: { feluletM2: 12.5, foliaTipus: ['dekor', 'one-way-vision'], kirakatFotok: [UUID_A] },
     location: 'Budapest, Minta utca 1.',
     deadline: '2026-11-15',
-    budgetBand: '300e-1m',
     uploadIds: [UUID_B],
     contact,
-    surveyRequest: { date: '2026-10-06', partOfDay: 'delelott' },
+    surveyRequested: true,
   };
 
-  it('accepts a complete request with a survey on the next business day', () => {
+  it('accepts a complete request with a survey request (no date: the workshop calls back)', () => {
     const parsed = schema.parse(kirakat);
     expect(parsed.fields).toEqual(kirakat.fields);
-    expect(parsed.surveyRequest).toEqual({ date: '2026-10-06', partOfDay: 'delelott' });
+    expect(parsed.surveyRequested).toBe(true);
   });
 
-  it('accepts a request without budget band and survey, and a deadline of today', () => {
-    const { budgetBand: _b, surveyRequest: _s, ...rest } = kirakat;
-    expect(schema.safeParse({ ...rest, deadline: '2026-10-05' }).success).toBe(true);
+  it('accepts a request without a survey and a deadline of today', () => {
+    const { surveyRequested: _s, ...rest } = kirakat;
+    const parsed = schema.parse({ ...rest, deadline: '2026-10-05' });
+    expect(parsed.surveyRequested).toBe(false);
+  });
+
+  it('drops the removed budget and survey-date fields sent by an old client', () => {
+    const parsed = schema.parse({ ...kirakat, budgetBand: '300e-1m', surveyRequest: { date: '2026-10-06', partOfDay: 'delelott' } });
+    expect(parsed).not.toHaveProperty('budgetBand');
+    expect(parsed).not.toHaveProperty('surveyRequest');
   });
 
   it('prunes empty answers and trims text', () => {
@@ -264,16 +295,9 @@ describe('QuoteRequestSchema', () => {
     [{ deadline: '2026-10-04' }, [['deadline', 'A határidő nem lehet múltbeli dátum.']]],
     [{ deadline: '2026-13-01' }, [['deadline', 'Érvénytelen dátum.']]],
     [{ deadline: undefined }, [['deadline', 'Adja meg a határidőt.']]],
-    [{ budgetBand: 'vegtelen' }, [['budgetBand', 'Válasszon a költségkeret-sávok közül.']]],
     [{ uploadIds: ['x'] }, [['uploadIds.0', 'Érvénytelen feltöltés-azonosító.']]],
     [{ contact: { ...contact, phone: 'nincs' } }, [['contact.phone', 'Kérjük, érvényes telefonszámot adjon meg, például +36 70 123 4567.']]],
-    [
-      { surveyRequest: { date: '2026-10-05', partOfDay: 'delutan' } },
-      [['surveyRequest.date', 'A felmérés legkorábban a következő munkanapra (2026. október 6., kedd) kérhető.']],
-    ],
-    [{ surveyRequest: { date: '2026-10-10', partOfDay: 'delutan' } }, [['surveyRequest.date', 'A felmérés munkanapra kérhető.']]],
-    [{ surveyRequest: { date: '2026-10-23', partOfDay: 'delelott' } }, [['surveyRequest.date', 'A felmérés munkanapra kérhető.']]],
-    [{ surveyRequest: { date: '2026-10-06', partOfDay: 'este' } }, [['surveyRequest.partOfDay', 'Válasszon napszakot.']]],
+    [{ surveyRequested: 'holnap' }, [['surveyRequested', 'Érvénytelen érték.']]],
   ])('rejects %j', (patch, expected) => {
     expect(issuesOf(schema, { ...kirakat, ...patch })).toEqual(expected);
   });
@@ -335,14 +359,14 @@ describe('QuoteRequestSchema', () => {
     expect(issuesOf(schema, { ...base, fields: { anyag: 'pla', darabszam: 1 } })).toEqual([
       ['fields.modellFajl', 'Töltsön fel modellfájlt, vagy írja le, mit szeretne.'],
     ]);
-    expect(issuesOf(schema, { ...base, surveyRequest: { date: '2026-10-06', partOfDay: 'delutan' } })).toEqual([
+    expect(issuesOf(schema, { ...base, surveyRequested: true })).toEqual([
       ['location', 'A helyszíni felméréshez adja meg a címet.'],
     ]);
   });
 
   it('the default schema uses the real clock', () => {
     const far = { ...kirakat, deadline: '2099-12-31' };
-    const { surveyRequest: _s, ...withoutSurvey } = far;
+    const { surveyRequested: _s, ...withoutSurvey } = far;
     expect(QuoteRequestSchema.safeParse(withoutSurvey).success).toBe(true);
     expect(issuesOf(QuoteRequestSchema, { ...withoutSurvey, deadline: '2020-01-01' })).toEqual([
       ['deadline', 'A határidő nem lehet múltbeli dátum.'],
