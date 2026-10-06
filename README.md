@@ -73,6 +73,10 @@ ugyanaz, csak a `SITE_THEME` változó más; ez választja ki a tokenkészletet 
 betűtípusokat. Amíg a kezdőlap nem készül el, a `/` a választott irány látványtervét mutatja
 (`design/mockups/`). Az éles oldalon ez soha nem jelenik meg.
 
+A `/mentes` cím a látványterv mentett állapotát mutatja a kezdőlap szövegének rövidítése előttről
+(`design/mockups/mentes/2026-10-06-hosszu-szoveg/`), hogy a kettő összevethető legyen. A böngészőfül címe
+„Mentés, 2026-10-06” előtaggal kezdődik. Az éles oldalon ez a cím 404.
+
 | Dev oldal | Worker | `SITE_THEME` | Build |
 |---|---|---|---|
 | A · Neon műhely | `stiletdekor` | `neon-muhely` | `npm run build` |

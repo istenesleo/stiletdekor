@@ -8,6 +8,7 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
 | `tokens/themes/*.tokens.json` | A két kidolgozott irány ugyanazokkal a tokennevekkel. Csak felülírják az alapot. |
 | `components.md` | A komponensek listája prioritással és állapotokkal. |
 | `mockups/` | A két kattintható látványterv (önálló HTML, böngészőben megnyitható). |
+| `mockups/mentes/` | Korábbi állapotok mentése. `2026-10-06-hosszu-szoveg/`: mindkét terv a kezdőlap szövegének rövidítése előtt. A dev oldalakon a `/mentes` címen látható. |
 
 ## Munkafolyamat a Claude Design-nal
 
