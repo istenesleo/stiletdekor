@@ -276,3 +276,18 @@ export function formatHuDate(iso: IsoDate): string {
   const [y, m, d] = iso.split('-').map(Number) as [number, number, number];
   return `${y}. ${HU_MONTHS[m - 1]} ${d}., ${HU_WEEKDAYS[weekdayOf(dayNumber)]}`;
 }
+
+// "-ra/-re" on a day of the month follows its ordinal (elsejére, másodikára, tizedikére, huszadikára …).
+const DAY_SUBLATIVE = [
+  '', 'jére', 'ára', 'ára', 'ére', 'ére', 'ára', 'ére', 'ára', 'ére', 'ére',
+  'ére', 'ére', 'ára', 'ére', 'ére', 'ára', 'ére', 'ára', 'ére', 'ára',
+  'ére', 'ére', 'ára', 'ére', 'ére', 'ára', 'ére', 'ára', 'ére', 'ára', 'ére',
+] as const;
+const HU_WEEKDAYS_SUBLATIVE = ['vasárnapra', 'hétfőre', 'keddre', 'szerdára', 'csütörtökre', 'péntekre', 'szombatra'] as const;
+
+/** "október 13-ára, keddre": the date a job will be ready by, for "Várhatóan … elkészül". No year. */
+export function formatReadyBy(iso: IsoDate): string {
+  const dayNumber = isoToDayNumber(iso);
+  const [, m, d] = iso.split('-').map(Number) as [number, number, number];
+  return `${HU_MONTHS[m - 1]} ${d}-${DAY_SUBLATIVE[d]}, ${HU_WEEKDAYS_SUBLATIVE[weekdayOf(dayNumber)]}`;
+}

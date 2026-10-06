@@ -26,11 +26,11 @@ const range = (min: number, max: number) =>
 /** The data sheet rows of a material: weight or thickness, where it can be used, expected lifetime. */
 export function materialSpecs(m: AreaMaterial): Array<readonly [string, string]> {
   const specs: Array<readonly [string, string]> = [];
-  if (m.grammageGsm) specs.push(['Súly', `${range(m.grammageGsm.min, m.grammageGsm.max)} g/m²`]);
-  if (m.thicknessMm !== null) specs.push(['Vastagság', `${formatNumberHu(m.thicknessMm)} mm`]);
+  if (m.grammageGsm) specs.push(['Súly', `${range(m.grammageGsm.min, m.grammageGsm.max)}\u00a0g/m²`]);
+  if (m.thicknessMm !== null) specs.push(['Vastagság', `${formatNumberHu(m.thicknessMm)}\u00a0mm`]);
   const use = m.use.indoor && m.use.outdoor ? 'kül- és beltér' : m.use.outdoor ? 'kültér' : 'beltér';
   specs.push(['Felhasználás', use]);
-  if (m.lifespan) specs.push(['Élettartam', `≈ ${range(m.lifespan.minYears, m.lifespan.maxYears)} év ${m.lifespan.context}*`]);
+  if (m.lifespan) specs.push(['Élettartam', `≈\u00a0${range(m.lifespan.minYears, m.lifespan.maxYears)}\u00a0év ${m.lifespan.context}*`]);
   return specs;
 }
 

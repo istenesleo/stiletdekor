@@ -19,6 +19,8 @@ export interface OptionRowProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   rateUnit?: string;
   /** Gross amount for the current size and quantity, in forints. */
   amount?: number;
+  /** Text instead of an amount, e.g. "egyedi" (installation is priced at confirmation). */
+  amountText?: string;
 }
 
 /** A selectable option with its price preview: the unit rate and what it costs for the chosen size. */
@@ -29,6 +31,7 @@ export function OptionRow({
   rate,
   rateUnit,
   amount,
+  amountText,
   id,
   className,
   ...rest
@@ -46,10 +49,12 @@ export function OptionRow({
         {description && <span className="sd-optrow__desc">{description}</span>}
       </span>
       {' '}
-      {(rateText || amount !== undefined) && (
+      {(rateText || amount !== undefined || amountText) && (
         <span className="sd-optrow__price">
           {rateText && <span className="sd-optrow__rate">{rateText}</span>}{' '}
-          {amount !== undefined && <span className="sd-optrow__amount">{formatHuf(amount)}</span>}
+          {(amountText || amount !== undefined) && (
+            <span className="sd-optrow__amount">{amountText ?? formatHuf(amount ?? 0)}</span>
+          )}
         </span>
       )}
     </label>

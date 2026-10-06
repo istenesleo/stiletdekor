@@ -20,7 +20,7 @@ const materials = [
 describe('MaterialPicker', () => {
   it('names each radio by material and price; the data sheet is its description', () => {
     render(<MaterialPicker materials={materials} value="frontlit" onChange={vi.fn()} />);
-    const radio = screen.getByRole('radio', { name: 'Frontlit molinó 5 067 Ft/m²' }) as HTMLInputElement;
+    const radio = screen.getByRole('radio', { name: 'Frontlit molinó 5\u00a0067\u00a0Ft/m²' }) as HTMLInputElement;
     expect(radio.checked).toBe(true);
     expect(document.getElementById(radio.getAttribute('aria-describedby')!)?.textContent).toBe('Súly440 g/m²Felhasználáskül- és beltér');
     expect(screen.getByRole('radio', { name: /Hálós molinó/ }).hasAttribute('aria-describedby')).toBe(false);

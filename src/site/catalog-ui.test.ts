@@ -13,9 +13,9 @@ describe('materialOption', () => {
       unit: 'm2',
       texture: 'frontlit',
       specs: [
-        ['Súly', '440–510 g/m²'],
+        ['Súly', '440–510\u00a0g/m²'],
         ['Felhasználás', 'kül- és beltér'],
-        ['Élettartam', '≈ 1–3 év kültéren*'],
+        ['Élettartam', '≈\u00a01–3\u00a0év kültéren*'],
       ],
     });
   });
@@ -28,7 +28,7 @@ describe('materialOption', () => {
 
   it('prints thickness and indoor-only use for boards', () => {
     expect(materialSpecs(TABLA.materials.find((m) => m.id === 'pvc-3mm')!)).toEqual([
-      ['Vastagság', '3 mm'],
+      ['Vastagság', '3\u00a0mm'],
       ['Felhasználás', 'beltér'],
     ]);
   });

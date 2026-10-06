@@ -7,6 +7,7 @@ import {
   estimateOrderReadyDate,
   estimateReadyDate,
   formatHuDate,
+  formatReadyBy,
   hungarianPublicHolidays,
   isBusinessDay,
   isValidIsoDate,
@@ -227,6 +228,25 @@ describe('business days and holidays', () => {
     expect(nextBusinessDay('2026-10-22')).toBe('2026-10-26');
     expect(() => addBusinessDays('2026-10-05', -1)).toThrow(RangeError);
     expect(() => addBusinessDays('2026-10-05', 1.5)).toThrow(RangeError);
+  });
+});
+
+describe('formatReadyBy', () => {
+  it.each([
+    ['2026-10-01', 'október 1-jére, csütörtökre'],
+    ['2026-10-02', 'október 2-ára, péntekre'],
+    ['2026-10-10', 'október 10-ére, szombatra'],
+    ['2026-10-13', 'október 13-ára, keddre'],
+    ['2026-10-14', 'október 14-ére, szerdára'],
+    ['2026-10-20', 'október 20-ára, keddre'],
+    ['2026-10-21', 'október 21-ére, szerdára'],
+    ['2026-10-22', 'október 22-ére, csütörtökre'],
+    ['2026-10-26', 'október 26-ára, hétfőre'],
+    ['2026-10-30', 'október 30-ára, péntekre'],
+    ['2026-10-31', 'október 31-ére, szombatra'],
+    ['2026-11-01', 'november 1-jére, vasárnapra'],
+  ])('%s → "%s"', (iso, text) => {
+    expect(formatReadyBy(iso)).toBe(text);
   });
 });
 

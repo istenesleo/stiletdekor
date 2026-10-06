@@ -33,7 +33,9 @@ export interface FileListItem {
 
 /** "2,4 MB", "830 kB" (decimal units, like most operating systems). */
 export function formatFileSize(bytes: number): string {
-  return bytes >= 1_000_000 ? `${formatNumberHu(bytes / 1_000_000, 1)} MB` : `${formatNumberHu(Math.max(1, bytes / 1000), 0)} kB`;
+  return bytes >= 1_000_000
+    ? `${formatNumberHu(bytes / 1_000_000, 1)}\u00a0MB`
+    : `${formatNumberHu(Math.max(1, bytes / 1000), 0)}\u00a0kB`;
 }
 
 export interface FileListProps extends HTMLAttributes<HTMLUListElement> {

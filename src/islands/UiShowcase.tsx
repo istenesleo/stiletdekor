@@ -2,6 +2,7 @@ import type { SiteThemeId } from '@/site/themes';
 import { NavLink } from '@/ui';
 import { BasicSpecs } from './showcase/BasicSpecs';
 import { FormSpecs } from './showcase/FormSpecs';
+import { ShopSpecs } from './showcase/ShopSpecs';
 import './UiShowcase.css';
 
 interface ShowcaseProps {
@@ -12,6 +13,7 @@ interface ShowcaseProps {
 const GROUPS = [
   ['alapelemek', 'Alapelemek'],
   ['urlap', 'Űrlap'],
+  ['webshop', 'Webshop és rendelés'],
 ] as const;
 
 /** The UI library's specimen page: every component in its states, in the selected design direction. */
@@ -37,6 +39,7 @@ export default function UiShowcase({ theme, themes }: ShowcaseProps) {
       </nav>
       <BasicSpecs />
       <FormSpecs />
+      <ShopSpecs />
     </main>
   );
 }

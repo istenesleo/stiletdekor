@@ -1,0 +1,10 @@
+.sd-submit {
+  display: grid;
+  gap: var(--space-3);
+}
+.sd-submit__terms {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}

@@ -6,8 +6,8 @@ import { OptionRow } from './OptionRow';
 describe('OptionRow', () => {
   it('shows the unit rate and the amount for the chosen size', () => {
     const { container } = render(<OptionRow name="edge" label="Szegés + ringli" rate={445} rateUnit="fm" amount={2670} />);
-    expect(container.querySelector('.sd-optrow__rate')?.textContent).toBe('+445 Ft/fm');
-    expect(container.querySelector('.sd-optrow__amount')?.textContent).toBe('2 670 Ft');
+    expect(container.querySelector('.sd-optrow__rate')?.textContent).toBe('+445\u00a0Ft/fm');
+    expect(container.querySelector('.sd-optrow__amount')?.textContent).toBe('2\u00a0670\u00a0Ft');
   });
 
   it('says "felár nélkül" for a free option', () => {

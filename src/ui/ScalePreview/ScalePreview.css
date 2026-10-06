@@ -1,0 +1,67 @@
+.sd-scale {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  .sd-scale {
+    aspect-ratio: 4 / 3;
+  }
+}
+.sd-scale__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.sd-scale__floor {
+  stroke: var(--color-line);
+}
+.sd-scale__person {
+  fill: color-mix(in oklab, var(--color-text) 20%, var(--color-surface));
+}
+.sd-scale__board {
+  fill: color-mix(in oklab, var(--color-text) 90%, var(--color-surface));
+  stroke: var(--color-line);
+}
+.sd-scale__stand {
+  fill: color-mix(in oklab, var(--color-text) 45%, var(--color-surface));
+}
+.sd-scale__ph {
+  fill: color-mix(in oklab, var(--color-surface) 70%, var(--color-text));
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+.sd-scale__mark {
+  fill: var(--color-surface);
+  stroke: color-mix(in oklab, var(--color-text) 55%, var(--color-surface));
+}
+.sd-scale__dim {
+  stroke: var(--color-measure);
+  fill: var(--color-measure);
+}
+.sd-scale__dim text {
+  stroke: none;
+  font-family: var(--font-mono);
+}
+.sd-scale__dim .sd-scale__dim-bg {
+  fill: var(--color-surface);
+  stroke: none;
+}
+.sd-scale__note {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-2);
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}

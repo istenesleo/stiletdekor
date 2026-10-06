@@ -5,12 +5,12 @@ import { FileList, formatFileSize } from './FileList';
 
 describe('formatFileSize', () => {
   it.each([
-    [512, '1 kB'],
-    [830_000, '830 kB'],
-    [2_400_000, '2,4 MB'],
-    [148_000_000, '148 MB'],
+    [512, '1\u00a0kB'],
+    [830_000, '830\u00a0kB'],
+    [2_400_000, '2,4\u00a0MB'],
+    [148_000_000, '148\u00a0MB'],
   ])('%d bytes → %s', (bytes, text) => {
-    expect(formatFileSize(bytes)).toBe(text.replace(/ (?=[kM]B)/, ' '));
+    expect(formatFileSize(bytes)).toBe(text);
   });
 });
 

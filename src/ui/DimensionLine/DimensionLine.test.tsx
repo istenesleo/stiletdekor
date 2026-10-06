@@ -6,7 +6,7 @@ import { DimensionLine } from './DimensionLine';
 describe('DimensionLine', () => {
   it('prints millimetres with Hungarian grouping and names itself for screen readers', () => {
     render(<DimensionLine valueMm={4200} />);
-    expect(screen.getByRole('img', { name: '4 200 mm' })).toBeTruthy();
+    expect(screen.getByRole('img', { name: '4\u00a0200\u00a0mm' })).toBeTruthy();
   });
 
   it('can carry its own label, stand vertically and be decorative', () => {

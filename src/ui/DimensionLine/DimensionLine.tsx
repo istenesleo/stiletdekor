@@ -27,7 +27,7 @@ export function DimensionLine({
   className,
   ...rest
 }: DimensionLineProps) {
-  const text = label ?? (valueMm !== undefined ? `${formatNumberHu(valueMm, 0)} mm` : '');
+  const text = label ?? (valueMm !== undefined ? `${formatNumberHu(valueMm, 0)}\u00a0mm` : '');
   return (
     <div
       className={cx('sd-dim', `sd-dim--${orientation}`, className)}
