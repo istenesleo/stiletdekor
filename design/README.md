@@ -19,9 +19,12 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
    kiindulásnak a `DESIGN.md`-t.
 3. **Iteráció.** Sorrend: alapok (szín, betű, skálák) → P1 komponensek → oldalsablonok (főoldal, termék
    konfigurátorral, kosár és pénztár, ajánlatkérő).
-4. **Vissza a kódba.** A Claude Code `/design-sync` parancsa komponensenként szinkronizálja a kész design
-   systemet a repóval. A véglegesített token-értékek a `tokens/stilet.tokens.json`-be kerülnek, utána
-   `npm run tokens`, és a teszt (`npm test`) ellenőrzi a kontrasztot.
+4. **A kód a forrás.** A komponensek a `src/ui/`-ban élnek (React, csak tokenekből), a dev oldalakon a
+   `/komponensek` címen láthatók minden állapotban. A Claude Code `/design-sync` parancsa **innen tölti fel**
+   őket a Claude Design-ba, hogy az ott készülő tervek a valódi komponensekből épüljenek; visszafelé nem
+   szinkronizál. Ami a Claude Design-ban születik (új token-érték, komponensváltozás), azt a kódban vezetjük
+   át: token-érték a `tokens/stilet.tokens.json`-be vagy egy témába, utána `npm run tokens`, és a teszt
+   (`npm test`) ellenőrzi a kontrasztot; komponens a `src/ui/`-ba. Utána újra `/design-sync`.
 
 ## Szabályok
 

@@ -1,0 +1,45 @@
+.sd-notice {
+  --sd-notice-tone: var(--color-text-muted);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-inline-start: 3px solid var(--sd-notice-tone);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.sd-notice > .sd-icon {
+  margin-top: 0.05em;
+  color: var(--sd-notice-tone);
+}
+.sd-notice--success {
+  --sd-notice-tone: var(--color-signal-ok);
+}
+.sd-notice--warning {
+  --sd-notice-tone: var(--color-signal-warn);
+}
+.sd-notice--error {
+  --sd-notice-tone: var(--color-signal-bad);
+}
+.sd-notice__title {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+.sd-notice__text {
+  margin: 0;
+  color: color-mix(in oklab, var(--color-text) 85%, var(--color-bg));
+}
+.sd-notice__title + .sd-notice__text {
+  margin-top: var(--space-1);
+}
+.sd-notice__text > :first-child {
+  margin-top: 0;
+}
+.sd-notice__text > :last-child {
+  margin-bottom: 0;
+}

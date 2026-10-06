@@ -6,8 +6,9 @@
  *   design/tokens/themes/<name>.tokens.json   a design direction: overrides some base tokens
  *   src/styles/tokens.css                     generated output, never edited by hand
  *
- * The CSS holds the base values on :root and each theme's overrides on :root[data-theme="<name>"]; the
- * site sets data-theme from the SITE_THEME var, so one build can run as either direction.
+ * The CSS holds the base values on :root and each theme's overrides on [data-theme="<name>"]; the site
+ * sets data-theme on <html> from the SITE_THEME var, so one build can run as either direction. Any other
+ * element with data-theme (the UI library's ThemeRoot) re-themes its subtree on top of the base.
  *
  * Usage:
  *   node scripts/build-tokens.mjs            write src/styles/tokens.css
@@ -97,7 +98,9 @@ export function formatValue(value, type, known, where = 'token') {
 
 /**
  * Builds the CSS file: every base token on :root, then for each theme (sorted by name) only the tokens it
- * overrides, on :root[data-theme="<name>"]. A theme token takes its $type from the base token it replaces.
+ * overrides, on :root[data-theme="<name>"] and [data-theme="<name>"]. A theme token takes its $type from the
+ * base token it replaces. A themed element inherits the base for everything its theme does not override, so
+ * two different themes should not be nested.
  */
 export function buildCss(tree, { themes = [] } = {}) {
   const tokens = collectTokens(tree);
@@ -108,6 +111,7 @@ export function buildCss(tree, { themes = [] } = {}) {
     ' * Do not edit by hand: change the JSON, then run `npm run tokens`.',
     ' * Every pink on the site must come from --color-brand.',
     ' * <html data-theme="…"> (from the SITE_THEME var) selects a design direction; without it the base applies.',
+    ' * data-theme on another element (the UI ThemeRoot) re-themes that subtree.',
     ' */',
     ':root {',
     '  color-scheme: dark;',
@@ -126,7 +130,7 @@ export function buildCss(tree, { themes = [] } = {}) {
     const own = new Set(collectTokens(overrides).map((t) => t.path.join('.')));
     const merged = collectTokens(mergeTokens(tree, overrides));
     const mergedKnown = new Set(merged.map((t) => t.path.join('.')));
-    lines.push('', `:root[data-theme="${name}"] {`);
+    lines.push('', `:root[data-theme="${name}"],`, `[data-theme="${name}"] {`);
     for (const t of merged) {
       const key = t.path.join('.');
       if (own.has(key)) lines.push(`  --${t.path.join('-')}: ${formatValue(t.value, t.type, mergedKnown, `${name}: ${key}`)};`);

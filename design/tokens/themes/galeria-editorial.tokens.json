@@ -21,7 +21,12 @@
   "font": {
     "display": { "$value": ["Bodoni Moda", "Bodoni 72", "Didot", "Times New Roman", "serif"] },
     "body": { "$value": ["Schibsted Grotesk", "Helvetica Neue", "Arial", "sans-serif"] },
-    "mono": { "$value": ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "Consolas", "monospace"] }
+    "mono": { "$value": ["IBM Plex Mono", "ui-monospace", "SF Mono", "Menlo", "Consolas", "monospace"] },
+    "variation-text": { "$value": "\"opsz\" 12" },
+    "variation-display": { "$value": "\"opsz\" 20" }
+  },
+  "weight": {
+    "display": { "$value": 400 }
   },
   "text": {
     "md": { "$value": "1.0625rem" },

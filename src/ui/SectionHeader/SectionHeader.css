@@ -1,0 +1,27 @@
+.sd-sechead {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 46rem;
+  margin-bottom: var(--space-6);
+}
+.sd-sechead > * {
+  margin: 0;
+}
+.sd-sechead__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-display);
+  font-variation-settings: var(--font-variation-display);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+.sd-sechead--sm .sd-sechead__title {
+  font-size: var(--text-xl);
+  font-variation-settings: var(--font-variation-text);
+  line-height: var(--leading-snug);
+}
+.sd-sechead__lead {
+  color: color-mix(in oklab, var(--color-text) 80%, var(--color-bg));
+  font-size: var(--text-lg);
+  text-wrap: pretty;
+}

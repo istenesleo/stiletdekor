@@ -1,0 +1,68 @@
+.sd-iconbtn {
+  --sd-iconbtn-size: 44px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--sd-iconbtn-size);
+  height: var(--sd-iconbtn-size);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-iconbtn:hover {
+  background: var(--color-surface);
+  border-color: var(--color-text-muted);
+}
+.sd-iconbtn:active {
+  background: var(--color-surface-raised);
+}
+.sd-iconbtn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.sd-iconbtn[aria-pressed="true"] {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+.sd-iconbtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.sd-iconbtn--plain {
+  border-color: transparent;
+}
+.sd-iconbtn--sm {
+  --sd-iconbtn-size: 36px;
+}
+.sd-iconbtn .sd-icon {
+  width: 22px;
+  height: 22px;
+}
+.sd-iconbtn--sm .sd-icon {
+  width: 18px;
+  height: 18px;
+}
+.sd-iconbtn__count {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  line-height: 20px;
+  text-align: center;
+}

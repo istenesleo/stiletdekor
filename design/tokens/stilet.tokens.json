@@ -37,6 +37,16 @@
     "mono": {
       "$value": ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
       "$description": "Prices, sizes, measurements, technical captions. Use tabular numbers."
+    },
+    "variation-text": {
+      "$type": "string",
+      "$value": "normal",
+      "$description": "font-variation-settings for all text. A direction pins axes here (Bodoni Moda: \"opsz\" 12, so its hairlines survive on 1x screens)."
+    },
+    "variation-display": {
+      "$type": "string",
+      "$value": "normal",
+      "$description": "font-variation-settings for large display type: section titles, hero, totals (Bodoni Moda: \"opsz\" 20)."
     }
   },
   "weight": {
@@ -44,7 +54,8 @@
     "regular": { "$value": 400 },
     "medium": { "$value": 500 },
     "semibold": { "$value": 600 },
-    "bold": { "$value": 700 }
+    "bold": { "$value": 700 },
+    "display": { "$value": 700, "$description": "Headings in the display face. Each direction sets its own: Big Shoulders 800, Bodoni 400." }
   },
   "text": {
     "$type": "dimension",

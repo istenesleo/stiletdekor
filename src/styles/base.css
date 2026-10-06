@@ -20,6 +20,7 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-md);
   line-height: var(--leading-body);
+  font-variation-settings: var(--font-variation-text);
 }
 
 a {

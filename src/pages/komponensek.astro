@@ -1,0 +1,18 @@
+---
+import { env } from 'cloudflare:workers';
+import UiShowcase from '@/islands/UiShowcase';
+import Base from '@/layouts/Base.astro';
+import { SITE_THEMES, siteThemeOf } from '@/site/themes';
+
+// Specimen page of the UI library (src/ui): every component in its states, in either design direction
+// (?tema=neon-muhely or ?tema=galeria-editorial). Dev sites only; production answers 404.
+if (env.PUBLIC_SITE_ENV === 'production') {
+  return new Response(null, { status: 404 });
+}
+const requested = Astro.url.searchParams.get('tema');
+const theme = SITE_THEMES.find((t) => t.id === requested) ?? siteThemeOf(env.SITE_THEME);
+---
+
+<Base title="Komponensek – Stilet UI" description="A Stilet UI komponensei minden állapotban." theme={theme.id}>
+  <UiShowcase client:load theme={theme.id} themes={SITE_THEMES.map(({ id, label }) => ({ id, label }))} />
+</Base>

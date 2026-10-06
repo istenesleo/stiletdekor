@@ -1,0 +1,17 @@
+.sd-divider {
+  margin: var(--space-5) 0;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+.sd-divider--labelled {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-top: 0;
+}
+.sd-divider--labelled::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-line);
+}

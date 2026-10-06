@@ -3,6 +3,7 @@
  * Do not edit by hand: change the JSON, then run `npm run tokens`.
  * Every pink on the site must come from --color-brand.
  * <html data-theme="…"> (from the SITE_THEME var) selects a design direction; without it the base applies.
+ * data-theme on another element (the UI ThemeRoot) re-themes that subtree.
  */
 :root {
   color-scheme: dark;
@@ -26,12 +27,15 @@
   --font-display: system-ui, -apple-system, "Segoe UI", "Roboto", "Helvetica Neue", "Arial", sans-serif;
   --font-body: system-ui, -apple-system, "Segoe UI", "Roboto", "Helvetica Neue", "Arial", sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+  --font-variation-text: normal;
+  --font-variation-display: normal;
 
   /* weight */
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
+  --weight-display: 700;
 
   /* text */
   --text-xs: 0.75rem;
@@ -83,7 +87,8 @@
   --effect-brand-glow: none;
 }
 
-:root[data-theme="galeria-editorial"] {
+:root[data-theme="galeria-editorial"],
+[data-theme="galeria-editorial"] {
   --color-bg: #0b0b0a;
   --color-surface: #151513;
   --color-surface-raised: color-mix(in oklab, var(--color-surface) 88%, var(--color-text));
@@ -97,6 +102,9 @@
   --font-display: "Bodoni Moda", "Bodoni 72", "Didot", "Times New Roman", serif;
   --font-body: "Schibsted Grotesk", "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --font-variation-text: "opsz" 12;
+  --font-variation-display: "opsz" 20;
+  --weight-display: 400;
   --text-md: 1.0625rem;
   --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
   --text-xl: clamp(1.5rem, 1.25rem + 1vw, 2.125rem);
@@ -109,7 +117,8 @@
   --layout-section-gap: clamp(88px, 11vw, 168px);
 }
 
-:root[data-theme="neon-muhely"] {
+:root[data-theme="neon-muhely"],
+[data-theme="neon-muhely"] {
   --color-bg: #0a0a0c;
   --color-surface: color-mix(in oklab, var(--color-bg) 94%, var(--color-text));
   --color-surface-raised: color-mix(in oklab, var(--color-bg) 89%, var(--color-text));
@@ -123,6 +132,7 @@
   --font-display: "Big Shoulders Display", "Oswald", "Arial Narrow", "Impact", sans-serif;
   --font-body: "Archivo", "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+  --weight-display: 800;
   --radius-md: 2px;
   --effect-brand-glow: 0 0 0 1px color-mix(in oklab, var(--color-brand) 55%, transparent), 0 0 22px -4px color-mix(in oklab, var(--color-brand) 75%, transparent);
 }

@@ -78,7 +78,7 @@ describe('buildCss', () => {
     const css = buildCss(base, { themes: [{ name: 'b', tree: { font: { body: { $value: ['Bodoni Moda', 'serif'] } } } }] });
     expect(css).toContain(':root {\n  color-scheme: dark;');
     expect(css).toContain('  --color-focus: var(--color-bg);');
-    expect(css).toContain(':root[data-theme="b"] {\n  --font-body: "Bodoni Moda", serif;\n}');
+    expect(css).toContain(':root[data-theme="b"],\n[data-theme="b"] {\n  --font-body: "Bodoni Moda", serif;\n}');
   });
 
   it('sorts themes by name and rejects names that cannot be an attribute value', () => {
@@ -118,7 +118,7 @@ describe('the repository tokens', () => {
   it('tokens.css carries both design directions', () => {
     expect(loadThemes().map((t) => t.name)).toEqual(['galeria-editorial', 'neon-muhely']);
     const css = fs.readFileSync(CSS_FILE, 'utf8');
-    for (const name of themes) expect(css).toContain(`:root[data-theme="${name}"] {`);
+    for (const name of themes) expect(css).toContain(`:root[data-theme="${name}"],\n[data-theme="${name}"] {`);
   });
 
   it.each([['base'], ...themes.map((t) => [t])])('%s keeps readable contrast', (name) => {

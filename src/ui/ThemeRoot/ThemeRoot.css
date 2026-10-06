@@ -1,0 +1,9 @@
+.sd-theme {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  font-variation-settings: var(--font-variation-text);
+  color-scheme: dark;
+}

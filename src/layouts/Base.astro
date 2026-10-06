@@ -1,6 +1,6 @@
 ---
 import { env } from 'cloudflare:workers';
-import { siteThemeOf } from '@/site/themes';
+import { type SiteThemeId, siteThemeOf } from '@/site/themes';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
 
@@ -8,15 +8,17 @@ interface Props {
   /** Full document title, e.g. "Molinó rendelés – Stilet Dekor". */
   title: string;
   description: string;
+  /** Design direction for this page only (the component specimen page); otherwise the deployment's SITE_THEME. */
+  theme?: SiteThemeId;
 }
 
-const { title, description } = Astro.props;
+const { title, description, theme: themeOverride } = Astro.props;
 
 // Only the production deployment may be indexed; dev and branch previews stay hidden.
 const indexable = env.PUBLIC_SITE_ENV === 'production';
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 // Design direction of this deployment (SITE_THEME var): selects the token set in tokens.css and its fonts.
-const theme = siteThemeOf(env.SITE_THEME);
+const theme = siteThemeOf(themeOverride ?? env.SITE_THEME);
 ---
 
 <!doctype html>

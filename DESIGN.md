@@ -82,8 +82,8 @@ A megrendelőnek **mindkét irány tetszik**. Mindkettő kattintható látványt
 | Csoport | Tartalom |
 |---|---|
 | `color` | `brand`, `on-brand`, `bg`, `surface`, `surface-raised`, `line`, `text`, `text-muted`, `focus`, `measure`, `signal.ok/warn/bad` |
-| `font` | `display`, `body`, `mono` (Google Fonts, Latin Extended) |
-| `weight`, `text`, `leading`, `tracking` | betűvastagság, típusskála (`xs`…`hero`, a nagyok fluidak), sorköz, nagybetűs ritkítás |
+| `font` | `display`, `body`, `mono` (Google Fonts, Latin Extended); `variation-text`, `variation-display` (`font-variation-settings`, pl. a Bodoni Moda rögzített `opsz` értéke) |
+| `weight`, `text`, `leading`, `tracking` | betűvastagság (`display`: a címbetű vastagsága irányonként), típusskála (`xs`…`hero`, a nagyok fluidak), sorköz, nagybetűs ritkítás |
 | `space`, `radius`, `layout` | térköz-skála, sarkok, margó (`gutter`), konténer, fejléc, szakaszköz |
 | `motion`, `effect` | időtartamok, görbe, a márkaelemek fénye (`brand-glow`) |
 
@@ -113,9 +113,11 @@ Az első kör (P1) a webshop konfigurátora és a rendelés útja, mert ez hozza
 | `design/README.md` | a mappa és a Claude Design munkafolyamat |
 | `src/styles/tokens.css` | generált CSS-változók |
 | `src/styles/base.css` | elemszintű alapstílusok (csak tokenekből) |
+| `src/ui/` | a komponenskönyvtár (React, csak tokenekből); a dev oldalakon: `/komponensek` |
 | `docs/brief.md` | üzleti és tartalmi brief, rendelési folyamat |
 
 ## 9. Munkafolyamat
 
-A lépések a [`design/README.md`](design/README.md)-ben vannak: repó bekötése a Claude Design-ba,
-iteráció, majd visszahozás a kódba a Claude Code `/design-sync` parancsával.
+A lépések a [`design/README.md`](design/README.md)-ben vannak. A komponensek a kódban élnek (`src/ui/`); a
+Claude Code `/design-sync` parancsa onnan tölti fel őket a Claude Design-ba. A Claude Design-ban hozott
+döntéseket a kódban vezetjük át, utána újra szinkronizálunk.
