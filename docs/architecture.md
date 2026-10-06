@@ -21,6 +21,8 @@ src/
     pricing.ts     # árkalkuláció: m², kerület, opciók, mennyiségi kedvezmény, expressz, minimum, ÁFA
     leadtime.ts    # elkészülési dátum: munkanapok, 12:00-s határidő, Europe/Budapest, magyar ünnepnapok
     preflight.ts   # DPI-becslés, arányeltérés
+    artwork/       # méretfelismerés a feltöltött fájlból: PDF/AI dobozok, EPS, SVG, raszter-DPI, fájlnév-jelzések,
+                   # szabványformátum, azonos felületek csoportosítása (docs/brief.md 8–9. fejezet)
     money.ts       # Ft formázás (hu-HU), kerekítés
     schemas.ts     # Zod sémák: konfiguráció, kosártétel, rendelés, ajánlatkérés
   server/          # Workers-specifikus: D1 lekérdezések, R2 feltöltés, azonosítók, értesítések (interfész)

@@ -5,3 +5,4 @@ export * from './pricing';
 export * from './leadtime';
 export * from './preflight';
 export * from './schemas';
+export * from './artwork';

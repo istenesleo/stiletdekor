@@ -201,8 +201,10 @@ A mezők ezután is szerkeszthetők.
    Illustrator-fájlok). Több oldal vagy rajztábla = több felület (9. fejezet). Pontosság: 0,1 mm.
 2. **EPS:** %%HiResBoundingBox, ha nincs, %%BoundingBox (a bináris, DOS-fejléces EPS-t is).
 3. **SVG:** width/height mértékegységgel (mm, cm, in, pt). Ha csak viewBox van, nem töltünk ki automatikusan.
-4. **Raszterképek (TIFF, PSD, JPG, PNG):** pixelméret ÷ a fájlba írt felbontás. Ha a felbontás hiányzik vagy
-   72 DPI (webes alapérték), nem töltünk ki automatikusan, csak a DPI-ellenőrzés fut.
+4. **Raszterképek (TIFF, PSD, JPG, PNG):** pixelméret ÷ a fájlba írt felbontás. Ha a felbontás hiányzik, vagy
+   72/96 DPI (programok alapértéke), nem töltünk ki automatikusan, csak a DPI-ellenőrzés fut. A JPG fejléce
+   (JFIF) csak egész DPI-t tárol; ha a Photoshop- vagy Exif-adat ezzel egyezik, annak törtrészét használjuk
+   (pl. 84,67 DPI-vel pontosan 600 mm, nem 597,6 mm). Ha ellentmond a JFIF-nek, elavultnak tekintjük.
 5. **CorelDRAW (.cdr):** fogadjuk, de méretet nem olvasunk ki belőle.
 
 **Szabályok:**
