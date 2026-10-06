@@ -297,5 +297,7 @@ szöveget jogász nézze át.
 - Hány nap után záruljon le automatikusan a visszaigazolt, de be nem fizetett rendelés? (Javaslat: 8 nap,
   indoklás a 10. fejezetben.)
 - Design-irány: A, B vagy keverék. Egyelőre mindkettő marad, saját dev oldallal (2026-10-06).
+- A kezdőlapon túl sok a szöveg (A: 1 449, B: 1 298 szó betöltéskor). Átnézve, javaslattal:
+  [`szovegmennyiseg.md`](szovegmennyiseg.md). A rövidítésről később döntünk.
 - Valódi mintafájlok a méretfelismerés ellenőrzéséhez (nem kötelező): bármilyen korábbi munka nyomdai fájlja,
   ügyféladat nélkül is jó. A kalkulátor a szintetikus tesztfájlokkal már működik (8. fejezet).
