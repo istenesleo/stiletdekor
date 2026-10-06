@@ -59,9 +59,10 @@ A Cloudflare a GitHub-repóból automatikusan buildel és telepít. Beállítás
 - Minden más ág → saját Preview URL. Az előnézetek a `wrangler.jsonc` `previews` blokkját használják:
   ugyanazt a dev adatbázist, csak tesztadattal.
 
-**Láthatóság:** minden oldal `noindex`, a keresők nem indexelik. A dev oldal és a Preview URL-ek viszont
-bárki számára elérhetők, aki ismeri a linket. Ha ez nem kívánatos, a Worker beállításainál Cloudflare
-Access-szel védhetők.
+**Láthatóság:** ami nem az éles oldal, azt a keresők nem indexelik: a `robots.txt` mindent tilt, a válaszokban
+`X-Robots-Tag: noindex, nofollow` fejléc és `noindex` meta van (`src/server/site-policy.ts`, `PUBLIC_SITE_ENV`
+alapján). A dev oldal és a Preview URL-ek viszont bárki számára elérhetők, aki ismeri a linket. Ha ez nem
+kívánatos, a Worker beállításainál Cloudflare Access-szel védhetők.
 
 ### Erőforrások
 
