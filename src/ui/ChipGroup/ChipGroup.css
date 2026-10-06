@@ -1,0 +1,48 @@
+.sd-chips {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.sd-chips__legend {
+  margin-bottom: var(--space-3);
+  padding: 0;
+}
+.sd-chips__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.sd-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-chip:hover {
+  border-color: var(--color-text-muted);
+}
+input:checked + .sd-chip {
+  border-color: var(--color-brand);
+  background: color-mix(in oklab, var(--color-brand) 14%, transparent);
+}
+input:focus-visible + .sd-chip {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+input:disabled + .sd-chip {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

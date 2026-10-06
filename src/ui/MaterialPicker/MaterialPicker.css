@@ -1,0 +1,173 @@
+.sd-mats {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.sd-mats__legend {
+  margin-bottom: var(--space-3);
+  padding: 0;
+}
+.sd-mats__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13.5rem), 1fr));
+  gap: var(--space-3);
+}
+.sd-mat {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-mat:hover {
+  border-color: var(--color-text-muted);
+}
+.sd-mat:has(input:checked) {
+  border-color: var(--color-brand);
+  background: color-mix(in oklab, var(--color-brand) 6%, var(--color-surface));
+}
+.sd-mat:has(input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.sd-mat:has(input:disabled) {
+  opacity: 0.45;
+}
+.sd-mat__main {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: var(--space-3);
+  cursor: pointer;
+}
+/* The whole card selects the material, not only the label's text. */
+.sd-mat__main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.sd-mat:has(input:disabled) .sd-mat__main {
+  cursor: not-allowed;
+}
+.sd-mat__check {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  place-items: center;
+}
+.sd-mat__check .sd-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+}
+.sd-mat:has(input:checked) .sd-mat__check {
+  display: grid;
+}
+.sd-mat__head {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  min-width: 0;
+  padding-inline-end: var(--space-5);
+}
+.sd-mat__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+}
+.sd-mat__price {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.sd-mat__specs {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--color-line);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+.sd-mat__specs > div {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, auto) minmax(0, 1fr);
+  gap: var(--space-3);
+}
+.sd-mat__specs dt {
+  color: var(--color-text-muted);
+}
+.sd-mat__specs dd {
+  margin: 0;
+}
+
+/* Material swatches: decorative textures drawn from the tokens. */
+.sd-swatch {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  --sd-light: color-mix(in oklab, var(--color-text) 88%, var(--color-bg));
+  --sd-mid: color-mix(in oklab, var(--color-text) 62%, var(--color-bg));
+  --sd-dark: color-mix(in oklab, var(--color-text) 30%, var(--color-bg));
+  background: var(--sd-light);
+}
+.sd-swatch--frontlit {
+  background: linear-gradient(135deg, var(--sd-light) 0 55%, var(--sd-mid) 100%);
+}
+.sd-swatch--mesh {
+  background:
+    radial-gradient(circle, var(--color-bg) 1.3px, transparent 1.6px) 0 0 / 6px 6px,
+    var(--sd-light);
+}
+.sd-swatch--blockout {
+  background: linear-gradient(var(--sd-light) 0 45%, var(--sd-dark) 45% 55%, var(--sd-light) 55%);
+}
+.sd-swatch--vinyl {
+  background: linear-gradient(120deg, var(--sd-light) 0 40%, var(--color-text) 48%, var(--sd-light) 56% 100%);
+}
+.sd-swatch--perforated {
+  background:
+    radial-gradient(circle, var(--sd-dark) 1.6px, transparent 1.9px) 0 0 / 5px 5px,
+    var(--sd-light);
+}
+.sd-swatch--paper {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--sd-mid) 25%, transparent) 3px 4px),
+    var(--sd-light);
+}
+.sd-swatch--foam {
+  background: var(--sd-light);
+  box-shadow: inset 0 -6px 0 var(--sd-mid);
+}
+.sd-swatch--dibond {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 1px, color-mix(in oklab, var(--color-measure) 30%, transparent) 1px 2px),
+    linear-gradient(90deg, var(--sd-mid), var(--sd-light), var(--sd-mid));
+}
+.sd-swatch--plexi {
+  background: linear-gradient(135deg, color-mix(in oklab, var(--color-text) 35%, transparent), transparent 60%), var(--color-bg);
+}
+.sd-swatch--canvas {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 2px, color-mix(in oklab, var(--sd-mid) 45%, transparent) 2px 3px),
+    repeating-linear-gradient(90deg, transparent 0 2px, color-mix(in oklab, var(--sd-mid) 45%, transparent) 2px 3px),
+    var(--sd-light);
+}
+.sd-swatch--textile {
+  background:
+    repeating-linear-gradient(45deg, transparent 0 2px, color-mix(in oklab, var(--sd-mid) 35%, transparent) 2px 3px),
+    var(--sd-light);
+}

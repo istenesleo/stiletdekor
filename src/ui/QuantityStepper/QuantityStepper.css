@@ -1,0 +1,47 @@
+.sd-qty {
+  display: inline-grid;
+  grid-template-columns: 44px minmax(3.5rem, 5rem) 44px;
+  align-items: stretch;
+}
+.sd-qty .sd-input {
+  border-radius: 0;
+  border-inline: 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.sd-qty__btn {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.sd-qty__btn:first-child {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.sd-qty__btn:last-child {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.sd-qty__btn:hover:not(:disabled) {
+  background: var(--color-surface);
+}
+.sd-qty__btn:focus-visible {
+  position: relative;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.sd-qty__btn:disabled {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sd-qty__btn .sd-icon {
+  width: 18px;
+  height: 18px;
+}

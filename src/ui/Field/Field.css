@@ -1,0 +1,73 @@
+.sd-field {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.sd-field__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
+}
+.sd-field__req {
+  margin-inline-start: 0.2em;
+  color: var(--color-brand);
+}
+.sd-field__help {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+.sd-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--color-signal-bad);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+}
+.sd-field__error .sd-icon {
+  margin-top: 0.05em;
+}
+
+/* Text inputs share one look: TextField, UnitField, QuantityStepper. */
+.sd-input {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-md);
+  line-height: 1.3;
+  transition: border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-input::placeholder {
+  color: color-mix(in oklab, var(--color-text-muted) 75%, var(--color-surface));
+  opacity: 1;
+}
+.sd-input:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--color-line) 45%, var(--color-text-muted));
+}
+.sd-input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.sd-input[aria-invalid="true"] {
+  border-color: var(--color-signal-bad);
+}
+.sd-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+textarea.sd-input {
+  min-height: 7rem;
+  padding-block: var(--space-2);
+  line-height: var(--leading-body);
+  resize: vertical;
+}

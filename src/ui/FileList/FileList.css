@@ -1,0 +1,58 @@
+.sd-files {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-file {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+.sd-file__thumb {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 44px;
+  border: 1px solid var(--color-line);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  overflow: hidden;
+}
+.sd-file__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sd-file__body {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.sd-file__name {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sd-file__meta {
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+.sd-file__status {
+  justify-self: start;
+}
+.sd-file__end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}

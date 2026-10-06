@@ -1,0 +1,82 @@
+/* Shared tick visual for Checkbox, OptionRow and the like: the native input is hidden, this span follows it. */
+.sd-tick {
+  position: relative;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 0.1em;
+  border: 1.5px solid var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-on-brand);
+  transition:
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    border-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-tick--radio {
+  border-radius: 50%;
+}
+.sd-tick .sd-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+  opacity: 0;
+}
+input:checked + .sd-tick {
+  border-color: var(--color-brand);
+  background: var(--color-brand);
+}
+input:checked + .sd-tick .sd-icon {
+  opacity: 1;
+}
+input:checked + .sd-tick--radio {
+  background: var(--color-bg);
+}
+input:checked + .sd-tick--radio::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-brand);
+}
+input:focus-visible + .sd-tick {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+input[aria-invalid="true"] + .sd-tick {
+  border-color: var(--color-signal-bad);
+}
+input:disabled + .sd-tick {
+  opacity: 0.45;
+}
+
+.sd-checkbox {
+  display: grid;
+  gap: var(--space-2);
+}
+.sd-checkbox__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+.sd-checkbox__row:has(input:disabled) {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+.sd-checkbox__label {
+  font-size: var(--text-md);
+  line-height: 1.4;
+}
+.sd-checkbox__desc {
+  margin: calc(-1 * var(--space-1)) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+.sd-checkbox__desc,
+.sd-checkbox .sd-field__error {
+  margin-inline-start: calc(20px + var(--space-3));
+}

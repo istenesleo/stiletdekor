@@ -1,0 +1,74 @@
+.sd-drop {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  border: 1.5px dashed var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-align: center;
+  transition:
+    border-color var(--motion-duration-fast) var(--motion-easing-standard),
+    background-color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-drop__icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-muted);
+}
+.sd-drop__title {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+.sd-drop__hint {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+.sd-drop__btn {
+  cursor: pointer;
+}
+.sd-drop input:focus-visible + .sd-drop__btn {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.sd-drop[data-state="dragging"] {
+  border-color: var(--color-brand);
+  background: color-mix(in oklab, var(--color-brand) 8%, var(--color-surface));
+}
+.sd-drop[data-state="dragging"] .sd-drop__icon {
+  color: var(--color-brand);
+}
+.sd-drop[data-state="error"] {
+  border-color: var(--color-signal-bad);
+}
+.sd-drop[data-state="disabled"] {
+  opacity: 0.5;
+}
+.sd-drop__progress {
+  display: grid;
+  gap: var(--space-2);
+  width: min(100%, 22rem);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.sd-drop__bar {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-line);
+  overflow: hidden;
+}
+.sd-drop__bar > span {
+  display: block;
+  height: 100%;
+  background: var(--color-brand);
+  transition: width var(--motion-duration-base) var(--motion-easing-standard);
+}
+.sd-drop .sd-field__error {
+  justify-content: center;
+}
