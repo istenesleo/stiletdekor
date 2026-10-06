@@ -1,12 +1,24 @@
 import type { ReactNode } from 'react';
 
+interface SpecProps {
+  id?: string;
+  title: string;
+  desc?: string;
+  /** Wider cells. */
+  wide?: boolean;
+  /** One cell per row, at full width (page-wide components: header, footer). */
+  full?: boolean;
+  children: ReactNode;
+}
+
 /** One component on the specimen page: a title, an optional note and a grid of cells. */
-export function Spec({ id, title, desc, wide, children }: { id?: string; title: string; desc?: string; wide?: boolean; children: ReactNode }) {
+export function Spec({ id, title, desc, wide, full, children }: SpecProps) {
+  const grid = full ? 'uis-grid uis-grid--full' : wide ? 'uis-grid uis-grid--wide' : 'uis-grid';
   return (
     <section className="uis-spec" id={id} aria-label={title}>
       <h2>{title}</h2>
       {desc && <p className="uis-desc">{desc}</p>}
-      <div className={wide ? 'uis-grid uis-grid--wide' : 'uis-grid'}>{children}</div>
+      <div className={grid}>{children}</div>
     </section>
   );
 }

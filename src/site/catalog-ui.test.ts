@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { MATRICA, MOLINO, TABLA } from '@/domain/catalog';
+import { MATRICA, MOLINO, QUOTE_TYPE_IDS, QUOTE_TYPES, TABLA } from '@/domain/catalog';
 import { grossOf } from '@/domain/pricing';
-import { materialOption, materialSpecs } from './catalog-ui';
+import { JOB_PICTOGRAMS } from '@/ui';
+import { jobTypeOption, materialOption, materialSpecs } from './catalog-ui';
 
 describe('materialOption', () => {
   it('turns a catalog material into a card with its gross price and data sheet', () => {
@@ -31,5 +32,19 @@ describe('materialOption', () => {
       ['Vastagság', '3\u00a0mm'],
       ['Felhasználás', 'beltér'],
     ]);
+  });
+});
+
+describe('jobTypeOption', () => {
+  it('turns a quote type into a job card', () => {
+    expect(jobTypeOption(QUOTE_TYPES[0])).toEqual({
+      id: 'autofoliazas',
+      name: 'Autófóliázás, flotta-dekor',
+      hint: 'Feliratok, részleges vagy teljes dekor egy járműre vagy egész flottára.',
+    });
+  });
+
+  it('has a pictogram for exactly the quote types', () => {
+    expect(Object.keys(JOB_PICTOGRAMS).sort()).toEqual([...QUOTE_TYPE_IDS].sort());
   });
 });

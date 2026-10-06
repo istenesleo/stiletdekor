@@ -1,0 +1,24 @@
+.sd-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: var(--weight-display);
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sd-wordmark:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+.sd-wordmark__mark {
+  width: 0.38em;
+  height: 0.38em;
+  border-radius: 50%;
+  background: var(--color-brand);
+  box-shadow: var(--effect-brand-glow);
+}

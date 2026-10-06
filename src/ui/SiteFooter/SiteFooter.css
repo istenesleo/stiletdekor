@@ -1,0 +1,97 @@
+.sd-footer {
+  /* The page gutter, or less when the footer itself is narrow (cqi resolves against the footer). */
+  --sd-footer-gutter: min(var(--layout-gutter), max(16px, 4cqi));
+  container-type: inline-size;
+  border-top: 1px solid var(--color-line);
+  color: var(--color-text);
+}
+.sd-footer__inner {
+  display: grid;
+  gap: var(--space-6);
+  max-width: calc(var(--layout-container) + 2 * var(--sd-footer-gutter));
+  margin-inline: auto;
+  padding: var(--space-7) var(--sd-footer-gutter) var(--space-6);
+}
+.sd-footer__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6) var(--space-5);
+}
+.sd-footer__brand {
+  flex: 2 1 18rem;
+  min-width: 0;
+}
+.sd-footer__brand .sd-wordmark {
+  font-size: var(--text-xl);
+}
+.sd-footer__tagline {
+  max-width: 36ch;
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+.sd-footer__col {
+  flex: 1 1 9.5rem;
+  min-width: 0;
+}
+.sd-footer__title {
+  margin: 0 0 var(--space-3);
+}
+.sd-footer address {
+  font-style: normal;
+}
+.sd-footer__col ul {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+.sd-footer a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-footer a:hover {
+  color: var(--color-brand);
+}
+.sd-footer a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.sd-footer__phone {
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.sd-footer__muted {
+  color: var(--color-text-muted);
+}
+.sd-footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+.sd-footer__base p {
+  margin: 0;
+}
+.sd-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-footer__base a {
+  color: var(--color-text-muted);
+}

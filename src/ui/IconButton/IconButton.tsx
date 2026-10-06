@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, Ref } from 'react';
 import '../base.css';
 import { cx } from '../cx';
 import { Icon, type IconName } from '../Icon/Icon';
@@ -14,8 +14,10 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   variant?: 'outlined' | 'plain';
   /** md: 44 × 44 px (default); sm: 36 × 36 px. */
   size?: 'sm' | 'md';
-  /** For toggles (e.g. the mobile menu): renders aria-pressed. */
+  /** For toggles (e.g. a filter): renders aria-pressed. A button that opens a panel uses aria-expanded instead. */
   pressed?: boolean;
+  /** The underlying button, e.g. to return focus to it. */
+  ref?: Ref<HTMLButtonElement>;
 }
 
 /** Square button with a single icon: cart (with item count), menu, close, swap width and height. */

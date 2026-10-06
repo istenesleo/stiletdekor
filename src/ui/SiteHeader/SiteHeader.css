@@ -1,0 +1,174 @@
+.sd-header {
+  /* The page gutter, or less when the header itself is narrow (cqi resolves against the header). */
+  --sd-header-gutter: min(var(--layout-gutter), max(16px, 4cqi));
+  container: sd-header / inline-size;
+  position: relative;
+  z-index: 40;
+  border-bottom: 1px solid var(--color-line);
+  background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: var(--color-text);
+}
+.sd-header--sticky {
+  position: sticky;
+  top: 0;
+}
+
+.sd-header__skip {
+  position: absolute;
+  inset-inline-start: var(--sd-header-gutter);
+  top: var(--space-2);
+  z-index: 2;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+.sd-header__skip:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+.sd-header__skip:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.sd-header__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--layout-header-height);
+  padding-inline: var(--sd-header-gutter);
+}
+.sd-header__bar > .sd-wordmark {
+  margin-inline-end: auto;
+}
+
+.sd-header .sd-header__nav,
+.sd-header .sd-header__phone,
+.sd-header .sd-header__cta {
+  display: none;
+}
+.sd-header__nav ul {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-header__nav .sd-navlink {
+  white-space: nowrap;
+}
+.sd-header__phone {
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--motion-duration-fast) var(--motion-easing-standard);
+}
+.sd-header__phone .sd-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-measure);
+}
+.sd-header__phone:hover {
+  color: var(--color-brand);
+}
+.sd-header__phone:focus-visible,
+.sd-header__panelphone:focus-visible,
+.sd-header__panellink:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Mobile menu: drops down from the bar, over the page. */
+.sd-header__panel {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  display: grid;
+  gap: var(--space-5);
+  max-height: calc(100dvh - var(--layout-header-height));
+  overflow-y: auto;
+  padding: var(--space-2) var(--sd-header-gutter) var(--space-6);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-bg);
+}
+.sd-header__panel[hidden] {
+  display: none;
+}
+.sd-header__panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-header__panellink {
+  display: block;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-variation-settings: var(--font-variation-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-snug);
+  text-decoration: none;
+}
+.sd-header__panellink:hover,
+.sd-header__panellink[aria-current="page"] {
+  color: var(--color-brand);
+}
+.sd-header__panelfoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.sd-header__panelphone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sd-header__panelphone .sd-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-measure);
+}
+
+@container sd-header (min-width: 1040px) {
+  .sd-header__bar {
+    gap: var(--space-5);
+  }
+  .sd-header .sd-header__nav {
+    display: block;
+  }
+  .sd-header .sd-header__cta {
+    display: inline-flex;
+  }
+  .sd-header .sd-header__menubtn,
+  .sd-header .sd-header__panel {
+    display: none;
+  }
+}
+@container sd-header (min-width: 1240px) {
+  .sd-header .sd-header__phone {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,97 @@
+.sd-steps {
+  container: sd-steps / inline-size;
+  display: grid;
+  gap: var(--space-2);
+}
+.sd-steps__count {
+  margin: 0;
+}
+.sd-steps__list {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sd-steps__item {
+  min-width: 0;
+}
+.sd-steps__step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: var(--space-2) 0 var(--space-2);
+  border: 0;
+  border-top: 2px solid var(--color-line);
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: start;
+}
+button.sd-steps__step {
+  cursor: pointer;
+}
+button.sd-steps__step:hover {
+  color: var(--color-text);
+}
+button.sd-steps__step:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.sd-steps__item[data-state="done"] .sd-steps__step {
+  border-top-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+.sd-steps__item[data-state="current"] .sd-steps__step {
+  border-top-color: var(--color-brand);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+.sd-steps__n {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+.sd-steps__item[data-state="current"] .sd-steps__n {
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+.sd-steps__item[data-state="done"] .sd-steps__n {
+  border-color: var(--color-text);
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+.sd-steps__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sd-steps__now {
+  display: none;
+}
+/* Narrow: numbers only in the bar, the current step's name next to the count. */
+@container sd-steps (max-width: 34rem) {
+  .sd-steps__now {
+    display: inline;
+  }
+  .sd-steps__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

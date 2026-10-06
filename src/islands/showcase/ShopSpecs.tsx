@@ -50,12 +50,17 @@ const DELIVERY = [
   { id: 'install', label: 'Telepítéssel', description: 'A helyszínen felszereljük. A díját a visszaigazoláskor adjuk meg.', amountText: 'egyedi' },
 ];
 
+interface ShopSpecsProps {
+  /** The sample cart drawer; the page header's cart button opens it too. */
+  cartOpen: boolean;
+  onCartOpenChange: (open: boolean) => void;
+}
+
 /** Webshop and order components with working state. */
-export function ShopSpecs() {
+export function ShopSpecs({ cartOpen, onCartOpenChange: setCartOpen }: ShopSpecsProps) {
   const [product, setProduct] = useState<ProductKind>('molino');
   const [surfaces, setSurfaces] = useState(SURFACES);
   const [sets, setSets] = useState(2);
-  const [cartOpen, setCartOpen] = useState(false);
   const [delivery, setDelivery] = useState('pickup');
   const [accepted, setAccepted] = useState(false);
   const [tried, setTried] = useState(false);

@@ -1,0 +1,42 @@
+.sd-contact {
+  font-style: normal;
+}
+.sd-contact__list {
+  display: grid;
+  margin: 0;
+}
+.sd-contact__row {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+.sd-contact__row:first-child {
+  padding-top: 0;
+}
+.sd-contact__row dt {
+  margin: 0;
+}
+.sd-contact__row dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+}
+.sd-contact__value {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+.sd-contact__value--phone {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.sd-contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

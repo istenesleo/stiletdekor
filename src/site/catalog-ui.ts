@@ -1,9 +1,9 @@
 // Turns catalog data (src/domain) into the props of the UI library's components (src/ui). The UI stays
 // presentational; prices become gross here, as everywhere on the site.
-import type { AreaMaterial } from '@/domain/catalog';
+import type { AreaMaterial, QuoteType } from '@/domain/catalog';
 import { formatNumberHu } from '@/domain/money';
 import { grossOf } from '@/domain/pricing';
-import type { MaterialOption, MaterialTexture } from '@/ui';
+import type { JobTypeOption, MaterialOption, MaterialTexture } from '@/ui';
 
 /** Swatch per catalog material id (molinó, matrica, tábla). */
 const TEXTURES: Readonly<Record<string, MaterialTexture>> = {
@@ -37,4 +37,9 @@ export function materialSpecs(m: AreaMaterial): Array<readonly [string, string]>
 /** A catalog material as a MaterialPicker option, with its gross price per m². */
 export function materialOption(m: AreaMaterial): MaterialOption {
   return { id: m.id, name: m.name, price: grossOf(m.priceNetPerM2), unit: 'm2', specs: materialSpecs(m), texture: TEXTURES[m.id] };
+}
+
+/** A quote type as a JobTypePicker card; its description says what the job covers. */
+export function jobTypeOption(t: QuoteType): JobTypeOption {
+  return { id: t.id, name: t.name, hint: t.description };
 }
