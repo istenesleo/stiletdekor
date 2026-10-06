@@ -193,11 +193,6 @@ p{text-wrap:pretty}
 .cfg-prev{grid-column:1/8}
 @media (min-width:1025px) and (min-height:800px){.cfg-prev{position:sticky;top:calc(var(--hdr) + 18px)}}
 .cfg-ctl{grid-column:8/-1}
-.tabs{display:flex;gap:0;border:1px solid var(--rule);border-bottom:0}
-.tabs button{flex:1;min-height:44px;background:none;border:0;font:500 11.5px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--stone);display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.tabs button+button{border-left:1px solid var(--rule)}
-.tabs button[aria-selected="true"]{color:var(--paper);background:var(--raise)}
-.tabs button[aria-selected="true"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand)}
 .stage{position:relative;aspect-ratio:16/11;background:radial-gradient(120% 90% at 40% 30%,color-mix(in srgb,var(--paper) 4%,var(--raise)),var(--raise));border:1px solid var(--rule);overflow:hidden;touch-action:pan-y}
 .st-floor{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(color-mix(in srgb,var(--paper) 3%,transparent),transparent);border-top:1px solid color-mix(in srgb,var(--stone) 70%,transparent)}
 .st-banner{position:absolute;z-index:2;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--paper) 9%,transparent) 0 1px,transparent 1px 9px),color-mix(in srgb,var(--paper) 5%,var(--raise));outline:1px solid color-mix(in srgb,var(--paper) 50%,transparent);transition:left .35s,top .35s,width .35s,height .35s}
@@ -234,16 +229,7 @@ p{text-wrap:pretty}
 .st-sb i{display:block;height:5px;border-inline:1px solid var(--stone);border-bottom:1px solid var(--stone)}
 .st-note{position:absolute;right:14px;bottom:12px;z-index:4;font:500 10px/1 var(--f-mono);color:var(--stone);letter-spacing:.06em;text-transform:uppercase}
 .st-err{position:absolute;inset:0;z-index:6;display:grid;place-content:center;text-align:center;padding:24px;background:color-mix(in srgb,var(--raise) 86%,transparent);font:400 1.25rem/1.3 var(--f-display);color:var(--paper)}
-.st-site{position:absolute;inset:0}
-.st-site canvas,.st-site .bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.site-art{position:absolute;left:0;top:0;transform-origin:0 0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.14) 0 1px,transparent 1px 10px),color-mix(in srgb,var(--paper) 30%,var(--bg));outline:1px solid color-mix(in srgb,var(--paper) 70%,transparent);overflow:hidden;opacity:.94}
-.site-art img{width:100%;height:100%;object-fit:cover;display:block}
-.site-art .st-ph{color:var(--paper);font-size:22px}
-.hd{position:absolute;z-index:5;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:1.5px solid var(--paper);background:color-mix(in srgb,var(--bg) 55%,transparent);touch-action:none;cursor:grab;padding:0}
-.hd::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--brand)}
-.hd:active{cursor:grabbing}
 .stage-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 20px;padding-block:12px;border-bottom:1px solid var(--rule)}
-.site-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .filebtn{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border:1px solid var(--rule);font:500 11.5px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--paper);cursor:pointer}
 .filebtn:hover{border-color:var(--stone)}
 input:focus-visible+.filebtn,.filebtn:focus-within{outline:2px solid var(--brand);outline-offset:2px}
@@ -547,6 +533,7 @@ fieldset.f>legend+*{clear:both}
 .drawer .btn.wide{margin-top:18px}
 .done-msg{margin-top:18px;padding:16px;border:1px solid var(--paper)}
 .ship-note{margin-top:10px}
+.site-photo{margin-top:14px;padding:14px;border:1px dashed var(--rule);display:grid;gap:8px;justify-items:start}
 .order-terms{margin:16px 0}
 .done-msg p+p{margin-top:6px}
 .hist{margin-top:32px;padding-top:16px;border-top:1px solid var(--stone)}
@@ -809,11 +796,7 @@ fieldset.f>legend+*{clear:both}
 
   <div class="g cfg" id="konfigurator">
     <div class="cfg-prev">
-      <div class="tabs" role="tablist" aria-label="Előnézet módja">
-        <button type="button" role="tab" id="tabScale" aria-selected="true" aria-controls="stage">Valós lépték</button>
-        <button type="button" role="tab" id="tabSite" aria-selected="false" aria-controls="stage" tabindex="-1">Helyszínen</button>
-      </div>
-      <div class="stage" id="stage" role="tabpanel" aria-labelledby="tabScale" aria-label="Valós léptékű előnézet 180 cm-es alakkal">
+      <div class="stage" id="stage" role="group" aria-label="Valós léptékű előnézet 180 cm-es alakkal">
         <div id="stScale">
           <div class="st-floor" id="stFloor"></div>
           <div class="st-banner" id="stBanner"><div class="clip"><img id="stImg" alt="" hidden><div class="st-ph" id="stPh"><span>Grafika helye</span><span id="stRatio">2:1</span></div><div id="stTun"></div></div><div id="stMarks"></div></div>
@@ -825,27 +808,10 @@ fieldset.f>legend+*{clear:both}
           <div class="st-sb"><i id="stSb"></i><span>1 m</span></div>
           <p class="st-note">Valós lépték · alak: 180 cm</p>
         </div>
-        <div class="st-site" id="helyszinen" hidden>
-          <canvas data-scene="shopfront" data-night="0" data-sign="0" aria-hidden="true"></canvas>
-          <img class="bgimg" id="siteImg" alt="" hidden>
-          <div class="site-art" id="siteArt"><img id="siteArtImg" alt="" hidden><div class="st-ph" id="sitePh"><span>Az Ön grafikája</span></div></div>
-          <button type="button" class="hd" data-i="0" aria-label="Bal felső sarok mozgatása (nyílbillentyűk)"></button>
-          <button type="button" class="hd" data-i="1" aria-label="Jobb felső sarok mozgatása (nyílbillentyűk)"></button>
-          <button type="button" class="hd" data-i="2" aria-label="Jobb alsó sarok mozgatása (nyílbillentyűk)"></button>
-          <button type="button" class="hd" data-i="3" aria-label="Bal alsó sarok mozgatása (nyílbillentyűk)"></button>
-        </div>
         <div class="st-err" id="stErr" hidden>Adjon meg érvényes méretet.</div>
       </div>
       <div class="stage-foot" id="footScale">
         <p class="data">Alul a padlóvonal. A méretvonalak mm-ben, a grafika a feltöltött fájl valós arányában.</p>
-      </div>
-      <div class="stage-foot" id="footSite" hidden>
-        <p class="data">Húzza a sarkokat a felület négy sarkára. Saját fotóval a kirakatára vagy járművére is ráillesztheti.</p>
-        <div class="site-ctl">
-          <input class="sr" type="file" id="siteFile" accept="image/*">
-          <label class="filebtn" for="siteFile">Helyszíni fotó feltöltése</label>
-          <button type="button" class="x" id="siteReset">Sarkok alaphelyzetbe</button>
-        </div>
       </div>
       <div class="pf" id="preflight" aria-live="polite">
         <p class="cap">Nyomdakész-ellenőrzés</p>
@@ -1294,6 +1260,12 @@ fieldset.f>legend+*{clear:both}
         </div>
         <p class="data ship-note">Telepítésnél a helyszínen felszereljük, illetve felragasztjuk; ilyenkor nincs külön átvétel.</p>
       </fieldset>
+      <div class="site-photo" id="sitePhoto" hidden>
+        <p class="cap">Fotó a helyszínről · nem kötelező</p>
+        <p class="data" id="sitePhotoHelp">Ebből látjuk a felületet, így pontosabban árazzuk a telepítést.</p>
+        <div><input class="sr" type="file" id="sitePhotoIn" accept="image/*" multiple aria-describedby="sitePhotoHelp"><label class="filebtn" for="sitePhotoIn">Fotók kiválasztása</label></div>
+        <p class="data" id="sitePhotoList" aria-live="polite"></p>
+      </div>
       <table class="bd"><caption class="sr">Kosár összesítő</caption><tbody id="cartRows"></tbody></table>
       <p class="data order-terms">A rendelés elküldése még nem jár fizetési kötelezettséggel. Ellenőrizzük a fájlt, az anyagot és a határidőt, majd visszaigazoljuk a végleges árat, és küldjük a díjbekérőt. A megrendelést a díjbekérő befizetésével fogadja el. A végleges ár eltérhet a kalkulált ártól.</p>
       <button type="button" class="btn wide" id="checkout">Rendelés elküldése ellenőrzésre</button>
@@ -1318,12 +1290,12 @@ fieldset.f>legend+*{clear:both}
     <li><a href="#preflight">Nyomdakész-ellenőrzés: DPI-lámpa, kitöltés vagy illesztés</a></li>
     <li><a href="#hatarido">Várható határidő: a gyártás a befizetéstől indul, munkanapokkal és 12:00-s zárással</a></li>
     <li><a href="#arbontas">Tételes árbontás bruttóban, „még N db” jelzés</a></li>
-    <li><a href="#konfigurator" data-act="site">„Helyszínen” előnézet perspektíva-sarkokkal</a></li>
     <li><a href="#hero-kep">Nappal/éjjel kapcsoló a világító cégérnél</a></li>
     <li><a href="#ajanlat">Ajánlatkérő varázsló felméréskéréssel, időpont nélkül (visszahívjuk)</a></li>
     <li><a href="#referenciak">Referenciák felület szerint szűrve</a> és <a href="#elotte-utana">előtte/utána csúszka</a></li>
     <li><a href="#anyagok">Anyagkártyák adatokkal</a> és <a href="#anyagminta">anyagminta-sáv</a></li>
     <li><a href="#ujrarendeles" data-act="cart">Újrarendelés a kosárból</a></li>
+    <li>Telepítéses rendelésnél fotó a helyszínről a kosárban (nem kötelező), a telepítés árazásához</li>
     <li><a href="#szolgaltatasok">Szolgáltatások tartalomjegyzékként, előnézettel</a></li>
   </ol>
   <h3 class="cap">Helyőrzők, élesben cserélendők</h3>
@@ -1418,7 +1390,7 @@ const tierPct = q => { for (const [n, p] of TIERS) if (q >= n) return p; return 
 const nextTier = q => q < 2 ? [2 - q, 5] : q < 5 ? [5 - q, 10] : q < 10 ? [10 - q, 15] : null;
 
 const S = {
-  product: 'molino', vat: 'brutto', fit: 'fill', art: null, view: 'scale',
+  product: 'molino', vat: 'brutto', fit: 'fill', art: null,
   cfgs: {
     molino: { w: 200, h: 100, mat: 'frontlit', edge: 'cut', qty: 1, express: false },
     rollup: { mat: 'r85', roll: 'full', qty: 1, express: false },
@@ -1661,7 +1633,6 @@ function setBox(n, x, y, w, h) { n.style.left = x + 'px'; n.style.top = y + 'px'
 const mmLabel = cm => fmt(Math.round(cm * 10)) + NB + 'mm';
 function renderStage(q) {
   $('#stErr').hidden = !q.err;
-  if (S.view === 'site') { renderSite(); return; }
   const st = el.stage, W = st.clientWidth, H = st.clientHeight;
   if (!W || !H || q.err) return;
   const isRoll = q.pid === 'rollup', w = q.w, h = q.h;
@@ -1763,62 +1734,6 @@ function renderPreflight(q) {
   }
 }
 
-/* --- helyszínen előnézet (perspektíva) --- */
-const SITE0 = [[0.13, 0.215], [0.87, 0.24], [0.87, 0.37], [0.13, 0.385]];
-let SITE = SITE0.map(p => p.slice());
-function adj(m) { return [m[4] * m[8] - m[5] * m[7], m[2] * m[7] - m[1] * m[8], m[1] * m[5] - m[2] * m[4], m[5] * m[6] - m[3] * m[8], m[0] * m[8] - m[2] * m[6], m[2] * m[3] - m[0] * m[5], m[3] * m[7] - m[4] * m[6], m[1] * m[6] - m[0] * m[7], m[0] * m[4] - m[1] * m[3]]; }
-function mul(a, b) { const c = []; for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { let s = 0; for (let k = 0; k < 3; k++) s += a[3 * i + k] * b[3 * k + j]; c[3 * i + j] = s; } return c; }
-function mulv(m, v) { return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2], m[3] * v[0] + m[4] * v[1] + m[5] * v[2], m[6] * v[0] + m[7] * v[1] + m[8] * v[2]]; }
-function basis(p) { const m = [p[0][0], p[1][0], p[2][0], p[0][1], p[1][1], p[2][1], 1, 1, 1]; const v = mulv(adj(m), [p[3][0], p[3][1], 1]); return mul(m, [v[0], 0, 0, 0, v[1], 0, 0, 0, v[2]]); }
-function homo(src, dst) { const t = mul(basis(dst), adj(basis(src))); for (let i = 0; i < 9; i++) t[i] /= t[8]; return [t[0], t[3], 0, t[6], t[1], t[4], 0, t[7], 0, 0, 1, 0, t[2], t[5], 0, t[8]]; }
-// A sarokpontok négyszöge maradjon konvex és ne forduljon át (óramutató szerinti sorrend, egyik szög se
-// legyen 15°-nál hegyesebb vagy 165°-nál laposabb, az oldalak legalább 24 px-esek): különben a perspektíva
-// kicsavarja vagy szétnyújtja a grafikát.
-function quadOk(pts, W, H) {
-  const p = pts.map(([x, y]) => [x * W, y * H]);
-  for (let k = 0; k < 4; k++) {
-    const a = p[k], b = p[(k + 1) % 4], c = p[(k + 2) % 4];
-    const ux = b[0] - a[0], uy = b[1] - a[1], vx = c[0] - b[0], vy = c[1] - b[1];
-    const lu = Math.hypot(ux, uy), lv = Math.hypot(vx, vy);
-    if (lu < 24 || lv < 24 || (ux * vy - uy * vx) / (lu * lv) < 0.26) return false;
-  }
-  return true;
-}
-// Az i. sarok a cél felé csak addig megy, amíg a négyszög ép marad; a határon megáll.
-function moveCorner(pts, i, to, W, H) {
-  const from = pts[i], test = pts.map(q => q.slice());
-  const at = t => [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t];
-  test[i] = to;
-  if (quadOk(test, W, H) || !quadOk(pts, W, H)) return to;
-  let lo = 0, hi = 1;
-  for (let k = 0; k < 14; k++) { const m = (lo + hi) / 2; test[i] = at(m); if (quadOk(test, W, H)) lo = m; else hi = m; }
-  return at(lo);
-}
-function renderSite() {
-  const st = el.stage, W = st.clientWidth, H = st.clientHeight; if (!W || !H) return;
-  const q = lastQ || compute(S.product, cur());
-  const art = $('#siteArt');
-  const ow = 400, oh = Math.max(24, Math.min(1600, 400 * (q.h || 1) / (q.w || 1)));
-  art.style.width = ow + 'px'; art.style.height = oh + 'px';
-  const dst = SITE.map(([x, y]) => [x * W, y * H]);
-  art.style.transform = `matrix3d(${homo([[0, 0], [ow, 0], [ow, oh], [0, oh]], dst).map(v => +v.toFixed(8)).join(',')})`;
-  $$('#helyszinen .hd').forEach((b, i) => { b.style.left = dst[i][0] + 'px'; b.style.top = dst[i][1] + 'px'; });
-  const ai = $('#siteArtImg');
-  if (S.art) { ai.src = S.art.url; ai.hidden = false; ai.style.objectFit = S.fit === 'fit' ? 'contain' : 'cover'; $('#sitePh').hidden = true; }
-  else { ai.hidden = true; $('#sitePh').hidden = false; }
-}
-function setView(v) {
-  S.view = v;
-  const isSite = v === 'site';
-  $('#tabScale').setAttribute('aria-selected', String(!isSite)); $('#tabSite').setAttribute('aria-selected', String(isSite));
-  $('#tabScale').tabIndex = isSite ? -1 : 0; $('#tabSite').tabIndex = isSite ? 0 : -1;
-  el.stage.setAttribute('aria-labelledby', isSite ? 'tabSite' : 'tabScale');
-  el.stage.setAttribute('aria-label', isSite ? 'Helyszíni előnézet mozgatható sarkokkal' : 'Valós léptékű előnézet 180 cm-es alakkal');
-  $('#stScale').hidden = isSite; $('#helyszinen').hidden = !isSite;
-  $('#footScale').hidden = isSite; $('#footSite').hidden = !isSite;
-  requestAnimationFrame(() => { if (S.q) renderStage(S.q); if (isSite) renderSite(); });
-}
-
 /* --- grafika betöltése --- */
 function loadArt(file) {
   const err = $('#artErr'); err.textContent = '';
@@ -1832,7 +1747,7 @@ function loadArt(file) {
     S.fit = 'fill'; $('#fitFill').checked = true;
     $('#artRow').hidden = false;
     $('#artName').textContent = `${file.name} · ${vector ? 'vektoros' : fmt(S.art.pw) + ' × ' + fmt(S.art.ph) + ' px'}`;
-    update(); if (S.view === 'site') renderSite();
+    update();
   };
   img.onerror = () => { err.textContent = 'A fájlt nem sikerült megnyitni. Próbálja PNG vagy JPG formátumban.'; };
   img.src = url;
@@ -1870,34 +1785,14 @@ $('#pfMatch').addEventListener('click', () => {
   c.w = Math.max(lo, Math.min(hi, w)); c.h = h; syncSizeInputs(); update();
 });
 $('#cfgFile').addEventListener('change', e => { loadArt(e.target.files[0]); });
-$('#artClear').addEventListener('click', () => { S.art = null; $('#cfgFile').value = ''; $('#artRow').hidden = true; update(); if (S.view === 'site') renderSite(); });
+$('#artClear').addEventListener('click', () => { S.art = null; $('#cfgFile').value = ''; $('#artRow').hidden = true; update(); });
 const drop = $('#drop');
 ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add('over'); }));
 ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', e => { const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) loadArt(f); });
-el.stage.addEventListener('dragover', e => { if (S.view === 'scale') e.preventDefault(); });
-el.stage.addEventListener('drop', e => { if (S.view !== 'scale') return; e.preventDefault(); const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) loadArt(f); });
+el.stage.addEventListener('dragover', e => e.preventDefault());
+el.stage.addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) loadArt(f); });
 $$('.cat').forEach(b => b.addEventListener('click', () => selectProduct(b.dataset.p)));
-$('#tabScale').addEventListener('click', () => setView('scale'));
-$('#tabSite').addEventListener('click', () => setView('site'));
-$('.tabs').addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { const n = S.view === 'scale' ? 'site' : 'scale'; setView(n); $(n === 'site' ? '#tabSite' : '#tabScale').focus(); e.preventDefault(); } });
-$('#siteFile').addEventListener('change', e => { const f = e.target.files[0]; if (!f || !/^image\//.test(f.type)) return; const im = $('#siteImg'); im.src = URL.createObjectURL(f); im.hidden = false; $('#helyszinen canvas').hidden = true; });
-$('#siteReset').addEventListener('click', () => { SITE = SITE0.map(p => p.slice()); renderSite(); });
-$$('#helyszinen .hd').forEach(hd => {
-  const i = +hd.dataset.i;
-  hd.addEventListener('pointerdown', e => { hd.setPointerCapture(e.pointerId); e.preventDefault(); });
-  hd.addEventListener('pointermove', e => {
-    if (!hd.hasPointerCapture(e.pointerId)) return;
-    const r = el.stage.getBoundingClientRect();
-    SITE[i] = moveCorner(SITE, i, [Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), Math.max(0, Math.min(1, (e.clientY - r.top) / r.height))], r.width, r.height);
-    renderSite();
-  });
-  hd.addEventListener('keydown', e => {
-    const d = e.shiftKey ? 0.02 : 0.005, k = { ArrowLeft: [-d, 0], ArrowRight: [d, 0], ArrowUp: [0, -d], ArrowDown: [0, d] }[e.key];
-    if (!k) return; e.preventDefault();
-    SITE[i] = moveCorner(SITE, i, [Math.max(0, Math.min(1, SITE[i][0] + k[0])), Math.max(0, Math.min(1, SITE[i][1] + k[1]))], el.stage.clientWidth, el.stage.clientHeight); renderSite();
-  });
-});
 $('#cfgForm').addEventListener('submit', e => {
   e.preventDefault();
   if (e.submitter && e.submitter.id !== 'addToCart') return;
@@ -1938,10 +1833,15 @@ function renderCart() {
     ['Kalkulált végösszeg, bruttó', ft(total), 'sum hl'], ['Ebből nettó · ÁFA 27%', `${ft(net)} · ${ft(total - net)}`, 'dim2']
   ].map(r => `<tr class="${r[2]}"><th scope="row">${r[0]}</th><td${r[3] ? ` id="${r[3]}"` : ''}>${r[1]}</td></tr>`).join('');
   $('#checkout').disabled = !n;
+  $('#sitePhoto').hidden = CART.ship !== 'install';
   $('#histList').innerHTML = CART.hist.length ? CART.hist.map((h, i) => `<li><div><p class="ln-t">${esc(h.title)}</p><p class="data">${esc(h.spec)}</p></div><div class="hb"><button type="button" class="x" data-re="${i}">Újra kosárba</button><button type="button" class="x" data-edit="${i}">Szerkesztés</button></div></li>`).join('') : '<li><p class="data">Még nincs korábbi konfiguráció.</p></li>';
 }
 $('#cartLines').addEventListener('click', e => { const b = e.target.closest('[data-del]'); if (!b) return; CART.lines = CART.lines.filter(l => l.id !== b.dataset.del); persist(); renderCart(); const f = $('#cartLines .x') || $('#cartClose'); f.focus(); });
 $$('input[name="ship"]').forEach(i => i.addEventListener('change', () => { CART.ship = i.value; renderCart(); }));
+// Telepítésnél fotót kérhet a helyszínről (nem kötelező): ebből árazzuk a telepítést. A demó csak a fájlneveket mutatja.
+const sitePhotoIn = $('#sitePhotoIn');
+function renderSitePhotos() { const fs = Array.from(sitePhotoIn.files); $('#sitePhotoList').textContent = fs.length ? `Kiválasztva: ${fs.length} fotó (${fs.map(f => f.name).join(', ')})` : ''; }
+sitePhotoIn.addEventListener('change', renderSitePhotos);
 $('#checkout').addEventListener('click', () => { const ok = $('#orderOk'); ok.hidden = false; ok.focus(); });
 $('#histList').addEventListener('click', e => {
   const re = e.target.closest('[data-re]'), ed = e.target.closest('[data-edit]');
@@ -2208,7 +2108,6 @@ notesBtn.addEventListener('click', () => setNotes(notes.hidden));
 $('#notesClose').addEventListener('click', () => { setNotes(false); notesBtn.focus(); });
 notes.addEventListener('click', e => {
   const a = e.target.closest('a'); if (!a) return;
-  if (a.dataset.act === 'site') setView('site');
   if (a.dataset.act === 'cart') { e.preventDefault(); setNotes(false); openCart(); setTimeout(() => $('#ujrarendeles').scrollIntoView({ block: 'start' }), 50); return; }
   if (window.innerWidth < 760) setNotes(false);
 });

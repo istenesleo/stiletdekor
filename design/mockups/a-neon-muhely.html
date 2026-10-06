@@ -420,26 +420,8 @@ button,input,select,textarea{font:inherit;color:inherit}
   .num-row{grid-template-columns:1fr}
 }
 
-/* helyszínen előnézet */
-.onsite{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,3vw,40px);margin-block-start:clamp(48px,6vw,80px);padding-block-start:clamp(32px,4vw,48px);border-top:1px dashed var(--line)}
-.onsite h3,.reorder h3{font-size:var(--t-xl);margin-block:12px 12px}
-.onsite-copy{display:grid;align-content:start;gap:14px;min-width:0}
-.onsite-copy > p{color:color-mix(in oklab,var(--ink) 80%,var(--bg));font-size:var(--t-sm)}
-.onsite-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.os-stage{position:relative;aspect-ratio:16/10;overflow:hidden;border:1px solid var(--line);background:var(--surface);touch-action:none;user-select:none;-webkit-user-select:none}
-.os-stage canvas.os-bg,.os-stage img.os-photo{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover}
-.os-design{position:absolute;left:0;top:0;transform-origin:0 0;background:var(--ink);box-shadow:0 0 0 1px color-mix(in oklab,var(--bg) 40%,transparent);pointer-events:none;overflow:hidden;opacity:.94}
-.os-design canvas,.os-design img{display:block;width:100%;height:100%}
-.os-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.os-lines polygon{fill:none;stroke:var(--measure);stroke-width:1;stroke-dasharray:5 4}
-.corner{position:absolute;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid var(--measure);border-radius:50%;background:color-mix(in oklab,var(--bg) 55%,transparent) linear-gradient(var(--measure),var(--measure)) center/1px 14px no-repeat;cursor:grab;touch-action:none;padding:0}
-.corner::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:1px;margin-left:-7px;background:var(--measure)}
-.corner:active{cursor:grabbing}
-.corner:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.os-tag{position:absolute;left:10px;top:10px;font:500 10px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:color-mix(in oklab,var(--bg) 65%,transparent);padding-block:5px;padding-inline:7px;pointer-events:none}
-@media (max-width:860px){.onsite{grid-template-columns:1fr}}
-
 /* újrarendelés */
+.reorder h3{font-size:var(--t-xl);margin-block:12px 12px}
 .reorder{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,3vw,40px);margin-block-start:clamp(40px,5vw,64px);padding-block-start:clamp(28px,4vw,44px);border-top:1px dashed var(--line)}
 .reorder-copy p{color:color-mix(in oklab,var(--ink) 80%,var(--bg));font-size:var(--t-sm)}
 .ro-list{list-style:none;margin:0;padding-inline-start:0;display:grid;gap:8px;align-content:start}
@@ -657,6 +639,9 @@ input[type="date"].inp{color-scheme:dark}
 .cl-x{grid-column:3;justify-self:end;font-size:12px}
 .cart-empty{padding-block:30px;color:var(--muted);font-size:var(--t-sm)}
 .dlv{margin-block-start:18px;border:0;padding-inline:0;padding-block:0;display:grid;gap:6px}
+.site-photo{margin-block-start:10px;padding-block:12px;padding-inline:12px;border:1px dashed var(--line);display:grid;gap:8px;justify-items:start}
+.sp-t{font-size:var(--t-sm);font-weight:600}
+.sp-t .hint{margin-inline-start:6px;font-weight:400}
 .dlv legend{font:500 var(--t-xs)/1 var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-block-end:8px;padding-inline:0}
 .dr-foot{border-top:1px solid var(--line);padding-block:14px 18px;padding-inline:18px;display:grid;gap:10px;background:var(--surface)}
 .tot{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font:400 var(--t-sm)/1.4 var(--font-mono)}
@@ -1052,31 +1037,6 @@ input[type="date"].inp{color-scheme:dark}
     </form>
   </div>
 
-  <div class="onsite" id="helyszinen">
-    <div class="onsite-copy">
-      <p class="eyebrow">„Helyszínen” előnézet · demó</p>
-      <h3>Nézze meg a tervet a saját kirakatán</h3>
-      <p>Töltsön fel egy fotót a kirakatról vagy a járműről, és húzza a négy sarokpontot a felület sarkaira. A konfigurátorba feltöltött grafika kerül rá, a választott méretaránnyal.</p>
-      <div class="onsite-actions">
-        <input class="file-in visually-hidden" type="file" id="osFile" accept="image/*">
-        <label for="osFile" class="btn btn-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Fotó feltöltése</label>
-        <button type="button" class="link-btn" id="osReset">Sarkok alaphelyzetbe</button>
-      </div>
-      <p class="hint">Billentyűzettel: Tab a sarokpontra, a nyilakkal mozgatható, Shift-tel nagyobb lépésben.</p>
-    </div>
-    <div class="os-stage" id="osStage">
-      <canvas class="os-bg" id="osBg" aria-hidden="true"></canvas>
-      <img class="os-photo" id="osPhoto" alt="A feltöltött helyszíni fotó" hidden>
-      <div class="os-design" id="osDesign"><canvas id="osArt" aria-hidden="true"></canvas><img id="osImg" alt="" hidden></div>
-      <svg class="os-lines" id="osLines" aria-hidden="true"><polygon points=""/></svg>
-      <button type="button" class="corner" data-i="0" aria-label="Bal felső sarokpont"></button>
-      <button type="button" class="corner" data-i="1" aria-label="Jobb felső sarokpont"></button>
-      <button type="button" class="corner" data-i="2" aria-label="Jobb alsó sarokpont"></button>
-      <button type="button" class="corner" data-i="3" aria-label="Bal alsó sarokpont"></button>
-      <span class="os-tag" id="osTag">Mintafotó helye · töltse fel a sajátját</span>
-    </div>
-  </div>
-
   <div class="reorder" id="ujrarendeles">
     <div class="reorder-copy">
       <p class="eyebrow">Újrarendelés</p>
@@ -1470,6 +1430,13 @@ input[type="date"].inp{color-scheme:dark}
         <label class="opt" for="dlvCourier"><input type="radio" name="dlv" id="dlvCourier" value="courier"><span><span class="on">Futár</span><span class="rate" id="dlvRate">3&nbsp;797&nbsp;Ft · nagy csomag (roll-up, tábla) 6&nbsp;337&nbsp;Ft</span></span><span class="cost" id="dlvCost">3&nbsp;797&nbsp;Ft</span></label>
         <label class="opt" for="dlvInstall"><input type="radio" name="dlv" id="dlvInstall" value="install"><span><span class="on">Telepítéssel</span><span class="rate">A helyszínen felszereljük, illetve felragasztjuk. Ilyenkor nincs külön átvétel. A díja egyedi, a visszaigazoláskor adjuk meg.</span></span><span class="cost">egyedi</span></label>
       </fieldset>
+      <div class="site-photo" id="sitePhoto" hidden>
+        <p class="sp-t">Fotó a helyszínről <span class="hint">nem kötelező</span></p>
+        <p class="hint" id="sitePhotoHelp">Ebből látjuk a felületet, így pontosabban árazzuk a telepítést.</p>
+        <input class="file-in visually-hidden" type="file" id="sitePhotoIn" accept="image/*" multiple aria-describedby="sitePhotoHelp">
+        <label for="sitePhotoIn" class="btn btn-ghost"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Fotók kiválasztása</label>
+        <p class="hint" id="sitePhotoList" aria-live="polite"></p>
+      </div>
       <div class="form-ok" id="orderOk" hidden tabindex="-1" style="margin-block-start:18px">
         <p class="demo-note">Demó · a rendelést nem küldtük el</p>
         <p>Élesben itt azt írjuk: megkaptuk a rendelését, ellenőrizzük, és e-mailben küldjük a végleges árat és a díjbekérőt. Fizetni csak akkor kell, ha elfogadja. A tételeket betettük az <a href="#ujrarendeles" id="toReorder">Újrarendelés</a> listába, onnan egy kattintással újra kosárba teheti őket.</p>
@@ -1505,12 +1472,12 @@ input[type="date"].inp{color-scheme:dark}
       <li><a href="#preflight">Nyomdakész-ellenőrzés: DPI-lámpa, kitöltés vagy illesztés</a></li>
       <li><a href="#hatarido">Várható határidő: a gyártás a befizetéstől indul, munkanapokkal és 12:00-s zárással</a></li>
       <li><a href="#arbontas">Átlátható ár: tételes bontás bruttóban, kedvezménysúgó</a></li>
-      <li><a href="#helyszinen">„Helyszínen” előnézet perspektíva-sarkokkal</a></li>
       <li><a href="#hero-jelenet">Nappal / éjjel kapcsoló a világító cégéren</a></li>
       <li><a href="#ajanlat">Helyszíni felmérés kérése a varázsló 4. lépésében, időpont nélkül (visszahívjuk)</a></li>
       <li><a href="#referenciak">Referenciák felület szerint, előtte/utána csúszka</a></li>
       <li><a href="#anyagok">Anyagkártyák g/m², kül- és beltér, élettartam adatokkal</a></li>
       <li><a href="#ujrarendeles">Újrarendelés egy kattintással</a></li>
+      <li>Telepítéses rendelésnél fotó a helyszínről a kosárban (nem kötelező), a telepítés árazásához</li>
     </ol>
     <h3>HELYŐRZŐK, AMELYEKET AZ ÉLES OLDAL CSERÉL</h3>
     <ul>
@@ -1837,7 +1804,7 @@ function updatePrices() {
 function update() {
   const c = cfg(); validateSize(); syncSizeUI(); updatePrices(); updateLead();
   if (cfgValid(c)) { const d = dims(c); S.lastValid = { w: d.w, h: d.h }; }
-  renderBench(); updatePreflight(); updateOnsiteDesign();
+  renderBench(); updatePreflight();
 }
 function setProduct(p, scroll) {
   S.cur = p;
@@ -2062,9 +2029,14 @@ function renderCart() {
   $('#totShip').textContent = cart.dlv === 'install' ? 'egyedi' : ft(grossOf(ship));
   $('#totGross').textContent = ft(gross); $('#totNetVat').textContent = `${ft(net)} · ${ft(gross - net)}`;
   $('#checkout').disabled = n === 0;
+  $('#sitePhoto').hidden = cart.dlv !== 'install';
 }
 $('#cartLines').addEventListener('click', e => { const b = e.target.closest('[data-del]'); if (!b) return; cart.lines = cart.lines.filter(L => String(L.id) !== b.dataset.del); renderCart(); $('#cartClose').focus(); });
 $$('input[name="dlv"]').forEach(r => r.addEventListener('change', () => { cart.dlv = r.value; renderCart(); }));
+// Telepítésnél fotót kérhet a helyszínről (nem kötelező): ebből árazzuk a telepítést. A demó csak a fájlneveket mutatja.
+const sitePhotoIn = $('#sitePhotoIn');
+function renderSitePhotos() { const fs = Array.from(sitePhotoIn.files); $('#sitePhotoList').textContent = fs.length ? `Kiválasztva: ${fs.length} fotó (${fs.map(f => f.name).join(', ')})` : ''; }
+sitePhotoIn.addEventListener('change', renderSitePhotos);
 function addLine(c, thumb) {
   const copy = JSON.parse(JSON.stringify(c)); const r = compute(copy);
   cart.lines.push({ id: ++uidN, cfg: copy, title: titleOf(copy), spec: specOf(copy), qty: r.q, net: r.net, thumb: thumb || null });
@@ -2081,7 +2053,7 @@ $('#checkout').addEventListener('click', () => {
   if (!cart.lines.length) return;
   const saved = cart.lines.map(L => ({ cfg: L.cfg, title: L.title, spec: L.spec }));
   orders = saved.concat(orders).slice(0, 4); store.set('orders', orders);
-  cart.lines = []; renderCart(); renderReorder();
+  cart.lines = []; sitePhotoIn.value = ''; renderSitePhotos(); renderCart(); renderReorder();
   const ok = $('#orderOk'); ok.hidden = false; ok.focus();
 });
 $('#toReorder').addEventListener('click', () => closeLayer(cartLayer, cartBtn));
@@ -2305,92 +2277,6 @@ $('#refChips').addEventListener('click', e => {
   let n = 0; $$('#refGrid .ref').forEach(li => { const show = f === 'all' || li.dataset.tags.split(' ').includes(f); li.hidden = !show; if (show) n++; });
   $('#refCount').textContent = `${n} munka`; $('#refEmpty').hidden = n > 0;
   requestAnimationFrame(drawScenes);
-});
-
-/* ================= HELYSZÍNEN ELŐNÉZET ================= */
-const osStage = $('#osStage'), osDesign = $('#osDesign'), osArt = $('#osArt'), osImg = $('#osImg');
-const FAC = { x1: .8, top0: .03, top1: .2, bot0: .96, bot1: .84 };
-const fpt = (xx, v) => { const t = xx / FAC.x1; const top = FAC.top0 + (FAC.top1 - FAC.top0) * t, bot = FAC.bot0 + (FAC.bot1 - FAC.bot0) * t; return [xx, top + v * (bot - top)]; };
-const OS_DEF = [fpt(.19, .33), fpt(.57, .33), fpt(.57, .62), fpt(.19, .62)];
-let osPts = OS_DEF.map(p => p.slice());
-function drawOsBg() {
-  const cv = $('#osBg'); if (cv.hidden || cv.offsetParent === null) return; const LW = 480, LH = 300; const x = ctxFor(cv, LW, LH);
-  const P = (xx, v) => { const q = fpt(xx, v); return [q[0] * LW, q[1] * LH]; };
-  box(x, 0, 0, LW, LH, lg(x, 0, 0, 0, LH, [[0, mx(T.bg, T.ink, .3)], [1, mx(T.bg, T.ink, .14)]]));
-  poly(x, [P(.8, 0), [LW, .24 * LH], [LW, .8 * LH], P(.8, 1)], mx(T.bg, T.ink, .17));
-  poly(x, [P(0, 0), P(.8, 0), P(.8, 1), P(0, 1)], mx(T.bg, T.ink, .38));
-  poly(x, [P(.04, .07), P(.76, .07), P(.76, .2), P(.04, .2)], mx(T.bg, T.ink, .22));
-  poly(x, [P(.15, .27), P(.61, .27), P(.61, .86), P(.15, .86)], mx(T.bg, T.ink, .12));
-  poly(x, [P(.165, .3), P(.595, .3), P(.595, .83), P(.165, .83)], mx(T.bg, T.ink, .06));
-  poly(x, [P(.2, .3), P(.27, .3), P(.2, .7)], rgb(T.ink, .06));
-  poly(x, [P(.38, .3), P(.395, .3), P(.395, .83), P(.38, .83)], mx(T.bg, T.ink, .12));
-  poly(x, [P(.65, .25), P(.76, .25), P(.76, 1), P(.65, 1)], mx(T.bg, T.ink, .12));
-  poly(x, [P(.665, .28), P(.745, .28), P(.745, 1), P(.665, 1)], mx(T.bg, T.ink, .05));
-  poly(x, [P(0, 1), P(.8, 1), [LW, .8 * LH], [LW, LH], [0, LH]], mx(T.bg, T.ink, .24));
-  x.strokeStyle = rgb(T.bg, .25); x.lineWidth = 1; for (let i = 1; i < 6; i++) { const a = P(i * .16, 1); x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(a[0] - 60 + i * 6, LH); x.stroke(); }
-  grain(x, LW, LH, .6);
-}
-function drawOsArt() {
-  const d = S.lastValid; const W = 480, H = Math.max(12, Math.round(480 * d.h / d.w));
-  osDesign.style.width = W + 'px'; osDesign.style.height = H + 'px';
-  if (S.img) { osArt.hidden = true; osImg.hidden = false; if (osImg.getAttribute('src') !== S.img.url) osImg.src = S.img.url; osImg.style.objectFit = S.fit; return; }
-  osArt.hidden = false; osImg.hidden = true;
-  osArt.width = W; osArt.height = H; const x = osArt.getContext('2d');
-  box(x, 0, 0, W, H, rgb(T.ink)); box(x, 0, 0, W * .36, H, rgb(T.brand));
-  const fsz = Math.min(H * .32, 64); x.fillStyle = rgb(T.bg); x.font = `800 ${fsz}px ${T.fd}`; x.textAlign = 'left'; x.textBaseline = 'middle';
-  x.fillText('AZ ÖN', W * .42, H * .38); x.fillText('GRAFIKÁJA', W * .42, H * .38 + fsz * .95);
-  x.font = `500 ${Math.max(9, fsz * .28)}px ${T.fm}`; x.fillStyle = rgb(T.ink); x.fillText(`${cmTxt(d.w)}×${cmTxt(d.h)} cm`, 12, H - Math.max(10, fsz * .3));
-}
-function adj(m) { return [m[4] * m[8] - m[5] * m[7], m[2] * m[7] - m[1] * m[8], m[1] * m[5] - m[2] * m[4], m[5] * m[6] - m[3] * m[8], m[0] * m[8] - m[2] * m[6], m[2] * m[3] - m[0] * m[5], m[3] * m[7] - m[4] * m[6], m[1] * m[6] - m[0] * m[7], m[0] * m[4] - m[1] * m[3]]; }
-function mmul(a, b) { const c = new Array(9); for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { let s = 0; for (let k = 0; k < 3; k++) s += a[3 * i + k] * b[3 * k + j]; c[3 * i + j] = s; } return c; }
-function mvec(m, v) { return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2], m[3] * v[0] + m[4] * v[1] + m[5] * v[2], m[6] * v[0] + m[7] * v[1] + m[8] * v[2]]; }
-function basis(p) { const m = [p[0], p[2], p[4], p[1], p[3], p[5], 1, 1, 1]; const v = mvec(adj(m), [p[6], p[7], 1]); return mmul(m, [v[0], 0, 0, 0, v[1], 0, 0, 0, v[2]]); }
-function homography(src, dst) { const t = mmul(basis(dst), adj(basis(src))); for (let i = 0; i < 9; i++) t[i] /= t[8]; return t; }
-// A sarokpontok négyszöge maradjon konvex és ne forduljon át (óramutató szerinti sorrend, egyik szög se
-// legyen 15°-nál hegyesebb vagy 165°-nál laposabb, az oldalak legalább 24 px-esek): különben a perspektíva
-// kicsavarja vagy szétnyújtja a grafikát.
-function quadOk(pts, W, H) {
-  const p = pts.map(([x, y]) => [x * W, y * H]);
-  for (let k = 0; k < 4; k++) {
-    const a = p[k], b = p[(k + 1) % 4], c = p[(k + 2) % 4];
-    const ux = b[0] - a[0], uy = b[1] - a[1], vx = c[0] - b[0], vy = c[1] - b[1];
-    const lu = Math.hypot(ux, uy), lv = Math.hypot(vx, vy);
-    if (lu < 24 || lv < 24 || (ux * vy - uy * vx) / (lu * lv) < 0.26) return false;
-  }
-  return true;
-}
-// Az i. sarok a cél felé csak addig megy, amíg a négyszög ép marad; a határon megáll.
-function moveCorner(pts, i, to, W, H) {
-  const from = pts[i], test = pts.map(q => q.slice());
-  const at = t => [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t];
-  test[i] = to;
-  if (quadOk(test, W, H) || !quadOk(pts, W, H)) return to;
-  let lo = 0, hi = 1;
-  for (let k = 0; k < 14; k++) { const m = (lo + hi) / 2; test[i] = at(m); if (quadOk(test, W, H)) lo = m; else hi = m; }
-  return at(lo);
-}
-function layoutOs() {
-  const W = osStage.clientWidth, H = osStage.clientHeight; if (!W) return;
-  const px = osPts.map(p => [p[0] * W, p[1] * H]);
-  const dw = osDesign.offsetWidth, dh = osDesign.offsetHeight;
-  // sorrend: bal felső, jobb felső, bal alsó, jobb alsó
-  const t = homography([0, 0, dw, 0, 0, dh, dw, dh], [px[0][0], px[0][1], px[1][0], px[1][1], px[3][0], px[3][1], px[2][0], px[2][1]]);
-  osDesign.style.transform = `matrix3d(${t[0]},${t[3]},0,${t[6]},${t[1]},${t[4]},0,${t[7]},0,0,1,0,${t[2]},${t[5]},0,${t[8]})`;
-  $$('.corner', osStage).forEach((b, i) => { b.style.transform = `translate(${px[i][0]}px,${px[i][1]}px)`; });
-  const ln = $('#osLines'); ln.setAttribute('viewBox', `0 0 ${W} ${H}`); ln.querySelector('polygon').setAttribute('points', px.map(p => p.join(',')).join(' '));
-}
-function updateOnsiteDesign() { drawOsArt(); layoutOs(); }
-$$('.corner', osStage).forEach(b => {
-  const i = +b.dataset.i;
-  b.addEventListener('pointerdown', e => { e.preventDefault(); b.setPointerCapture(e.pointerId); b.focus({ preventScroll: true }); });
-  b.addEventListener('pointermove', e => { if (!b.hasPointerCapture(e.pointerId)) return; const r = osStage.getBoundingClientRect(); osPts[i] = moveCorner(osPts, i, [Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), Math.max(0, Math.min(1, (e.clientY - r.top) / r.height))], r.width, r.height); layoutOs(); });
-  b.addEventListener('pointerup', e => { if (b.hasPointerCapture(e.pointerId)) b.releasePointerCapture(e.pointerId); });
-  b.addEventListener('keydown', e => { const st = e.shiftKey ? .03 : .006; const dmap = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, -st], ArrowDown: [0, st] }; const dd = dmap[e.key]; if (!dd) return; e.preventDefault(); osPts[i] = moveCorner(osPts, i, [Math.max(0, Math.min(1, osPts[i][0] + dd[0])), Math.max(0, Math.min(1, osPts[i][1] + dd[1]))], osStage.clientWidth, osStage.clientHeight); layoutOs(); });
-});
-$('#osReset').addEventListener('click', () => { osPts = OS_DEF.map(p => p.slice()); layoutOs(); });
-$('#osFile').addEventListener('change', e => {
-  const f = e.target.files[0]; e.target.value = ''; if (!f || !/^image\//.test(f.type)) return;
-  const ph = $('#osPhoto'); ph.src = URL.createObjectURL(f); ph.hidden = false; $('#osBg').hidden = true; $('#osTag').textContent = 'Saját fotó · húzza a sarokpontokat';
 });
 
 /* ================= VARÁZSLÓ ================= */
@@ -2656,12 +2542,11 @@ $('#year').textContent = String(bpNow().y);
 /* ================= indulás, átméretezés ================= */
 setProduct('molino');
 renderCart(); renderReorder();
-drawOsBg(); layoutOs();
 drawScenes();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawScenes(); renderBench(); drawOsArt(); layoutOs(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { drawScenes(); renderBench(); });
 setInterval(updateLead, 30000);
 let rq = 0;
-const ro = new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(() => { renderBench(); drawOsBg(); layoutOs(); drawScenes(); }); });
-[bench, osStage, $('#baStage'), $('#refGrid'), $('.about-img')].forEach(n => n && ro.observe(n));
+const ro = new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(() => { renderBench(); drawScenes(); }); });
+[bench, $('#baStage'), $('#refGrid'), $('.about-img')].forEach(n => n && ro.observe(n));
 })();
 </script>

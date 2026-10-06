@@ -100,8 +100,9 @@ visszaigazolásra és a befizetésre. Az expressz is kérés: a visszaigazolásk
 Hétvége és magyar munkaszüneti napok nem számítanak.
 
 **Átvétel:** személyes átvétel a műhelyben **ingyenes** · futár **2 990 Ft** · nagy csomag (roll-up, tábla) **4 990 Ft** ·
-**telepítéssel** (ilyenkor nincs átvétel). A telepítés díja egyedi. Telepítésnél a méreteket szükség esetén a műhely
-a helyszínen ellenőrzi, mert gyakori, hogy rossz méret érkezik; ennek alapján véglegesíti az árat.
+**telepítéssel** (ilyenkor nincs átvétel). A telepítés díja egyedi. Telepítésnél a kosárban fotó tölthető fel a
+helyszínről (nem kötelező): ebből látszik a felület, így a telepítés pontosabban árazható. A méreteket szükség
+esetén a műhely a helyszínen ellenőrzi, mert gyakori, hogy rossz méret érkezik; ennek alapján véglegesíti az árat.
 
 ### 4.2 Ajánlatkéréses (egyedi) munkák – okos varázsló
 
@@ -138,8 +139,10 @@ Minden varázslóban: helyszín (cím), határidő, fájlok/fotók feltöltése,
    Expressz kapcsolóval újraszámol.
 4. **Átlátható ár:** tételes bontás (anyag m² × egységár, szélkidolgozás, kedvezmény), bruttó végösszeg,
    alatta kis sorban nettó + ÁFA, mennyiségi kedvezmény kijelzése („még 2 db és −10%”).
-5. **„Helyszínen” előnézet:** a látogató feltölt egy fotót a kirakatáról/járművéről, és ráhúzza a tervet
-   (nézet: perspektíva-sarkok mozgatása). A látványtervben elég jelezni és egy egyszerű demóval érzékeltetni.
+5. ~~**„Helyszínen” előnézet:** a látogató feltölt egy fotót a kirakatáról/járművéről, és ráhúzza a tervet
+   (nézet: perspektíva-sarkok mozgatása).~~ Egyelőre kivéve (2026-10-06): jó koncepció, de most nem éri meg.
+   A fotón nincs lépték, így a méretet nem ellenőrzi, és a műhely semmit nem kap belőle. Helyette telepítéses
+   rendelésnél a kosárban fotó tölthető fel a helyszínről (4.1, Átvétel). Később kirakatfóliához visszajöhet.
 6. **Nappal / éjjel kapcsoló** a világító reklámoknál: ugyanaz a cégér kikapcsolva és világítva.
 7. ~~Felmérés-időpontfoglalás az ajánlatkérő varázsló végén.~~ Elvetve (2026-10-05): időpontválasztó helyett
    „Helyszíni felmérést kérek” jelölő és telefonos egyeztetés.
@@ -303,9 +306,5 @@ szöveget jogász nézze át.
   és az előnézet csak találgat (3 furatnál egy pötty az egyik sarokban). Javaslat: darabszám helyett rögzítési
   mód: nincs furat · 2 furat felül (akasztáshoz) · 4 sarokfurat · távtartó csavarral · egyedi elrendezés
   megjegyzésben. Kérdés: a távtartó szett ára tartalmazza-e a 4 furatot?
-- „Helyszínen” előnézet (átnézve 2026-10-06): minden terméknél ugyanaz a kirakatos mintakép és kijelölés, a terv
-  aránya nem marad meg (az álló roll-up fekvő téglalapba nyomódik), és a fotó nem jut el a műhelyhez. Marad
-  vagy kikerül? (Javaslat: egyelőre kikerül, a helyszíni fotót a telepítéses rendelésnél és az ajánlatkérőben
-  kérjük, mert ott segít az árazásban.)
 - Valódi mintafájlok a méretfelismerés ellenőrzéséhez (nem kötelező): bármilyen korábbi munka nyomdai fájlja,
   ügyféladat nélkül is jó. A kalkulátor a szintetikus tesztfájlokkal már működik (8. fejezet).
