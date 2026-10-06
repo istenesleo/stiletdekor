@@ -299,5 +299,13 @@ szöveget jogász nézze át.
 - Design-irány: A, B vagy keverék. Egyelőre mindkettő marad, saját dev oldallal (2026-10-06).
 - A kezdőlapon túl sok a szöveg (A: 1 449, B: 1 298 szó betöltéskor). Átnézve, javaslattal:
   [`szovegmennyiseg.md`](szovegmennyiseg.md). A rövidítésről később döntünk.
+- Táblák furatolása (átnézve 2026-10-06): a szabad darabszámból (0–40) nem derül ki, hova kerüljenek a furatok,
+  és az előnézet csak találgat (3 furatnál egy pötty az egyik sarokban). Javaslat: darabszám helyett rögzítési
+  mód: nincs furat · 2 furat felül (akasztáshoz) · 4 sarokfurat · távtartó csavarral · egyedi elrendezés
+  megjegyzésben. Kérdés: a távtartó szett ára tartalmazza-e a 4 furatot?
+- „Helyszínen” előnézet (átnézve 2026-10-06): minden terméknél ugyanaz a kirakatos mintakép és kijelölés, a terv
+  aránya nem marad meg (az álló roll-up fekvő téglalapba nyomódik), és a fotó nem jut el a műhelyhez. Marad
+  vagy kikerül? (Javaslat: egyelőre kikerül, a helyszíni fotót a telepítéses rendelésnél és az ajánlatkérőben
+  kérjük, mert ott segít az árazásban.)
 - Valódi mintafájlok a méretfelismerés ellenőrzéséhez (nem kötelező): bármilyen korábbi munka nyomdai fájlja,
   ügyféladat nélkül is jó. A kalkulátor a szintetikus tesztfájlokkal már működik (8. fejezet).
