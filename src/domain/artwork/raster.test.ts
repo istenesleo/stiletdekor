@@ -271,6 +271,91 @@ describe('PSD', () => {
   });
 });
 
+function bmpFile(width: number, height: number, pxPerMetre: number): Uint8Array {
+  const header = [...u32le(40), ...u32le(width), ...u32le(height), ...u16le(1), ...u16le(24), ...u32le(0), ...u32le(0)];
+  return bytes(ascii('BM'), u32le(54), [0, 0, 0, 0], u32le(54), header, u32le(pxPerMetre), u32le(pxPerMetre), u32le(0), u32le(0));
+}
+
+describe('BMP', () => {
+  it('reads the resolution from the header (pixels per metre), also for top-down bitmaps', async () => {
+    const result = await analyzeArtwork(bmpFile(3543, -1181, ppm(150)), 'tabla.bmp');
+    expect(result).toMatchObject({ format: 'bmp', pixels: { width: 3543, height: 1181 }, confidence: 'metadata' });
+    expect(result.pages[0]?.size).toEqual(mm(599.9, 200));
+  });
+
+  it('treats the Windows default of 96 dpi as no size, and reads the old OS/2 header', async () => {
+    expect((await analyzeArtwork(bmpFile(800, 600, 3780), 'kep.bmp')).warnings.map((w) => w.code)).toEqual(['raster-default-dpi']);
+    const os2 = bytes(ascii('BM'), u32le(26), [0, 0, 0, 0], u32le(26), u32le(12), u16le(640), u16le(480), u16le(1), u16le(24));
+    const result = await analyzeArtwork(os2, 'regi.bmp');
+    expect(result).toMatchObject({ format: 'bmp', pixels: { width: 640, height: 480 }, pages: [] });
+    expect(result.warnings).toEqual([{ code: 'raster-no-dpi' }]);
+  });
+});
+
+// ISO base media boxes, as in HEIC (iPhone) and AVIF files.
+const box = (type: string, ...content: number[][]) => [...u32be(content.flat().length + 8), ...ascii(type), ...content.flat()];
+const fullBox = (type: string, ...content: number[][]) => box(type, [0, 0, 0, 0], ...content);
+const ispe = (width: number, height: number) => fullBox('ispe', u32be(width), u32be(height));
+
+function heif(
+  brands: readonly string[],
+  properties: number[][],
+  primary?: { item: number; associations: readonly (readonly [item: number, propertyIndexes: readonly number[]])[] },
+): Uint8Array {
+  const [major = 'heic', ...compatible] = brands;
+  const ipma = primary
+    ? fullBox(
+        'ipma',
+        u32be(primary.associations.length),
+        ...primary.associations.map(([item, indexes]) => [...u16be(item), indexes.length, ...indexes.map((i) => 0x80 | i)]),
+      )
+    : [];
+  const meta = fullBox(
+    'meta',
+    fullBox('hdlr', u32be(0), ascii('pict'), u32be(0), u32be(0), u32be(0), [0]),
+    primary ? fullBox('pitm', u16be(primary.item)) : [],
+    box('iprp', box('ipco', ...properties), ipma),
+  );
+  return bytes(box('ftyp', ascii(major), u32be(0), ...compatible.map(ascii)), meta, box('mdat', [0, 0, 0, 0]));
+}
+
+describe('HEIC and AVIF', () => {
+  // An iPhone photo: 512 × 512 tiles, a 4032 × 3024 grid as the primary item, turned a quarter (irot 1).
+  const tiles = ispe(512, 512);
+  const grid = ispe(4032, 3024);
+  const quarterTurn = box('irot', [1]);
+
+  it('reads the primary image, not a tile or the thumbnail, and applies its rotation', async () => {
+    const file = heif(['heic', 'mif1', 'heic'], [box('hvcC', [1]), tiles, grid, quarterTurn, ispe(320, 240)], {
+      item: 49,
+      associations: [
+        [1, [1, 2]],
+        [49, [3, 4]],
+        [50, [1, 5]],
+      ],
+    });
+    const result = await analyzeArtwork(file, 'IMG_0412.HEIC');
+    expect(result).toMatchObject({ format: 'heic', pixels: { width: 3024, height: 4032 }, pages: [], confidence: 'none' });
+    expect(result.warnings).toEqual([{ code: 'raster-no-dpi' }]);
+  });
+
+  it('falls back to the largest image when the item associations are missing', async () => {
+    const result = await analyzeArtwork(heif(['mif1', 'heic'], [tiles, grid]), 'foto.heif');
+    expect(result.pixels).toEqual({ width: 4032, height: 3024 });
+  });
+
+  it('tells AVIF from HEIC by its brand', async () => {
+    const file = heif(['avif', 'mif1', 'miaf'], [ispe(1920, 1080)], { item: 1, associations: [[1, [1]]] });
+    expect(await analyzeArtwork(file, 'kep.avif')).toMatchObject({ format: 'avif', pixels: { width: 1920, height: 1080 } });
+  });
+
+  it('reports a file without image properties as unreadable', async () => {
+    const result = await analyzeArtwork(bytes(box('ftyp', ascii('heic'), u32be(0), ascii('mif1'))), 'hibas.heic');
+    expect(result.format).toBe('heic');
+    expect(result.warnings.map((w) => w.code)).toEqual(['unreadable']);
+  });
+});
+
 describe('formats without a print resolution', () => {
   it.each([
     ['WebP (VP8X)', webp('VP8X', [0, 0, 0, 0, ...u24le(1199), ...u24le(799)]), 'webp', 1200, 800],

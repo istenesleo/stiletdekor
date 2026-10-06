@@ -1,6 +1,21 @@
 // Result types of the artwork (print file) analysis.
 
-export type ArtworkFormat = 'pdf' | 'ai' | 'eps' | 'svg' | 'png' | 'jpeg' | 'tiff' | 'psd' | 'webp' | 'gif' | 'unknown';
+export type ArtworkFormat =
+  | 'pdf'
+  | 'ai'
+  | 'eps'
+  | 'svg'
+  | 'png'
+  | 'jpeg'
+  | 'tiff'
+  | 'psd'
+  | 'bmp'
+  | 'heic'
+  | 'avif'
+  | 'webp'
+  | 'gif'
+  | 'cdr'
+  | 'unknown';
 
 /** A physical size, always rounded to 0.1 mm. */
 export interface SizeMm {

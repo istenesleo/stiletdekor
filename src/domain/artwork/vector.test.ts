@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyzeArtwork, detectArtworkFormat } from './index';
+import { ARTWORK_ACCEPT, ARTWORK_FILE_TYPES, analyzeArtwork, artworkFileTypeOf, detectArtworkFormat } from './index';
 
 const text = (s: string): Uint8Array => new TextEncoder().encode(s);
 const u32le = (n: number) => [n & 0xff, (n >>> 8) & 0xff, (n >>> 16) & 0xff, (n >>> 24) & 0xff];
@@ -149,9 +149,39 @@ describe('format detection', () => {
     ['kep.psd', 'psd', text('8BPS')],
     ['kep.webp', 'webp', text('RIFF\0\0\0\0WEBPVP8 ')],
     ['kep.gif', 'gif', text('GIF87a')],
+    ['kep.bmp', 'bmp', Uint8Array.from([0x42, 0x4d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0])],
+    ['bm.txt', 'unknown', text('BMW szerviz árlista 2026')],
+    ['IMG.HEIC', 'heic', Uint8Array.from([0, 0, 0, 24, ...text('ftypheic\0\0\0\0mif1heic')])],
+    ['kep.avif', 'avif', Uint8Array.from([0, 0, 0, 24, ...text('ftypavif\0\0\0\0mif1miaf')])],
+    ['video.mp4', 'unknown', Uint8Array.from([0, 0, 0, 24, ...text('ftypisom\0\0\0\0isomiso2')])],
+    ['logo.cdr', 'cdr', text('RIFF\0\0\0\0CDRAvrsn')],
+    ['logo-x7.cdr', 'cdr', Uint8Array.from([0x50, 0x4b, 0x03, 0x04, 0, 0])],
+    ['csomag.zip', 'unknown', Uint8Array.from([0x50, 0x4b, 0x03, 0x04, 0, 0])],
     ['html.svg', 'unknown', text('<!DOCTYPE html><html></html>')],
     ['', 'unknown', new Uint8Array(0)],
   ] as const)('%s → %s', (name, format, bytes) => {
     expect(detectArtworkFormat(bytes, name)).toBe(format);
+  });
+});
+
+describe('accepted file types', () => {
+  it('lists every readable format once, with unique extensions', () => {
+    const extensions = ARTWORK_FILE_TYPES.flatMap((t) => t.extensions);
+    expect(new Set(extensions).size).toBe(extensions.length);
+    expect(new Set(ARTWORK_FILE_TYPES.map((t) => t.format)).size).toBe(ARTWORK_FILE_TYPES.length);
+    expect(ARTWORK_ACCEPT.split(',')).toEqual(extensions.map((e) => `.${e}`));
+  });
+
+  it('finds the type by extension, case-insensitively', () => {
+    expect(artworkFileTypeOf('Molino_M1-10.PDF')?.sizeReading).toBe('exact');
+    expect(artworkFileTypeOf('IMG_0412.heic')).toMatchObject({ format: 'heic', sizeReading: 'pixels' });
+    expect(artworkFileTypeOf('logo.cdr')?.sizeReading).toBe('none');
+    expect(artworkFileTypeOf('arajanlat.docx')).toBeUndefined();
+    expect(artworkFileTypeOf('nincs-kiterjesztes')).toBeUndefined();
+  });
+
+  it('accepts CorelDRAW files but reads no size from them', async () => {
+    const result = await analyzeArtwork(text('RIFF\0\0\0\0CDRAvrsn'), 'logo.cdr');
+    expect(result).toMatchObject({ format: 'cdr', pages: [], confidence: 'none', warnings: [] });
   });
 });

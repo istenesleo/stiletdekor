@@ -182,7 +182,101 @@ function webp(bytes: Uint8Array): RasterInfo {
 
 const gif = (bytes: Uint8Array): RasterInfo => ({ width: view(bytes).getUint16(6, true), height: view(bytes).getUint16(8, true), dpi: null });
 
-export const RASTER_FORMATS = new Set<ArtworkFormat>(['png', 'jpeg', 'tiff', 'psd', 'webp', 'gif']);
+function bmp(bytes: Uint8Array): RasterInfo {
+  const v = view(bytes);
+  if (v.getUint32(14, true) === 12) {
+    // OS/2 BITMAPCOREHEADER: 16-bit size, no resolution.
+    return { width: v.getUint16(18, true), height: v.getUint16(20, true), dpi: null };
+  }
+  const width = Math.abs(v.getInt32(18, true));
+  const height = Math.abs(v.getInt32(22, true)); // negative: rows stored top-down
+  const x = v.getInt32(38, true);
+  const y = v.getInt32(42, true);
+  return { width, height, dpi: x > 0 && y > 0 ? { x: x * 0.0254, y: y * 0.0254 } : null }; // pixels per metre
+}
+
+interface Box {
+  readonly type: string;
+  /** Start of the content, right after the size and type. A full box's content begins with version and flags. */
+  readonly start: number;
+  readonly end: number;
+}
+
+/** The boxes in [start, end) of an ISO base media file (HEIF, AVIF). */
+function boxes(bytes: Uint8Array, start: number, end: number): Box[] {
+  const v = view(bytes);
+  const out: Box[] = [];
+  for (let off = start; off + 8 <= end; ) {
+    let size = v.getUint32(off);
+    let header = 8;
+    if (size === 1) {
+      size = Number(v.getBigUint64(off + 8));
+      header = 16;
+    } else if (size === 0) {
+      size = end - off; // up to the end of the enclosing box
+    }
+    if (size < header || off + size > end) break;
+    out.push({ type: tag(bytes, off + 4, 4), start: off + header, end: off + size });
+    off += size;
+  }
+  return out;
+}
+
+/** First child box of `type`; `parentIsFull` skips the parent's version and flags. */
+const child = (bytes: Uint8Array, parent: Box, type: string, parentIsFull = false): Box | undefined =>
+  boxes(bytes, parent.start + (parentIsFull ? 4 : 0), parent.end).find((b) => b.type === type);
+
+/**
+ * HEIF/AVIF: the size of the primary image ('ispe' associated with the 'pitm' item, turned by 'irot').
+ * Phone photos split the image into tiles; the primary item is the whole grid, not a tile or thumbnail.
+ */
+function isoImage(bytes: Uint8Array): RasterInfo {
+  const v = view(bytes);
+  const meta = boxes(bytes, 0, bytes.length).find((b) => b.type === 'meta');
+  const iprp = meta && child(bytes, meta, 'iprp', true);
+  const ipco = iprp && child(bytes, iprp, 'ipco');
+  if (!meta || !iprp || !ipco) throw new Error('HEIF without item properties');
+  const properties = boxes(bytes, ipco.start, ipco.end);
+  const sizeOf = (box: Box) => ({ width: v.getUint32(box.start + 4), height: v.getUint32(box.start + 8) });
+
+  let chosen: Box[] = [];
+  const pitm = child(bytes, meta, 'pitm', true);
+  const ipma = child(bytes, iprp, 'ipma');
+  if (pitm && ipma) {
+    const primary = v.getUint8(pitm.start) === 0 ? v.getUint16(pitm.start + 4) : v.getUint32(pitm.start + 4);
+    const version = v.getUint8(ipma.start);
+    const wideIndexes = (v.getUint8(ipma.start + 3) & 1) === 1;
+    let off = ipma.start + 4;
+    const entries = v.getUint32(off);
+    off += 4;
+    for (let i = 0; i < entries && off < ipma.end; i++) {
+      const item = version < 1 ? v.getUint16(off) : v.getUint32(off);
+      off += version < 1 ? 2 : 4;
+      const count = v.getUint8(off);
+      off += 1;
+      const indexes: number[] = [];
+      for (let j = 0; j < count; j++) {
+        indexes.push(wideIndexes ? v.getUint16(off) & 0x7fff : v.getUint8(off) & 0x7f);
+        off += wideIndexes ? 2 : 1;
+      }
+      if (item === primary) chosen = indexes.map((index) => properties[index - 1]).filter((p): p is Box => p !== undefined);
+    }
+  }
+  let ispe = chosen.find((p) => p.type === 'ispe');
+  if (!ispe) {
+    // No usable association: the largest image is the main picture (tiles and thumbnails are smaller).
+    ispe = properties
+      .filter((p) => p.type === 'ispe')
+      .sort((a, b) => sizeOf(b).width * sizeOf(b).height - sizeOf(a).width * sizeOf(a).height)[0];
+  }
+  if (!ispe) throw new Error('HEIF without image size');
+  const { width, height } = sizeOf(ispe);
+  const irot = chosen.find((p) => p.type === 'irot');
+  const quarterTurn = irot !== undefined && (v.getUint8(irot.start) & 1) === 1;
+  return quarterTurn ? { width: height, height: width, dpi: null } : { width, height, dpi: null };
+}
+
+export const RASTER_FORMATS = new Set<ArtworkFormat>(['png', 'jpeg', 'tiff', 'psd', 'bmp', 'heic', 'avif', 'webp', 'gif']);
 
 export function readRaster(bytes: Uint8Array, format: ArtworkFormat): RasterInfo {
   switch (format) {
@@ -198,6 +292,11 @@ export function readRaster(bytes: Uint8Array, format: ArtworkFormat): RasterInfo
       return webp(bytes);
     case 'gif':
       return gif(bytes);
+    case 'bmp':
+      return bmp(bytes);
+    case 'heic':
+    case 'avif':
+      return isoImage(bytes);
     default:
       throw new Error(`Not a raster format: ${format}`);
   }
