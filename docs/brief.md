@@ -79,6 +79,8 @@ egy kis sor mutatja a nettó összeget és az ÁFA-t a cégeknek. A rendelési �
 **Plakát** (darabár, 150 g/m² matt vagy fényes papír)
 - A3: **990** · A2: **1 990** · A1: **3 490** · A0: **5 990** · B1 (70×100): **3 990** · Blueback (utcai plakát, Ft/m²): **2 990**
 - Egyedi méret (döntés, 2026-10-05): m²-ár alapján, helyőrző **4 990 Ft/m²**, minimum **1 990 Ft**; a valós árat a megrendelő adja meg.
+  **2026-10-06: függőben**, később döntünk róla. A számítás helyőrző árral elkészült, a webshop felületére a döntés
+  után kerül.
   Ha a feltöltött fájl szabványos formátumú (±1 mm), a kalkulátor arra áll rá, különben egyedi méret.
 - A „blueback” név egyelőre marad. (Kék hátoldalú, átlátszatlan utcai plakátpapír, régi plakátok fölé ragasztható.)
 
@@ -152,6 +154,10 @@ Minden varázslóban: helyszín (cím), határidő, fájlok/fotók feltöltése,
 
 Mindkettő **fekete alapú**, a rózsaszín a márkaszín (`--brand`). Mindkettő ugyanazt a tartalmat mutatja,
 hogy a megrendelő tisztán az irányt hasonlíthassa össze.
+
+**Döntés (2026-10-06): egyelőre mindkét irány marad**, mindkettőnek saját dev oldala van (README, „Két dev
+oldal”). Mindkét látványterv a 2026-10-05-i döntéseket mutatja (bruttó árak, telepítéses átvétel, rendelés
+ellenőrzésre küldése, ajánlatkérő költségkeret és időpontválasztó nélkül).
 
 ### A) Neon műhely
 Mélyfekete, a rózsaszín **neonfényként** jelenik meg (a világító betűk és cégérek világa). Vizuális nyelv:
@@ -253,6 +259,19 @@ Példa: HajWellness Szalon, „C változat, felületenként”: 22 oldalas PDF, 
    - **Nem vállalom:** indoklással, esetleg alternatívával.
 4. **A díjbekérő befizetése a megrendelés elfogadása.** Ha a vásárló nem fogadja el, nincs teendője; a rendelés
    a megadott idő után automatikusan lezárul. A levélben egy „Nem kérem” link is lehet.
+   Ha a vásárló nem fizet (javaslat, 2026-10-06):
+   - **A vásárlónak nincs kötelezettsége és költsége**, mert a szerződés csak a befizetéssel jön létre.
+   - **A műhelynek nincs vesztesége**, mert a gyártás csak a befizetés után indul. A díjbekérő nem számla, ezért
+     sztornózni sem kell.
+   - A határidő előtt 2 nappal emlékeztető e-mail megy. Lejáratkor értesítő megy: a rendelést lezártuk; ha mégis
+     kéri, egy kattintással újraküldheti, és az árat meg a határidőt újra ellenőrizzük.
+   - Késve érkező befizetésnél a műhely dönt: legyártja (ha az ár és a kapacitás még tartható), vagy visszautalja.
+   - A lezárt rendelés feltöltött fájljait egy idő után töröljük (javaslat: 30 nap; az adatkezelési tájékoztató
+     rögzíti).
+   - **Miért 8 nap:** a díjbekérőn és a számlán a 8 napos fizetési határidő a megszokott Magyarországon. Lefed egy
+     hétvégét, és elég a cégeknek a jóváhagyásra és az utalásra. A visszaigazolt árat és gyártási kapacitást
+     viszont nem érdemes ennél tovább tartani. Sürgős munkánál a vásárló úgyis hamar fizet, mert a határidő a
+     befizetéstől számít.
 5. A gyártás a befizetés beérkezése után indul, a gyártási idő innen számít.
 6. Elkészült: átvehető, feladva vagy telepítés egyeztetése.
 7. Számla automatikusan, számlázóprogramon keresztül (pl. Számlázz.hu vagy Billingo).
@@ -273,8 +292,10 @@ szöveget jogász nézze át.
 
 - Ráhagyásos fájlnál az árat a teljes nyomtatott méretre számoljuk? (Javaslat: igen.)
 - Felületcsomag: legyen felületenkénti kezelési díj (sok kis darab vágása, kezelése)? A kedvezmény a készletek
-  száma vagy az összes m² szerint járjon?
-- Az egyedi méretű plakát valós m²-ára.
-- Hány nap után záruljon le automatikusan a visszaigazolt, de be nem fizetett rendelés? (Javaslat: 8 nap.)
-- Design-irány: A, B vagy keverék (mindkettő tetszik).
-- Mintafájlok a méretfelismerés teszteléséhez (AI, EPS, kifutós PDF, 1:10-es molinó, TIFF).
+  száma vagy az összes m² szerint járjon? (Később döntünk.)
+- Egyedi méretű plakát: legyen-e a webshopban, milyen áron és mérethatárral? (Függőben, 2026-10-06.)
+- Hány nap után záruljon le automatikusan a visszaigazolt, de be nem fizetett rendelés? (Javaslat: 8 nap,
+  indoklás a 10. fejezetben.)
+- Design-irány: A, B vagy keverék. Egyelőre mindkettő marad, saját dev oldallal (2026-10-06).
+- Valódi mintafájlok a méretfelismerés ellenőrzéséhez (nem kötelező): bármilyen korábbi munka nyomdai fájlja,
+  ügyféladat nélkül is jó. A kalkulátor a szintetikus tesztfájlokkal már működik (8. fejezet).
