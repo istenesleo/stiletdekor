@@ -1771,6 +1771,29 @@ function mul(a, b) { const c = []; for (let i = 0; i < 3; i++) for (let j = 0; j
 function mulv(m, v) { return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2], m[3] * v[0] + m[4] * v[1] + m[5] * v[2], m[6] * v[0] + m[7] * v[1] + m[8] * v[2]]; }
 function basis(p) { const m = [p[0][0], p[1][0], p[2][0], p[0][1], p[1][1], p[2][1], 1, 1, 1]; const v = mulv(adj(m), [p[3][0], p[3][1], 1]); return mul(m, [v[0], 0, 0, 0, v[1], 0, 0, 0, v[2]]); }
 function homo(src, dst) { const t = mul(basis(dst), adj(basis(src))); for (let i = 0; i < 9; i++) t[i] /= t[8]; return [t[0], t[3], 0, t[6], t[1], t[4], 0, t[7], 0, 0, 1, 0, t[2], t[5], 0, t[8]]; }
+// A sarokpontok négyszöge maradjon konvex és ne forduljon át (óramutató szerinti sorrend, egyik szög se
+// legyen 15°-nál hegyesebb vagy 165°-nál laposabb, az oldalak legalább 24 px-esek): különben a perspektíva
+// kicsavarja vagy szétnyújtja a grafikát.
+function quadOk(pts, W, H) {
+  const p = pts.map(([x, y]) => [x * W, y * H]);
+  for (let k = 0; k < 4; k++) {
+    const a = p[k], b = p[(k + 1) % 4], c = p[(k + 2) % 4];
+    const ux = b[0] - a[0], uy = b[1] - a[1], vx = c[0] - b[0], vy = c[1] - b[1];
+    const lu = Math.hypot(ux, uy), lv = Math.hypot(vx, vy);
+    if (lu < 24 || lv < 24 || (ux * vy - uy * vx) / (lu * lv) < 0.26) return false;
+  }
+  return true;
+}
+// Az i. sarok a cél felé csak addig megy, amíg a négyszög ép marad; a határon megáll.
+function moveCorner(pts, i, to, W, H) {
+  const from = pts[i], test = pts.map(q => q.slice());
+  const at = t => [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t];
+  test[i] = to;
+  if (quadOk(test, W, H) || !quadOk(pts, W, H)) return to;
+  let lo = 0, hi = 1;
+  for (let k = 0; k < 14; k++) { const m = (lo + hi) / 2; test[i] = at(m); if (quadOk(test, W, H)) lo = m; else hi = m; }
+  return at(lo);
+}
 function renderSite() {
   const st = el.stage, W = st.clientWidth, H = st.clientHeight; if (!W || !H) return;
   const q = lastQ || compute(S.product, cur());
@@ -1866,13 +1889,13 @@ $$('#helyszinen .hd').forEach(hd => {
   hd.addEventListener('pointermove', e => {
     if (!hd.hasPointerCapture(e.pointerId)) return;
     const r = el.stage.getBoundingClientRect();
-    SITE[i] = [Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), Math.max(0, Math.min(1, (e.clientY - r.top) / r.height))];
+    SITE[i] = moveCorner(SITE, i, [Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)), Math.max(0, Math.min(1, (e.clientY - r.top) / r.height))], r.width, r.height);
     renderSite();
   });
   hd.addEventListener('keydown', e => {
     const d = e.shiftKey ? 0.02 : 0.005, k = { ArrowLeft: [-d, 0], ArrowRight: [d, 0], ArrowUp: [0, -d], ArrowDown: [0, d] }[e.key];
     if (!k) return; e.preventDefault();
-    SITE[i] = [Math.max(0, Math.min(1, SITE[i][0] + k[0])), Math.max(0, Math.min(1, SITE[i][1] + k[1]))]; renderSite();
+    SITE[i] = moveCorner(SITE, i, [Math.max(0, Math.min(1, SITE[i][0] + k[0])), Math.max(0, Math.min(1, SITE[i][1] + k[1]))], el.stage.clientWidth, el.stage.clientHeight); renderSite();
   });
 });
 $('#cfgForm').addEventListener('submit', e => {
