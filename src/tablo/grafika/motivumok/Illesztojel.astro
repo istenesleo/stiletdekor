@@ -1,0 +1,15 @@
+---
+// Registration mark: a crosshair in a circle, the print workshop's alignment sign. Decorative.
+import './motivumok.css';
+
+interface Props {
+  size?: number;
+}
+
+const { size = 24 } = Astro.props;
+---
+
+<svg class="tb-reg" viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+  <circle cx="12" cy="12" r="6"></circle>
+  <path d="M12 0v24M0 12h24"></path>
+</svg>

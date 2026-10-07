@@ -201,7 +201,7 @@ export const VARIANTS: readonly Variant[] = [
     novelty: 'Egy közös rendszer a két különálló piktogramkészlet helyett, mérési részletekkel.',
   },
   {
-    id: 'G3', group: 'grafika', lane: 'tokenes', round: 1, status: 'tervezett', file: 'grafika/G3Motivumok.astro',
+    id: 'G3', group: 'grafika', lane: 'tokenes', round: 1, status: 'kesz', file: 'grafika/G3Motivumok.astro',
     name: 'Mérés-motívumok',
     idea: 'Vonalzó, méretvonal, illesztőjel, vágójeles keret és vágóalátét-rács egy készletben, használati szabályokkal.',
     novelty: 'A márka legegyedibb eleme rendszerként, nem eseti díszként.',
