@@ -1,0 +1,32 @@
+---
+import Alak from '../Alak.astro';
+import Jelenet from '../Jelenet.astro';
+import Meretvonal from '../Meretvonal.astro';
+import type { JelenetInfo } from '../jelenet-lista';
+
+interface Props {
+  info: JelenetInfo;
+}
+
+const { info } = Astro.props;
+---
+
+<Jelenet info={info}>
+  <rect class="sc-wall" x="30" y="30" width="420" height="240"></rect>
+  <defs>
+    <radialGradient id="sc-kirakat-fenyfolt">
+      <stop class="sc-spill-stop" offset="0"></stop>
+      <stop class="sc-spill-stop sc-spill-stop--end" offset="1"></stop>
+    </radialGradient>
+  </defs>
+  <ellipse class="sc-spill" cx="240" cy="96" rx="200" ry="80" fill="url(#sc-kirakat-fenyfolt)"></ellipse>
+  <rect class="sc-edge" x="135" y="62" width="210" height="44"></rect>
+  <text class="sc-text sc-glow" x="240" y="94" font-size="26" text-anchor="middle" textLength="180" lengthAdjust="spacingAndGlyphs">STILET DEKOR</text>
+  <Meretvonal x1={135} y1={50} x2={345} y2={50} label="4 200 mm" />
+  <rect class="sc-room" x="60" y="130" width="200" height="132"></rect>
+  <path class="sc-edge" d="M60 130h200v132H60zM160 130v132"></path>
+  <rect class="sc-room" x="290" y="138" width="64" height="132"></rect>
+  <path class="sc-edge" d="M290 138h64v132H290z"></path>
+  <circle class="sc-ink" cx="346" cy="206" r="2.5"></circle>
+  <Alak x={405} />
+</Jelenet>

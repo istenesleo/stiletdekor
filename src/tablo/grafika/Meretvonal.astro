@@ -1,0 +1,32 @@
+---
+// A dimension line inside a scene SVG: the line, end ticks and the size, in the measure color.
+interface Props {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  label: string;
+}
+
+const { x1, y1, x2, y2, label } = Astro.props;
+const vertical = x1 === x2;
+const t = 5;
+const ends = vertical ? `M${x1 - t} ${y1}h${2 * t}M${x2 - t} ${y2}h${2 * t}` : `M${x1} ${y1 - t}v${2 * t}M${x2} ${y2 - t}v${2 * t}`;
+const midX = (x1 + x2) / 2;
+const midY = (y1 + y2) / 2;
+---
+
+<g aria-hidden="true">
+  <path class="sc-measure" d={`M${x1} ${y1}L${x2} ${y2}${ends}`}></path>
+  {
+    vertical ? (
+      <text class="sc-measure-text" x={x1 - 8} y={midY} transform={`rotate(-90 ${x1 - 8} ${midY})`}>
+        {label}
+      </text>
+    ) : (
+      <text class="sc-measure-text" x={midX} y={y1 - 4}>
+        {label}
+      </text>
+    )
+  }
+</g>

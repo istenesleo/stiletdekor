@@ -189,7 +189,7 @@ export const VARIANTS: readonly Variant[] = [
   },
   // Grafikák
   {
-    id: 'G1', group: 'grafika', lane: 'tokenes', round: 1, status: 'tervezett', file: 'grafika/G1Jelenetek.astro',
+    id: 'G1', group: 'grafika', lane: 'tokenes', round: 1, status: 'kesz', file: 'grafika/G1Jelenetek.astro',
     name: 'Referencia-jelenetek',
     idea: 'A brief nyolc illusztrált helyőrzője egységes stílusban és léptékben, újrahasználható SVG-ként, nappal/éjjel nézettel.',
     novelty: 'Egy közös lépték és stílus a mostani eltérő jelenetek helyett; a színek tokenekből jönnek.',

@@ -1,0 +1,115 @@
+/* G1 reference-placeholder scenes. Colors come from the tokens; the night view lights the brand color. */
+
+.tb-scene {
+  --sc-sky: var(--color-surface);
+  --sc-wall: var(--color-surface-raised);
+  --sc-line: var(--color-line);
+  --sc-ink: var(--color-text-muted);
+  --sc-glass: color-mix(in oklab, var(--color-text) 12%, var(--sc-wall));
+  --sc-frost: color-mix(in oklab, var(--color-text) 30%, var(--sc-wall));
+  --sc-room: var(--sc-glass);
+  --sc-led: color-mix(in oklab, var(--color-text) 8%, var(--sc-wall));
+  --sc-light: color-mix(in oklab, var(--color-brand) 45%, var(--sc-wall));
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.tb-scene[data-mode='ejjel'] {
+  --sc-sky: var(--color-bg);
+  --sc-wall: color-mix(in oklab, var(--color-surface) 55%, var(--color-bg));
+  --sc-room: color-mix(in oklab, var(--color-text) 22%, var(--color-bg));
+  --sc-led: color-mix(in oklab, var(--color-brand) 70%, var(--color-bg));
+  --sc-light: var(--color-brand);
+}
+
+.tb-scene__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.tb-scene__svg * {
+  transition:
+    fill var(--motion-duration-slow) var(--motion-easing-standard),
+    opacity var(--motion-duration-slow) var(--motion-easing-standard);
+}
+
+.sc-sky { fill: var(--sc-sky); }
+.sc-wall { fill: var(--sc-wall); }
+.sc-glass { fill: var(--sc-glass); }
+.sc-room { fill: var(--sc-room); }
+.sc-frost { fill: var(--sc-frost); }
+.sc-led { fill: var(--sc-led); }
+.sc-light { fill: var(--sc-light); }
+.sc-ink { fill: var(--sc-ink); }
+.sc-line { fill: none; stroke: var(--sc-line); stroke-width: 1.5; }
+.sc-edge { fill: none; stroke: var(--sc-ink); stroke-width: 1.5; }
+.sc-ground { stroke: var(--sc-ink); stroke-width: 2; }
+
+.sc-text,
+.sc-depth,
+.sc-cut {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+}
+
+.sc-text { fill: var(--sc-light); }
+.sc-depth { fill: var(--sc-ink); }
+.sc-cut { fill: var(--sc-room); }
+
+.sc-label {
+  fill: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.sc-measure {
+  fill: none;
+  stroke: var(--color-measure);
+  stroke-width: 1;
+}
+
+.sc-measure-text {
+  fill: var(--color-measure);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-anchor: middle;
+}
+
+/* Light spill around a lit sign: a radial gradient of the brand color, shown at night only. */
+.sc-spill {
+  opacity: 0;
+}
+
+.sc-spill-stop {
+  stop-color: var(--color-brand);
+  stop-opacity: 0.45;
+}
+
+.sc-spill-stop--end {
+  stop-opacity: 0;
+}
+
+.tb-scene[data-mode='ejjel'] .sc-spill {
+  opacity: 1;
+}
+
+.tb-scene[data-mode='ejjel'] .sc-glow {
+  filter: drop-shadow(0 0 3px var(--color-brand)) drop-shadow(0 0 10px var(--color-brand));
+}
+
+.tb-scene figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.tb-scene__ph {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-measure);
+}

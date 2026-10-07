@@ -1,0 +1,23 @@
+---
+import Alak from '../Alak.astro';
+import Jelenet from '../Jelenet.astro';
+import Meretvonal from '../Meretvonal.astro';
+import type { JelenetInfo } from '../jelenet-lista';
+
+interface Props {
+  info: JelenetInfo;
+}
+
+const { info } = Astro.props;
+---
+
+<Jelenet info={info}>
+  <rect class="sc-wall" x="0" y="30" width="480" height="240"></rect>
+  <text class="sc-depth" x="243" y="153" font-size="40" text-anchor="middle" textLength="220" lengthAdjust="spacingAndGlyphs">DEKOR</text>
+  <text class="sc-text" x="240" y="150" font-size="40" text-anchor="middle" textLength="220" lengthAdjust="spacingAndGlyphs">DEKOR</text>
+  <Meretvonal x1={116} y1={121} x2={116} y2={151} label="600 mm" />
+  <rect class="sc-ink" x="150" y="215" width="180" height="8"></rect>
+  <rect class="sc-glass" x="156" y="223" width="168" height="47"></rect>
+  <rect class="sc-edge" x="156" y="223" width="168" height="47"></rect>
+  <Alak x={392} />
+</Jelenet>
