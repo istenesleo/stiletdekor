@@ -19,6 +19,7 @@ const theme = SITE_THEMES.find((t) => t.id === requested) ?? siteThemeOf(env.SIT
 
 <Base title="Tabló – Stilet Dekor" description="Alternatív weblap-elemek és grafikák változatai." theme={theme.id}>
   <div class="tb-root">
+    <a class="tb-skip" href="#tablo-tartalom">Ugrás a változatokhoz</a>
     <header class="tb-bar">
       <p class="tb-bar__title">Tabló<span>{theme.label}</span></p>
       <nav aria-label="Design-irány">
@@ -38,7 +39,7 @@ const theme = SITE_THEMES.find((t) => t.id === requested) ?? siteThemeOf(env.SIT
         <span data-lane="kiserleti">{LANE_LABELS.kiserleti}</span>
       </p>
     </header>
-    <main>
+    <main id="tablo-tartalom" tabindex="-1">
       <h1 class="tb-sr">Tabló: alternatív weblap-elemek és grafikák</h1>
       {
         VARIANT_GROUPS.map((g) => (

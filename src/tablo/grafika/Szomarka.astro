@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { valtozat, uid, alap = 'sotet', size = 96 } = Astro.props;
-const classes = ['sm', `sm--${alap}`, valtozat === 'monogram' && 'sm--monogram'];
+const classes = ['sm', 'notranslate', `sm--${alap}`, valtozat === 'monogram' && 'sm--monogram'];
 ---
 
 {

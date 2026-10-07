@@ -1,7 +1,37 @@
 /* The /tablo board's own chrome: top bar, groups, lanes and variant frames. Tokens only. */
 
+/* Keep focused elements and anchor targets clear of the sticky bar. */
+:root:has(.tb-root) {
+  scroll-padding-top: 8rem;
+}
+
 .tb-root {
   padding-block-end: var(--space-9);
+}
+
+.tb-skip {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 20;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  transform: translateY(-200%);
+}
+
+.tb-skip:focus-visible {
+  transform: none;
+}
+
+.tb-bar a,
+.tb-frame__width button {
+  touch-action: manipulation;
+}
+
+.tb-bar a:hover,
+.tb-frame__width button:hover {
+  border-color: var(--color-text-muted);
 }
 
 .tb-sr {
@@ -28,6 +58,17 @@
   background: var(--color-bg);
   border-block-end: 1px solid var(--color-line);
   font-size: var(--text-sm);
+}
+
+/* On phones the bar wraps to several rows: let it scroll away instead of covering a quarter of the screen. */
+@media (max-width: 40rem) {
+  :root:has(.tb-root) {
+    scroll-padding-top: 0;
+  }
+
+  .tb-bar {
+    position: static;
+  }
 }
 
 .tb-bar__title {

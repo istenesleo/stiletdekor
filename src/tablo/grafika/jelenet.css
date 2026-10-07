@@ -9,7 +9,8 @@
   --sc-frost: color-mix(in oklab, var(--color-text) 30%, var(--sc-wall));
   --sc-room: var(--sc-glass);
   --sc-led: color-mix(in oklab, var(--color-text) 8%, var(--sc-wall));
-  --sc-light: color-mix(in oklab, var(--color-brand) 45%, var(--sc-wall));
+  /* Unlit brand color by day: 80% keeps the sign lettering at 3:1 on the wall in both directions. */
+  --sc-light: color-mix(in oklab, var(--color-brand) 80%, var(--sc-wall));
   display: grid;
   gap: var(--space-2);
   margin: 0;
@@ -19,6 +20,8 @@
   --sc-sky: var(--color-bg);
   --sc-wall: color-mix(in oklab, var(--color-surface) 55%, var(--color-bg));
   --sc-room: color-mix(in oklab, var(--color-text) 22%, var(--color-bg));
+  /* Lit from inside, frosted film glows brighter than the clear glass around it. */
+  --sc-frost: color-mix(in oklab, var(--color-text) 55%, var(--color-bg));
   --sc-led: color-mix(in oklab, var(--color-brand) 70%, var(--color-bg));
   --sc-light: var(--color-brand);
 }
@@ -59,10 +62,15 @@
 .sc-depth { fill: var(--sc-ink); }
 .sc-cut { fill: var(--sc-room); }
 
+/* Placeholder labels sit on colored surfaces: a halo in the wall color keeps them legible on any of them. */
 .sc-label {
   fill: var(--color-text);
   font-family: var(--font-mono);
   font-size: 10px;
+  paint-order: stroke;
+  stroke: var(--sc-wall);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 
 .sc-measure {
