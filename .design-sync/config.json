@@ -1,0 +1,54 @@
+{
+  "pkg": "@stiletdekor/ui",
+  "globalName": "StiletUI",
+  "shape": "package",
+  "buildCmd": "npm run build:ui",
+  "entry": "./dist-ui/index.js",
+  "srcDir": "../src/ui",
+  "cssEntry": "index.css",
+  "provider": {
+    "component": "ThemeRoot",
+    "props": {
+      "theme": "neon-muhely"
+    }
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "CategoryTile": {
+      "cardMode": "column"
+    },
+    "CheckoutSection": {
+      "cardMode": "column"
+    },
+    "Drawer": {
+      "cardMode": "single",
+      "viewport": "900x700"
+    },
+    "FileList": {
+      "cardMode": "column"
+    },
+    "Icon": {
+      "cardMode": "column"
+    },
+    "JobTypePicker": {
+      "cardMode": "column"
+    },
+    "MaterialPicker": {
+      "cardMode": "column"
+    },
+    "SiteFooter": {
+      "cardMode": "column",
+      "viewport": "1280x700"
+    },
+    "SiteHeader": {
+      "cardMode": "column",
+      "viewport": "1280x900"
+    },
+    "Stepper": {
+      "cardMode": "column"
+    },
+    "SurfaceList": {
+      "cardMode": "column"
+    }
+  }
+}

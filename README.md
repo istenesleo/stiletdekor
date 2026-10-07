@@ -30,6 +30,7 @@ npm run dev
 | `npm run check` | Astro- és TypeScript-ellenőrzés |
 | `npm test` | Unit tesztek (árazás, határidő, sémák, tokenek, kontraszt) |
 | `npm run tokens` | `src/styles/tokens.css` generálása a `design/tokens/` alapján |
+| `npm run build:ui` | A komponenskönyvtár (`src/ui`) csomagja a `dist-ui/` mappába: a Claude Design-szinkron bemenete |
 | `npm run tokens:check` | Ellenőrzi, hogy a generált CSS naprakész-e (a CI is futtatja) |
 | `npm run cf-typegen` | Cloudflare-típusok frissítése a `wrangler.jsonc` alapján |
 | `npm run db:migrate:local` | D1-migrációk a helyi adatbázison |
@@ -130,17 +131,50 @@ A Workers Cache (Settings → Runtime → Cache) szándékosan ki van kapcsolva.
 
 A design system a Claude Design-nal készül, a brief a [`DESIGN.md`](DESIGN.md)-ben van, a munkafolyamat a
 [`design/README.md`](design/README.md)-ben. A tokenek egyetlen forrása a
-`design/tokens/stilet.tokens.json`; a CSS-t ebből a `npm run tokens` állítja elő.
+`design/tokens/stilet.tokens.json`; a CSS-t ebből a `npm run tokens` állítja elő. A komponensek a `src/ui/`-ban
+vannak; a Claude Design-ba a `/design-sync` tölti fel őket a `.design-sync/` beállításai alapján.
+
+## Helyi munkapéldány (saját gépen)
+
+A felhős Claude-munkamenetek a GitHubon keresztül dolgoznak. Saját gépen futó Claude Code (a Claude Desktop
+alkalmazás Code füle, vagy terminálban a `claude` parancs) akkor kell, ha a Claude Design-ba töltünk fel: a
+`/design-login` csak ott fut le.
+
+**Hova:** a OneDrive-on kívülre, például `C:\Projektek\stiletdekor`. A OneDrive a `.git` mappát és a
+`node_modules` több tízezer fájlját is szinkronizálná: ez lassú, ütközés miatti másolatokat gyárt, és a csak
+online tárolt fájlok elronthatják a gitet és az npm-et. A mentést és a gépek közti szinkront a GitHub végzi. Ha
+mégis a OneDrive-ba kerül, a mappán állítsd be: „Mindig maradjon ezen az eszközön”.
+
+**Első beállítás (Windows):** telepítsd a Git for Windows-t, a Node.js 22-es (vagy újabb) LTS-t és a Claude
+Desktopot, majd PowerShellben:
+
+```powershell
+New-Item -ItemType Directory -Force C:\Projektek | Out-Null
+Set-Location C:\Projektek
+git clone https://github.com/istenesleo/stiletdekor.git
+Set-Location stiletdekor
+npm ci
+```
+
+**Szinkron:** munka előtt `git pull`, utána commit és `git push` (ezt Claude is elvégzi). A közös ág a `main`;
+amit egy felhős munkamenet befejez, az oda kerül, és helyben a `git pull` hozza le.
+
+**Claude Design-szinkron:** a mappában indított Claude Code-ban egyszer `/design-login`, utána `/design-sync`.
+A részletek és az eddigi tapasztalatok: [`.design-sync/NOTES.md`](.design-sync/NOTES.md).
 
 ## Mappaszerkezet
 
 ```
 src/domain/     üzleti logika keretrendszer nélkül (katalógus, árazás, határidő, sémák), tesztelve
+src/ui/         komponenskönyvtár (React, csak tokenekből); a dev oldalakon a /komponensek címen
+src/site/       a katalógus és a komponensek közti átalakítók, a két design-irány
+src/islands/    kliensoldali szigetek (a /komponensek mintaoldal)
 src/styles/     tokens.css (generált) és base.css
 src/layouts/    oldalváz
 src/pages/      oldalak (magyar slugok)
-scripts/        build-tokens.mjs és tesztje
+scripts/        build-tokens.mjs (tesztelve) és build-ui.mjs
 design/         tokenek, komponenslista, látványtervek
+.design-sync/   a Claude Design-szinkron beállítása, előnézetei, jegyzetei
 docs/           brief és architektúra
 migrations/     D1-migrációk
 ```
