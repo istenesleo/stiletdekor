@@ -207,7 +207,7 @@ export const VARIANTS: readonly Variant[] = [
     novelty: 'A márka legegyedibb eleme rendszerként, nem eseti díszként.',
   },
   {
-    id: 'G4', group: 'grafika', lane: 'tokenes', round: 1, status: 'tervezett', file: 'grafika/G4Szomarka.astro',
+    id: 'G4', group: 'grafika', lane: 'tokenes', round: 1, status: 'kesz', file: 'grafika/G4Szomarka.astro',
     name: 'Szómárka-változatok',
     idea: 'A STILET DEKOR jel öt változata (vágott fólia, méretvonal, neoncső, illesztőjel, SD monogram) sötét és rózsaszín alapon, favicon-méretben is.',
     novelty: 'A mostani egyetlen szómárka helyett választható irányok a logóig.',
