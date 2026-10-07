@@ -8,7 +8,11 @@ export interface WordmarkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
 }
 
-/** Typographic wordmark "STILET • DEKOR" until the logo exists; links home. */
+/**
+ * Typographic wordmark until the logo exists. Links home.
+ * Reads "STILET • DEKOR".
+ * @category basics
+ */
 export function Wordmark({ href = '/', className, ...rest }: WordmarkProps) {
   return (
     <a className={cx('sd-wordmark', className)} href={href} aria-label="Stilet Dekor, kezdőlap" {...rest}>

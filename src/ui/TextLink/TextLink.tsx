@@ -10,7 +10,10 @@ export interface TextLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   external?: boolean;
 }
 
-/** Link inside running text: underlined in the brand color, turns brand-colored on hover. */
+/**
+ * Link inside running text: underlined in the brand color, turns brand-colored on hover.
+ * @category basics
+ */
 export function TextLink({ external = false, className, children, ...rest }: TextLinkProps) {
   return (
     <a
@@ -20,21 +23,6 @@ export function TextLink({ external = false, className, children, ...rest }: Tex
     >
       {children}
       {external && <Icon name="external" />}
-    </a>
-  );
-}
-
-export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
-  /** The page (or section) the visitor is on: marked with aria-current and a brand-colored bar. */
-  current?: boolean;
-}
-
-/** Link in the header menu or a section menu, with an active state. */
-export function NavLink({ current = false, className, children, ...rest }: NavLinkProps) {
-  return (
-    <a className={cx('sd-navlink', className)} aria-current={current ? 'page' : undefined} {...rest}>
-      {children}
     </a>
   );
 }

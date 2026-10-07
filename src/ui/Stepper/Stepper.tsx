@@ -26,9 +26,10 @@ export function elativeSuffix(n: number): 'ból' | 'ből' {
 }
 
 /**
- * Progress through a multi-step form (the quote wizard): "2. lépés a 4-ből", with the steps as a bar. Steps
- * already reached can be clicked to go back. When it is narrow (phones), the bar shows only the step numbers
- * and the current step's name moves next to the count.
+ * Progress through a multi-step form such as the quote wizard, with the steps as a bar.
+ * Shows "2. lépés a 4-ből". Steps already reached can be clicked to go back. When it is narrow (phones), the
+ * bar shows only the step numbers and the current step's name moves next to the count.
+ * @category quote
  */
 export function Stepper({ steps, current, reached = current, onStepClick, label = 'Lépések', className, ...rest }: StepperProps) {
   return (

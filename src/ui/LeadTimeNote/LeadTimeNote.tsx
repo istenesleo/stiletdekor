@@ -18,8 +18,10 @@ export interface LeadTimeNoteProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * "Várhatóan október 13-ára, keddre elkészül." with the rules in small type: production counts from the
- * payment, the date includes one business day for confirmation and payment, weekends and holidays don't count.
+ * Expected completion date of an order, with the rules in small type.
+ * E.g. "Várhatóan október 13-ára, keddre elkészül." Production counts from the payment, the date includes one
+ * business day for confirmation and payment, weekends and holidays don't count.
+ * @category shop
  */
 export function LeadTimeNote({ readyBy, express = false, productionDays = 3, detail, className, ...rest }: LeadTimeNoteProps) {
   const days = express ? 1 : productionDays;

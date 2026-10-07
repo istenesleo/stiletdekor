@@ -20,7 +20,10 @@ export interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   ref?: Ref<HTMLButtonElement>;
 }
 
-/** Square button with a single icon: cart (with item count), menu, close, swap width and height. */
+/**
+ * Square button with a single icon: cart (with item count), menu, close, swap width and height.
+ * @category basics
+ */
 export function IconButton({
   icon,
   label,

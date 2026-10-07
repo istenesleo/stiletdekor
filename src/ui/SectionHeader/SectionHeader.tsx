@@ -17,7 +17,10 @@ export interface SectionHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 't
   titleId?: string;
 }
 
-/** Eyebrow, title and lead at the top of a page section. */
+/**
+ * Eyebrow, title and lead at the top of a page section.
+ * @category basics
+ */
 export function SectionHeader({
   eyebrow,
   title,

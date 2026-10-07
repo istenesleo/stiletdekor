@@ -32,8 +32,9 @@ const STAND_H = 9;
 const mm = (cm: number) => `${formatNumberHu(Math.round(cm * 10), 0)}\u00a0mm`;
 
 /**
- * The product at real scale next to a 180 cm figure, with dimension lines in millimetres and the artwork in
- * the chosen fit. Redraws to its container's size; keep it at least ~280 px wide.
+ * The product at real scale next to a 180 cm figure, with dimension lines in millimetres.
+ * Shows the artwork in the chosen fit. Redraws to its container's size; keep it at least ~280 px wide.
+ * @category shop
  */
 export function ScalePreview({
   widthCm,

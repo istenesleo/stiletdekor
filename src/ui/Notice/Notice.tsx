@@ -26,8 +26,9 @@ export interface NoticeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title
 }
 
 /**
- * A message bar: "A végleges ár eltérhet a kalkulált ártól." (info), a failed upload (error), a sent order
- * (success). Keep it to one or two sentences.
+ * A message bar for info, warning, error or success. Keep it to one or two sentences.
+ * E.g. "A végleges ár eltérhet a kalkulált ártól." (info), a failed upload (error), a sent order (success).
+ * @category basics
  */
 export function Notice({ tone = 'info', title, live, className, children, ...rest }: NoticeProps) {
   const role = live === 'assertive' ? 'alert' : live === 'polite' ? 'status' : undefined;

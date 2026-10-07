@@ -13,7 +13,11 @@ export interface IconProps extends Omit<SVGAttributes<SVGSVGElement>, 'children'
   label?: string;
 }
 
-/** A line icon from the Stilet set (24×24, current text color). Decorative unless it gets a `label`. */
+/**
+ * A line icon from the Stilet set, drawn in the current text color. Decorative unless it gets a label.
+ * 24×24 grid; `size` sets it in px, otherwise it follows the font size.
+ * @category basics
+ */
 export function Icon({ name, size, label, className, style, ...rest }: IconProps) {
   return (
     <svg

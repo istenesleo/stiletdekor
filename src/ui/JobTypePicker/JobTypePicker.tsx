@@ -23,7 +23,10 @@ export interface JobTypePickerProps extends Omit<HTMLAttributes<HTMLFieldSetElem
 
 const pictogramFor = (id: string) => (id in JOB_PICTOGRAMS ? JOB_PICTOGRAMS[id as JobPictogram] : JOB_PICTOGRAMS.egyeb);
 
-/** First step of the quote wizard: the nine custom job types as selectable cards with pictograms. */
+/**
+ * First step of the quote wizard: the nine custom job types as selectable cards with pictograms.
+ * @category quote
+ */
 export function JobTypePicker({ types, value, onChange, legend = 'Milyen munkáról van szó?', name, className, ...rest }: JobTypePickerProps) {
   const auto = useId();
   const group = name ?? `sd-jobs${auto.replace(/:/g, '')}`;

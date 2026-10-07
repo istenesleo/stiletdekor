@@ -23,7 +23,10 @@ export interface OptionRowProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   amountText?: string;
 }
 
-/** A selectable option with its price preview: the unit rate and what it costs for the chosen size. */
+/**
+ * A selectable option with its price preview: the unit rate and what it costs for the chosen size.
+ * @category forms
+ */
 export function OptionRow({
   type = 'radio',
   label,

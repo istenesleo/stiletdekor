@@ -40,8 +40,10 @@ export interface FieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
 }
 
 /**
- * Label, control, help text and error in the library's layout. TextField and the other inputs use it;
- * use it directly to wrap a custom control: get ids with useFieldIds and pass describedBy(...) to the control.
+ * Label, control, help text and error in the library's layout, for wrapping a custom control.
+ * TextField and the other inputs use it. To wrap your own control, get ids with useFieldIds and pass
+ * describedBy(...) to the control.
+ * @category forms
  */
 export function Field({ label, htmlFor, help, error, required, ids, className, children, ...rest }: FieldProps) {
   return (

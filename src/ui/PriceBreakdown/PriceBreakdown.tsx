@@ -39,6 +39,7 @@ const money = (row: PriceRow) =>
 /**
  * Itemised price: one row per component of the price, the gross total large, net and VAT small under it.
  * Every amount is gross (the site shows gross prices only).
+ * @category shop
  */
 export function PriceBreakdown({
   rows,

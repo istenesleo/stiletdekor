@@ -16,8 +16,10 @@ export interface DimensionLineProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * The brand's measuring motif: a dimension line with arrowheads, end ticks and the size in millimetres, in
- * the measure color. Use it to show real sizes (previews, product tiles, illustrations), not as decoration.
+ * The brand's measuring motif: a dimension line with arrowheads, end ticks and the size in millimetres.
+ * Drawn in the measure color. Use it to show real sizes (previews, product tiles, illustrations), not as
+ * decoration.
+ * @category basics
  */
 export function DimensionLine({
   orientation = 'horizontal',

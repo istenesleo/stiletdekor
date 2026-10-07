@@ -20,8 +20,9 @@ export interface SiteFooterProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
- * The site footer: wordmark with what we do, link columns, the workshop's contacts (phone, e-mail, address,
- * opening hours) and the legal links with the copyright line.
+ * The site footer: wordmark, link columns, the workshop's contacts and the legal links.
+ * Contacts: phone, e-mail, address, opening hours. The bottom row carries the copyright line.
+ * @category content
  */
 export function SiteFooter({
   columns = FOOTER_COLUMNS,

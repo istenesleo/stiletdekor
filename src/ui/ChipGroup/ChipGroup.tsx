@@ -21,7 +21,10 @@ export interface ChipGroupProps extends Omit<HTMLAttributes<HTMLFieldSetElement>
   name?: string;
 }
 
-/** One-click choices as chips, one selectable at a time: common sizes (size presets), filters. */
+/**
+ * One-click choices as chips, one selectable at a time: common sizes (size presets), filters.
+ * @category forms
+ */
 export function ChipGroup({ legend, options, value, onChange, name, className, ...rest }: ChipGroupProps) {
   const auto = useId();
   const group = name ?? `sd-chips${auto.replace(/:/g, '')}`;

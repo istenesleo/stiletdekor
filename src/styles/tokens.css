@@ -115,6 +115,7 @@
   --layout-gutter: clamp(16px, 4vw, 64px);
   --layout-header-height: 68px;
   --layout-section-gap: clamp(88px, 11vw, 168px);
+  --effect-brand-glow: none;
 }
 
 :root[data-theme="neon-muhely"],
@@ -132,7 +133,18 @@
   --font-display: "Big Shoulders Display", "Oswald", "Arial Narrow", "Impact", sans-serif;
   --font-body: "Archivo", "Helvetica Neue", "Arial", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+  --font-variation-text: normal;
+  --font-variation-display: normal;
   --weight-display: 800;
+  --text-md: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem);
+  --text-2xl: clamp(2.3rem, 1.5rem + 3.2vw, 4rem);
+  --text-hero: clamp(3rem, 1.6rem + 5.6vw, 6.4rem);
+  --radius-sm: 2px;
   --radius-md: 2px;
+  --layout-gutter: clamp(16px, 3.4vw, 48px);
+  --layout-header-height: 64px;
+  --layout-section-gap: clamp(64px, 9vw, 140px);
   --effect-brand-glow: 0 0 0 1px color-mix(in oklab, var(--color-brand) 55%, transparent), 0 0 22px -4px color-mix(in oklab, var(--color-brand) 75%, transparent);
 }

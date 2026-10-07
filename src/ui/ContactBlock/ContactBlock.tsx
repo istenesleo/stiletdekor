@@ -1,7 +1,8 @@
 import { type HTMLAttributes, useEffect, useRef, useState } from 'react';
 import { COMPANY } from '@/domain/company';
 import '../base.css';
-import { Button, ButtonLink } from '../Button/Button';
+import { Button } from '../Button/Button';
+import { ButtonLink } from '../ButtonLink/ButtonLink';
 import { cx } from '../cx';
 import './ContactBlock.css';
 
@@ -25,9 +26,10 @@ const COPIED: Record<CopyKey, string> = { phone: 'A telefonszámot', email: 'Az 
 const COPY_LABEL: Record<CopyKey, string> = { phone: 'telefonszám', email: 'e-mail-cím', address: 'cím' };
 
 /**
- * The workshop's contacts for the contact section and the order confirmation: phone, e-mail and address as
- * selectable text with call, write, map and copy buttons, plus the opening hours. Copying is announced to
- * screen readers; where the clipboard is not available the text gets selected instead, ready to copy.
+ * The workshop's contacts with call, write, map and copy buttons, plus the opening hours.
+ * Phone, e-mail and address are selectable text, for the contact section and the order confirmation. Copying
+ * is announced to screen readers; where the clipboard is not available the text gets selected instead.
+ * @category content
  */
 export function ContactBlock({
   phone = COMPANY.phone,

@@ -35,8 +35,10 @@ const area = (s: Surface) => (s.widthMm * s.heightMm * s.count) / 1_000_000;
 const pageList = (pages: readonly number[]) => `${pages.map((p) => `${p}.`).join(', ')} oldal`;
 
 /**
- * The surfaces of a multi-page PDF (a surface package, e.g. window film per window): identical pages merged
- * into one surface with a count, each one skippable, and a set count for the whole package.
+ * The surfaces of a multi-page PDF (a surface package, e.g. window film per window).
+ * Identical pages are merged into one surface with a count, each one is skippable, and a set count applies to
+ * the whole package.
+ * @category shop
  */
 export function SurfaceList({ surfaces, sets, onSetsChange, onToggleSkip, className, ...rest }: SurfaceListProps) {
   const active = surfaces.filter((s) => !s.skipped);

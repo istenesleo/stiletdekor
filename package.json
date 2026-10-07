@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:ui": "node scripts/build-ui.mjs",
     "preview": "astro build && wrangler dev",
     "check": "astro check",
     "typecheck": "astro sync && tsc --noEmit",

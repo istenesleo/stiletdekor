@@ -22,7 +22,10 @@ export interface SuccessPanelProps extends Omit<HTMLAttributes<HTMLElement>, 'ti
   children?: ReactNode;
 }
 
-/** Confirmation after a quote request or an order: what we received, its reference, and what happens next. */
+/**
+ * Confirmation after a quote request or an order: what we received, its reference, and what happens next.
+ * @category quote
+ */
 export function SuccessPanel({
   title,
   reference,

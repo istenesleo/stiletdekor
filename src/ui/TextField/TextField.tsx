@@ -16,8 +16,10 @@ export type TextFieldProps = TextFieldOwnProps &
   Omit<InputHTMLAttributes<HTMLInputElement> & TextareaHTMLAttributes<HTMLTextAreaElement>, 'className' | 'children'>;
 
 /**
- * Labeled text input: name, e-mail, phone, address, or several lines with `multiline`. Give it the right
- * `type` and `autoComplete` (e.g. type="tel" autoComplete="tel") so phones offer the right keyboard.
+ * Labeled text input for name, e-mail, phone or address, or several lines with multiline.
+ * Give it the right `type` and `autoComplete` (e.g. type="tel" autoComplete="tel") so phones offer the right
+ * keyboard.
+ * @category forms
  */
 export function TextField({ label, help, error, multiline = false, required, id, className, ...rest }: TextFieldProps) {
   const ids = useFieldIds(id);

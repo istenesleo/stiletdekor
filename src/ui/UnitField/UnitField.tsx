@@ -13,8 +13,9 @@ export interface UnitFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
 }
 
 /**
- * Number input with its unit inside the field: sizes in cm, quantities in db. A text input with a decimal
- * keyboard, so "29,7" can be typed; parse the value yourself (comma or dot).
+ * Number input with its unit inside the field: sizes in cm, quantities in db.
+ * A text input with a decimal keyboard, so "29,7" can be typed; parse the value yourself (comma or dot).
+ * @category forms
  */
 export function UnitField({ label, unit, help, error, required, id, className, style, ...rest }: UnitFieldProps) {
   const ids = useFieldIds(id);

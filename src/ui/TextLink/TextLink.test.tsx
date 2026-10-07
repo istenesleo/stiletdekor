@@ -1,7 +1,7 @@
 /** @vitest-environment jsdom */
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { NavLink, TextLink } from './TextLink';
+import { TextLink } from './TextLink';
 
 describe('TextLink', () => {
   it('opens external links in a new tab without leaking the opener', () => {
@@ -18,20 +18,5 @@ describe('TextLink', () => {
   it('stays in the tab by default', () => {
     render(<TextLink href="#aszf">ÁSZF</TextLink>);
     expect(screen.getByRole('link').hasAttribute('target')).toBe(false);
-  });
-});
-
-describe('NavLink', () => {
-  it('marks the current page', () => {
-    render(
-      <nav>
-        <NavLink href="#webshop" current>
-          Webshop
-        </NavLink>
-        <NavLink href="#referenciak">Referenciák</NavLink>
-      </nav>,
-    );
-    expect(screen.getByRole('link', { name: 'Webshop' }).getAttribute('aria-current')).toBe('page');
-    expect(screen.getByRole('link', { name: 'Referenciák' }).hasAttribute('aria-current')).toBe(false);
   });
 });

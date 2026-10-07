@@ -12,9 +12,10 @@ export interface ThemeRootProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Sets the design direction for everything inside it: the token values (colors, fonts, sizes), the page
- * background and body text. Wrap a screen or a section once; do not nest two different themes.
- * The direction's web fonts must be loaded by the page (the site layout does it).
+ * Sets the design direction (theme) for everything inside it: token values, page background, body text.
+ * Wrap a screen once. A ThemeRoot inside another one fully re-themes its part, so the two directions can be
+ * compared side by side. The direction's web fonts must be loaded by the page (the site layout does it).
+ * @category basics
  */
 export function ThemeRoot({ theme = 'neon-muhely', className, children, ...rest }: ThemeRootProps) {
   return (

@@ -15,7 +15,11 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   error?: ReactNode;
 }
 
-/** Checkbox with a label: accepting the terms, "Helyszíni felmérést kérek". */
+/**
+ * Checkbox with a label and an optional description, e.g. for accepting the terms.
+ * E.g. "Helyszíni felmérést kérek".
+ * @category forms
+ */
 export function Checkbox({ label, description, error, id, className, ...rest }: CheckboxProps) {
   const ids = useFieldIds(id);
   return (

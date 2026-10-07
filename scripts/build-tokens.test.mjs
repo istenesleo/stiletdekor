@@ -81,6 +81,17 @@ describe('buildCss', () => {
     expect(css).toContain(':root[data-theme="b"],\n[data-theme="b"] {\n  --font-body: "Bodoni Moda", serif;\n}');
   });
 
+  it('repeats in every theme the tokens another theme changes, with the base value, so themes can nest', () => {
+    const themes = [
+      { name: 'a', tree: { color: { bg: { $value: '#111' } } } },
+      { name: 'b', tree: { font: { body: { $value: ['Bodoni Moda', 'serif'] } } } },
+    ];
+    const css = buildCss(base, { themes });
+    expect(css).toContain('[data-theme="a"] {\n  --color-bg: #111;\n  --font-body: "Arial", sans-serif;\n}');
+    expect(css).toContain('[data-theme="b"] {\n  --color-bg: #000;\n  --font-body: "Bodoni Moda", serif;\n}');
+    expect(css).not.toMatch(/data-theme="[ab]"\] \{[^}]*--color-focus/);
+  });
+
   it('sorts themes by name and rejects names that cannot be an attribute value', () => {
     const themes = [
       { name: 'z', tree: { color: { bg: { $value: '#111' } } } },

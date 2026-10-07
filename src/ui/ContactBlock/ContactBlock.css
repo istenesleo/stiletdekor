@@ -29,6 +29,7 @@
   font-size: var(--text-lg);
   line-height: var(--leading-snug);
   overflow-wrap: anywhere;
+  text-wrap: pretty;
 }
 .sd-contact__value--phone {
   font-family: var(--font-mono);

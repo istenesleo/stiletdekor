@@ -24,7 +24,11 @@ export interface CategoryTileProps {
   buttonProps?: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'onClick'>;
 }
 
-/** "From" price per product: "Molinó · 5 067 Ft/m²-től". A link on the home page, a selector in the webshop. */
+/**
+ * Product category tile with its from-price: a link on the home page, a selector in the webshop.
+ * Shows e.g. "Molinó · 5 067 Ft/m²-től".
+ * @category shop
+ */
 export function CategoryTile({ name, price, unit = 'db', product, href, pressed, onClick, className, buttonProps }: CategoryTileProps) {
   const body = (
     <>

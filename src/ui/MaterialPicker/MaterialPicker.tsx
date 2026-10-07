@@ -46,8 +46,9 @@ export interface MaterialPickerProps extends Omit<HTMLAttributes<HTMLFieldSetEle
 }
 
 /**
- * Material choice as cards: swatch, name, gross price per m², and a small data sheet (weight, indoor or
- * outdoor, expected lifetime). One card is selected at a time.
+ * Material choice as cards: swatch, name, gross price per square metre and a small data sheet.
+ * The data sheet lists weight, indoor or outdoor use and expected lifetime. One card is selected at a time.
+ * @category forms
  */
 export function MaterialPicker({ legend = 'Anyag', materials, value, onChange, name, className, ...rest }: MaterialPickerProps) {
   const auto = useId();

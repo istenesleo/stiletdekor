@@ -1,12 +1,12 @@
 import { type HTMLAttributes, type KeyboardEvent, useId, useRef, useState } from 'react';
 import { COMPANY } from '@/domain/company';
 import '../base.css';
-import { ButtonLink } from '../Button/Button';
+import { ButtonLink } from '../ButtonLink/ButtonLink';
 import { cx } from '../cx';
 import { Icon } from '../Icon/Icon';
 import { IconButton } from '../IconButton/IconButton';
 import { MAIN_NAV, type NavItem, QUOTE_HREF } from '../navigation';
-import { NavLink } from '../TextLink/TextLink';
+import { NavLink } from '../NavLink/NavLink';
 import { Wordmark } from '../Wordmark/Wordmark';
 import './SiteHeader.css';
 
@@ -34,10 +34,11 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
- * The site header: wordmark, main menu, phone number, "Ajánlatkérés" and the cart with its item count. Sticky,
- * on a translucent background. When the header is narrower than 1040 px, the menu, the phone number and the
- * quote button move into a panel opened by the menu button; Escape closes it. The page's main content needs
- * the id of `skipTo` ("tartalom" by default).
+ * The site header: wordmark, main menu, phone number, quote button and the cart with its item count.
+ * Sticky, on a translucent background. When the header is narrower than 1040 px, the menu, the phone number
+ * and the "Ajánlatkérés" button move into a panel opened by the menu button; Escape closes it. The page's main
+ * content needs the id of `skipTo` ("tartalom" by default).
+ * @category content
  */
 export function SiteHeader({
   links = MAIN_NAV,

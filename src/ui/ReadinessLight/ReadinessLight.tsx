@@ -17,8 +17,10 @@ export interface ReadinessLightProps extends HTMLAttributes<HTMLDivElement> {
 const TONE = { ok: 'ok', warn: 'warn', bad: 'bad' } as const;
 
 /**
- * Print-readiness traffic light: green from 150 dpi, yellow from 72 (fine for banners seen from a distance),
- * red below. Shows the effective dpi at the chosen size and what it means.
+ * Print-readiness traffic light: green from 150 dpi, yellow from 72, red below.
+ * Yellow is fine for banners seen from a distance. Shows the effective dpi at the chosen size and what it
+ * means.
+ * @category shop
  */
 export function ReadinessLight({ rating, dpi, vector = false, className, ...rest }: ReadinessLightProps) {
   let tone: 'ok' | 'warn' | 'bad' | 'none' = 'none';

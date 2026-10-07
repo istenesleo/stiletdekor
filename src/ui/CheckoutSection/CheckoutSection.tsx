@@ -12,7 +12,10 @@ export interface CheckoutSectionProps extends Omit<HTMLAttributes<HTMLElement>, 
   children: ReactNode;
 }
 
-/** A numbered part of the checkout: contact details, billing, delivery. */
+/**
+ * A numbered part of the checkout: contact details, billing, delivery.
+ * @category shop
+ */
 export function CheckoutSection({ step, title, description, children, className, ...rest }: CheckoutSectionProps) {
   const titleId = `sd-cosec${useId().replace(/:/g, '')}`;
   return (

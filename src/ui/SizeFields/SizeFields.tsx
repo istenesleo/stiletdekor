@@ -25,7 +25,10 @@ export interface SizeFieldsProps extends Omit<HTMLAttributes<HTMLFieldSetElement
   disabled?: boolean;
 }
 
-/** Width × height pair with a swap button between them, as in the configurator. */
+/**
+ * Width and height fields with a swap button between them, as in the configurator.
+ * @category forms
+ */
 export function SizeFields({
   width,
   height,

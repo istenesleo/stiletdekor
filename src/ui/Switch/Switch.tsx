@@ -11,7 +11,11 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   description?: ReactNode;
 }
 
-/** On/off switch for an option that changes the result immediately: "Expressz (+30%)". */
+/**
+ * On/off switch for an option that changes the result immediately, e.g. express production.
+ * Label example: "Expressz (+30%)".
+ * @category forms
+ */
 export function Switch({ label, description, id, className, ...rest }: SwitchProps) {
   const ids = useFieldIds(id);
   return (

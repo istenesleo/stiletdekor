@@ -10,7 +10,11 @@ export interface DiscountHintProps extends HTMLAttributes<HTMLParagraphElement> 
   pct: number;
 }
 
-/** Nudge toward the next quantity discount: "Még 2 db és −10%". Render nothing at the top tier. */
+/**
+ * Nudge toward the next quantity discount. Renders nothing at the top tier.
+ * E.g. "Még 2 db és −10%".
+ * @category shop
+ */
 export function DiscountHint({ additionalQty, pct, className, ...rest }: DiscountHintProps) {
   return (
     <p className={cx('sd-discount', className)} {...rest}>

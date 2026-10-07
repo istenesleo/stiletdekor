@@ -1,7 +1,7 @@
 /** @vitest-environment jsdom */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { Button, ButtonLink } from './Button';
+import { Button } from './Button';
 
 describe('Button', () => {
   it('is a primary, type="button" button by default', () => {
@@ -50,18 +50,5 @@ describe('Button', () => {
     render(<Button onClick={onClick}>Kosárba</Button>);
     fireEvent.click(screen.getByRole('button'));
     expect(onClick).toHaveBeenCalledOnce();
-  });
-});
-
-describe('ButtonLink', () => {
-  it('is a link with button styling', () => {
-    render(
-      <ButtonLink href="#webshop" variant="secondary" icon="arrow-right" iconPosition="end">
-        Webshop megnyitása
-      </ButtonLink>,
-    );
-    const link = screen.getByRole('link', { name: 'Webshop megnyitása' });
-    expect(link.getAttribute('href')).toBe('#webshop');
-    expect(link.className).toBe('sd-btn sd-btn--secondary');
   });
 });

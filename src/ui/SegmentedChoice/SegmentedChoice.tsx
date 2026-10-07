@@ -1,5 +1,4 @@
 import { type HTMLAttributes, type ReactNode, useId } from 'react';
-import { FIT_MODES, type FitMode } from '@/domain/preflight';
 import '../base.css';
 import { cx } from '../cx';
 import './SegmentedChoice.css';
@@ -21,8 +20,10 @@ export interface SegmentedChoiceProps extends Omit<HTMLAttributes<HTMLFieldSetEl
 }
 
 /**
- * Two to four mutually exclusive choices side by side, with optional descriptions: the scale of a file
- * (1:1, 1:10, egyéb), filling or fitting artwork. Stacks one per row when its container is narrow.
+ * Two to four mutually exclusive choices side by side, with optional descriptions.
+ * E.g. the scale of a file (1:1, 1:10, egyéb), filling or fitting artwork. Stacks one per row when its
+ * container is narrow.
+ * @category forms
  */
 export function SegmentedChoice({ legend, options, value, onChange, name, className, ...rest }: SegmentedChoiceProps) {
   const auto = useId();
@@ -58,21 +59,4 @@ export function SegmentedChoice({ legend, options, value, onChange, name, classN
       </div>
     </fieldset>
   );
-}
-
-export interface FitPickerProps extends Omit<SegmentedChoiceProps, 'options' | 'value' | 'onChange' | 'legend'> {
-  value: FitMode;
-  onChange: (value: FitMode) => void;
-  /** "Ha a kép aránya eltér" by default. */
-  legend?: string;
-}
-
-/** Fill (crop) or fit (frame) when the artwork's aspect ratio differs from the product's. */
-export function FitPicker({ value, onChange, legend = 'Ha a kép aránya eltér', ...rest }: FitPickerProps) {
-  const options = (Object.keys(FIT_MODES) as FitMode[]).map((mode) => ({
-    value: mode,
-    label: FIT_MODES[mode].label,
-    description: FIT_MODES[mode].description,
-  }));
-  return <SegmentedChoice legend={legend} options={options} value={value} onChange={(v) => onChange(v as FitMode)} {...rest} />;
 }

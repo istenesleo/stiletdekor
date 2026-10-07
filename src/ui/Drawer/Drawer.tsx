@@ -16,8 +16,10 @@ export interface DrawerProps {
 }
 
 /**
- * Side panel opening from the right over the page (the cart). A modal dialog: focus stays inside, Escape
- * and a click on the dimmed page close it, and focus returns to what opened it.
+ * Side panel that opens from the right over the page, used for the cart.
+ * A modal dialog: focus stays inside, Escape and a click on the dimmed page close it, and focus returns to
+ * what opened it.
+ * @category shop
  */
 export function Drawer({ open, onClose, title, children, footer, className }: DrawerProps) {
   const ref = useRef<HTMLDialogElement>(null);

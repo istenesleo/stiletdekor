@@ -8,7 +8,10 @@ export interface DividerProps extends HTMLAttributes<HTMLElement> {
   label?: string;
 }
 
-/** Hairline that separates groups of content; with a `label` it also names the group that follows. */
+/**
+ * Hairline that separates groups of content, optionally with a label naming the group that follows.
+ * @category basics
+ */
 export function Divider({ label, className, ...rest }: DividerProps) {
   if (!label) return <hr className={cx('sd-divider', className)} {...rest} />;
   return (

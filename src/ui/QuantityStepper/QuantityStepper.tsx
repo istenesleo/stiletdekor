@@ -25,8 +25,9 @@ export interface QuantityStepperProps {
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 /**
- * Quantity with − and + buttons and a field for typing. Arrow keys step by one; the value is clamped to
- * min…max when the field loses focus.
+ * Quantity with minus and plus buttons and a field for typing.
+ * Arrow keys step by one; the value is clamped to min…max when the field loses focus.
+ * @category forms
  */
 export function QuantityStepper({
   value,

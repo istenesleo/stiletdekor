@@ -23,7 +23,10 @@ export interface CartLineProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
   onRemove?: () => void;
 }
 
-/** One item in the cart: thumbnail, what it is, its gross price, and a remove button. */
+/**
+ * One item in the cart: thumbnail, what it is, its gross price, and a remove button.
+ * @category shop
+ */
 export function CartLine({ title, spec, price, thumbnailUrl, product, badges, onRemove, className, ...rest }: CartLineProps) {
   return (
     <div className={cx('sd-cartline', className)} {...rest}>

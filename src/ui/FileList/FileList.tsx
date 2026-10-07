@@ -44,7 +44,10 @@ export interface FileListProps extends HTMLAttributes<HTMLUListElement> {
   onRemove?: (id: string) => void;
 }
 
-/** Uploaded files with thumbnail, name, size, what was recognized and a status; each removable. */
+/**
+ * Uploaded files with thumbnail, name, size, what was recognized and a status, each removable.
+ * @category forms
+ */
 export function FileList({ items, onRemove, className, ...rest }: FileListProps) {
   return (
     <ul className={cx('sd-files', className)} {...rest}>

@@ -24,8 +24,9 @@ export interface OrderSubmitProps {
 }
 
 /**
- * The end of the checkout: accept the terms, read what happens next (no payment obligation yet, the final
- * price comes with the pro forma invoice), and send the order for checking.
+ * The end of the checkout: accept the terms, see what happens next, and send the order for checking.
+ * No payment obligation yet: the final price comes with the pro forma invoice.
+ * @category shop
  */
 export function OrderSubmit({
   accepted,

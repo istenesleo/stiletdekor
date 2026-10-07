@@ -6,9 +6,9 @@
  *   design/tokens/themes/<name>.tokens.json   a design direction: overrides some base tokens
  *   src/styles/tokens.css                     generated output, never edited by hand
  *
- * The CSS holds the base values on :root and each theme's overrides on [data-theme="<name>"]; the site
- * sets data-theme on <html> from the SITE_THEME var, so one build can run as either direction. Any other
- * element with data-theme (the UI library's ThemeRoot) re-themes its subtree on top of the base.
+ * The CSS holds the base values on :root and each theme's values on [data-theme="<name>"]; the site sets
+ * data-theme on <html> from the SITE_THEME var, so one build can run as either direction. Any other element
+ * with data-theme (the UI library's ThemeRoot) re-themes its subtree, also inside another theme.
  *
  * Usage:
  *   node scripts/build-tokens.mjs            write src/styles/tokens.css
@@ -97,10 +97,10 @@ export function formatValue(value, type, known, where = 'token') {
 }
 
 /**
- * Builds the CSS file: every base token on :root, then for each theme (sorted by name) only the tokens it
- * overrides, on :root[data-theme="<name>"] and [data-theme="<name>"]. A theme token takes its $type from the
- * base token it replaces. A themed element inherits the base for everything its theme does not override, so
- * two different themes should not be nested.
+ * Builds the CSS file: every base token on :root, then for each theme (sorted by name) the tokens that any
+ * theme changes, on :root[data-theme="<name>"] and [data-theme="<name>"]: its own value, or the base value
+ * where only another theme changes it. So a theme nested in another one shows its own values, not the outer
+ * theme's. A theme token takes its $type from the base token it replaces.
  */
 export function buildCss(tree, { themes = [] } = {}) {
   const tokens = collectTokens(tree);
@@ -125,15 +125,15 @@ export function buildCss(tree, { themes = [] } = {}) {
     lines.push(`  --${t.path.join('-')}: ${formatValue(t.value, t.type, known, t.path.join('.'))};`);
   }
   lines.push('}');
+  const changed = new Set(themes.flatMap((theme) => collectTokens(theme.tree).map((t) => t.path.join('.'))));
   for (const { name, tree: overrides } of [...themes].sort((a, b) => a.name.localeCompare(b.name))) {
     if (!NAME.test(name)) throw new Error(`Invalid theme name "${name}": use lowercase letters, digits and "-".`);
-    const own = new Set(collectTokens(overrides).map((t) => t.path.join('.')));
     const merged = collectTokens(mergeTokens(tree, overrides));
     const mergedKnown = new Set(merged.map((t) => t.path.join('.')));
     lines.push('', `:root[data-theme="${name}"],`, `[data-theme="${name}"] {`);
     for (const t of merged) {
       const key = t.path.join('.');
-      if (own.has(key)) lines.push(`  --${t.path.join('-')}: ${formatValue(t.value, t.type, mergedKnown, `${name}: ${key}`)};`);
+      if (changed.has(key)) lines.push(`  --${t.path.join('-')}: ${formatValue(t.value, t.type, mergedKnown, `${name}: ${key}`)};`);
     }
     lines.push('}');
   }

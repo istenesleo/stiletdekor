@@ -29,8 +29,9 @@ export interface FileDropProps {
 }
 
 /**
- * Drop zone for artwork and photos: drag files onto it or pick them with the button. States: empty,
- * dragging, uploading (progress), error, disabled.
+ * Drop zone for artwork and photos: drag files onto it or pick them with the button.
+ * States: empty, dragging, uploading (progress), error, disabled.
+ * @category forms
  */
 export function FileDrop({
   onFiles,
