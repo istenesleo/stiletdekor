@@ -1,0 +1,38 @@
+/* G2 pictograms: one geometry, three styles. Measuring details (class "m") take the measure color. */
+
+.tb-pk {
+  flex: none;
+  color: var(--color-text);
+}
+
+.tb-pk * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tb-pk .m {
+  stroke: var(--color-measure);
+}
+
+.tb-pk--kitoltott .f {
+  fill: color-mix(in oklab, var(--color-brand) 32%, transparent);
+}
+
+.tb-pk--tervrajz {
+  color: var(--color-measure);
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-line) 70%, transparent) 1px, transparent 1px);
+  background-size: calc(100% / 6) calc(100% / 6);
+}
+
+.tb-pk--tervrajz * {
+  stroke-width: 1;
+}
+
+.tb-pk--tervrajz .f {
+  stroke-dasharray: 2 1.5;
+}

@@ -195,7 +195,7 @@ export const VARIANTS: readonly Variant[] = [
     novelty: 'Egy közös lépték és stílus a mostani eltérő jelenetek helyett; a színek tokenekből jönnek.',
   },
   {
-    id: 'G2', group: 'grafika', lane: 'tokenes', round: 1, status: 'tervezett', file: 'grafika/G2Piktogramok.astro',
+    id: 'G2', group: 'grafika', lane: 'tokenes', round: 1, status: 'kesz', file: 'grafika/G2Piktogramok.astro',
     name: 'Piktogramcsalád',
     idea: 'Egy család a 4 szolgáltatáscsoporthoz, a 9 munkatípushoz és a 6 termékhez, 24 px-es rácson, három stílusban: vonalas, kitöltött, tervrajz.',
     novelty: 'Egy közös rendszer a két különálló piktogramkészlet helyett, mérési részletekkel.',

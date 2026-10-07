@@ -1,0 +1,104 @@
+---
+// G2: the pictogram family for service groups, quote types and shop products, in three styles and at 24 px.
+import { QUOTE_TYPES, SERVICE_GROUPS, SHOP_PRODUCT_IDS, SHOP_PRODUCTS } from '@/domain/catalog';
+import Piktogram from './Piktogram.astro';
+import { PIKTOGRAM_CSOPORT, PIKTOGRAM_MUNKA, PIKTOGRAM_STILUSOK, PIKTOGRAM_TERMEK } from './piktogramok';
+
+const sorok = [
+  { cim: 'Szolgáltatáscsoportok', elemek: SERVICE_GROUPS.map((g) => ({ nev: g.name, markup: PIKTOGRAM_CSOPORT[g.slug] })) },
+  { cim: 'Egyedi munkák', elemek: QUOTE_TYPES.map((t) => ({ nev: t.name, markup: PIKTOGRAM_MUNKA[t.id] })) },
+  { cim: 'Webshop-termékek', elemek: SHOP_PRODUCT_IDS.map((id) => ({ nev: SHOP_PRODUCTS[id].name, markup: PIKTOGRAM_TERMEK[id] })) },
+];
+const mind = sorok.flatMap((s) => s.elemek);
+---
+
+<div class="g2">
+  {
+    PIKTOGRAM_STILUSOK.map((s) => (
+      <section class="g2-style" aria-labelledby={`g2-${s.id}`}>
+        <h4 id={`g2-${s.id}`}>{s.label}</h4>
+        {sorok.map((sor) => (
+          <div class="g2-row">
+            <p class="g2-row__title">{sor.cim}</p>
+            <ul class="g2-grid">
+              {sor.elemek.map((e) => (
+                <li>
+                  <Piktogram markup={e.markup} label={e.nev} stilus={s.id} decorative />
+                  <span>{e.nev}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+    ))
+  }
+  <section class="g2-style" aria-labelledby="g2-kicsi">
+    <h4 id="g2-kicsi">Kis méretben (24 px)</h4>
+    <ul class="g2-strip">
+      {
+        mind.map((e) => (
+          <li>
+            <Piktogram markup={e.markup} label={e.nev} size={24} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</div>
+
+<style>
+  .g2 {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .g2-style {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .g2-style h4 {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+  }
+
+  .g2-row {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .g2-row__title {
+    margin: 0;
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .g2-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .g2-grid li {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .g2-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

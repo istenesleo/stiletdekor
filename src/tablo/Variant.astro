@@ -1,6 +1,7 @@
 ---
 // Renders a finished variant of the /tablo board by its id. When a variant's status becomes 'kesz', import its
 // component here and add its line below; variants.test.ts checks that every finished variant is listed.
+import G2Piktogramok from './grafika/G2Piktogramok.astro';
 import G3Motivumok from './grafika/G3Motivumok.astro';
 
 interface Props {
@@ -10,4 +11,5 @@ interface Props {
 const { id } = Astro.props;
 ---
 
+{id === 'G2' && <G2Piktogramok />}
 {id === 'G3' && <G3Motivumok />}
