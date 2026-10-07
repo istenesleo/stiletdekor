@@ -619,6 +619,52 @@ fieldset.f>legend+*{clear:both}
    type stays legible up to opsz 20. Other faces have no opsz axis, so they ignore this. */
 *,*::before,*::after{font-variation-settings:"opsz" 12 !important}
 .h1,.h1 *,.h2,.h2 *,.promise-t,.promise-t *,.total,.step .num,.ftr-wm,.ftr-wm *,.mnav nav a,.mnav nav a *{font-variation-settings:"opsz" 20 !important}
+
+/* ——— kezdőlap: ajánlók ——— */
+.home-head{align-items:end;margin-bottom:clamp(32px,4vw,56px)}
+.home-head .h2{grid-column:1/8}
+.home-head .lead{grid-column:8/-1;color:var(--stone)}
+.works-h{margin-bottom:clamp(28px,3.4vw,48px)}
+.sec-foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:clamp(24px,3vw,36px)}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.tile{display:grid;gap:8px;align-content:start;height:100%;padding:16px 16px 18px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);text-decoration:none;color:var(--paper);transition:background .2s}
+.tile:hover{color:var(--paper);background:color-mix(in srgb,var(--raise) 60%,transparent)}
+.tile svg{width:100%;height:auto;aspect-ratio:4/3;color:var(--steel);fill:none;stroke:currentColor;stroke-width:1.2;margin-bottom:6px;transition:color .2s}
+.tile:hover svg{color:var(--paper)}
+.tile .nm{font:400 1.375rem/1.1 var(--f-display)}
+.jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.job{display:flex;justify-content:space-between;align-items:baseline;gap:16px;height:100%;padding:18px 18px 20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);text-decoration:none;color:var(--paper);font:400 1.25rem/1.2 var(--f-display);transition:background .2s}
+.job .ar{flex:none;transition:transform .3s,color .3s}
+.job:hover{color:var(--paper);background:color-mix(in srgb,var(--raise) 60%,transparent)}
+.job:hover .ar,.job:focus-visible .ar{transform:translateX(6px);color:var(--brand)}
+.works{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(30px,3.4vw,52px) var(--col)}
+.work{display:block;text-decoration:none;color:var(--paper)}
+.work .frame{aspect-ratio:4/3}
+.work figcaption{padding-top:12px}
+.work .rt{font:400 1.25rem/1.2 var(--f-display);transition:color .2s}
+.work:hover .rt{color:var(--brand)}
+.ct-more{margin-top:28px}
+.toc-it .tg-ar{font:400 1rem/1 var(--f-text);letter-spacing:0}
+.nw{white-space:nowrap}
+@media (max-width:1100px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1024px){.jobs,.works{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){
+  .home-head .lead{margin-top:18px}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile{padding:12px}
+  .tile .nm{font-size:1.1875rem}
+  .tile svg{aspect-ratio:2/1}
+  .jobs{grid-template-columns:minmax(0,1fr)}
+  .job{padding-block:14px 16px;font-size:1.125rem}
+  .works{gap:24px var(--col)}
+  .work .rt{font-size:1.0625rem}
+}
+
+/* ——— nézetek: a látványterv aloldalai (#/webshop, #/ajanlatkeres, #/referenciak, #/kapcsolat) ——— */
+.is-view-off{display:none!important}
+.nav a[aria-current="page"]{color:var(--paper)}
+.nav a[aria-current="page"]::after{content:"";position:absolute;left:50%;bottom:0;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--brand)}
+.mnav nav a[aria-current="page"] .data{color:var(--brand)}
 </style>
 
 <div class="page" id="top">
@@ -626,17 +672,17 @@ fieldset.f>legend+*{clear:both}
 
 <header class="hdr" id="hdr">
   <div class="hdr-in">
-    <a class="wm" href="#top" aria-label="Stilet Dekor, az oldal teteje">STILET<i aria-hidden="true"></i>DEKOR<small aria-hidden="true">LOGÓ HELYE</small></a>
+    <a class="wm" href="#/" aria-label="Stilet Dekor, kezdőlap">STILET<i aria-hidden="true"></i>DEKOR<small aria-hidden="true">LOGÓ HELYE</small></a>
     <nav class="nav" aria-label="Fő menü">
       <a href="#szolgaltatasok">Szolgáltatások</a>
-      <a href="#webshop">Webshop</a>
-      <a href="#referenciak">Referenciák</a>
+      <a href="#/webshop">Webshop</a>
+      <a href="#/referenciak">Referenciák</a>
       <a href="#folyamat">Folyamat</a>
       <a href="#rolunk">Rólunk</a>
-      <a href="#kapcsolat">Kapcsolat</a>
+      <a href="#/kapcsolat">Kapcsolat</a>
     </nav>
     <a class="tel" href="tel:+36705385030">+36&nbsp;70&nbsp;538&nbsp;5030</a>
-    <a class="btn hdr-cta" href="#ajanlat">Ajánlatkérés</a>
+    <a class="btn hdr-cta" href="#/ajanlatkeres">Ajánlatkérés</a>
     <button class="cartbtn" id="cartBtn" type="button" aria-label="Kosár, 0 tétel" aria-controls="cart" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
       <span class="n z" id="cartCount">0</span>
@@ -648,35 +694,34 @@ fieldset.f>legend+*{clear:both}
 <div class="mnav" id="mnav" hidden>
   <nav aria-label="Mobil menü">
     <a href="#szolgaltatasok">Szolgáltatások <span class="data">→</span></a>
-    <a href="#webshop">Webshop <span class="data">→</span></a>
-    <a href="#referenciak">Referenciák <span class="data">→</span></a>
+    <a href="#/webshop">Webshop <span class="data">→</span></a>
+    <a href="#/referenciak">Referenciák <span class="data">→</span></a>
     <a href="#folyamat">Folyamat <span class="data">→</span></a>
     <a href="#rolunk">Rólunk <span class="data">→</span></a>
-    <a href="#kapcsolat">Kapcsolat <span class="data">→</span></a>
+    <a href="#/kapcsolat">Kapcsolat <span class="data">→</span></a>
   </nav>
-  <a class="btn" href="#ajanlat">Ajánlatkérés</a>
+  <a class="btn" href="#/ajanlatkeres">Ajánlatkérés</a>
   <p class="data">Telefon: <a href="tel:+36705385030">+36&nbsp;70&nbsp;538&nbsp;5030</a><br>E-mail: stiletdekor@gmail.com</p>
 </div>
 
 <main id="main">
 
 <!-- HERO -->
-<section class="hero" aria-labelledby="heroTitle">
+<section class="hero" aria-labelledby="heroTitle" data-view="home">
   <div class="hero-top">
-    <p class="cap">Fóliázás · Cégér és világító reklám · Nyomtatás · Rendezvény</p>
-    <p class="cap">Saját műhely · Budapest</p>
+    <p class="cap">Dekoros műhely · Budapest</p>
   </div>
-  <h1 class="h1" id="heroTitle"><span class="l">Kiszállunk,</span><span class="l l2"><em>felmérjük,</em></span><span class="l l3">felszereljük<span class="pt">.</span></span></h1>
+  <h1 class="h1" id="heroTitle" tabindex="-1"><span class="l">Kiszállunk,</span><span class="l l2"><em>felmérjük,</em></span><span class="l l3">felszereljük<span class="pt">.</span></span></h1>
   <div class="g hero-sub">
     <div class="hero-txt">
-      <p class="lead">Dekoros cég vagyunk, saját műhellyel. Fóliázunk, cégért és világító reklámot gyártunk, nyomtatunk és rendezvényt díszletezünk. A munka végig egy kézben marad:</p>
+      <p class="lead">Fóliázás, cégér és világító reklám, nyomtatás, rendezvénydíszlet: a felméréstől a telepítésig egy csapat, saját műhellyel.</p>
       <ol class="chain" aria-label="A munka menete">
         <li>Felmérés</li><li>Tervezés</li><li>Gyártás saját műhelyben</li><li>Telepítés</li>
       </ol>
     </div>
     <div class="entries">
-      <a class="entry" href="#webshop"><span class="t">Online rendelés</span><span class="d">Molinó, roll-up, matrica, plakát, tábla, vászonkép. Azonnali ár, grafika feltöltése, kosár.</span><span class="ar" aria-hidden="true">→</span></a>
-      <a class="entry" href="#ajanlat"><span class="t">Egyedi ajánlat</span><span class="d">Fóliázás, cégér, világító betű, LED-fal, díszlet. Négy lépés, a végén felmérési időponttal.</span><span class="ar" aria-hidden="true">→</span></a>
+      <a class="entry" href="#/webshop"><span class="t">Online rendelés</span><span class="d">Azonnali ár, grafikafeltöltés.</span><span class="ar" aria-hidden="true">→</span></a>
+      <a class="entry" href="#/ajanlatkeres"><span class="t">Egyedi ajánlat</span><span class="d">Négy lépésben, kérésre helyszíni felméréssel.</span><span class="ar" aria-hidden="true">→</span></a>
     </div>
   </div>
   <figure class="hero-fig bleed rv" id="hero-kep">
@@ -686,7 +731,7 @@ fieldset.f>legend+*{clear:both}
       <span class="ph">Referenciakép helye</span>
     </div>
     <figcaption class="figcap in-gut">
-      <p class="data"><b>Világító betűk üzletportálon</b> · Felület: homlokzat · Anyag: plexi betű, belső LED · Méret: [méret] · Helyszín: [helyszín]</p>
+      <p class="data"><b>Világító betűk</b> · illusztráció</p>
       <div class="seg" role="group" aria-label="Nappali vagy éjszakai nézet">
         <button type="button" data-dn="0" aria-pressed="false">Nappal</button>
         <button type="button" data-dn="1" aria-pressed="true">Éjjel</button>
@@ -696,75 +741,83 @@ fieldset.f>legend+*{clear:both}
 </section>
 
 <!-- SZOLGÁLTATÁSOK -->
-<section class="sec" id="szolgaltatasok" aria-labelledby="svcTitle">
-  <div class="rh"><p class="cap">Szolgáltatások</p><p class="cap">Tartalom</p></div>
+<section class="sec" id="szolgaltatasok" aria-labelledby="svcTitle" data-view="home">
+  <div class="rh"><p class="cap">Szolgáltatások</p></div>
   <div class="g">
     <div class="svc-head">
-      <h2 class="h2" id="svcTitle">Négy terület, <em>egy</em> műhely.</h2>
-      <p class="lead">A szabványos termékeket a webshopban rendelheti meg, azonnali árral. Egyedi munkára négy lépésben kérhet ajánlatot.</p>
+      <h2 class="h2" id="svcTitle">Fóliától a <em>világító</em> betűig.</h2>
     </div>
     <div class="toc">
       <div class="toc-grp">
-        <h3 class="toc-h">Fóliázás<small>4 tétel</small></h3>
+        <h3 class="toc-h">Fóliázás</h3>
         <ul>
-          <li><a class="toc-it" href="#ajanlat" data-wz="auto" data-scene="van"><span class="nm">Autófóliázás és flotta-dekor</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="kirakat" data-scene="frosted"><span class="nm">Kirakat- és üvegfóliázás</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="pult" data-scene="counter"><span class="nm">Kínálópultok fóliázása és telepítése</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="egyeb" data-scene="window" data-after="1"><span class="nm">Egyéb felületek fóliázása</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="auto" data-scene="van"><span class="nm">Autófóliázás és flotta-dekor</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="kirakat" data-scene="frosted"><span class="nm">Kirakat- és üvegfóliázás</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="pult" data-scene="counter"><span class="nm">Kínálópultok fóliázása</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="egyeb" data-scene="window" data-after="1"><span class="nm">Egyéb felületek fóliázása</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
       <div class="toc-grp">
-        <h3 class="toc-h">Cégér és világító reklám<small>5 tétel</small></h3>
+        <h3 class="toc-h">Cégér és világító reklám</h3>
         <ul>
-          <li><a class="toc-it" href="#ajanlat" data-wz="ceger" data-scene="shopfront" data-night="0"><span class="nm">Cégérkészítés</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="ceger" data-scene="shopfront" data-night="1"><span class="nm">Reklámtáblák vázszerkezettel és belső LED-es világítással</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="betuk" data-scene="shopfront" data-night="1"><span class="nm">Világító betűk</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="betuk" data-scene="letters"><span class="nm">Plasztik betűk és logók</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="ledfal" data-scene="ledwall"><span class="nm">LED-falak</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="ceger" data-scene="shopfront" data-night="0"><span class="nm">Cégérek és reklámtáblák</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="betuk" data-scene="shopfront" data-night="1"><span class="nm">Világító betűk</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="betuk" data-scene="letters"><span class="nm">Plasztik betűk és logók</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="ledfal" data-scene="ledwall"><span class="nm">LED-falak</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
       <div class="toc-grp">
-        <h3 class="toc-h">Nyomtatás<small>7 tétel</small></h3>
+        <h3 class="toc-h">Nyomtatás</h3>
         <ul>
-          <li><a class="toc-it" href="#konfigurator" data-product="molino" data-scene="scaffold"><span class="nm">Molinók</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="egyeb" data-scene="scaffold"><span class="nm">Feszített ponyva kihelyezéssel</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#konfigurator" data-product="rollup" data-scene="rollup"><span class="nm">Roll-upok</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
-          <li><a class="toc-it" href="#konfigurator" data-product="tabla" data-scene="swatch" data-mat="dibond"><span class="nm">Táblák</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
-          <li><a class="toc-it" href="#konfigurator" data-product="matrica" data-scene="swatch" data-mat="polimer"><span class="nm">Matricák</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
-          <li><a class="toc-it" href="#konfigurator" data-product="plakat" data-scene="swatch" data-mat="frontlit"><span class="nm">Plakátok</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
-          <li><a class="toc-it" href="#konfigurator" data-product="vaszon" data-scene="swatch" data-mat="vaszon"><span class="nm">Vászonképek</span><span class="ld"></span><span class="tg">Webshop</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="molino" data-scene="scaffold"><span class="nm">Molinók</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="rollup" data-scene="rollup"><span class="nm">Roll-upok</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="matrica" data-scene="swatch" data-mat="polimer"><span class="nm">Matricák</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="plakat" data-scene="swatch" data-mat="frontlit"><span class="nm">Plakátok</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="tabla" data-scene="swatch" data-mat="dibond"><span class="nm">Táblák</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/webshop" data-product="vaszon" data-scene="swatch" data-mat="vaszon"><span class="nm">Vászonképek</span><span class="ld"></span><span class="tg">Online ár</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="egyeb" data-scene="scaffold"><span class="nm">Feszített ponyva kihelyezéssel</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
       <div class="toc-grp">
-        <h3 class="toc-h">Rendezvény és egyedi<small>5 tétel</small></h3>
+        <h3 class="toc-h">Rendezvény és egyedi</h3>
         <ul>
-          <li><a class="toc-it" href="#ajanlat" data-wz="diszlet" data-scene="photowall"><span class="nm">Rendezvény díszletezés és fóliázás</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="diszlet" data-scene="photowall"><span class="nm">Fotófal építés</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="3d" data-scene="letters"><span class="nm">3D nyomtatási munkák</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="egyeb" data-scene="counter"><span class="nm">Egyedi reklám- és díszítési megrendelések</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
-          <li><a class="toc-it" href="#ajanlat" data-wz="egyeb" data-scene="window" data-after="1"><span class="nm">Egyéb arculati megoldások</span><span class="ld"></span><span class="tg">Ajánlat</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="diszlet" data-scene="photowall"><span class="nm">Díszletek és fotófalak</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="3d" data-scene="letters"><span class="nm">3D nyomtatás</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
+          <li><a class="toc-it" href="#/ajanlatkeres" data-wz="egyeb" data-scene="counter"><span class="nm">Egyedi reklám- és díszítési munkák</span><span class="ld"></span><span class="tg tg-ar" aria-hidden="true">→</span></a></li>
         </ul>
       </div>
-      <p class="data toc-legend"><b>Webshop</b>: azonnali ár, kosárba tehető · <b>Ajánlat</b>: egyedi árazás, helyszíni felméréssel</p>
     </div>
     <figure class="toc-prev" aria-hidden="true">
       <div class="frame" id="tocFrame"><canvas id="tocCanvas" data-scene="van"></canvas><span class="ph">Referenciakép helye</span></div>
       <figcaption><span class="data" id="tocCap">Autófóliázás és flotta-dekor</span><span class="data">Előnézet</span></figcaption>
     </figure>
   </div>
-  <div class="g promise">
-    <p class="cap">Mindenre érvényes</p>
-    <p class="promise-t">Helyszíni felmérés <em>és</em> telepítés.</p>
-    <p class="promise-d">Kiszállunk, lemérjük a felületet, megnézzük a rögzítést. A kész munkát mi szereljük fel: járműre, kirakatra, homlokzatra, rendezvényhelyszínre.</p>
-  </div>
 </section>
 
 
+<!-- KEZDŐLAP: WEBSHOP -->
+<section class="sec" id="termekek" aria-labelledby="tilesTitle" data-view="home">
+  <div class="rh"><p class="cap">Webshop</p><p class="cap">Azonnali ár</p></div>
+  <div class="g home-head">
+    <h2 class="h2" id="tilesTitle">Rendelje meg <em>online.</em></h2>
+    <p class="lead">Méret, anyag, grafika: az árat és az elkészülés napját azonnal látja.</p>
+  </div>
+  <ul class="tiles">
+    <li><a class="tile" href="#/webshop" data-product="molino"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M12 18h96v54H12z"/><path d="M16 22h88v46H16z" stroke-dasharray="2 3"/><g fill="currentColor" stroke="none"><circle cx="17" cy="23" r="2.2"/><circle cx="47" cy="23" r="2.2"/><circle cx="73" cy="23" r="2.2"/><circle cx="103" cy="23" r="2.2"/><circle cx="17" cy="67" r="2.2"/><circle cx="47" cy="67" r="2.2"/><circle cx="73" cy="67" r="2.2"/><circle cx="103" cy="67" r="2.2"/></g><path d="M12 8h96M12 5v6M108 5v6"/><text class="svgt" x="60" y="6" text-anchor="middle">2000 MM</text></svg><span class="nm">Molinó</span><span class="data">3&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-product="rollup"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M46 6h28v72H46z"/><path d="M40 78h40v6H40z"/><path d="M52 16h16M52 22h11"/><circle cx="60" cy="50" r="9"/><path d="M60 84v3"/></svg><span class="nm">Roll-up</span><span class="data">24&nbsp;900&nbsp;Ft-tól</span></a></li>
+    <li><a class="tile" href="#/webshop" data-product="matrica"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M34 16h44a10 10 0 0 1 10 10v26L68 72H34a10 10 0 0 1-10-10V26a10 10 0 0 1 10-10z"/><path d="M88 52H74a6 6 0 0 0-6 6v14"/><path d="M28 10h52a14 14 0 0 1 14 14v30L72 78H28a14 14 0 0 1-14-14V24a14 14 0 0 1 14-14z" stroke-dasharray="3 3"/></svg><span class="nm">Matrica</span><span class="data">6&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-product="plakat"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M30 6h42v78H30z"/><path d="M30 45h42M51 45v39"/><text class="svgt" x="36" y="16">A1</text><text class="svgt" x="36" y="55">A2</text><text class="svgt" x="56" y="55">A2</text><path d="M80 30h20v54H80z"/><text class="svgt" x="84" y="40">B1</text></svg><span class="nm">Plakát</span><span class="data">990&nbsp;Ft-tól</span></a></li>
+    <li><a class="tile" href="#/webshop" data-product="tabla"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M16 18l86-8v66l-86-6z"/><path d="M19 70l86 6" stroke-dasharray="1 2"/><circle cx="24" cy="25" r="3.4"/><circle cx="94" cy="18" r="3.4"/><circle cx="94" cy="68" r="3.4"/><circle cx="24" cy="64" r="3.4"/><g fill="currentColor" stroke="none"><circle cx="24" cy="25" r="1.2"/><circle cx="94" cy="18" r="1.2"/><circle cx="94" cy="68" r="1.2"/><circle cx="24" cy="64" r="1.2"/></g></svg><span class="nm">Tábla</span><span class="data">9&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-product="vaszon"><svg viewBox="0 0 120 90" aria-hidden="true"><path d="M30 8h50v66H30z"/><path d="M80 8l8 5v66l-8-5M30 74l8 5h50"/><path d="M36 60l12-16 9 10 7-8 10 14z"/><circle cx="66" cy="26" r="4"/></svg><span class="nm">Vászonkép</span><span class="data">7&nbsp;990&nbsp;Ft-tól</span></a></li>
+  </ul>
+  <div class="sec-foot"><a class="btn line" href="#/webshop">Webshop megnyitása <span aria-hidden="true">→</span></a><p class="data">Minden ár bruttó.</p></div>
+</section>
+
 <!-- WEBSHOP -->
-<section class="sec" id="webshop" aria-labelledby="shopTitle">
+<section class="sec is-view-off" id="webshop" aria-labelledby="shopTitle" data-view="webshop">
   <div class="rh"><p class="cap">Webshop</p><p class="cap">Azonnali ár</p></div>
   <div class="g shop-head">
-    <h2 class="h2" id="shopTitle">Rendeljen online, <em>centire</em> pontosan.</h2>
+    <h2 class="h2" id="shopTitle" tabindex="-1">Rendeljen online, <em>centire</em> pontosan.</h2>
     <p class="lead">Adja meg a méretet, válasszon anyagot, töltse fel a grafikát. Az árat tételesen látja, a határidőt naptári dátummal.</p>
   </div>
   <div class="cats" role="group" aria-label="Termékkategóriák">
@@ -961,13 +1014,51 @@ fieldset.f>legend+*{clear:both}
       </div>
     </form>
   </div>
+
+  <div class="strip-head">
+    <div><p class="cap">Anyagminták</p><h3 class="h3">A műhely anyagai</h3></div>
+    <div class="strip-nav"><button type="button" id="stripPrev" aria-label="Előző anyagminták" aria-controls="anyagminta">←</button><button type="button" id="stripNext" aria-label="Következő anyagminták" aria-controls="anyagminta">→</button></div>
+  </div>
+  <ul class="strip" id="anyagminta" tabindex="0" aria-label="Anyagminták, vízszintesen görgethető">
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="frontlit" aria-hidden="true"></canvas></div><figcaption><p class="sn">Frontlit molinó</p><p class="data">440–510 g/m² · kül- és beltér · UV-álló</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="mesh" aria-hidden="true"></canvas></div><figcaption><p class="sn">Hálós molinó</p><p class="data">szélálló · kerítésre, állványra</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="blockout" aria-hidden="true"></canvas></div><figcaption><p class="sn">Blockout</p><p class="data">kétoldalas nyomtatásra</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="polimer" aria-hidden="true"></canvas></div><figcaption><p class="sn">Polimer fólia</p><p class="data">hosszú távra, autóra is</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="perforalt" aria-hidden="true"></canvas></div><figcaption><p class="sn">Kirakat-perforált fólia</p><p class="data">one way vision</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="plexi" aria-hidden="true"></canvas></div><figcaption><p class="sn">Plexi</p><p class="data">3 mm · táblák, betűk</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="dibond" aria-hidden="true"></canvas></div><figcaption><p class="sn">Dibond</p><p class="data">alu kompozit · 3 mm</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="pvc" aria-hidden="true"></canvas></div><figcaption><p class="sn">PVC habtábla</p><p class="data">3 mm és 5 mm</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="led" aria-hidden="true"></canvas></div><figcaption><p class="sn">LED-modul</p><p class="data">belső világításhoz · táblák, betűk</p></figcaption></figure></li>
+    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="vaszon" aria-hidden="true"></canvas></div><figcaption><p class="sn">Vászon</p><p class="data">fakeretre feszítve</p></figcaption></figure></li>
+  </ul>
+</section>
+
+<!-- KEZDŐLAP: EGYEDI AJÁNLAT -->
+<section class="sec" id="egyedi-munkak" aria-labelledby="jobsTitle" data-view="home">
+  <div class="rh"><p class="cap">Egyedi ajánlat</p><p class="cap">4 lépés</p></div>
+  <div class="g home-head">
+    <h2 class="h2" id="jobsTitle">Kérjen ajánlatot <em>egyedi</em> munkára.</h2>
+    <p class="lead">Ha kéri, kimegyünk és felmérjük a helyszínt.</p>
+  </div>
+  <ul class="jobs">
+    <li><a class="job" href="#/ajanlatkeres" data-wz="auto">Autófóliázás, flotta-dekor<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="kirakat">Kirakat- és üvegfóliázás<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="ceger">Cégér, reklámtábla<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="betuk">Világító és plasztik betűk, logók<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="ledfal">LED-fal<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="diszlet">Rendezvény díszlet, fotófal<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="pult">Kínálópult fóliázás és telepítés<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="3d">3D nyomtatás<span class="ar" aria-hidden="true">→</span></a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-wz="egyeb">Egyéb arculati megoldás<span class="ar" aria-hidden="true">→</span></a></li>
+  </ul>
+  <div class="sec-foot"><a class="btn line" href="#/ajanlatkeres">Ajánlatot kérek <span aria-hidden="true">→</span></a></div>
 </section>
 
 <!-- AJÁNLATKÉRÉS -->
-<section class="sec" id="ajanlat" aria-labelledby="wzTitle">
+<section class="sec is-view-off" id="ajanlat" aria-labelledby="wzTitle" data-view="ajanlatkeres">
   <div class="rh"><p class="cap">Egyedi ajánlat</p><p class="cap">Négy lépés</p></div>
   <div class="g wz-head">
-    <h2 class="h2" id="wzTitle">Egyedi munkára kérjen <em>ajánlatot.</em></h2>
+    <h2 class="h2" id="wzTitle" tabindex="-1">Egyedi munkára kérjen <em>ajánlatot.</em></h2>
     <p class="lead">Egyedi munka pontos árához felmérés kell. A varázsló összegyűjti, amire az árazáshoz szükségünk van, a végén felmérési időpontot is kérhet.</p>
   </div>
   <div class="g wz">
@@ -1052,11 +1143,26 @@ fieldset.f>legend+*{clear:both}
   </div>
 </section>
 
+<!-- KEZDŐLAP: MUNKÁINK -->
+<section class="sec" id="munkaink" aria-labelledby="worksTitle" data-view="home">
+  <div class="rh"><p class="cap">Referenciák</p></div>
+  <h2 class="h2 works-h" id="worksTitle">Munkáink.</h2>
+  <ul class="works">
+    <li><a class="work rv" href="#/referenciak" data-ref="ceger"><figure><div class="frame"><canvas data-scene="shopfront" data-night="1" aria-hidden="true"></canvas></div><figcaption><p class="rt">Világító betűk üzletportálon</p></figcaption></figure></a></li>
+    <li><a class="work rv" href="#/referenciak" data-ref="auto"><figure><div class="frame"><canvas data-scene="van" aria-hidden="true"></canvas></div><figcaption><p class="rt">Fóliázott kisbusz</p></figcaption></figure></a></li>
+    <li><a class="work rv" href="#/referenciak" data-ref="kirakat"><figure><div class="frame"><canvas data-scene="frosted" aria-hidden="true"></canvas></div><figcaption><p class="rt">Homokfúvott hatású üvegfólia</p></figcaption></figure></a></li>
+    <li><a class="work rv" href="#/referenciak" data-ref="nyomtatas"><figure><div class="frame"><canvas data-scene="rollup" aria-hidden="true"></canvas></div><figcaption><p class="rt">Roll-upok rendezvényen</p></figcaption></figure></a></li>
+    <li><a class="work rv" href="#/referenciak" data-ref="ceger"><figure><div class="frame"><canvas data-scene="ledwall" aria-hidden="true"></canvas></div><figcaption><p class="rt">LED-fal színpadon</p></figcaption></figure></a></li>
+    <li><a class="work rv" href="#/referenciak" data-ref="nyomtatas"><figure><div class="frame"><canvas data-scene="scaffold" aria-hidden="true"></canvas></div><figcaption><p class="rt">Hálós molinó állványon</p></figcaption></figure></a></li>
+  </ul>
+  <div class="sec-foot"><a class="btn line" href="#/referenciak">Összes munka <span aria-hidden="true">→</span></a></div>
+</section>
+
 <!-- REFERENCIÁK -->
-<section class="sec" id="referenciak" aria-labelledby="refTitle">
+<section class="sec is-view-off" id="referenciak" aria-labelledby="refTitle" data-view="referenciak">
   <div class="rh"><p class="cap">Referenciák</p><p class="cap" id="refCount" aria-live="polite">9 munka</p></div>
   <div class="g ref-head">
-    <h2 class="h2" id="refTitle">Munkák, <em>felület</em> szerint.</h2>
+    <h2 class="h2" id="refTitle" tabindex="-1">Munkák, <em>felület</em> szerint.</h2>
     <div class="chips" role="group" aria-label="Szűrés felület szerint">
       <button type="button" class="chip" data-f="all" aria-pressed="true">Mind</button>
       <button type="button" class="chip" data-f="auto" aria-pressed="false">Autó</button>
@@ -1108,100 +1214,75 @@ fieldset.f>legend+*{clear:both}
 </section>
 
 <!-- FOLYAMAT -->
-<section class="sec" id="folyamat" aria-labelledby="procTitle">
-  <div class="rh"><p class="cap">Folyamat</p><p class="cap">Felméréstől a telepítésig</p></div>
-  <h2 class="h2 proc-h" id="procTitle">Egy kézben, <em>négy</em> lépésben.</h2>
+<section class="sec" id="folyamat" aria-labelledby="procTitle" data-view="home">
+  <div class="rh"><p class="cap">Folyamat</p></div>
+  <h2 class="h2 proc-h" id="procTitle">Négy lépés, <em>egy</em> csapat.</h2>
   <ol class="steps">
     <li class="step">
-      <p class="num"><span>1</span><small>Felmérés</small></p>
+      <p class="num"><span>1</span></p>
       <svg viewBox="0 0 120 80" aria-hidden="true"><rect x="8" y="22" width="40" height="40" rx="7"/><circle cx="28" cy="42" r="8"/><path d="M48 50h64v10H48"/><path d="M56 50v5M64 50v7M72 50v5M80 50v7M88 50v5M96 50v7M104 50v5"/><path d="M8 12h104M8 8v8M112 8v8"/></svg>
       <h3>Felmérés</h3>
-      <p>Kiszállunk a helyszínre. Lemérjük a felületet, megnézzük a rögzítést és az áramellátást, fotókat készítünk.</p>
-      <p class="data">Eredmény: méretek mm-ben, anyagjavaslat</p>
+      <p>Kimegyünk, lemérjük a felületet, és megbeszéljük, mire van szüksége.</p>
     </li>
     <li class="step">
-      <p class="num"><span>2</span><small>Tervezés</small></p>
+      <p class="num"><span>2</span></p>
       <svg viewBox="0 0 120 80" aria-hidden="true"><path d="M14 24h92v44H14z"/><path d="M22 34h36M22 42h24"/><circle cx="84" cy="46" r="12"/><path d="M14 12h92M14 8v8M106 8v8M6 24h-0M6 24v44M2 24h8M2 68h8"/></svg>
       <h3>Tervezés</h3>
-      <p>A méretek alapján elkészül a látványterv és a gyártási rajz. Jóváhagyás után indul a gyártás.</p>
-      <p class="data">Eredmény: látványterv, gyártási rajz</p>
+      <p>Látványtervet küldünk, és a jóváhagyásig finomítjuk.</p>
     </li>
     <li class="step">
-      <p class="num"><span>3</span><small>Gyártás</small></p>
+      <p class="num"><span>3</span></p>
       <svg viewBox="0 0 120 80" aria-hidden="true"><rect x="6" y="14" width="108" height="18" rx="2"/><path d="M50 22h14M20 32v32M100 32v32M10 64h100"/><path d="M57 32v10l-3 4"/><path d="M28 54h64" stroke-dasharray="3 3"/></svg>
       <h3>Gyártás saját műhelyben</h3>
-      <p>Nyomtatás, fóliavágás, betű- és táblagyártás, LED-szerelés egy helyen, a saját műhelyünkben.</p>
-      <p class="data">Eredmény: kész, ellenőrzött darabok</p>
+      <p>Nyomtatás, fóliavágás, táblák és betűk egy helyen.</p>
     </li>
     <li class="step">
-      <p class="num"><span>4</span><small>Telepítés</small></p>
+      <p class="num"><span>4</span></p>
       <svg viewBox="0 0 120 80" aria-hidden="true"><path d="M76 6v70M76 14h36v20H76"/><path d="M84 22h20"/><path d="M14 76l20-66M30 76l20-66M19 60h16M24 44h16M29 28h16"/></svg>
       <h3>Telepítés</h3>
-      <p>Kiszállítjuk és felszereljük: járműre, kirakatra, homlokzatra, rendezvényhelyszínre.</p>
-      <p class="data">Eredmény: felszerelt, működő reklám</p>
+      <p>Kiszállítjuk, felszereljük, és átadás előtt együtt ellenőrizzük.</p>
     </li>
   </ol>
 </section>
 
 <!-- RÓLUNK -->
-<section class="sec" id="rolunk" aria-labelledby="aboutTitle">
-  <div class="rh"><p class="cap">Rólunk</p><p class="cap">Miért minket</p></div>
+<section class="sec" id="rolunk" aria-labelledby="aboutTitle" data-view="home">
+  <div class="rh"><p class="cap">Rólunk</p></div>
   <div class="g about-head">
-    <h2 class="h2" id="aboutTitle">Mindent <em>egy</em> kézből.</h2>
-    <p class="lead">Ugyanaz a csapat méri fel, tervezi, gyártja és szereli fel a munkát. Nem kell több céggel egyeztetnie.</p>
+    <h2 class="h2" id="aboutTitle">Saját műhely, <em>saját</em> csapat.</h2>
   </div>
   <div class="pillars">
     <article class="pillar">
-      <p class="cap">Gyártás</p>
       <h3>Saját műhely</h3>
-      <p>A nyomtatás, a fóliázás, a cégér- és táblagyártás a saját műhelyünkben készül. A gyártás minden lépését látjuk, a határidőt mi tartjuk.</p>
+      <p>Mindent egy helyen gyártunk, ezért a minőségért és a határidőért mi felelünk.</p>
     </article>
     <article class="pillar">
-      <p class="cap">Helyszín</p>
       <h3>Helyszíni felmérés és telepítés</h3>
-      <p>Kiszállunk, felmérjük, felszereljük. A méretet és a rögzítési felületet a helyszínen ellenőrizzük, mielőtt gyártanánk.</p>
+      <p>Mi mérjük le a felületet, és mi szereljük fel a kész munkát.</p>
     </article>
     <article class="pillar">
-      <p class="cap">Egyedi</p>
       <h3>Egyedi megoldások</h3>
-      <p>Kirakat, jármű, pult, díszlet, 3D nyomtatott elem. Amire nincs szabványos termék, azt megtervezzük és legyártjuk.</p>
+      <p>Ha nincs rá kész termék, megtervezzük: díszlet, fotófal, 3D nyomtatás.</p>
     </article>
   </div>
-
-
-  <div class="strip-head">
-    <div><p class="cap">Anyagminták</p><h3 class="h3">A műhely anyagai</h3></div>
-    <div class="strip-nav"><button type="button" id="stripPrev" aria-label="Előző anyagminták" aria-controls="anyagminta">←</button><button type="button" id="stripNext" aria-label="Következő anyagminták" aria-controls="anyagminta">→</button></div>
-  </div>
-  <ul class="strip" id="anyagminta" tabindex="0" aria-label="Anyagminták, vízszintesen görgethető">
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="frontlit" aria-hidden="true"></canvas></div><figcaption><p class="sn">Frontlit molinó</p><p class="data">440–510 g/m² · kül- és beltér · UV-álló</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="mesh" aria-hidden="true"></canvas></div><figcaption><p class="sn">Hálós molinó</p><p class="data">szélálló · kerítésre, állványra</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="blockout" aria-hidden="true"></canvas></div><figcaption><p class="sn">Blockout</p><p class="data">kétoldalas nyomtatásra</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="polimer" aria-hidden="true"></canvas></div><figcaption><p class="sn">Polimer fólia</p><p class="data">hosszú távra, autóra is</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="perforalt" aria-hidden="true"></canvas></div><figcaption><p class="sn">Kirakat-perforált fólia</p><p class="data">one way vision</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="plexi" aria-hidden="true"></canvas></div><figcaption><p class="sn">Plexi</p><p class="data">3 mm · táblák, betűk</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="dibond" aria-hidden="true"></canvas></div><figcaption><p class="sn">Dibond</p><p class="data">alu kompozit · 3 mm</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="pvc" aria-hidden="true"></canvas></div><figcaption><p class="sn">PVC habtábla</p><p class="data">3 mm és 5 mm</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="led" aria-hidden="true"></canvas></div><figcaption><p class="sn">LED-modul</p><p class="data">belső világításhoz · táblák, betűk</p></figcaption></figure></li>
-    <li><figure><div class="frame"><canvas data-scene="swatch" data-mat="vaszon" aria-hidden="true"></canvas></div><figcaption><p class="sn">Vászon</p><p class="data">fakeretre feszítve</p></figcaption></figure></li>
-  </ul>
 </section>
 
 <!-- KAPCSOLAT -->
-<section class="sec" id="kapcsolat" aria-labelledby="ctTitle">
-  <div class="rh"><p class="cap">Kapcsolat</p><p class="cap">Műhely</p></div>
-  <h2 class="h2 ct-h" id="ctTitle">Hívjon, írjon, vagy jöjjön be a <em>műhelybe.</em></h2>
+<section class="sec" id="kapcsolat" aria-labelledby="ctTitle" data-view="home kapcsolat">
+  <div class="rh"><p class="cap">Kapcsolat</p></div>
+  <h2 class="h2 ct-h" id="ctTitle" tabindex="-1">Hívjon, írjon, vagy jöjjön be a <em>műhelybe.</em></h2>
   <div class="g ct">
     <div class="ct-l">
       <ul class="ct-list">
         <li class="ct-row"><span class="cap">Telefon</span><span class="ct-val" id="ctTel">+36&nbsp;70&nbsp;538&nbsp;5030</span><span class="ct-act"><button type="button" class="copy" data-copy="ctTel">Másolás</button><a class="copy" href="tel:+36705385030">Hívás</a></span></li>
         <li class="ct-row"><span class="cap">E-mail</span><span class="ct-val" id="ctMail">stiletdekor@gmail.com</span><span class="ct-act"><button type="button" class="copy" data-copy="ctMail">Másolás</button><a class="copy" href="mailto:stiletdekor@gmail.com">Levél</a></span></li>
-        <li class="ct-row"><span class="cap">Műhely</span><span class="ct-val" id="ctAddr">Budapest, Schweidel József u. 1–3.</span><span class="ct-act"><button type="button" class="copy" data-copy="ctAddr">Másolás</button></span></li>
+        <li class="ct-row"><span class="cap">Műhely</span><span class="ct-val" id="ctAddr">Budapest, Schweidel József <span class="nw">u. 1–3.</span></span><span class="ct-act"><button type="button" class="copy" data-copy="ctAddr">Másolás</button></span></li>
         <li class="ct-row"><span class="cap">Nyitvatartás</span><span class="ct-val">H–P 8:00–17:00</span><span class="ct-act"><span class="tag">helyőrző</span></span></li>
       </ul>
       <p class="sr" id="copyLive" role="status"></p>
 
-      <form class="msg" id="msgForm" novalidate>
+      <p class="ct-more" data-view="home"><a class="btn line" href="#/kapcsolat">Üzenetet írok <span aria-hidden="true">→</span></a></p>
+      <form class="msg is-view-off" id="msgForm" novalidate data-view="kapcsolat">
         <h3 class="h3">Rövid üzenet</h3>
         <div class="two">
           <div class="f"><label for="msgName">Név <span class="req" aria-hidden="true">*</span></label><input type="text" id="msgName" autocomplete="name" aria-describedby="msgName-err"><p class="err" id="msgName-err"></p></div>
@@ -1235,8 +1316,8 @@ fieldset.f>legend+*{clear:both}
 <footer class="ftr">
   <p class="ftr-wm" aria-label="Stilet Dekor">STILET<i aria-hidden="true"></i>DEKOR</p>
   <div class="ftr-cols">
-    <div><p class="cap">Oldal</p><ul><li><a href="#szolgaltatasok">Szolgáltatások</a></li><li><a href="#webshop">Webshop</a></li><li><a href="#referenciak">Referenciák</a></li><li><a href="#folyamat">Folyamat</a></li><li><a href="#rolunk">Rólunk</a></li><li><a href="#kapcsolat">Kapcsolat</a></li></ul></div>
-    <div><p class="cap">Webshop</p><ul><li><a href="#konfigurator" data-product="molino">Molinó</a></li><li><a href="#konfigurator" data-product="rollup">Roll-up</a></li><li><a href="#konfigurator" data-product="matrica">Matrica</a></li><li><a href="#konfigurator" data-product="plakat">Plakát</a></li><li><a href="#konfigurator" data-product="tabla">Tábla</a></li><li><a href="#konfigurator" data-product="vaszon">Vászonkép</a></li></ul></div>
+    <div><p class="cap">Oldal</p><ul><li><a href="#szolgaltatasok">Szolgáltatások</a></li><li><a href="#/webshop">Webshop</a></li><li><a href="#/referenciak">Referenciák</a></li><li><a href="#folyamat">Folyamat</a></li><li><a href="#rolunk">Rólunk</a></li><li><a href="#/kapcsolat">Kapcsolat</a></li></ul></div>
+    <div><p class="cap">Webshop</p><ul><li><a href="#/webshop" data-product="molino">Molinó</a></li><li><a href="#/webshop" data-product="rollup">Roll-up</a></li><li><a href="#/webshop" data-product="matrica">Matrica</a></li><li><a href="#/webshop" data-product="plakat">Plakát</a></li><li><a href="#/webshop" data-product="tabla">Tábla</a></li><li><a href="#/webshop" data-product="vaszon">Vászonkép</a></li></ul></div>
     <div><p class="cap">Kapcsolat</p><p>+36&nbsp;70&nbsp;538&nbsp;5030<br>stiletdekor@gmail.com<br>Budapest, Schweidel József&nbsp;u.&nbsp;1–3.<br><span class="muted">H–P 8:00–17:00 (helyőrző)</span></p></div>
     <div><p class="cap">Jogi</p><ul><li class="muted">ÁSZF [helyőrző]</li><li class="muted">Adatkezelési tájékoztató [helyőrző]</li><li class="muted">Impresszum [helyőrző]</li></ul></div>
   </div>
@@ -1284,6 +1365,8 @@ fieldset.f>legend+*{clear:both}
   <div class="notes-hd"><h2 class="cap" id="notesTitle">Tervezői jegyzetek · B irány</h2><button type="button" class="x" id="notesClose">Bezárás</button></div>
   <p>Galéria / editorial: az oldal egy nyomtatott magazin rendjét követi. Szigorú 12 hasábos rács, nagy, kifutó képek, projektadatokat hordozó képaláírások, Bodoni Moda címek és IBM Plex Mono adatsorok.</p>
   <p>A merészség egy helyen van: a lépcsőzetes címlap-tipográfiában. A rózsaszín csak pontnyi akcentus, mint egy ringli: aktív állapot, link, a cím záró pontja és a világító betűk.</p>
+  <h3 class="cap">Kezdőlap és aloldalak</h3>
+  <p>A kezdőlap áttekintés: minden szakaszból csak a lényeg. A webshop, az ajánlatkérés, a referenciák és a kapcsolat saját oldalt kap; a látványtervben a #/webshop, #/ajanlatkeres, #/referenciak és #/kapcsolat cím nyitja meg őket. A rövidítés előtti változat a dev oldalakon a /mentes címen látható.</p>
   <h3 class="cap">Bemutatott újítások</h3>
   <ol>
     <li><a href="#konfigurator">Valós léptékű előnézet 180 cm-es alakkal, mm-es méretvonalakkal</a></li>
@@ -1291,8 +1374,8 @@ fieldset.f>legend+*{clear:both}
     <li><a href="#hatarido">Várható határidő: a gyártás a befizetéstől indul, munkanapokkal és 12:00-s zárással</a></li>
     <li><a href="#arbontas">Tételes árbontás bruttóban, „még N db” jelzés</a></li>
     <li><a href="#hero-kep">Nappal/éjjel kapcsoló a világító cégérnél</a></li>
-    <li><a href="#ajanlat">Ajánlatkérő varázsló felméréskéréssel, időpont nélkül (visszahívjuk)</a></li>
-    <li><a href="#referenciak">Referenciák felület szerint szűrve</a> és <a href="#elotte-utana">előtte/utána csúszka</a></li>
+    <li><a href="#/ajanlatkeres">Ajánlatkérő varázsló felméréskéréssel, időpont nélkül (visszahívjuk)</a></li>
+    <li><a href="#/referenciak">Referenciák felület szerint szűrve</a> és <a href="#elotte-utana">előtte/utána csúszka</a></li>
     <li><a href="#anyagok">Anyagkártyák adatokkal</a> és <a href="#anyagminta">anyagminta-sáv</a></li>
     <li><a href="#ujrarendeles" data-act="cart">Újrarendelés a kosárból</a></li>
     <li>Telepítéses rendelésnél fotó a helyszínről a kosárban (nem kötelező), a telepítés árazásához</li>
@@ -1846,7 +1929,7 @@ $('#checkout').addEventListener('click', () => { const ok = $('#orderOk'); ok.hi
 $('#histList').addEventListener('click', e => {
   const re = e.target.closest('[data-re]'), ed = e.target.closest('[data-edit]');
   if (re) { const h = CART.hist[+re.dataset.re]; const q = compute(h.pid, h.c); if (!q.err) { CART.lines.push(lineFromQ(q, null)); persist(); renderCart(); bump(); toast('Újra a kosárban: ' + h.title); } }
-  if (ed) { const h = CART.hist[+ed.dataset.edit]; S.cfgs[h.pid] = JSON.parse(JSON.stringify(h.c)); closeCart(); selectProduct(h.pid); $('#konfigurator').scrollIntoView({ behavior: RM.matches ? 'auto' : 'smooth' }); }
+  if (ed) { const h = CART.hist[+ed.dataset.edit]; S.cfgs[h.pid] = JSON.parse(JSON.stringify(h.c)); closeCart(); selectProduct(h.pid); reveal($('#konfigurator')); }
 });
 let lastFocus = null;
 function openCart() {
@@ -2124,7 +2207,7 @@ document.addEventListener('click', e => {
 });
 const navLinks = $$('.nav a');
 if ('IntersectionObserver' in window) {
-  const io = new IntersectionObserver(es => { es.forEach(en => { if (en.isIntersecting) { const id = en.target.id; navLinks.forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + id))); } }); }, { rootMargin: '-45% 0px -50% 0px' });
+  const io = new IntersectionObserver(es => { es.forEach(en => { if (en.isIntersecting) { const id = en.target.id; navLinks.forEach(a => { const h = a.getAttribute('href'); if (h.charAt(1) !== '/') a.setAttribute('aria-current', String(h === '#' + id)); }); } }); }, { rootMargin: '-45% 0px -50% 0px' });
   ['szolgaltatasok', 'webshop', 'ajanlat', 'referenciak', 'folyamat', 'rolunk', 'kapcsolat'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
   const rv = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('rv-in'); rv.unobserve(en.target); } }), { rootMargin: '0px 0px -10% 0px' });
   $$('.rv').forEach(n => rv.observe(n));
@@ -2517,5 +2600,61 @@ renderCart();
 wzGo(1, false);
 baSet();
 setInterval(renderLead, 30000);
+
+/* ================= NÉZETEK: a látványterv aloldalai ================= */
+// Élesben külön oldalak (/webshop, /ajanlatkeres, /referenciak, /kapcsolat). Itt a cím #/ utáni része választja ki,
+// melyik [data-view] rész látszik; a sima #horgony arra a nézetre vált, amelyikben a célja van.
+const VIEWS = { '': 'home', webshop: 'webshop', ajanlatkeres: 'ajanlatkeres', referenciak: 'referenciak', kapcsolat: 'kapcsolat' };
+const VIEW_TITLES = { webshop: 'Webshop', ajanlatkeres: 'Ajánlatkérés', referenciak: 'Referenciák', kapcsolat: 'Kapcsolat' };
+const baseTitle = document.title;
+let view = 'home', clicked = null, saveY = 0;
+function viewsOf(n) { let vs = null; for (let p = n; p && p !== document.body; p = p.parentElement) { if (p.dataset && p.dataset.view) { const own = p.dataset.view.split(' '); vs = vs ? vs.filter(v => own.includes(v)) : own; } } return vs; }
+function showView(v) {
+  view = v;
+  $$('[data-view]').forEach(n => n.classList.toggle('is-view-off', !n.dataset.view.split(' ').includes(v)));
+  $$('.nav a, .mnav nav a').forEach(a => { if (a.getAttribute('href') === '#/' + v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  document.title = VIEW_TITLES[v] ? `${VIEW_TITLES[v]} · ${baseTitle}` : baseTitle;
+  // A vásznakat és a léptékes előnézetet a ResizeObserver rajzolja újra, amikor a nézet láthatóvá válik.
+}
+function route(init) {
+  clearTimeout(saveY);
+  const h = decodeURIComponent(location.hash.slice(1)), byClick = clicked === location.hash; clicked = null;
+  const isView = h === '' || h.charAt(0) === '/', target = isView ? null : document.getElementById(h);
+  if (!isView && !target) return;
+  const vs = target ? viewsOf(target) : null;
+  const v = isView ? (VIEWS[h.replace(/^\/+|\/+$/g, '')] || 'home') : (!vs || vs.includes(view) ? view : vs[0]);
+  if (!isView && v === view) return; // horgony a látható nézetben: a böngésző görget
+  showView(v);
+  const y = history.state && history.state.y;
+  if (!byClick && typeof y === 'number') { window.scrollTo({ top: y, behavior: 'instant' }); return; } // vissza, előre, újratöltés
+  if (target) { target.scrollIntoView({ block: 'start', behavior: 'instant' }); return; }
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (init !== true) { const head = $$('h1[tabindex], h2[tabindex]').find(x => x.offsetParent !== null); if (head) head.focus({ preventScroll: true }); }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const href = a.getAttribute('href');
+  if (href === location.hash) { if (href.charAt(1) === '/') { e.preventDefault(); clicked = href; route(); } return; }
+  clearTimeout(saveY); history.replaceState({ y: window.scrollY }, '');
+  clicked = href;
+}, true);
+// A görgetési helyet az előzmények bejegyzése őrzi: a vissza és az előre gomb oda tér vissza, ahol a látogató járt.
+let savedAt = 0, popped = null;
+addEventListener('scroll', () => {
+  clearTimeout(saveY);
+  const at = location.href, save = () => { if (location.href === at) history.replaceState({ y: window.scrollY }, ''); savedAt = performance.now(); };
+  if (performance.now() - savedAt > 150) save(); else saveY = setTimeout(save, 150);
+}, { passive: true });
+addEventListener('popstate', () => { popped = location.href; route(); });
+addEventListener('hashchange', () => { if (popped !== location.href) route(); popped = null; });
+$$('[data-ref]').forEach(a => a.addEventListener('click', () => { const c = $(`.chip[data-f="${a.dataset.ref}"]`); if (c) c.click(); }));
+// JS-ből induló ugrás egy másik nézet elemére (a kosárból szerkesztés): előbb a nézet, aztán a görgetés.
+function reveal(el) {
+  const vs = viewsOf(el), other = vs && !vs.includes(view);
+  if (other) { history.replaceState({ y: window.scrollY }, ''); history.pushState(null, '', '#/' + vs[0]); showView(vs[0]); }
+  el.scrollIntoView({ block: 'start', behavior: other || RM.matches ? 'instant' : 'smooth' });
+}
+route(true);
 })();
 </script>

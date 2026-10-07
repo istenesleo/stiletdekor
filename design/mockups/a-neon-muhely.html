@@ -536,6 +536,10 @@ input[type="date"].inp{color-scheme:dark}
 .ref-empty{color:var(--muted);font-size:var(--t-sm);padding-block:20px}
 @media (max-width:980px){.ref-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ba{grid-template-columns:1fr}}
 @media (max-width:600px){.ref-grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:84%;overflow-x:auto;scroll-snap-type:x mandatory;padding-block-end:14px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}.ref{scroll-snap-align:start}.strip-hint{display:block!important}}
+.ref-link{display:block;text-decoration:none;color:inherit}
+.ref-link:hover .ref-img{border-color:var(--brand)}
+.ref-link:hover h3{color:var(--brand-ink)}
+@media (max-width:600px){.ref-grid--home{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row;grid-auto-columns:auto;overflow:visible;scroll-snap-type:none;padding-block-end:0}.ref-grid--home .ref h3{font-size:1.15rem}}
 
 /* ---------- folyamat ---------- */
 .process{list-style:none;margin-block:48px 0;padding-inline-start:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -582,7 +586,7 @@ input[type="date"].inp{color-scheme:dark}
 .copy-status{min-height:1em}
 .map-col{display:flex;flex-direction:column;min-width:0}
 .map{position:relative;flex:1;min-height:360px;border:1px solid var(--line-soft);background:var(--surface);overflow:hidden}
-.map svg{display:block;width:100%;height:100%}
+.map svg{position:absolute;inset:0;display:block;width:100%;height:100%}
 .map .map-bg{fill:var(--surface)}
 .map .road{stroke:color-mix(in oklab,var(--ink) 21%,var(--bg));fill:none;stroke-linecap:round}
 .map .road-s{stroke:color-mix(in oklab,var(--ink) 13%,var(--bg));fill:none;stroke-width:1}
@@ -668,28 +672,50 @@ input[type="date"].inp{color-scheme:dark}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
   .scene.powering .lit{animation:none!important}
 }
+
+/* ---------- kezdőlap: ajánlók ---------- */
+.sec-foot{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-block-start:28px}
+.tiles{list-style:none;margin-block:40px 0;padding-inline-start:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.tile{display:grid;gap:10px;height:100%;padding-block:10px 14px;padding-inline:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);transition:border-color .2s}
+.tile:hover{border-color:var(--brand)}
+.tile .sq{display:block;aspect-ratio:4/3;border:1px solid var(--line)}
+.tile .nm{font:800 1.45rem/1 var(--font-display);text-transform:uppercase}
+.tile:hover .nm{color:var(--brand-ink)}
+.tile .pr{font:500 11.5px/1.2 var(--font-mono);color:var(--muted)}
+.jobs{list-style:none;margin-block:40px 0;padding-inline-start:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.job{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:center;height:100%;min-height:64px;padding-block:12px;padding-inline:14px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);font-weight:600;font-size:var(--t-sm);line-height:1.3;transition:border-color .2s}
+.job svg{width:36px;height:36px;stroke:var(--ink);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.job:hover{border-color:var(--brand)}
+.job:hover svg{stroke:var(--brand)}
+.contact-more{margin-block-start:14px}
+@media (max-width:900px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.jobs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tile .sq{aspect-ratio:2/1}.jobs{grid-template-columns:1fr}.job{grid-template-columns:28px minmax(0,1fr);min-height:52px;padding-block:8px}.job svg{width:28px;height:28px}}
+
+/* ---------- nézetek: a látványterv aloldalai (#/webshop, #/ajanlatkeres, #/referenciak, #/kapcsolat) ---------- */
+.is-view-off{display:none!important}
+.nav a[aria-current="page"],.mobile-menu li a[aria-current="page"]{color:var(--brand-ink)}
 </style>
 
 <a class="skip" href="#main">Ugrás a tartalomra</a>
 
 <header class="site-head" id="fejlec">
   <div class="bar">
-    <a class="wordmark" href="#top" aria-label="Stilet Dekor, az oldal teteje">
+    <a class="wordmark" href="#/" aria-label="Stilet Dekor, kezdőlap">
       <svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>
       <span class="wm-a">STILET</span><span class="wm-b">DEKOR</span>
     </a>
     <nav class="nav" aria-label="Főmenü">
       <ul>
         <li><a href="#szolgaltatasok">Szolgáltatások</a></li>
-        <li><a href="#webshop">Webshop</a></li>
-        <li><a href="#referenciak">Referenciák</a></li>
+        <li><a href="#/webshop">Webshop</a></li>
+        <li><a href="#/referenciak">Referenciák</a></li>
         <li><a href="#folyamat">Folyamat</a></li>
         <li><a href="#rolunk">Rólunk</a></li>
-        <li><a href="#kapcsolat">Kapcsolat</a></li>
+        <li><a href="#/kapcsolat">Kapcsolat</a></li>
       </ul>
     </nav>
     <a class="head-phone mono" href="tel:+36705385030"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>+36&nbsp;70&nbsp;538&nbsp;5030</a>
-    <a class="btn btn-neon btn-sm head-cta" href="#ajanlat">Ajánlatkérés</a>
+    <a class="btn btn-neon btn-sm head-cta" href="#/ajanlatkeres">Ajánlatkérés</a>
     <button type="button" class="icon-btn cart-btn" id="cartBtn" aria-controls="cartLayer" aria-expanded="false" aria-label="Kosár megnyitása, 0 tétel">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 4h2.8l2.3 10.5h10.8L21 7.5H6.4"/><circle cx="9.5" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
       <span class="badge" id="cartCount">0</span>
@@ -701,15 +727,15 @@ input[type="date"].inp{color-scheme:dark}
   <div class="mobile-menu" id="mobileMenu" hidden>
     <ul>
       <li><a href="#szolgaltatasok">Szolgáltatások</a></li>
-      <li><a href="#webshop">Webshop</a></li>
-      <li><a href="#referenciak">Referenciák</a></li>
+      <li><a href="#/webshop">Webshop</a></li>
+      <li><a href="#/referenciak">Referenciák</a></li>
       <li><a href="#folyamat">Folyamat</a></li>
       <li><a href="#rolunk">Rólunk</a></li>
-      <li><a href="#kapcsolat">Kapcsolat</a></li>
+      <li><a href="#/kapcsolat">Kapcsolat</a></li>
     </ul>
     <div class="mm-foot">
       <a class="mono" href="tel:+36705385030">+36&nbsp;70&nbsp;538&nbsp;5030</a>
-      <a class="btn btn-neon" href="#ajanlat">Ajánlatkérés</a>
+      <a class="btn btn-neon" href="#/ajanlatkeres">Ajánlatkérés</a>
     </div>
   </div>
 </header>
@@ -718,19 +744,19 @@ input[type="date"].inp{color-scheme:dark}
 <main id="main">
 
 <!-- ================= HERO ================= -->
-<section class="hero" id="top" aria-labelledby="heroTitle">
+<section class="hero" id="top" aria-labelledby="heroTitle" data-view="home">
   <div class="hero-copy">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Dekoros műhely · Budapest</p>
-    <h1 id="heroTitle"><span>Kiszállunk,</span> <span>felmérjük,</span> <span>legyártjuk,</span> <span class="hl">felszereljük.</span></h1>
-    <p class="lead">Fóliázás, cégér és világító reklám, nyomtatás, rendezvénydíszlet. Helyszíni felmérés, tervezés, gyártás a saját műhelyünkben és telepítés: a teljes munkát egy csapat viszi végig.</p>
+    <h1 id="heroTitle" tabindex="-1"><span>Kiszállunk,</span> <span>felmérjük,</span> <span class="hl">felszereljük.</span></h1>
+    <p class="lead">Fóliázás, cégér és világító reklám, nyomtatás, rendezvénydíszlet: a felméréstől a telepítésig egy csapat, saját műhellyel.</p>
     <div class="entries">
-      <a class="entry entry--shop" href="#webshop">
+      <a class="entry entry--shop" href="#/webshop">
         <span class="entry-k">Online rendelés <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
-        <span class="entry-d">Molinó, roll-up, matrica, plakát, tábla, vászonkép. Azonnali ár, grafikafeltöltés.</span>
+        <span class="entry-d">Azonnali ár, grafikafeltöltés.</span>
       </a>
-      <a class="entry entry--quote" href="#ajanlat">
+      <a class="entry entry--quote" href="#/ajanlatkeres">
         <span class="entry-k">Egyedi ajánlat <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
-        <span class="entry-d">Autó, kirakat, cégér, világító betű, LED-fal, rendezvény. Négy lépés, felmérési időponttal.</span>
+        <span class="entry-d">Négy lépésben, kérésre helyszíni felméréssel.</span>
       </a>
     </div>
     <ol class="chain mono" aria-label="Munkafolyamat">
@@ -809,19 +835,18 @@ input[type="date"].inp{color-scheme:dark}
         <button type="button" data-mode="day" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Nappal</button>
         <button type="button" data-mode="night" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>Éjjel</button>
       </div>
-      <p class="mono">Világító betűk · plexi előlap, belső LED · illusztráció</p>
+      <p class="mono">Világító betűk · illusztráció</p>
     </figcaption>
   </figure>
 </section>
 
-<div class="ruler" id="ruler1" aria-hidden="true"></div>
+<div class="ruler" id="ruler1" aria-hidden="true" data-view="home"></div>
 
 <!-- ================= SZOLGÁLTATÁSOK ================= -->
-<section class="sec" id="szolgaltatasok" aria-labelledby="svcTitle">
+<section class="sec" id="szolgaltatasok" aria-labelledby="svcTitle" data-view="home">
   <header class="sec-head">
-    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Szolgáltatások · 4 csoport, 21 munkatípus</p>
+    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Szolgáltatások</p>
     <h2 id="svcTitle">Fóliától a világító betűig</h2>
-    <p class="sec-lead">A nyomdai termékeket online árazhatja és megrendelheti. Minden másra négy lépésben kérhet ajánlatot, felmérési időponttal.</p>
   </header>
 
   <div class="svc-grid">
@@ -829,12 +854,11 @@ input[type="date"].inp{color-scheme:dark}
       <div class="swatch sw-vinyl" aria-hidden="true"></div>
       <div class="svc-body">
         <h3>Fóliázás</h3>
-        <p class="slug">/foliazas</p>
         <ul class="svc-list">
-          <li><a href="#ajanlat" data-quote="auto"><span class="lbl">Autófóliázás és flotta-dekor</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="kirakat"><span class="lbl">Kirakat- és üvegfóliázás</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="pult"><span class="lbl">Kínálópultok fóliázása és telepítése</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="egyeb" data-prefill="Egyéb felület fóliázása: "><span class="lbl">Egyéb felületek fóliázása</span><span class="tag">Ajánlat</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="auto"><span class="lbl">Autófóliázás és flotta-dekor</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="kirakat"><span class="lbl">Kirakat- és üvegfóliázás</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="pult"><span class="lbl">Kínálópultok fóliázása</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="egyeb" data-prefill="Egyéb felület fóliázása: "><span class="lbl">Egyéb felületek fóliázása</span></a></li>
         </ul>
       </div>
     </article>
@@ -842,13 +866,11 @@ input[type="date"].inp{color-scheme:dark}
       <div class="swatch sw-plexi" aria-hidden="true"></div>
       <div class="svc-body">
         <h3>Cégér és világító reklám</h3>
-        <p class="slug">/ceger-vilagito-reklam</p>
         <ul class="svc-list">
-          <li><a href="#ajanlat" data-quote="ceger"><span class="lbl">Cégérkészítés</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="ceger"><span class="lbl">Reklámtáblák vázszerkezettel és belső LED-es világítással</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="betuk"><span class="lbl">Világító betűk</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="betuk"><span class="lbl">Plasztik betűk és logók</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="led"><span class="lbl">LED-falak</span><span class="tag">Ajánlat</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="ceger"><span class="lbl">Cégérek és reklámtáblák</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="betuk"><span class="lbl">Világító betűk</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="betuk"><span class="lbl">Plasztik betűk és logók</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="led"><span class="lbl">LED-falak</span></a></li>
         </ul>
       </div>
     </article>
@@ -856,15 +878,14 @@ input[type="date"].inp{color-scheme:dark}
       <div class="swatch sw-print-wrap" aria-hidden="true"><div class="swatch sw-print" style="border:0;height:100%"></div><span class="sw-mark"></span></div>
       <div class="svc-body">
         <h3>Nyomtatás</h3>
-        <p class="slug">/nyomtatas</p>
         <ul class="svc-list">
-          <li><a href="#webshop" data-shop="molino"><span class="lbl">Molinók</span><span class="tag tag--shop">Online ár</span></a></li>
-          <li><a href="#ajanlat" data-quote="egyeb" data-prefill="Feszített ponyva kihelyezéssel: "><span class="lbl">Feszített ponyva kihelyezéssel</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#webshop" data-shop="rollup"><span class="lbl">Roll-upok</span><span class="tag tag--shop">Online ár</span></a></li>
-          <li><a href="#webshop" data-shop="tabla"><span class="lbl">Táblák</span><span class="tag tag--shop">Online ár</span></a></li>
-          <li><a href="#webshop" data-shop="matrica"><span class="lbl">Matricák</span><span class="tag tag--shop">Online ár</span></a></li>
-          <li><a href="#webshop" data-shop="plakat"><span class="lbl">Plakátok</span><span class="tag tag--shop">Online ár</span></a></li>
-          <li><a href="#webshop" data-shop="vaszon"><span class="lbl">Vászonképek</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="molino"><span class="lbl">Molinók</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="rollup"><span class="lbl">Roll-upok</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="matrica"><span class="lbl">Matricák</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="plakat"><span class="lbl">Plakátok</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="tabla"><span class="lbl">Táblák</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/webshop" data-shop="vaszon"><span class="lbl">Vászonképek</span><span class="tag tag--shop">Online ár</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="egyeb" data-prefill="Feszített ponyva kihelyezéssel: "><span class="lbl">Feszített ponyva kihelyezéssel</span></a></li>
         </ul>
       </div>
     </article>
@@ -872,32 +893,43 @@ input[type="date"].inp{color-scheme:dark}
       <div class="swatch sw-alu" aria-hidden="true"></div>
       <div class="svc-body">
         <h3>Rendezvény és egyedi</h3>
-        <p class="slug">/rendezveny-egyedi</p>
         <ul class="svc-list">
-          <li><a href="#ajanlat" data-quote="rendezveny"><span class="lbl">Rendezvény díszletezés és fóliázás</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="rendezveny"><span class="lbl">Fotófal építés</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="3d"><span class="lbl">3D nyomtatási munkák</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="egyeb" data-prefill="Egyedi reklám- vagy díszítési munka: "><span class="lbl">Egyedi reklám- és díszítési megrendelések</span><span class="tag">Ajánlat</span></a></li>
-          <li><a href="#ajanlat" data-quote="egyeb"><span class="lbl">Egyéb arculati megoldások</span><span class="tag">Ajánlat</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="rendezveny"><span class="lbl">Díszletek és fotófalak</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="3d"><span class="lbl">3D nyomtatás</span></a></li>
+          <li><a href="#/ajanlatkeres" data-quote="egyeb" data-prefill="Egyedi reklám- vagy díszítési munka: "><span class="lbl">Egyedi reklám- és díszítési munkák</span></a></li>
         </ul>
       </div>
     </article>
   </div>
-  <div class="promise">
-    <div>
-      <h3>Helyszíni felmérés és telepítés</h3>
-      <p>Minden munkára érvényes. Kiszállunk, felmérjük, felszereljük.</p>
-    </div>
-    <a class="btn btn-ghost" href="#ajanlat">Felmérést kérek <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
-    <div class="tape" id="tape" aria-hidden="true"></div>
+  <div class="tape" id="tape" aria-hidden="true"></div>
+</section>
+
+<!-- ================= KEZDŐLAP: WEBSHOP ================= -->
+<section class="sec" id="termekek" aria-labelledby="tilesTitle" data-view="home">
+  <header class="sec-head">
+    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Webshop · azonnali ár</p>
+    <h2 id="tilesTitle">Rendelje meg online</h2>
+    <p class="sec-lead">Méret, anyag, grafika: az árat és az elkészülés napját azonnal látja.</p>
+  </header>
+  <ul class="tiles">
+    <li><a class="tile" href="#/webshop" data-shop="molino"><span class="sq tex-frontlit"></span><span class="nm">Molinó</span><span class="pr">3&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-shop="rollup"><span class="sq tex-rollup"></span><span class="nm">Roll-up</span><span class="pr">12&nbsp;900&nbsp;Ft-tól</span></a></li>
+    <li><a class="tile" href="#/webshop" data-shop="matrica"><span class="sq tex-vinyl"></span><span class="nm">Matrica</span><span class="pr">6&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-shop="plakat"><span class="sq tex-paper"></span><span class="nm">Plakát</span><span class="pr">990&nbsp;Ft-tól</span></a></li>
+    <li><a class="tile" href="#/webshop" data-shop="tabla"><span class="sq tex-alu"></span><span class="nm">Tábla</span><span class="pr">9&nbsp;990&nbsp;Ft/m²-től</span></a></li>
+    <li><a class="tile" href="#/webshop" data-shop="vaszon"><span class="sq tex-canvas"></span><span class="nm">Vászonkép</span><span class="pr">7&nbsp;990&nbsp;Ft-tól</span></a></li>
+  </ul>
+  <div class="sec-foot">
+    <a class="btn btn-ghost" href="#/webshop">Webshop megnyitása <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+    <p class="fine">Minden ár bruttó.</p>
   </div>
 </section>
 
 <!-- ================= WEBSHOP ================= -->
-<section class="sec" id="webshop" aria-labelledby="shopTitle">
+<section class="sec is-view-off" id="webshop" aria-labelledby="shopTitle" data-view="webshop">
   <header class="sec-head">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Webshop · azonnali ár</p>
-    <h2 id="shopTitle">Rendelje meg online</h2>
+    <h2 id="shopTitle" tabindex="-1">Rendelje meg online</h2>
     <p class="sec-lead">Állítsa be a méretet és az anyagot, töltse fel a grafikát. Az ár, a felbontás és az elkészülés napja azonnal frissül.</p>
   </header>
   <div class="price-note fine"><span>Minden ár bruttó (27% ÁFA-val) és helyőrző: a megrendelő véglegesíti.</span><span>A végleges ár eltérhet a kalkulált ártól.</span><span>Személyes átvétel a műhelyben ingyenes</span></div>
@@ -1047,11 +1079,34 @@ input[type="date"].inp{color-scheme:dark}
   </div>
 </section>
 
-<!-- ================= AJÁNLATKÉRŐ VARÁZSLÓ ================= -->
-<section class="sec" id="ajanlat" aria-labelledby="wizTitle">
+<!-- ================= KEZDŐLAP: EGYEDI AJÁNLAT ================= -->
+<section class="sec" id="egyedi-munkak" aria-labelledby="jobsTitle" data-view="home">
   <header class="sec-head">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Egyedi ajánlat · 4 lépés</p>
-    <h2 id="wizTitle">Kérjen ajánlatot egyedi munkára</h2>
+    <h2 id="jobsTitle">Kérjen ajánlatot egyedi munkára</h2>
+    <p class="sec-lead">Ha kéri, kimegyünk és felmérjük a helyszínt.</p>
+  </header>
+  <ul class="jobs">
+    <li><a class="job" href="#/ajanlatkeres" data-quote="auto"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 33V15h22l8 8h9v10z"/><path d="M27 15v8h7"/><circle cx="13" cy="34" r="4"/><circle cx="35" cy="34" r="4"/></svg>Autófóliázás, flotta-dekor</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="kirakat"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="8" width="36" height="30"/><path d="M24 8v30M6 26h36M11 15l5-5M28 33l9-9"/></svg>Kirakat- és üvegfóliázás</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="ceger"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="16"/><path d="M12 26v14M36 26v14M11 18h26"/></svg>Cégér, reklámtábla</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="betuk"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 38 15 10l9 28M9.5 28h11M28 10h7a6 6 0 0 1 0 12h-7zM28 22h8a8 8 0 0 1 0 16h-8z"/></svg>Világító és plasztik betűk, logók</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="led"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="8" width="38" height="26"/><path d="M5 17h38M5 25h38M14.5 8v26M24 8v26M33.5 8v26M17 41h14M24 34v7"/></svg>LED-fal</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="rendezveny"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 40V8h36v32M6 40h36"/><path d="M12 15h5M22 15h5M32 15h4M12 23h5M22 23h5M32 23h4M12 31h5M22 31h5M32 31h4"/></svg>Rendezvény díszlet, fotófal</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="pult"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 16h38M9 16v24h30V16M16 16v-6h16v6M17 28h14"/></svg>Kínálópult fóliázás és telepítés</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="3d"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5l16 9v20l-16 9-16-9V14zM24 23l16-9M24 23v20M24 23 8 14"/></svg>3D nyomtatás</a></li>
+    <li><a class="job" href="#/ajanlatkeres" data-quote="egyeb"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M24 15v18M15 24h18"/></svg>Egyéb arculati megoldás</a></li>
+  </ul>
+  <div class="sec-foot">
+    <a class="btn btn-ghost" href="#/ajanlatkeres">Ajánlatot kérek <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+
+<!-- ================= AJÁNLATKÉRŐ VARÁZSLÓ ================= -->
+<section class="sec is-view-off" id="ajanlat" aria-labelledby="wizTitle" data-view="ajanlatkeres">
+  <header class="sec-head">
+    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Egyedi ajánlat · 4 lépés</p>
+    <h2 id="wizTitle" tabindex="-1">Kérjen ajánlatot egyedi munkára</h2>
     <p class="sec-lead">Összegyűjtjük, ami az árazáshoz kell. Ha kéri, kimegyünk és felmérjük a helyszínt.</p>
   </header>
 
@@ -1176,11 +1231,30 @@ input[type="date"].inp{color-scheme:dark}
   </form>
 </section>
 
+<!-- ================= KEZDŐLAP: MUNKÁINK ================= -->
+<section class="sec" id="munkaink" aria-labelledby="worksTitle" data-view="home">
+  <header class="sec-head">
+    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Referenciák</p>
+    <h2 id="worksTitle">Munkáink</h2>
+  </header>
+  <ul class="ref-grid ref-grid--home" id="workGrid">
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="ceger"><figure><div class="ref-img"><canvas data-scene="shop" aria-hidden="true"></canvas></div><figcaption><h3>Világító betűk üzletportálon</h3></figcaption></figure></a></li>
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="auto"><figure><div class="ref-img"><canvas data-scene="van" aria-hidden="true"></canvas></div><figcaption><h3>Fóliázott kisbusz</h3></figcaption></figure></a></li>
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="kirakat"><figure><div class="ref-img"><canvas data-scene="frost" aria-hidden="true"></canvas></div><figcaption><h3>Homokfúvott hatású üvegfólia</h3></figcaption></figure></a></li>
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="nyomtatas"><figure><div class="ref-img"><canvas data-scene="rollup" aria-hidden="true"></canvas></div><figcaption><h3>Roll-upok rendezvényen</h3></figcaption></figure></a></li>
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="ceger"><figure><div class="ref-img"><canvas data-scene="led" aria-hidden="true"></canvas></div><figcaption><h3>LED-fal színpadon</h3></figcaption></figure></a></li>
+    <li class="ref"><a class="ref-link" href="#/referenciak" data-ref="nyomtatas"><figure><div class="ref-img"><canvas data-scene="fence" aria-hidden="true"></canvas></div><figcaption><h3>Molinó építési kerítésen</h3></figcaption></figure></a></li>
+  </ul>
+  <div class="sec-foot">
+    <a class="btn btn-ghost" href="#/referenciak">Összes munka <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+
 <!-- ================= REFERENCIÁK ================= -->
-<section class="sec" id="referenciak" aria-labelledby="refTitle">
+<section class="sec is-view-off" id="referenciak" aria-labelledby="refTitle" data-view="referenciak">
   <header class="sec-head">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Referenciák · felület szerint</p>
-    <h2 id="refTitle">Munkáink felület szerint</h2>
+    <h2 id="refTitle" tabindex="-1">Munkáink felület szerint</h2>
     <p class="sec-lead">A képek illusztrált helyőrzők. Élesben a valós munkák fotói kerülnek ide, ugyanezekkel az adatokkal.</p>
   </header>
 
@@ -1236,70 +1310,62 @@ input[type="date"].inp{color-scheme:dark}
 </section>
 
 <!-- ================= FOLYAMAT ================= -->
-<section class="sec" id="folyamat" aria-labelledby="procTitle">
+<section class="sec" id="folyamat" aria-labelledby="procTitle" data-view="home">
   <header class="sec-head">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Folyamat</p>
     <h2 id="procTitle">Négy lépés, egy csapat</h2>
-    <p class="sec-lead">Ugyanazok az emberek mérnek, terveznek, gyártanak és szerelnek. A felmérés adatai így egyenesen a gyártásba kerülnek.</p>
   </header>
   <ol class="process">
     <li>
       <div class="dimseg" aria-hidden="true"><i class="al"></i><i class="ar"></i><span class="dl">a helyszínen</span></div>
       <span class="step-n" aria-hidden="true">1</span>
       <h3>Felmérés</h3>
-      <p>Kimegyünk, milliméterre lemérjük a felületet, fotózunk, és megbeszéljük, mire van szüksége.</p>
-      <p class="out">Eredmény: méretek, fotók, rögzítési pontok</p>
+      <p>Kimegyünk, lemérjük a felületet, és megbeszéljük, mire van szüksége.</p>
     </li>
     <li>
       <div class="dimseg" aria-hidden="true"><i class="al"></i><i class="ar"></i><span class="dl">a tervezőasztalon</span></div>
       <span class="step-n" aria-hidden="true">2</span>
       <h3>Tervezés</h3>
-      <p>A felmért méretekre tervezünk. Látványtervet küldünk, és a jóváhagyásig finomítjuk.</p>
-      <p class="out">Eredmény: látványterv, gyártási terv</p>
+      <p>Látványtervet küldünk, és a jóváhagyásig finomítjuk.</p>
     </li>
     <li>
-      <div class="dimseg" aria-hidden="true"><i class="al"></i><i class="ar"></i><span class="dl">a saját műhelyben</span></div>
+      <div class="dimseg" aria-hidden="true"><i class="al"></i><i class="ar"></i><span class="dl">a műhelyben</span></div>
       <span class="step-n" aria-hidden="true">3</span>
       <h3>Gyártás saját műhelyben</h3>
-      <p>Nyomtatás, fóliavágás, táblák és betűk szerelése egy helyen. A minőséget és a határidőt mi tartjuk kézben.</p>
-      <p class="out">Eredmény: kész, ellenőrzött darabok</p>
+      <p>Nyomtatás, fóliavágás, táblák és betűk egy helyen.</p>
     </li>
     <li>
       <div class="dimseg" aria-hidden="true"><i class="al"></i><i class="ar"></i><span class="end"></span><span class="dl">a helyszínen</span></div>
       <span class="step-n" aria-hidden="true">4</span>
       <h3>Telepítés</h3>
-      <p>Kiszállítjuk, és a helyszínen felszereljük. A munkát átadás előtt együtt ellenőrizzük.</p>
-      <p class="out">Eredmény: felszerelt, működő reklám</p>
+      <p>Kiszállítjuk, felszereljük, és átadás előtt együtt ellenőrizzük.</p>
     </li>
   </ol>
 </section>
 
 <!-- ================= RÓLUNK ================= -->
-<section class="sec" id="rolunk" aria-labelledby="aboutTitle">
+<section class="sec" id="rolunk" aria-labelledby="aboutTitle" data-view="home">
   <header class="sec-head">
-    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Rólunk · miért mi</p>
+    <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Rólunk</p>
     <h2 id="aboutTitle">Saját műhely, saját csapat</h2>
-    <p class="sec-lead">Dekoros cég vagyunk saját műhellyel, Budapesten. Ugyanaz a csapat méri fel, tervezi, gyártja és szereli fel a munkát.</p>
   </header>
   <div class="about">
     <div>
       <div class="about-img"><canvas data-scene="workshop" aria-hidden="true"></canvas><span class="ph">Műhelyfotó helye</span></div>
-      <p class="fine about-note">Ide kerül a műhely és a csapat valós fotója. <span class="ph-tag">helyőrző</span></p>
     </div>
     <div class="why">
-      <div><h3>Saját műhely</h3><p>Nyomtatás, fóliázás, táblák és betűk gyártása egy helyen. Saját műhelyben gyártunk, ezért a minőségért és a határidőért mi felelünk.</p></div>
-      <div><h3>Helyszíni felmérés és telepítés</h3><p>Kimegyünk, lemérjük a felületet, és a kész munkát mi szereljük fel. A méret így a gyártásnál is stimmel.</p></div>
-      <div><h3>Egyedi megoldások</h3><p>Ha nincs rá kész termék, megtervezzük: díszlet, fotófal, 3D nyomtatott elem, egyedi reklám- és díszítési munka.</p></div>
+      <div><h3>Saját műhely</h3><p>Mindent egy helyen gyártunk, ezért a minőségért és a határidőért mi felelünk.</p></div>
+      <div><h3>Helyszíni felmérés és telepítés</h3><p>Mi mérjük le a felületet, és mi szereljük fel a kész munkát.</p></div>
+      <div><h3>Egyedi megoldások</h3><p>Ha nincs rá kész termék, megtervezzük: díszlet, fotófal, 3D nyomtatás.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ================= KAPCSOLAT ================= -->
-<section class="sec" id="kapcsolat" aria-labelledby="contactTitle">
+<section class="sec" id="kapcsolat" aria-labelledby="contactTitle" data-view="home kapcsolat">
   <header class="sec-head">
     <p class="eyebrow"><svg class="reg" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5"/><path d="M10 0v20M0 10h20"/></svg>Kapcsolat</p>
-    <h2 id="contactTitle">Hívjon, írjon, vagy jöjjön be a műhelybe</h2>
-    <p class="sec-lead">Telefonon, e-mailben vagy személyesen, a műhelyben.</p>
+    <h2 id="contactTitle" tabindex="-1">Hívjon, írjon, vagy jöjjön be a műhelybe</h2>
   </header>
   <div class="contact">
     <div>
@@ -1333,7 +1399,8 @@ input[type="date"].inp{color-scheme:dark}
         </div>
       </div>
       <p class="visually-hidden" id="copyStatus" role="status" aria-live="polite"></p>
-      <form class="msg-form" id="msgForm" novalidate>
+      <p class="contact-more" data-view="home"><a class="btn btn-ghost" href="#/kapcsolat">Üzenetet írok <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a></p>
+      <form class="msg-form is-view-off" id="msgForm" novalidate data-view="kapcsolat">
         <h3>Rövid üzenet</h3>
         <div class="field">
           <label for="mName" class="req">Név</label>
@@ -1394,7 +1461,7 @@ input[type="date"].inp{color-scheme:dark}
 
 <footer class="foot">
   <div>
-    <a class="wordmark" href="#top" aria-label="Stilet Dekor, az oldal teteje"><span class="wm-a">STILET</span><span class="wm-b">DEKOR</span></a>
+    <a class="wordmark" href="#/" aria-label="Stilet Dekor, kezdőlap"><span class="wm-a">STILET</span><span class="wm-b">DEKOR</span></a>
     <p class="foot-tag">Fóliázás, cégér és világító reklám, nyomtatás, rendezvény. Helyszíni felméréssel és telepítéssel.</p>
   </div>
   <div>
@@ -1403,7 +1470,7 @@ input[type="date"].inp{color-scheme:dark}
   </div>
   <div>
     <h4>RENDELÉS</h4>
-    <ul><li><a href="#webshop">Webshop</a></li><li><a href="#ajanlat">Egyedi ajánlat</a></li><li><a href="#ujrarendeles">Újrarendelés</a></li><li><a href="#referenciak">Referenciák</a></li></ul>
+    <ul><li><a href="#/webshop">Webshop</a></li><li><a href="#/ajanlatkeres">Egyedi ajánlat</a></li><li><a href="#ujrarendeles">Újrarendelés</a></li><li><a href="#/referenciak">Referenciák</a></li></ul>
   </div>
   <div>
     <h4>KAPCSOLAT</h4>
@@ -1466,6 +1533,8 @@ input[type="date"].inp{color-scheme:dark}
       <button type="button" class="icon-btn" id="notesClose" aria-label="Jegyzetek bezárása"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     </div>
     <p>A lap egy fekete vágóalátét: rács, vonalzó, méretvonal és szálkereszt adja a rendet, mert a cég ereje a pontos felmérés és a saját gyártás. A rózsaszín neonként csak a hero cégérén és a fő gombokon ég, a méretvonalak mérőszalag-sárgák. A merészség a heroban és a konfigurátor munkaasztalán van, a többi szekció csendes és pontos.</p>
+    <h3>KEZDŐLAP ÉS ALOLDALAK</h3>
+    <p>A kezdőlap áttekintés: minden szakaszból csak a lényeg. A webshop, az ajánlatkérés, a referenciák és a kapcsolat saját oldalt kap; a látványtervben a #/webshop, #/ajanlatkeres, #/referenciak és #/kapcsolat cím nyitja meg őket. A rövidítés előtti változat a dev oldalakon a /mentes címen látható.</p>
     <h3>INNOVÁCIÓK AZ OLDALON</h3>
     <ol>
       <li><a href="#munkaasztal">Valós léptékű előnézet, 180 cm-es sziluett, mm-es méretvonalak</a></li>
@@ -1473,8 +1542,8 @@ input[type="date"].inp{color-scheme:dark}
       <li><a href="#hatarido">Várható határidő: a gyártás a befizetéstől indul, munkanapokkal és 12:00-s zárással</a></li>
       <li><a href="#arbontas">Átlátható ár: tételes bontás bruttóban, kedvezménysúgó</a></li>
       <li><a href="#hero-jelenet">Nappal / éjjel kapcsoló a világító cégéren</a></li>
-      <li><a href="#ajanlat">Helyszíni felmérés kérése a varázsló 4. lépésében, időpont nélkül (visszahívjuk)</a></li>
-      <li><a href="#referenciak">Referenciák felület szerint, előtte/utána csúszka</a></li>
+      <li><a href="#/ajanlatkeres">Helyszíni felmérés kérése a varázsló 4. lépésében, időpont nélkül (visszahívjuk)</a></li>
+      <li><a href="#/referenciak">Referenciák felület szerint, előtte/utána csúszka</a></li>
       <li><a href="#anyagok">Anyagkártyák g/m², kül- és beltér, élettartam adatokkal</a></li>
       <li><a href="#ujrarendeles">Újrarendelés egy kattintással</a></li>
       <li>Telepítéses rendelésnél fotó a helyszínről a kosárban (nem kötelező), a telepítés árazásához</li>
@@ -2547,6 +2616,56 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { dr
 setInterval(updateLead, 30000);
 let rq = 0;
 const ro = new ResizeObserver(() => { cancelAnimationFrame(rq); rq = requestAnimationFrame(() => { renderBench(); drawScenes(); }); });
-[bench, $('#baStage'), $('#refGrid'), $('.about-img')].forEach(n => n && ro.observe(n));
+[bench, $('#baStage'), $('#refGrid'), $('#workGrid'), $('.about-img')].forEach(n => n && ro.observe(n));
+
+/* ================= NÉZETEK: a látványterv aloldalai ================= */
+// Élesben külön oldalak (/webshop, /ajanlatkeres, /referenciak, /kapcsolat). Itt a cím #/ utáni része választja ki,
+// melyik [data-view] rész látszik; a sima #horgony arra a nézetre vált, amelyikben a célja van.
+const VIEWS = { '': 'home', webshop: 'webshop', ajanlatkeres: 'ajanlatkeres', referenciak: 'referenciak', kapcsolat: 'kapcsolat' };
+const VIEW_TITLES = { webshop: 'Webshop', ajanlatkeres: 'Ajánlatkérés', referenciak: 'Referenciák', kapcsolat: 'Kapcsolat' };
+const baseTitle = document.title;
+let view = 'home', clicked = null, saveY = 0;
+function viewsOf(n) { let vs = null; for (let p = n; p && p !== document.body; p = p.parentElement) { if (p.dataset && p.dataset.view) { const own = p.dataset.view.split(' '); vs = vs ? vs.filter(v => own.includes(v)) : own; } } return vs; }
+function showView(v) {
+  view = v;
+  $$('[data-view]').forEach(n => n.classList.toggle('is-view-off', !n.dataset.view.split(' ').includes(v)));
+  $$('.nav a, .mobile-menu a').forEach(a => { if (a.getAttribute('href') === '#/' + v) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  document.title = VIEW_TITLES[v] ? `${VIEW_TITLES[v]} · ${baseTitle}` : baseTitle;
+  requestAnimationFrame(() => { renderBench(); drawScenes(); });
+}
+function route(init) {
+  clearTimeout(saveY);
+  const h = decodeURIComponent(location.hash.slice(1)), byClick = clicked === location.hash; clicked = null;
+  const isView = h === '' || h.charAt(0) === '/', target = isView ? null : document.getElementById(h);
+  if (!isView && !target) return;
+  const vs = target ? viewsOf(target) : null;
+  const v = isView ? (VIEWS[h.replace(/^\/+|\/+$/g, '')] || 'home') : (!vs || vs.includes(view) ? view : vs[0]);
+  if (!isView && v === view) return; // horgony a látható nézetben: a böngésző görget
+  showView(v);
+  const y = history.state && history.state.y;
+  if (!byClick && typeof y === 'number') { window.scrollTo({ top: y, behavior: 'instant' }); return; } // vissza, előre, újratöltés
+  if (target) { target.scrollIntoView({ block: 'start', behavior: 'instant' }); return; }
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (init !== true) { const head = $$('h1[tabindex], h2[tabindex]').find(x => x.offsetParent !== null); if (head) head.focus({ preventScroll: true }); }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="#"]');
+  if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const href = a.getAttribute('href');
+  if (href === location.hash) { if (href.charAt(1) === '/') { e.preventDefault(); clicked = href; route(); } return; }
+  clearTimeout(saveY); history.replaceState({ y: window.scrollY }, '');
+  clicked = href;
+}, true);
+// A görgetési helyet az előzmények bejegyzése őrzi: a vissza és az előre gomb oda tér vissza, ahol a látogató járt.
+let savedAt = 0, popped = null;
+addEventListener('scroll', () => {
+  clearTimeout(saveY);
+  const at = location.href, save = () => { if (location.href === at) history.replaceState({ y: window.scrollY }, ''); savedAt = performance.now(); };
+  if (performance.now() - savedAt > 150) save(); else saveY = setTimeout(save, 150);
+}, { passive: true });
+addEventListener('popstate', () => { popped = location.href; route(); });
+addEventListener('hashchange', () => { if (popped !== location.href) route(); popped = null; });
+$$('[data-ref]').forEach(a => a.addEventListener('click', () => { const c = $(`#refChips .chip[data-f="${a.dataset.ref}"]`); if (c) c.click(); }));
+route(true);
 })();
 </script>

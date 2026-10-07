@@ -72,7 +72,8 @@ változóit és kötéseit a `previews` blokk adja.
 Döntés (2026-10-06): amíg nem dől el a design, mindkét irány él, saját dev oldallal. A kód és a build
 ugyanaz, csak a `SITE_THEME` változó más; ez választja ki a tokenkészletet (`<html data-theme>`) és a
 betűtípusokat. Amíg a kezdőlap nem készül el, a `/` a választott irány látványtervét mutatja
-(`design/mockups/`). Az éles oldalon ez soha nem jelenik meg.
+(`design/mockups/`). Az éles oldalon ez soha nem jelenik meg. A látványterv aloldalai a cím `#/` utáni részével
+nyílnak: `/#/webshop`, `/#/ajanlatkeres`, `/#/referenciak`, `/#/kapcsolat`.
 
 A `/mentes` cím a látványterv mentett állapotát mutatja a kezdőlap szövegének rövidítése előttről
 (`design/mockups/mentes/2026-10-06-hosszu-szoveg/`), hogy a kettő összevethető legyen. A böngészőfül címe
