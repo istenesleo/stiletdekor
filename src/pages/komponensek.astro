@@ -5,7 +5,7 @@ import Base from '@/layouts/Base.astro';
 import { SITE_THEMES, siteThemeOf } from '@/site/themes';
 
 // Specimen page of the UI library (src/ui): every component in its states, in either design direction
-// (?tema=neon-muhely or ?tema=galeria-editorial). Dev sites only; production answers 404.
+// (?tema=neon-muhely, ?tema=galeria-editorial or ?tema=merolap). Dev sites only; production answers 404.
 if (env.PUBLIC_SITE_ENV === 'production') {
   return new Response(null, { status: 404 });
 }

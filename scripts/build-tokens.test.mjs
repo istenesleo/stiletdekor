@@ -126,8 +126,8 @@ describe('the repository tokens', () => {
     expect(fs.readFileSync(CSS_FILE, 'utf8').replaceAll('\r\n', '\n')).toBe(buildCss(loadTree(), { themes: loadThemes() }));
   });
 
-  it('tokens.css carries both design directions', () => {
-    expect(loadThemes().map((t) => t.name)).toEqual(['galeria-editorial', 'neon-muhely']);
+  it('tokens.css carries every design direction (A, B and C)', () => {
+    expect(loadThemes().map((t) => t.name)).toEqual(['galeria-editorial', 'merolap', 'neon-muhely']);
     const css = fs.readFileSync(CSS_FILE, 'utf8');
     for (const name of themes) expect(css).toContain(`:root[data-theme="${name}"],\n[data-theme="${name}"] {`);
   });

@@ -7,7 +7,7 @@ import './ThemeRoot.css';
 export type ThemeName = SiteThemeId;
 
 export interface ThemeRootProps extends HTMLAttributes<HTMLDivElement> {
-  /** Design direction: "neon-muhely" (A, Neon műhely) or "galeria-editorial" (B, Galéria / editorial). */
+  /** Design direction: "neon-muhely" (A, Neon műhely), "galeria-editorial" (B, Galéria / editorial) or "merolap" (C, Mérőlap). */
   theme?: ThemeName;
 }
 

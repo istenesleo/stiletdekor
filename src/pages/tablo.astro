@@ -10,7 +10,7 @@ import { LANE_LABELS, LANES, VARIANT_GROUPS, variantsOf } from '@/tablo/variants
 import '@/tablo/tablo.css';
 
 // The variant board (docs/superpowers/specs/2026-10-07-tablo-design.md): alternative page elements and graphics
-// in either design direction (?tema=neon-muhely or ?tema=galeria-editorial); ?csoport, ?csak and ?beagyazott
+// in any design direction (?tema=neon-muhely, galeria-editorial or merolap); ?csoport, ?csak and ?beagyazott
 // narrow it (src/tablo/nezet.ts). Dev sites only; production 404.
 if (!boardAvailable(env.PUBLIC_SITE_ENV)) {
   return new Response(null, { status: 404 });

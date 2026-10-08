@@ -12,7 +12,8 @@ import type { SiteTheme, SiteThemeId } from './themes';
  */
 export type DesignPreviewVersion = 'current' | 'backup';
 
-const MOCKUPS: Readonly<Record<DesignPreviewVersion, Readonly<Record<SiteThemeId, string>>>> = {
+// Direction C (merolap) has no mockup in the repo (its pages live in design/claude-design); it shows A's.
+const MOCKUPS: Readonly<Record<DesignPreviewVersion, Readonly<Partial<Record<SiteThemeId, string>>>>> = {
   current: { 'neon-muhely': neon, 'galeria-editorial': galeria },
   backup: { 'neon-muhely': neonBackup, 'galeria-editorial': galeriaBackup },
 };
@@ -26,7 +27,7 @@ export const BACKUP_TITLE_PREFIX = 'Mentés, 2026-10-06 · ';
  * (title, footer, designer notes).
  */
 export function designPreviewHtml(theme: SiteTheme, version: DesignPreviewVersion = 'current'): string {
-  const mockup = MOCKUPS[version][theme.id];
+  const mockup = MOCKUPS[version][theme.id] ?? MOCKUPS[version]['neon-muhely'] ?? '';
   return [
     '<!doctype html>',
     '<html lang="hu">',

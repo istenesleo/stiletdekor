@@ -1,0 +1,43 @@
+{
+  "$description": "Direction C, 'Mérőlap': the synthesis Claude Design proposed (design/claude-design, 2026-10-08). The calm, image-led structure of B with the measuring language of A: near-black, off-white type, the brand pink on the main button and as light on the hero sign only, measuring-tape yellow for measurements, a characterful grotesque in sentence case. Overrides stilet.tokens.json; selected with SITE_THEME=merolap.",
+  "$extensions": {
+    "hu.stiletdekor.fonts": "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist+Mono:wght@400;500;700&family=Hanken+Grotesk:wght@400..700&display=swap",
+    "hu.stiletdekor.note": "Claude Design draws the titles at line-height 0.96; here leading.tight stays at 1.0 so the accents of Hungarian capitals (Ő, Ű, Á) never touch the line above."
+  },
+  "color": {
+    "bg": { "$value": "#0c0c0d" },
+    "surface": { "$value": "#141416" },
+    "surface-raised": { "$value": "#1c1c1f" },
+    "line": { "$value": "#2c2c30" },
+    "text": { "$value": "#f2efe9" },
+    "text-muted": { "$value": "#a19ea7" },
+    "measure": { "$value": "#f0c43c", "$description": "Measuring-tape yellow: dimension lines, rulers, focus of measurements." },
+    "signal": {
+      "ok": { "$value": "#4fd394" },
+      "warn": { "$value": "#ecc94b" },
+      "bad": { "$value": "#ff6150" }
+    }
+  },
+  "font": {
+    "display": { "$value": ["Bricolage Grotesque", "Helvetica Neue", "Arial", "sans-serif"] },
+    "body": { "$value": ["Hanken Grotesk", "Helvetica Neue", "Arial", "sans-serif"] },
+    "mono": { "$value": ["Geist Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"] },
+    "variation-text": { "$value": "\"wdth\" 80" },
+    "variation-display": { "$value": "\"opsz\" 96, \"wdth\" 80" }
+  },
+  "weight": {
+    "display": { "$value": 700 }
+  },
+  "leading": {
+    "tight": { "$value": 1 }
+  },
+  "radius": {
+    "sm": { "$value": "4px" },
+    "md": { "$value": "6px" }
+  },
+  "effect": {
+    "brand-glow": {
+      "$value": "0 0 0 1px color-mix(in oklab, {color.brand} 55%, transparent), 0 0 22px -4px color-mix(in oklab, {color.brand} 75%, transparent)"
+    }
+  }
+}
