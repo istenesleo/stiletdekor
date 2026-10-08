@@ -5,11 +5,21 @@ import { spawn, spawnSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { build as esbuild } from 'esbuild';
 import { VARIANTS } from '../src/tablo/variants.ts';
-import { beagyazas, kapcsoloFajl, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
+import { claudeDesignDokumentum } from './claude-design.mjs';
+import { dontesek, dontolapDokumentum } from './dontolap.mjs';
+import { beagyazas, CD_LINKEK, kapcsoloFajl, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
 
 const PORT = 8790;
 const BASE = `http://127.0.0.1:${PORT}`;
 const KIMENET = 'Arculati látványtervek.html';
+const CD_MAPPA = 'design/claude-design';
+
+/** A Claude Design file, self-contained: runtime inline, imported files along, prop defaults set. */
+async function claudeDesign({ fajl, props, testverek = [] }) {
+  const olvas = (nev) => readFile(`${CD_MAPPA}/${nev}`, 'utf8');
+  const testverSzovegek = Object.fromEntries(await Promise.all(testverek.map(async (n) => [n, await olvas(`${n}.dc.html`)])));
+  return claudeDesignDokumentum(await olvas(fajl), { support: await olvas('support.js'), testverek: testverSzovegek, props, linkek: CD_LINKEK });
+}
 
 async function szoveg(utvonal) {
   const valasz = await fetch(new URL(utvonal, BASE));
@@ -68,16 +78,22 @@ const szerver = spawn('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', 
 
 try {
   await varakozas(Date.now() + 120_000);
-  console.log('3/3 Tervek letöltése…');
+  console.log('3/3 Tervek összegyűjtése…');
   const tervek = [];
-  for (const terv of tervLista(VARIANTS)) {
-    const html = terv.fajl
-      ? mockupDokumentum(await readFile(terv.fajl, 'utf8'))
-      : oldalKiigazitasa(await beagyazas(await szoveg(terv.utvonal), { szoveg, csomag }));
+  const lista = tervLista(VARIANTS);
+  const generalva = new Date().toISOString().slice(0, 10);
+  for (const terv of lista) {
+    const html = terv.dontolap
+      ? dontolapDokumentum({ dontesek: dontesek(lista.filter((t) => t.irany)), generalva })
+      : terv.claudeDesign
+        ? await claudeDesign(terv.claudeDesign)
+        : terv.fajl
+          ? mockupDokumentum(await readFile(terv.fajl, 'utf8'))
+          : oldalKiigazitasa(await beagyazas(await szoveg(terv.utvonal), { szoveg, csomag }));
     tervek.push({ ...terv, html });
     console.log(`   ${terv.cim} (${Math.round(html.length / 1024)} kB)`);
   }
-  const fajl = kapcsoloFajl(tervek, new Date().toISOString().slice(0, 10));
+  const fajl = kapcsoloFajl(tervek, generalva);
   await writeFile(KIMENET, fajl, 'utf8');
   console.log(`Kész: ${KIMENET} (${Math.round(Buffer.byteLength(fajl) / 1024)} kB)`);
 } finally {

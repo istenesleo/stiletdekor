@@ -1,19 +1,42 @@
+import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VARIANTS } from '../src/tablo/variants';
-import { beagyazas, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
+import { dontesek } from './dontolap.mjs';
+import { beagyazas, CD_LINKEK, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
 
 describe('tervLista', () => {
-  it('lists the two mockups, the finished full directions and the brand elements in both directions', () => {
-    const tervek = tervLista(VARIANTS);
+  const tervek = tervLista(VARIANTS);
+  const ids = tervek.map((t) => t.id);
+
+  it('starts with the decision sheet, then the prototypes, mockups, Claude Design canvases, directions and elements', () => {
     const kesz = VARIANTS.filter((v) => v.group === 'irany' && v.status === 'kesz').map((v) => v.page);
-    expect(tervek.map((t) => t.id)).toEqual(['a', 'b', ...kesz, 'elemek-a', 'elemek-b']);
+    expect(ids).toEqual([
+      'dontolap', 'proto-c', 'proto-a', 'proto-b', 'a', 'b', 'cd-tablo', 'cd-ds', 'cd-komp',
+      ...kesz, 'elemek-a', 'elemek-b', 'elemek-c',
+    ]);
     for (const t of tervek) {
-      expect(Boolean(t.fajl) !== Boolean(t.utvonal), t.id).toBe(true);
+      const forrasok = [t.dontolap, t.claudeDesign, t.fajl, t.utvonal].filter(Boolean);
+      expect(forrasok.length, t.id).toBe(1);
       expect(t.cim, t.id).toContain(t.rovid);
       expect(t.leiras.length, t.id).toBeGreaterThan(20);
     }
-    expect(tervek.find((t) => t.id === 'x1')?.utvonal).toBe('/tablo/irany/x1');
-    expect(tervek.find((t) => t.id === 'elemek-b')?.utvonal).toContain('tema=galeria-editorial');
+    expect(tervek.find((t) => t.id === 'x1')).toMatchObject({ utvonal: '/tablo/irany/x1', irany: true });
+    expect(tervek.find((t) => t.id === 'elemek-c')?.utvonal).toContain('tema=merolap');
+    expect(tervek.find((t) => t.id === 'proto-a')?.claudeDesign).toEqual({ fajl: 'StiletPrototipus.dc.html', props: { direction: 'A' } });
+  });
+
+  it('points only at Claude Design files that exist, and links them to tabs that exist', () => {
+    for (const t of tervek.filter((x) => x.claudeDesign)) {
+      for (const nev of [t.claudeDesign.fajl, ...(t.claudeDesign.testverek ?? []).map((n) => `${n}.dc.html`)]) {
+        expect(fs.existsSync(`design/claude-design/${nev}`), nev).toBe(true);
+      }
+    }
+    for (const ful of Object.values(CD_LINKEK)) expect(ids, ful).toContain(ful);
+  });
+
+  it('sends every "Megnézem" link of the decision sheet to a tab of the file', () => {
+    const iranyok = tervek.filter((t) => t.irany);
+    for (const d of dontesek(iranyok)) for (const o of d.opciok) expect(ids, `${d.id}/${o.id}`).toContain(o.ful);
   });
 });
 

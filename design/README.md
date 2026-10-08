@@ -13,13 +13,26 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
 ## Arculati látványtervek: egy fájlban, váltóval
 
 Az `npm run latvanytervek` a projekt gyökerébe írja az **„Arculati látványtervek.html”** fájlt: dupla kattintással
-megnyílik, felül gombokkal váltható a két látványterv (A, B), a hat teljes irány
-(X1–X6) és a kész arculati elemek (G1–G4, A és B irányban), asztali vagy 390 px-es mobilnézetben. A fájl a
-valódi kódból készül (build, helyi szerver, letöltés), ezért a tervek változása után újra kell generálni. Mivel
-generált, nem kerül a gitbe. A betűk a Google Fonts-ról töltődnek; internet nélkül tartalék betűkkel jelenik meg.
-A váltás JavaScript nélkül is működik (választógombok és CSS), mert például a OneDrive webes és telefonos
-előnézete nem futtat scriptet; ott a tervek saját interakciói (kalkulátor, nappal/éjjel, aloldalak) nem működnek,
-ehhez a fájlt böngészőben kell megnyitni.
+megnyílik, felül gombokkal váltható, asztali vagy 390 px-es mobilnézetben. A fülek:
+
+- **Döntőlap** (az első): pontonként a végleges arculat (irány, márkaszín, betűpár, sarkok, fény, fő gomb,
+  mérőszín, hero, szolgáltatások, folyamat, referenciák, képek, piktogramok, szómárka, mozgás, pénztár és
+  társai), mindegyiknél az ajánlásunkkal és az indokkal, „Megnézem” linkkel a megfelelő fülre. Böngészőben a
+  jelölésekből másolható összegzés lesz a chatbe, és a böngésző megjegyzi őket (`scripts/dontolap.mjs`).
+- **Prototípus C, A és B irányban, Tabló + keverő, Design system, Komponensek**: a Claude Design fájljai
+  (`design/claude-design/`, elemzésük ott a README-ben). JavaScriptet és internetet igényelnek (a React és a
+  Babel az unpkg-ről jön).
+- A két látványterv (A, B), a hat teljes irány (X1–X6) és a kész arculati elemek (G1–G4) A, B és C irányban.
+
+A fájl a valódi kódból készül (build, helyi szerver, letöltés), ezért a tervek változása után újra kell
+generálni. Mivel generált, nem kerül a gitbe. A betűk a Google Fonts-ról töltődnek; internet nélkül tartalék
+betűkkel jelenik meg. A váltás JavaScript nélkül is működik (választógombok és CSS), mert például a OneDrive
+webes és telefonos előnézete nem futtat scriptet; ott a Döntőlap sima űrlap, a Claude Design fülek és a tervek
+saját interakciói (kalkulátor, nappal/éjjel, aloldalak) nem működnek, ehhez a fájlt böngészőben kell megnyitni.
+
+**Harmadik irány: C · Mérőlap.** A Claude Design szintézise témaként is be van építve
+(`design/tokens/themes/merolap.tokens.json`): a dev oldalakon `?tema=merolap` (például `/komponensek` és
+`/tablo`), helyben `SITE_THEME=merolap` a `.dev.vars`-ban.
 
 ## Munkafolyamat a Claude Design-nal
 

@@ -1,19 +1,62 @@
-// The local "Arculati látványtervek.html": one self-contained file that switches between the page designs (the A
-// and B mockups, the full directions X1–X6) and the finished brand elements (G1–G4). These are the pure helpers;
-// build-latvanytervek.mjs builds the site, serves it locally, fetches every design and writes the file.
+// The local "Arculati látványtervek.html": one self-contained file that switches between the page designs and
+// leads to the final brand choice: the decision sheet (scripts/dontolap.mjs), the Claude Design files (the
+// prototype in directions C, A and B, the tablo with its mixer, the design system, the components;
+// scripts/claude-design.mjs), the A and B mockups, the full directions X1–X6 and the brand elements G1–G4 in the
+// three directions. These are the pure helpers; build-latvanytervek.mjs builds the site, serves it locally,
+// fetches every design and writes the file.
+
+/** Links between the Claude Design files, mapped to the tabs that show them. */
+export const CD_LINKEK = {
+  'Stilet Tablo.dc.html': 'cd-tablo',
+  'Stilet Design System.dc.html': 'cd-ds',
+  'StiletPrototipus.dc.html': 'proto-c',
+  'StiletKomponensek.dc.html': 'cd-komp',
+  'reference/a-neon-muhely.html': 'a',
+  'reference/b-galeria-editorial.html': 'b',
+};
+
+const PROTO_LEIRAS =
+  'A Claude Design kattintható prototípusa (kezdőlap, webshop-konfigurátor, ajánlatkérés); internet kell hozzá';
 
 const ELEMEK_LEIRAS =
   'A kész arculati elemek (G1–G4): referencia-jelenetek, piktogramcsalád, mérés-motívumok, szómárka-változatok';
 
 /**
- * The designs of the file in switcher order. Each has either `fajl` (a mockup on disk) or `utvonal` (a page of the
- * built site). The full directions come from the board's variant list (src/tablo/variants.ts), finished ones only.
+ * The designs of the file in switcher order. Each has exactly one source: `dontolap` (the decision sheet),
+ * `claudeDesign` (a file in design/claude-design, with prop defaults and the files it imports), `fajl` (a mockup
+ * on disk) or `utvonal` (a page of the built site). The full directions come from the board's variant list
+ * (src/tablo/variants.ts), finished ones only, and are marked `irany`.
  */
 export function tervLista(variants) {
   const iranyok = variants
     .filter((v) => v.group === 'irany' && v.status === 'kesz' && v.page)
-    .map((v) => ({ id: v.page, rovid: v.id, cim: `${v.id} · ${v.name}`, leiras: v.idea, utvonal: `/tablo/irany/${v.page}` }));
+    .map((v) => ({ id: v.page, rovid: v.id, cim: `${v.id} · ${v.name}`, leiras: v.idea, utvonal: `/tablo/irany/${v.page}`, irany: true }));
+  const proto = (irany, nev) => ({
+    id: `proto-${irany.toLowerCase()}`,
+    rovid: `${irany} · prototípus`,
+    cim: `${irany} · prototípus · ${nev} (Claude Design)`,
+    leiras: `${PROTO_LEIRAS}, ${nev} irányban.`,
+    claudeDesign: { fajl: 'StiletPrototipus.dc.html', props: { direction: irany } },
+  });
+  const elemek = (betu, nev, tema) => ({
+    id: `elemek-${betu.toLowerCase()}`,
+    rovid: `Elemek · ${betu}`,
+    cim: `Elemek · ${betu} irány (G1–G4)`,
+    leiras: `${ELEMEK_LEIRAS}, a ${nev} színeivel és betűivel.`,
+    utvonal: `/tablo?csoport=grafika&csak=kesz&beagyazott=1&tema=${tema}`,
+  });
   return [
+    {
+      id: 'dontolap',
+      rovid: 'Döntőlap',
+      cim: 'Döntőlap · a végleges arculat',
+      leiras:
+        'Pontonként a választás: irány, márkaszín, betűk, sarkok, fény, hero, szolgáltatások, folyamat, képek, mozgás; mindegyiknél ajánlás és indok, a végén összegzés a chatbe.',
+      dontolap: true,
+    },
+    proto('C', 'Mérőlap'),
+    proto('A', 'Neon műhely'),
+    proto('B', 'Galéria'),
     {
       id: 'a',
       rovid: 'A',
@@ -28,21 +71,32 @@ export function tervLista(variants) {
       leiras: 'Magazinszerű, nyugodt, prémium: nagy képek, sok negatív tér, a rózsaszín apró akcentus. Teljes látványterv aloldalakkal.',
       fajl: 'design/mockups/b-galeria-editorial.html',
     },
+    {
+      id: 'cd-tablo',
+      rovid: 'Tabló + keverő',
+      cim: 'Tabló + keverő (Claude Design)',
+      leiras:
+        'Hero H1–H6, szolgáltatások SZ1–SZ5, folyamat F1–F5, grafikák G1–G4, kísérleti sáv és a hiányzó oldalak (O1–O3); a keverő (irány, rózsaszín, betűpár, sarok, fény, gomb, mérőszín) minden elemre hat.',
+      claudeDesign: { fajl: 'Stilet Tablo.dc.html' },
+    },
+    {
+      id: 'cd-ds',
+      rovid: 'Design system',
+      cim: 'Design system (Claude Design)',
+      leiras: 'Három irány egymás mellett, négy rózsaszín mért kontraszttal, négy betűpár; a kezdőlap és a webshop A, B és C irányban.',
+      claudeDesign: { fajl: 'Stilet Design System.dc.html', testverek: ['StiletPrototipus', 'StiletKomponensek'] },
+    },
+    {
+      id: 'cd-komp',
+      rovid: 'Komponensek',
+      cim: 'Komponensek minden állapottal (Claude Design)',
+      leiras: 'A src/ui komponensei alap, hover, fókusz, lenyomott, tiltott, betöltés, hiba és üres állapotban.',
+      claudeDesign: { fajl: 'StiletKomponensek.dc.html' },
+    },
     ...iranyok,
-    {
-      id: 'elemek-a',
-      rovid: 'Elemek · A',
-      cim: 'Elemek · A irány (G1–G4)',
-      leiras: `${ELEMEK_LEIRAS}, a Neon műhely színeivel és betűivel.`,
-      utvonal: '/tablo?csoport=grafika&csak=kesz&beagyazott=1&tema=neon-muhely',
-    },
-    {
-      id: 'elemek-b',
-      rovid: 'Elemek · B',
-      cim: 'Elemek · B irány (G1–G4)',
-      leiras: `${ELEMEK_LEIRAS}, a Galéria / editorial színeivel és betűivel.`,
-      utvonal: '/tablo?csoport=grafika&csak=kesz&beagyazott=1&tema=galeria-editorial',
-    },
+    elemek('A', 'Neon műhely', 'neon-muhely'),
+    elemek('B', 'Galéria / editorial', 'galeria-editorial'),
+    elemek('C', 'Mérőlap', 'merolap'),
   ];
 }
 
@@ -172,9 +226,15 @@ ${panelek}
     document.title = (label ? label.getAttribute('aria-label') : '') + ' – Arculati látványtervek';
     try { history.replaceState(null, '', '#' + radio.id.slice(2)); } catch (e) { /* cím nélkül is működik */ }
   };
-  const kezdo = radiok.find((r) => '#' + r.id.slice(2) === location.hash);
+  // A link to "#cd-tablo" (from the decision sheet or a Claude Design file) opens that tab.
+  const hashbol = () => radiok.find((r) => '#' + r.id.slice(2) === location.hash);
+  const kezdo = hashbol();
   if (kezdo) kezdo.checked = true;
   radiok.forEach((r) => r.addEventListener('change', () => mutat(r)));
+  window.addEventListener('hashchange', () => {
+    const r = hashbol();
+    if (r && !r.checked) { r.checked = true; mutat(r); r.focus(); }
+  });
   mutat(radiok.find((r) => r.checked) || radiok[0]);
 })();
 </script>

@@ -50,3 +50,17 @@ describe('kapcsoloFajl', () => {
     expect(doc.querySelector('.lv-cim')?.textContent).toContain('2026-10-08');
   });
 });
+
+describe('kapcsoloFajl, where scripts run', () => {
+  it('opens the tab a link points at (#x1), also after the page loaded', async () => {
+    const { JSDOM } = await import('jsdom');
+    const { window } = new JSDOM(kapcsoloFajl(tervek, '2026-10-08'), { url: 'https://kapcsolo.test/#x1', runScripts: 'dangerously' });
+    const radio = (id) => window.document.getElementById(`t-${id}`);
+    expect(radio('x1').checked).toBe(true);
+    expect(window.document.title).toBe('X1 · Árlista-plakát – Arculati látványtervek');
+    window.location.hash = '#a';
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+    expect(radio('a').checked).toBe(true);
+    expect(window.document.title).toBe('A · Neon műhely – Arculati látványtervek');
+  });
+});
