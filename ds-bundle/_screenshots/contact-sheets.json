@@ -1,0 +1,62 @@
+[
+  {
+    "sheet": 1,
+    "components": [
+      "Badge",
+      "Button",
+      "ButtonLink",
+      "CartLine",
+      "CategoryTile",
+      "Checkbox",
+      "CheckoutSection",
+      "ChipGroup",
+      "ContactBlock",
+      "DimensionLine",
+      "DiscountHint",
+      "Divider",
+      "Drawer",
+      "Field",
+      "FileDrop",
+      "FileList"
+    ]
+  },
+  {
+    "sheet": 2,
+    "components": [
+      "FitPicker",
+      "Icon",
+      "IconButton",
+      "JobTypePicker",
+      "LeadTimeNote",
+      "MaterialPicker",
+      "NavLink",
+      "Notice",
+      "OptionRow",
+      "OrderStatusBadge",
+      "OrderSubmit",
+      "PriceBreakdown",
+      "QuantityStepper",
+      "ReadinessLight",
+      "ScalePreview",
+      "SectionHeader"
+    ]
+  },
+  {
+    "sheet": 3,
+    "components": [
+      "SegmentedChoice",
+      "SiteFooter",
+      "SiteHeader",
+      "SizeFields",
+      "Stepper",
+      "SuccessPanel",
+      "SurfaceList",
+      "Switch",
+      "TextField",
+      "TextLink",
+      "ThemeRoot",
+      "UnitField",
+      "Wordmark"
+    ]
+  }
+]

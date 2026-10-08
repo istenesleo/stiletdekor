@@ -1,0 +1,9 @@
+{
+  "namespace": "StiletUI",
+  "source": "@stiletdekor/ui@0.1.0",
+  "shape": "package",
+  "provider": "ThemeRoot",
+  "componentCount": 45,
+  "skippedStoryIds": [],
+  "runtimeFontPrefixes": []
+}

@@ -22,6 +22,14 @@
 - Fonts load from Google Fonts at runtime: `[FONT_REMOTE]` is expected. It also lists the fallback families of
   the token stacks (Oswald, Impact, Bodoni 72…); that is fine.
 
+## The committed bundle
+
+`ds-bundle/` is the converter's output from the last run (2026-10-07: 45 components, render check clean, every
+cell graded good): the components with their `.prompt.md` and `.d.ts`, `styles.css`, `_ds_bundle.js`, the
+screenshots in `_screenshots/` and the review sheet `.review.html`. It is what `/design-sync` uploads; a new run
+rebuilds it from `src/ui` and `.design-sync/`, so commit it again after each sync. Grades stay machine-local
+(`.design-sync/.cache/`, ignored).
+
 ## Finishing the first upload
 
 This cloud session (claude.ai/code) could not authorize DesignSync (`/design-login` needs an interactive
