@@ -1,0 +1,364 @@
+---
+// X1 · Árlista-plakát: a paper-white Swiss price poster. The price list is the home page; pink is one block.
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Rollup from '../grafika/jelenetek/Rollup.astro';
+import { TARTALOM, arSzam, arTeljes } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, bevezeto, belepok, csoportok, arak, gyartasiIdo, folyamat } = TARTALOM;
+const fo = arak[0]!;
+const jelenet = JELENETEK.find((j) => j.id === 'rollup')!;
+---
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600;800&display=swap" />
+<div class="x1">
+  <div class="x1__in">
+    <header class="x1__top">
+      <span class="notranslate">STILET DEKOR</span>
+      <a href={ceg.phone.href}>{ceg.phone.display}</a>
+    </header>
+
+    <section class="x1__hero" aria-labelledby="x1-cim">
+      <div>
+        <p class="x1__big"><span>{arSzam(fo)}</span><small>{fo.egyseg}</small></p>
+        <p class="x1__cap">{fo.termek}, bruttó · helyőrző ár</p>
+      </div>
+      <div class="x1__claim">
+        <H id="x1-cim" class="x1__h">{szlogen}</H>
+        <p>{bevezeto}</p>
+        <div class="x1__block">
+          {
+            belepok.map((b) => (
+              <a href={b.href}>
+                <strong>{b.cim} →</strong>
+                <span>{b.leiras}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="x1-arlista">
+      <Hk id="x1-arlista" class="x1__label">Árlista</Hk>
+      <ul class="x1__list">
+        {
+          arak.map((a) => (
+            <li>
+              <span>{a.termek}</span>
+              <span class="x1__dots" aria-hidden="true" />
+              <span class="x1__num">{arTeljes(a)}</span>
+            </li>
+          ))
+        }
+        <li>
+          <span>Gyártási idő</span>
+          <span class="x1__dots" aria-hidden="true"></span>
+          <span class="x1__num">{gyartasiIdo}</span>
+        </li>
+      </ul>
+      <p class="x1__note">Minden ár bruttó. Helyőrző árak: élesítés előtt a műhely véglegesíti.</p>
+    </section>
+
+    <section aria-labelledby="x1-szolg">
+      <Hk id="x1-szolg" class="x1__label">Szolgáltatások</Hk>
+      <div class="x1__cols">
+        {
+          csoportok.map((g) => (
+            <div>
+              <p class="x1__group">{g.nev}</p>
+              <ul class="x1__items">
+                {g.elemek.map((e) => (
+                  <li>
+                    {e.nev}
+                    {e.online && <span class="x1__tag">online ár</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section aria-labelledby="x1-folyamat">
+      <Hk id="x1-folyamat" class="x1__label">Folyamat</Hk>
+      <ol class="x1__steps">
+        {
+          folyamat.map((l, i) => (
+            <li>
+              <span class="x1__n">{String(i + 1).padStart(2, '0')}</span>
+              <strong>{l.cim}</strong>
+              <span>{l.leiras}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="x1__ref" aria-label="Referencia">
+      <Rollup info={jelenet} uid="x1-sc" />
+    </section>
+
+    <footer class="x1__foot">
+      <a class="x1__phone" href={ceg.phone.href}>{ceg.phone.display}</a>
+      <p>
+        <a href={`mailto:${ceg.email}`}>{ceg.email}</a> · {ceg.address} · {ceg.openingHours}
+        <span class="x1__tag">helyőrző</span>
+      </p>
+    </footer>
+  </div>
+</div>
+
+<style>
+  .x1 {
+    --color-bg: #f4f1ea;
+    --color-surface: #e9e4d9;
+    --color-surface-raised: #ddd6c8;
+    --color-line: #b8b0a1;
+    --color-text: #121212;
+    --color-text-muted: #4a4741;
+    --color-measure: #4a4741;
+    --color-focus: #121212;
+    container: x1 / inline-size;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Inter Tight', system-ui, sans-serif;
+  }
+
+  .x1 a {
+    color: inherit;
+  }
+
+  .x1__in {
+    display: grid;
+    gap: 3rem;
+    padding: 1.25rem clamp(1rem, 4cqi, 3rem) 3rem;
+  }
+
+  .x1__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block-end: 0.75rem;
+    border-block-end: 2px solid var(--color-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .x1__top a {
+    text-decoration: none;
+  }
+
+  .x1__hero {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .x1__big {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25em;
+    margin: 0;
+    font-weight: 800;
+    font-size: clamp(4rem, 22cqi, 15rem);
+    font-variant-numeric: tabular-nums;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+  }
+
+  .x1__big small {
+    font-size: max(1rem, 3.2cqi);
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .x1__cap,
+  .x1__note {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .x1__h {
+    margin: 0 0 0.75rem;
+    font-size: clamp(1.75rem, 5cqi, 3rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .x1__claim > p {
+    max-width: 46ch;
+    margin: 0 0 1.5rem;
+    color: var(--color-text-muted);
+  }
+
+  .x1__block {
+    display: grid;
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+  }
+
+  .x1__block a {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.25rem 1.5rem;
+    border-block-end: 2px solid var(--color-on-brand);
+    text-decoration: none;
+  }
+
+  .x1__block a:last-child {
+    border-block-end: 0;
+  }
+
+  .x1__block strong {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .x1__block a:hover strong,
+  .x1__block a:focus-visible strong {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .x1__label {
+    margin: 0 0 1rem;
+    padding-block-start: 0.5rem;
+    border-block-start: 2px solid var(--color-text);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .x1__list,
+  .x1__items,
+  .x1__steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x1__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.6rem;
+    border-block-end: 1px solid var(--color-line);
+    font-size: clamp(1.125rem, 3cqi, 1.75rem);
+    font-weight: 600;
+  }
+
+  .x1__dots {
+    flex: 1;
+    border-block-end: 2px dotted var(--color-line);
+  }
+
+  .x1__num {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .x1__cols {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .x1__group {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+
+  .x1__items li {
+    padding-block: 0.2rem;
+  }
+
+  .x1__tag {
+    margin-inline-start: 0.5rem;
+    padding: 0 0.4rem;
+    border: 1px solid currentColor;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .x1__steps {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .x1__steps li {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .x1__n {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .x1__steps li > span:last-child {
+    color: var(--color-text-muted);
+  }
+
+  .x1__foot {
+    display: grid;
+    gap: 0.5rem;
+    padding-block-start: 1rem;
+    border-block-start: 2px solid var(--color-text);
+  }
+
+  .x1__phone {
+    font-size: clamp(2.25rem, 9cqi, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+
+  .x1__foot p {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  @container x1 (min-width: 720px) {
+    .x1__hero {
+      grid-template-columns: 1.3fr 1fr;
+      align-items: end;
+    }
+
+    .x1__cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x1__steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .x1__ref {
+      max-width: 40rem;
+    }
+  }
+
+  @container x1 (min-width: 1040px) {
+    .x1__cols {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -44,7 +44,7 @@ export const LANE_LABELS: Readonly<Record<VariantLane, string>> = { tokenes: 'To
 export const VARIANTS: readonly Variant[] = [
   // Teljes irányok
   {
-    id: 'X1', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X1Arlista.astro', page: 'x1',
+    id: 'X1', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X1Arlista.astro', page: 'x1',
     name: 'Árlista-plakát',
     idea: 'Papírfehér, svájci plakát: az árlista maga a kezdőlap, óriás számokkal; a rózsaszín egyetlen nagy blokk a két belépővel.',
     novelty: 'Az ár az első üzenet, nem a szlogen; világos alap.',

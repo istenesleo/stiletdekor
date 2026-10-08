@@ -264,11 +264,11 @@
   border-color: var(--color-text-muted);
 }
 
-/* Full-direction page: the way back to the board, in a corner that no sketch uses for content. */
+/* Full-direction page: the way back to the board, bottom right, clear of the footers' left-aligned text. */
 .tb-back {
   position: fixed;
   bottom: var(--space-3);
-  left: var(--space-3);
+  right: var(--space-3);
   z-index: 30;
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-line);

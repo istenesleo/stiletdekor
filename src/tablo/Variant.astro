@@ -5,6 +5,7 @@ import G1Jelenetek from './grafika/G1Jelenetek.astro';
 import G2Piktogramok from './grafika/G2Piktogramok.astro';
 import G3Motivumok from './grafika/G3Motivumok.astro';
 import G4Szomarka from './grafika/G4Szomarka.astro';
+import X1Arlista from './irany/X1Arlista.astro';
 
 interface Props {
   id: string;
@@ -15,6 +16,7 @@ interface Props {
 const { id, fejlec = 4 } = Astro.props;
 ---
 
+{id === 'X1' && <X1Arlista fejlec={fejlec} />}
 {id === 'G1' && <G1Jelenetek />}
 {id === 'G2' && <G2Piktogramok />}
 {id === 'G3' && <G3Motivumok />}
