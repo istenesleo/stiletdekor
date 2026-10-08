@@ -24,6 +24,13 @@ const titleId = `v-${v.id}-t`;
           </div>
         )
       }
+      {
+        v.page && v.status === 'kesz' && (
+          <a class="tb-frame__full" href={`/tablo/irany/${v.page}`}>
+            Teljes képernyő
+          </a>
+        )
+      }
     </div>
     <p>{v.idea}</p>
     <p class="tb-frame__note"><b>Újdonság:</b> {v.novelty}</p>

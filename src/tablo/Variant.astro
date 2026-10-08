@@ -8,9 +8,11 @@ import G4Szomarka from './grafika/G4Szomarka.astro';
 
 interface Props {
   id: string;
+  /** Heading level of a full direction's main heading: 4 on the board (default), 2 on its own page. */
+  fejlec?: 2 | 4;
 }
 
-const { id } = Astro.props;
+const { id, fejlec = 4 } = Astro.props;
 ---
 
 {id === 'G1' && <G1Jelenetek />}

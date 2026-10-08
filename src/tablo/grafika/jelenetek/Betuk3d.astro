@@ -6,12 +6,13 @@ import type { JelenetInfo } from '../jelenet-lista';
 
 interface Props {
   info: JelenetInfo;
+  uid?: string;
 }
 
-const { info } = Astro.props;
+const { info, uid } = Astro.props;
 ---
 
-<Jelenet info={info}>
+<Jelenet info={info} uid={uid}>
   <rect class="sc-wall" x="0" y="30" width="480" height="240"></rect>
   <text class="sc-depth notranslate" x="243" y="153" font-size="40" text-anchor="middle" textLength="220" lengthAdjust="spacingAndGlyphs">DEKOR</text>
   <text class="sc-text notranslate" x="240" y="150" font-size="40" text-anchor="middle" textLength="220" lengthAdjust="spacingAndGlyphs">DEKOR</text>

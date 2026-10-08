@@ -1,0 +1,20 @@
+---
+import { env } from 'cloudflare:workers';
+import Base from '@/layouts/Base.astro';
+import { boardAvailable } from '@/tablo/availability';
+import Variant from '@/tablo/Variant.astro';
+import { finishedVariantByPage } from '@/tablo/variants';
+import '@/tablo/tablo.css';
+
+// One full-direction sketch (X1–X6) as a real page at the window's full width. Dev sites only; production 404.
+const variant = finishedVariantByPage(Astro.params.id);
+if (!boardAvailable(env.PUBLIC_SITE_ENV) || !variant) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<Base title={`${variant.id} ${variant.name} – Tabló`} description={variant.idea}>
+  <h1 class="tb-sr">{variant.id} · {variant.name}</h1>
+  <Variant id={variant.id} fejlec={2} />
+  <a class="tb-back" href={`/tablo#v-${variant.id}`}>← Vissza a tablóhoz</a>
+</Base>

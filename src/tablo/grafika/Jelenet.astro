@@ -5,11 +5,13 @@ import './jelenet.css';
 
 interface Props {
   info: JelenetInfo;
+  /** Prefix of the title and description ids; give a new one when the scene appears twice on a page. */
+  uid?: string;
 }
 
-const { info } = Astro.props;
-const titleId = `sc-${info.id}-t`;
-const descId = `sc-${info.id}-d`;
+const { info, uid = `sc-${info.id}` } = Astro.props;
+const titleId = `${uid}-t`;
+const descId = `${uid}-d`;
 ---
 
 <figure class="tb-scene" data-mode="nappal" data-night={String(info.night)}>

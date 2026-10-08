@@ -1,7 +1,7 @@
 // The variants on the /tablo board (docs/superpowers/specs/2026-10-07-tablo-design.md). The page renders this
 // list in order; a finished variant ('kesz') has its component at src/tablo/<file> and a line in Variant.astro.
 
-export type VariantGroup = 'hero' | 'szolgaltatas' | 'folyamat' | 'referencia' | 'grafika';
+export type VariantGroup = 'irany' | 'hero' | 'szolgaltatas' | 'folyamat' | 'referencia' | 'grafika';
 export type VariantLane = 'tokenes' | 'kiserleti';
 export type VariantStatus = 'kesz' | 'tervezett';
 
@@ -19,14 +19,17 @@ export interface Variant {
   readonly breaks?: string;
   /** Experimental lane only: values outside the tokens, proposed as new tokens if it wins. */
   readonly tokenProposals?: readonly string[];
-  /** Build round: 1 graphics, 2 hero, 3 services and process, 4 references, 5 experiments. */
-  readonly round: 1 | 2 | 3 | 4 | 5;
+  /** Build round: 1 graphics, 2 hero, 3 services and process, 4 references, 5 experiments, 6 full directions. */
+  readonly round: 1 | 2 | 3 | 4 | 5 | 6;
   readonly status: VariantStatus;
+  /** Full directions only: the slug of its own page, /tablo/irany/<page>. */
+  readonly page?: string;
   /** The variant's component relative to src/tablo, e.g. "grafika/G1Jelenetek.astro". */
   readonly file: string;
 }
 
 export const VARIANT_GROUPS: readonly { readonly id: VariantGroup; readonly label: string }[] = [
+  { id: 'irany', label: 'Teljes irányok' },
   { id: 'hero', label: 'Hero' },
   { id: 'szolgaltatas', label: 'Szolgáltatások' },
   { id: 'folyamat', label: 'Folyamat' },
@@ -39,6 +42,55 @@ export const LANES = ['tokenes', 'kiserleti'] as const satisfies readonly Varian
 export const LANE_LABELS: Readonly<Record<VariantLane, string>> = { tokenes: 'Tokenes', kiserleti: 'Kísérleti' };
 
 export const VARIANTS: readonly Variant[] = [
+  // Teljes irányok
+  {
+    id: 'X1', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X1Arlista.astro', page: 'x1',
+    name: 'Árlista-plakát',
+    idea: 'Papírfehér, svájci plakát: az árlista maga a kezdőlap, óriás számokkal; a rózsaszín egyetlen nagy blokk a két belépővel.',
+    novelty: 'Az ár az első üzenet, nem a szlogen; világos alap.',
+    breaks: 'Világos alap a fekete helyett; új betű.',
+    tokenProposals: ['papírfehér alap', 'Inter Tight'],
+  },
+  {
+    id: 'X2', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X2Tervrajz.astro', page: 'x2',
+    name: 'Tervrajz-sorozat',
+    idea: 'Tervrajzkék alapon az oldal egy rajzsorozat lapjai („1/6. lap”), mindegyik rajzfejjel; a rózsaszín csak pecsét.',
+    novelty: 'A mérés nyelve az egész oldal műfaja lesz, nem díszítés.',
+    breaks: 'Kék alap; a rózsaszín csak pecsétként.',
+    tokenProposals: ['tervrajzkék alap', 'Space Grotesk, Space Mono'],
+  },
+  {
+    id: 'X3', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X3Rozsaszin.astro', page: 'x3',
+    name: 'Rózsaszín áradat',
+    idea: 'Teljes rózsaszín felület, fekete óriásbetűk: kampányoldal nagy állításokkal; a fekete az akcentus.',
+    novelty: 'A márkaszín környezet lesz, nem kiemelés.',
+    breaks: 'Rózsaszín alap; plakátbetű.',
+    tokenProposals: ['rózsaszín alap', 'Anton, DM Sans'],
+  },
+  {
+    id: 'X4', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X4Eszkoz.astro', page: 'x4',
+    name: 'Eszköz-első',
+    idea: 'Az első képernyő egy élő molinó-kalkulátor (méret, darab, expressz → bruttó ár és várható elkészülés), minden más utána jön.',
+    novelty: 'Bemutatkozás helyett azonnal használható eszköz, a valós árazóval.',
+    breaks: 'Világos, felületi (UI) megjelenés; a rózsaszín csak gomb.',
+    tokenProposals: ['betonszürke alap', 'DM Sans, DM Mono'],
+  },
+  {
+    id: 'X5', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X5Mintakonyv.astro', page: 'x5',
+    name: 'Mintakönyv',
+    idea: 'Lapozós anyagkatalógus kraftpapíron, regiszterfülekkel; minden szolgáltatás egy mintakártya.',
+    novelty: 'Tárgyszerű böngészés; a navigáció a könyv fülei.',
+    breaks: 'Meleg kraft alap; fül-navigáció; új betűk.',
+    tokenProposals: ['kraftpapír alap', 'Fraunces, DM Mono'],
+  },
+  {
+    id: 'X6', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X6Cegerfesto.astro', page: 'x6',
+    name: 'Cégérfestő',
+    idea: 'Krémszínű zománctábla-világ: kettős keretek, festett rózsaszín díszcsík, árnyékolt betűk, ártáblák.',
+    novelty: 'A kézműves cégérfestés hagyománya, a műhely gyökere.',
+    breaks: 'Krém alap; retro display és írott betű; díszítés.',
+    tokenProposals: ['krém zománc alap', 'Abril Fatface, Pacifico, DM Sans'],
+  },
   // Hero
   {
     id: 'H1', group: 'hero', lane: 'tokenes', round: 2, status: 'tervezett', file: 'hero/H1GyartasiRajz.astro',
@@ -233,4 +285,9 @@ export const VARIANTS: readonly Variant[] = [
 /** The variants of one group and lane, in list order. */
 export function variantsOf(group: VariantGroup, lane: VariantLane): Variant[] {
   return VARIANTS.filter((v) => v.group === group && v.lane === lane);
+}
+
+/** A finished full direction by the slug of its page (/tablo/irany/<page>); undefined for anything else. */
+export function finishedVariantByPage(page: string | undefined): Variant | undefined {
+  return VARIANTS.find((v) => v.page !== undefined && v.page === page && v.status === 'kesz');
 }
