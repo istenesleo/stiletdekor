@@ -20,9 +20,9 @@ const reference = parseReference(Astro.url.searchParams.get('szam'), 'VH') ?? un
         'Hamarosan visszahívjuk a megadott telefonszámon.',
         'Ha kell, egyeztetjük a helyszíni felmérést, utána elküldjük az árajánlatot.',
       ]}
-      note={`Sürgős? Hívjon minket: ${COMPANY.phone.display}`}
     >
-      <ButtonLink href="/" variant="secondary">Vissza a kezdőlapra</ButtonLink>
+      <Fragment slot="note">Sürgős? Hívjon minket: <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a></Fragment>
+      <Fragment slot="actions"><ButtonLink href="/" variant="secondary">Vissza a kezdőlapra</ButtonLink></Fragment>
     </SuccessPanel>
   </section>
 </Page>
