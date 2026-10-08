@@ -240,11 +240,13 @@ Minden oldal saját `title`, `description` és egy `h1`. A csoport- és varázsl
 
 | # | Alprojekt | Tartalom | Eredmény |
 |---|---|---|---|
-| 1 | Keret és gyors visszahívás | Oldalkeret (fejléc `popover` mobilmenüvel, lábléc, akciósáv, 404), saját tárhelyes betűk; `/visszahivas` és a beágyazható blokk, D1, hivatkozási szám, köszönő oldal; szűrés; `Notifier` és újrapróbálás; Web Analytics és CSP | Működő visszahívás a dev oldalon; a kezdőlapon addig a látványterv marad |
+| 1 | Keret és gyors visszahívás | Oldalkeret (fejléc `popover` mobilmenüvel, lábléc, akciósáv, 404); `/visszahivas` és a beágyazható blokk, D1, hivatkozási szám, köszönő oldal; szűrés; `Notifier` és újrapróbálás; Web Analytics és CSP | Működő visszahívás a dev oldalon; a kezdőlapon addig a látványterv marad |
 | 2 | Ajánlatkérő varázsló | `/ajanlatkeres` elágazás, a 9 típusoldal, JavaScript nélküli űrlap és lépésenkénti sziget, vázlatmentés, köszönő oldal, értesítés; fájlfeltöltés, ha az R2 be van kapcsolva | Működő ajánlatkérés |
-| 3 | Tartalmi oldalak | Rövid kezdőlap a látványterv helyén, `/szolgaltatasok` és a 4 csoport, `/referenciak`, Rólunk, Kapcsolat, SEO-alapok | A teljes tartalmi oldal |
+| 3 | Tartalmi oldalak | Rövid kezdőlap a látványterv helyén, `/szolgaltatasok` és a 4 csoport, `/referenciak`, Rólunk, Kapcsolat, SEO-alapok; a választott arculati irány betűi saját tárhelyről | A teljes tartalmi oldal |
 | 4 | Webshop és rendelés | Konfigurátor (először a molinó), kosár, pénztár, `POST /api/orders`, állapotoldal, visszaigazoló e-mailek az ügyfélnek, műhely-felület a visszaigazoláshoz és a díjbekérőhöz (Cloudflare Access mögött). A saját specjében valószínűleg tovább bomlik | Működő webshop |
 | 5 | Jogi oldalak és élesítés | ÁSZF, adatkezelési tájékoztató, impresszum (jogásznak előkészítve); éles környezet, `stiletdekor.hu`, Google Cégprofil link | Az éles oldal |
+
+A betűk a végleges arculati iránytól függnek, ezért a döntés után költöznek saját tárhelyre (2026-10-08).
 
 ## 12. Később, most nincs benne
 

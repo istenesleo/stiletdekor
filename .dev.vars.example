@@ -8,3 +8,7 @@
 # ORDER_NOTIFY_EMAIL=stiletdekor@gmail.com
 # Comma-separated extra origins accepted by POST /api/* (the site's own origin is always allowed).
 # ALLOWED_ORIGINS=http://localhost:4321
+# Sender address of the notification e-mails; empty: they go to the log (README, "Visszahívás és értesítő e-mailek").
+# NOTIFY_FROM_EMAIL=ertesito@stiletdekor.hu
+# Cloudflare Web Analytics site token; empty: no beacon.
+# CF_BEACON_TOKEN=

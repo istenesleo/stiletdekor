@@ -266,6 +266,54 @@ export const AddressSchema = z.object(
   { error: 'Adja meg a címet.' },
 );
 
+// ─── Callback request ────────────────────────────────────────────────────────────────────────────
+// "Visszahívást kérek": name and phone, optionally the kind of job and one sentence
+// (docs/superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md, 4.4).
+
+/** Job types a callback request can name: the quote types, or "not sure yet". */
+export const CALLBACK_JOB_TYPE_IDS = [...QUOTE_TYPE_IDS, 'nem-tudom'] as const;
+export type CallbackJobTypeId = (typeof CALLBACK_JOB_TYPE_IDS)[number];
+
+export function isCallbackJobTypeId(value: unknown): value is CallbackJobTypeId {
+  return (CALLBACK_JOB_TYPE_IDS as readonly unknown[]).includes(value);
+}
+
+/** The job type as the form lists it: the quote type's name, or "Még nem tudom". */
+export function callbackJobTypeName(id: CallbackJobTypeId): string {
+  return id === 'nem-tudom' ? 'Még nem tudom' : getQuoteType(id).name;
+}
+
+/** The fields the visitor fills in, in form order. */
+export const CALLBACK_FORM_FIELDS = ['name', 'phone', 'jobType', 'message'] as const;
+export type CallbackFormField = (typeof CALLBACK_FORM_FIELDS)[number];
+/** What the visitor typed, sent back into the form after an error. */
+export type CallbackFormValues = Partial<Record<CallbackFormField, string>>;
+/** One message per field. */
+export type CallbackFormErrors = Partial<Record<CallbackFormField, string>>;
+
+export const MAX_CALLBACK_MESSAGE_LENGTH = 300;
+const MAX_SOURCE_LENGTH = 200;
+const SOURCE_PATTERN = /^\/[A-Za-z0-9\-/]*(#[A-Za-z0-9-]+)?$/;
+
+/** Where a form was sent from, for measuring: a path of the site with an optional #block id; anything else is dropped. */
+export function formSource(value: unknown): string | undefined {
+  return typeof value === 'string' && value.length <= MAX_SOURCE_LENGTH && SOURCE_PATTERN.test(value) ? value : undefined;
+}
+
+export const CallbackRequestSchema = z.object(
+  {
+    name: PersonNameSchema,
+    phone: PhoneSchema,
+    jobType: z
+      .union([z.literal(''), z.enum(CALLBACK_JOB_TYPE_IDS)], { error: 'Válasszon a listából.' })
+      .optional()
+      .transform((value) => value || undefined),
+    message: optionalText(MAX_CALLBACK_MESSAGE_LENGTH, `Legfeljebb ${MAX_CALLBACK_MESSAGE_LENGTH} karakter lehet.`),
+    source: z.unknown().optional().transform(formSource),
+  },
+  { error: 'Érvénytelen visszahívás-kérés.' },
+);
+
 // ─── Order ───────────────────────────────────────────────────────────────────────────────────────
 
 export const MAX_ORDER_ITEMS = 50;
@@ -486,3 +534,4 @@ export type OrderRequest = z.output<typeof OrderRequestSchema>;
 export type OrderRequestInput = z.input<typeof OrderRequestSchema>;
 export type QuoteRequest = z.output<typeof QuoteRequestSchema>;
 export type QuoteRequestInput = z.input<typeof QuoteRequestSchema>;
+export type CallbackRequest = z.output<typeof CallbackRequestSchema>;

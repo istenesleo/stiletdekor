@@ -1,0 +1,49 @@
+---
+// Shown for every address the site does not have. Prerendered: no code runs for it.
+export const prerender = true;
+
+import { COMPANY } from '@/domain/company';
+import Page from '@/layouts/Page.astro';
+import { ButtonLink } from '@/ui/ButtonLink/ButtonLink';
+import { CALLBACK_HREF, QUOTE_HREF, WEBSHOP_HREF } from '@/ui/navigation';
+---
+
+<Page title="Az oldal nem található – Stilet Dekor" description="Ez az oldal nem található. Innen továbbjut.">
+  <section class="nf">
+    <h1>Ez az oldal nem található</h1>
+    <p>Lehet, hogy elírás van a címben, vagy az oldal megszűnt. Innen biztosan továbbjut:</p>
+    <ul class="nf__ways">
+      <li><ButtonLink href={QUOTE_HREF}>Ajánlatkérés</ButtonLink></li>
+      <li><ButtonLink href={WEBSHOP_HREF} variant="secondary">Webshop</ButtonLink></li>
+      <li><ButtonLink href={COMPANY.phone.href} variant="secondary" icon="phone">{COMPANY.phone.display}</ButtonLink></li>
+    </ul>
+    <p>Vagy <a href={CALLBACK_HREF}>kérjen visszahívást</a>, és mi keressük.</p>
+  </section>
+</Page>
+
+<style>
+  .nf {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .nf__ways {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-5) 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nf a:not([class]) {
+    color: var(--color-text);
+  }
+</style>

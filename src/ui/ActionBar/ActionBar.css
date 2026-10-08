@@ -1,0 +1,27 @@
+.sd-actionbar {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--color-line);
+  background: color-mix(in oklab, var(--color-bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.sd-actionbar--inline {
+  display: grid;
+}
+@media (max-width: 719.98px) {
+  .sd-actionbar:not(.sd-actionbar--inline) {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 30;
+    display: grid;
+    padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+  }
+  /* Room at the end of the page, so the bar never covers the last lines. */
+  body:has(> .sd-actionbar:not(.sd-actionbar--inline)) {
+    padding-bottom: calc(44px + 2 * var(--space-2) + env(safe-area-inset-bottom));
+  }
+}

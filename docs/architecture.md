@@ -29,6 +29,7 @@ src/
     money.ts       # Ft formázás (hu-HU), kerekítés
     schemas.ts     # Zod sémák: konfiguráció, kosártétel, rendelés, ajánlatkérés
   server/          # Workers-specifikus: D1 lekérdezések, R2 feltöltés, azonosítók, értesítések (interfész)
+  worker.ts        # a Worker belépési pontja: Astro + cron (értesítések újrapróbálása)
   i18n/            # hu szótár + t() segéd; angol nyelv később
   components/      # Astro komponensek (kinézet a választott design-irány szerint készül)
   islands/         # React szigetek (headless hook + alap UI)
@@ -60,6 +61,8 @@ Az oldalak működése (előállítás, navigáció, űrlapok, sebesség, méré
 | `POST /api/price` | Szerveroldali árkalkuláció egy konfigurációra (ugyanaz a `domain/pricing.ts`) |
 | `POST /api/orders` | Rendelés elküldése ellenőrzésre (fizetési kötelezettség nélkül): **a szerver újraáraz**, a kliens által küldött árat nem fogadja el |
 | `POST /api/quotes` | Egyedi ajánlatkérés (varázsló), igény szerint felméréssel (időpont nélkül, a műhely visszahív) |
+
+A visszahívás (`/visszahivas`) nem API-végpont: az oldal maga fogadja a POST-ot (sima HTML űrlap, JavaScript nélkül is), és 303-mal a köszönő oldalra irányít.
 
 ## Biztonsági alapelvek
 

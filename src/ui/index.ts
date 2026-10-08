@@ -1,12 +1,16 @@
 // Stilet UI: the site's component library. Every component is a React component styled only with the design
 // tokens (src/styles/tokens.css), so it renders in both design directions; ThemeRoot picks the direction.
 // Exported names are the public API (the site imports them, and they are synced to Claude Design).
+export { ActionBar } from './ActionBar/ActionBar';
+export type { ActionBarProps } from './ActionBar/ActionBar';
 export { Badge } from './Badge/Badge';
 export type { BadgeProps, BadgeTone } from './Badge/Badge';
 export { Button } from './Button/Button';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './Button/Button';
 export { ButtonLink } from './ButtonLink/ButtonLink';
 export type { ButtonLinkProps } from './ButtonLink/ButtonLink';
+export { CallbackForm } from './CallbackForm/CallbackForm';
+export type { CallbackFormProps } from './CallbackForm/CallbackForm';
 export { CartLine } from './CartLine/CartLine';
 export type { CartLineProps } from './CartLine/CartLine';
 export { CategoryTile } from './CategoryTile/CategoryTile';

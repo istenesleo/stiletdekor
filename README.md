@@ -119,6 +119,26 @@ kívánatos, a Worker beállításainál Cloudflare Access-szel védhetők.
 **D1-migrációk:** a Workers Builds automatikus tokenje nem kap D1-jogosultságot. A migrációkat ezért
 helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jogosultsággal bővített tokennel.
 
+### Visszahívás és értesítő e-mailek
+
+- **Tábla:** `migrations/0001_callback_requests.sql`. Helyben `npm run db:migrate:local`; a dev adatbázisba
+  push előtt `npx wrangler d1 migrations apply DB --remote` (élesben `--env production` is).
+- **Beküldési korlát:** `CALLBACK_LIMITER` (60 másodpercenként 5 beküldés IP-címenként), minden környezetben.
+- **Értesítő e-mailek:** amíg nincs `EMAIL` kötés, a levelek a Worker naplójába mennek, és a kérés
+  „elküldöttnek” számít. Valódi küldéshez a `stiletdekor.hu` domainnek a Cloudflare-en kell lennie (most a
+  register.it névszerverein van, a levelezés a webnode-on; az MX rekordokat költözéskor át kell venni):
+  1. a domain felvétele a Cloudflare-be és a névszerverek átállítása a register.it-nél;
+  2. Email Service → Email Routing → Destination addresses: a `stiletdekor@gmail.com` felvétele és megerősítése;
+  3. a `wrangler.jsonc`-be minden környezetben
+     `"send_email": [{ "name": "EMAIL", "destination_address": "stiletdekor@gmail.com" }]`, a `NOTIFY_FROM_EMAIL`
+     változóba a feladó (például `ertesito@stiletdekor.hu`).
+  A megerősített címre küldés minden csomagban ingyenes.
+- **Újrapróbálás:** a cron (`*/15 * * * *`, csak az A dev oldalon és élesben) 24 órán át újraküldi az el nem
+  ment értesítéseket; a hibák a Cloudflare naplójában (Issues) látszanak.
+- **Mérés:** Web Analytics token a `CF_BEACON_TOKEN` változóba (Analytics & Logs → Web Analytics). Heti
+  visszahívások forrás szerint:
+  `npx wrangler d1 execute DB --remote --command "SELECT strftime('%Y-%W', created_at) AS het, COALESCE(source, '–') AS forras, COUNT(*) AS db FROM callback_requests GROUP BY het, forras ORDER BY het DESC"`
+
 ### Éles környezet (később)
 
 Az `env.production` blokk a végleges oldalé (`stiletdekor-production` Worker, www.stiletdekor.hu).

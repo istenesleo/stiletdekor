@@ -1,5 +1,6 @@
 ---
 import { env } from 'cloudflare:workers';
+import { analyticsBeacon } from '@/site/analytics';
 import { type SiteThemeId, siteThemeOf } from '@/site/themes';
 import '@/styles/tokens.css';
 import '@/styles/base.css';
@@ -19,6 +20,8 @@ const indexable = env.PUBLIC_SITE_ENV === 'production';
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 // Design direction of this deployment (SITE_THEME var): selects the token set in tokens.css and its fonts.
 const theme = siteThemeOf(themeOverride ?? env.SITE_THEME);
+// Cookie-free measuring, only when this deployment has a Web Analytics token (src/site/analytics.ts).
+const beacon = analyticsBeacon(env.CF_BEACON_TOKEN);
 ---
 
 <!doctype html>
@@ -38,5 +41,6 @@ const theme = siteThemeOf(themeOverride ?? env.SITE_THEME);
   </head>
   <body>
     <slot />
+    {beacon && <script is:inline defer src={beacon.src} data-cf-beacon={beacon.config}></script>}
   </body>
 </html>

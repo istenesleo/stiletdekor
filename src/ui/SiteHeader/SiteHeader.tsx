@@ -1,4 +1,4 @@
-import { type HTMLAttributes, type KeyboardEvent, useId, useRef, useState } from 'react';
+import { type HTMLAttributes, type MouseEvent, useId } from 'react';
 import { COMPANY } from '@/domain/company';
 import '../base.css';
 import { ButtonLink } from '../ButtonLink/ButtonLink';
@@ -29,15 +29,16 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
   sticky?: boolean;
   /** Target of the "Ugrás a tartalomra" skip link, the page's main content; null leaves the link out. */
   skipTo?: string | null;
-  /** Starts with the mobile menu open (previews). */
+  /** Shows the menu open as a plain panel (previews); a real page opens it with the menu button. */
   defaultMenuOpen?: boolean;
 }
 
 /**
  * The site header: wordmark, main menu, phone number, quote button and the cart with its item count.
  * Sticky, on a translucent background. When the header is narrower than 1040 px, the menu, the phone number
- * and the "Ajánlatkérés" button move into a panel opened by the menu button; Escape closes it. The page's main
- * content needs the id of `skipTo` ("tartalom" by default).
+ * and the "Ajánlatkérés" button move into a panel opened by the menu button: a native popover, so it works
+ * without JavaScript (Escape and a click outside close it). The page's main content needs the id of `skipTo`
+ * ("tartalom" by default).
  * @category content
  */
 export function SiteHeader({
@@ -52,22 +53,19 @@ export function SiteHeader({
   skipTo = '#tartalom',
   defaultMenuOpen = false,
   className,
-  onKeyDown,
   ...rest
 }: SiteHeaderProps) {
-  const [menuOpen, setMenuOpen] = useState(defaultMenuOpen);
-  const menuButton = useRef<HTMLButtonElement>(null);
   const panelId = `sd-menu${useId().replace(/:/g, '')}`;
-  const closeMenu = () => setMenuOpen(false);
-  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    onKeyDown?.(event);
-    if (event.key === 'Escape' && menuOpen) {
-      closeMenu();
-      menuButton.current?.focus();
-    }
+  // Where scripts run, choosing an item closes the popover (a link to a section of the same page would leave it open).
+  const closeMenu = (event: MouseEvent<HTMLElement>) => {
+    const panel = event.currentTarget.closest<HTMLElement & { hidePopover?: () => void }>('[popover]');
+    panel?.hidePopover?.();
   };
   return (
-    <header className={cx('sd-header', sticky && 'sd-header--sticky', className)} onKeyDown={handleKeyDown} {...rest}>
+    <header
+      className={cx('sd-header', sticky && 'sd-header--sticky', defaultMenuOpen && 'sd-header--menu-open', className)}
+      {...rest}
+    >
       {skipTo && (
         <a className="sd-header__skip" href={skipTo}>
           Ugrás a tartalomra
@@ -98,17 +96,12 @@ export function SiteHeader({
         {onCartClick && (
           <IconButton icon="cart" label={`Kosár megnyitása, ${cartCount} tétel`} count={cartCount} aria-haspopup="dialog" onClick={onCartClick} />
         )}
-        <IconButton
-          ref={menuButton}
-          className="sd-header__menubtn"
-          icon={menuOpen ? 'close' : 'menu'}
-          label="Menü"
-          aria-expanded={menuOpen}
-          aria-controls={panelId}
-          onClick={() => setMenuOpen((open) => !open)}
-        />
+        <button type="button" className="sd-iconbtn sd-header__menubtn" aria-label="Menü" popoverTarget={panelId}>
+          <Icon name="menu" className="sd-header__open" />
+          <Icon name="close" className="sd-header__close" />
+        </button>
       </div>
-      <div className="sd-header__panel" id={panelId} hidden={!menuOpen}>
+      <div className="sd-header__panel" id={panelId} popover={defaultMenuOpen ? undefined : 'auto'}>
         <nav aria-label="Főmenü">
           <ul>
             {links.map((link) => (

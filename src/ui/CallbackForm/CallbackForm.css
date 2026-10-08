@@ -1,0 +1,42 @@
+.sd-callback {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 36rem;
+}
+.sd-callback__summary ul {
+  margin: var(--space-2) 0 0;
+  padding-inline-start: var(--space-5);
+}
+.sd-callback__summary a {
+  color: inherit;
+  text-decoration: underline;
+}
+.sd-callback__select {
+  appearance: auto;
+}
+/* The trap field: out of sight and out of the tab order, but in the HTML for bots. */
+.sd-callback__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.sd-callback__send {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+}
+.sd-callback__privacy {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.sd-callback__privacy a {
+  color: var(--color-text);
+}
+.sd-callback__privacy a:focus-visible,
+.sd-callback__summary a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

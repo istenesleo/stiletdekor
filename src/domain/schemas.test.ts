@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import type { z } from 'zod';
 import { QUOTE_TYPES, type QuoteType } from './catalog';
 import {
+  CallbackRequestSchema,
+  callbackJobTypeName,
   CartItemSchema,
+  formSource,
   OrderRequestSchema,
   ProductConfigSchema,
   QuoteRequestSchema,
@@ -420,5 +423,48 @@ describe('validateQuoteFields', () => {
 
   it('rejects an unknown quote type', () => {
     expect(validateQuoteFields('urhajo', {}, { today })).toEqual([{ path: [], message: 'Ismeretlen munkatípus.' }]);
+  });
+});
+
+describe('CallbackRequestSchema', () => {
+  it('keeps the name and phone, and drops empty optional fields', () => {
+    expect(
+      CallbackRequestSchema.parse({ name: ' Kiss Péter ', phone: '06 70 123 4567', jobType: '', message: '  ', source: '/visszahivas' }),
+    ).toEqual({ name: 'Kiss Péter', phone: '06 70 123 4567', source: '/visszahivas' });
+  });
+
+  it('accepts a quote type or "nem-tudom" as the job type', () => {
+    const base = { name: 'Kiss Péter', phone: '+36 70 123 4567' };
+    expect(CallbackRequestSchema.parse({ ...base, jobType: 'autofoliazas' }).jobType).toBe('autofoliazas');
+    expect(CallbackRequestSchema.parse({ ...base, jobType: 'nem-tudom' }).jobType).toBe('nem-tudom');
+  });
+
+  it('says in Hungarian what is missing or wrong', () => {
+    expect(issuesOf(CallbackRequestSchema, { name: '', phone: '123', jobType: 'urhajo', message: 'x'.repeat(301) })).toEqual([
+      ['name', 'Adja meg a nevét.'],
+      ['phone', 'Kérjük, érvényes telefonszámot adjon meg, például +36 70 123 4567.'],
+      ['jobType', 'Válasszon a listából.'],
+      ['message', 'Legfeljebb 300 karakter lehet.'],
+    ]);
+  });
+
+  it('drops a source that is not a path of the site', () => {
+    const base = { name: 'Kiss Péter', phone: '+36701234567' };
+    for (const source of ['https://example.com', '//example.com', 'javascript:alert(1)', '/a b', 42]) {
+      expect(CallbackRequestSchema.parse({ ...base, source }).source).toBeUndefined();
+    }
+    expect(CallbackRequestSchema.parse({ ...base, source: '/kapcsolat#visszahivas' }).source).toBe('/kapcsolat#visszahivas');
+  });
+});
+
+describe('callback job types', () => {
+  it('names the quote types as the catalog does, and the unsure answer in the first person', () => {
+    expect(callbackJobTypeName('ceger')).toBe('Cégér, reklámtábla');
+    expect(callbackJobTypeName('nem-tudom')).toBe('Még nem tudom');
+  });
+
+  it('accepts only paths of the site as a form source', () => {
+    expect(formSource('/visszahivas')).toBe('/visszahivas');
+    expect(formSource(`/${'a'.repeat(200)}`)).toBeUndefined();
   });
 });
