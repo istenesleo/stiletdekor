@@ -13,10 +13,13 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
 ## Arculati látványtervek: egy fájlban, váltóval
 
 Az `npm run latvanytervek` a projekt gyökerébe írja az **„Arculati látványtervek.html”** fájlt: dupla kattintással
-megnyílik, felül gombokkal (vagy a ← → nyilakkal) váltható a két látványterv (A, B), a hat teljes irány
+megnyílik, felül gombokkal váltható a két látványterv (A, B), a hat teljes irány
 (X1–X6) és a kész arculati elemek (G1–G4, A és B irányban), asztali vagy 390 px-es mobilnézetben. A fájl a
 valódi kódból készül (build, helyi szerver, letöltés), ezért a tervek változása után újra kell generálni. Mivel
 generált, nem kerül a gitbe. A betűk a Google Fonts-ról töltődnek; internet nélkül tartalék betűkkel jelenik meg.
+A váltás JavaScript nélkül is működik (választógombok és CSS), mert például a OneDrive webes és telefonos
+előnézete nem futtat scriptet; ott a tervek saját interakciói (kalkulátor, nappal/éjjel, aloldalak) nem működnek,
+ehhez a fájlt böngészőben kell megnyitni.
 
 ## Munkafolyamat a Claude Design-nal
 

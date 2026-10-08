@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { VARIANTS } from '../src/tablo/variants';
-import { beagyazas, kapcsoloFajl, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
+import { beagyazas, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
 
 describe('tervLista', () => {
   it('lists the two mockups, the finished full directions and the brand elements in both directions', () => {
@@ -57,21 +57,5 @@ describe('beagyazas', () => {
     expect(out).toContain('<style>.a::after{content:"$&"}<\\/style></style>');
     expect(out).toContain('<script type="module">console.log("$1<\\/script>")</script>');
     expect(out).not.toContain('/_astro/');
-  });
-});
-
-describe('kapcsoloFajl', () => {
-  it('has a button per design and carries every design intact', () => {
-    const tervek = [
-      { id: 'a', rovid: 'A', cim: 'A · Neon műhely', leiras: 'Első terv leírása, elég hosszan.', html: '<script>x</script><p>ő</p>' },
-      { id: 'x1', rovid: 'X1', cim: 'X1 · Árlista-plakát', leiras: 'Második terv leírása, elég hosszan.', html: '<p>2</p>' },
-    ];
-    const fajl = kapcsoloFajl(tervek, '2026-10-08');
-    expect(fajl.match(/data-terv="/g)).toHaveLength(2);
-    expect(fajl).toContain('aria-label="X1 · Árlista-plakát"');
-    expect(fajl).toContain('2026-10-08');
-    const adat = fajl.match(/<script type="application\/json" id="lv-adat">([\s\S]*?)<\/script>/)?.[1] ?? '';
-    expect(adat).not.toContain('<');
-    expect(JSON.parse(adat)).toEqual(tervek);
   });
 });

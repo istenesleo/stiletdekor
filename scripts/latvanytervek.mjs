@@ -85,17 +85,38 @@ export async function beagyazas(html, { szoveg, csomag }) {
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
 /**
- * The switcher file: a bar of buttons over one frame. The designs travel as JSON (every "<" escaped, so no design
- * can close the data block) and open as blob documents on first use; the open design is kept in the address (#a).
+ * The switcher file. It works without scripts, because previews such as OneDrive on the web or on a phone show
+ * HTML but do not run it: every design sits in its own frame (srcdoc), and radio buttons with labels switch the
+ * design and the view through CSS alone (arrow keys move between them, as in any radio group). Where scripts run,
+ * a small script only adds comfort: the open design is kept in the address (#x1) and in the window title.
  */
 export function kapcsoloFajl(tervek, generalva) {
-  const adat = JSON.stringify(tervek.map(({ id, rovid, cim, leiras, html }) => ({ id, rovid, cim, leiras, html }))).replace(
-    /</g,
-    '\\u003c',
-  );
-  const gombok = tervek
-    .map((t) => `<button type="button" data-terv="${esc(t.id)}" aria-pressed="false" aria-label="${esc(t.cim)}">${esc(t.rovid)}</button>`)
+  const radiok = tervek
+    .map((t, i) => `<input class="lv-radio" type="radio" name="terv" id="t-${esc(t.id)}"${i === 0 ? ' checked' : ''}>`)
+    .join('\n');
+  const cimkek = tervek
+    .map((t) => `<label for="t-${esc(t.id)}" aria-label="${esc(t.cim)}">${esc(t.rovid)}</label>`)
     .join('');
+  const leirasok = tervek
+    .map((t) => `<p class="lv-leiras" data-terv="${esc(t.id)}"><b>${esc(t.cim)}</b> – ${esc(t.leiras)}</p>`)
+    .join('\n');
+  const panelek = tervek
+    .map(
+      (t) =>
+        `<section class="lv-panel" data-terv="${esc(t.id)}"><iframe title="${esc(t.cim)}" loading="lazy" srcdoc="${esc(t.html)}"></iframe></section>`,
+    )
+    .join('\n');
+  const valtasok = tervek
+    .map((t) => {
+      const r = `#t-${t.id}`;
+      return [
+        `${r}:checked ~ .lv-szinpad .lv-panel[data-terv="${t.id}"] { display: flex; }`,
+        `${r}:checked ~ .lv-bar .lv-leiras[data-terv="${t.id}"] { display: block; }`,
+        `${r}:checked ~ .lv-bar label[for="t-${t.id}"] { border-color: var(--brand); background: var(--brand); color: var(--on-brand); font-weight: 700; }`,
+        `${r}:focus-visible ~ .lv-bar label[for="t-${t.id}"] { outline: 2px solid var(--brand); outline-offset: 2px; }`,
+      ].join('\n');
+    })
+    .join('\n');
   return `<!doctype html>
 <html lang="hu">
 <head>
@@ -107,70 +128,54 @@ export function kapcsoloFajl(tervek, generalva) {
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body { display: flex; flex-direction: column; background: var(--bg); color: var(--text); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.lv-radio { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
 .lv-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
 .lv-cim { margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; }
 .lv-cim span { color: var(--muted); font-weight: 400; }
-.lv-tervek, .lv-lepes, .lv-nezet { display: flex; flex-wrap: wrap; gap: 6px; }
+.lv-tervek, .lv-nezet { display: flex; flex-wrap: wrap; gap: 6px; }
 .lv-nezet { margin-left: auto; }
-button { min-height: 32px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font: inherit; cursor: pointer; touch-action: manipulation; }
-button:hover { border-color: var(--muted); }
-button[aria-pressed="true"] { border-color: var(--brand); background: var(--brand); color: var(--on-brand); font-weight: 700; }
-button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-.lv-leiras { flex-basis: 100%; margin: 0; color: var(--muted); }
+label { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; user-select: none; touch-action: manipulation; }
+label:hover { border-color: var(--muted); }
+.lv-leirasok { flex-basis: 100%; }
+.lv-leiras { display: none; margin: 0; color: var(--muted); }
 .lv-leiras b { color: var(--text); }
-.lv-szinpad { display: flex; flex: 1; justify-content: center; min-height: 0; background: var(--stage); }
-iframe { width: 100%; height: 100%; border: 0; background: #fff; }
-.lv-szinpad[data-nezet="mobil"] iframe { width: 390px; max-width: 100%; border-inline: 1px solid var(--line); }
+.lv-szinpad { display: flex; flex: 1; min-height: 0; background: var(--stage); }
+.lv-panel { display: none; flex: 1; justify-content: center; min-height: 0; }
+iframe { width: 100%; height: 100%; min-height: 70vh; border: 0; background: #fff; }
+#n-asztali:checked ~ .lv-bar label[for="n-asztali"], #n-mobil:checked ~ .lv-bar label[for="n-mobil"] { border-color: var(--brand); background: var(--brand); color: var(--on-brand); font-weight: 700; }
+#n-asztali:focus-visible ~ .lv-bar label[for="n-asztali"], #n-mobil:focus-visible ~ .lv-bar label[for="n-mobil"] { outline: 2px solid var(--brand); outline-offset: 2px; }
+#n-mobil:checked ~ .lv-szinpad iframe { width: 390px; max-width: 100%; border-inline: 1px solid var(--line); }
+${valtasok}
 </style>
 </head>
 <body>
+${radiok}
+<input class="lv-radio" type="radio" name="nezet" id="n-asztali" checked>
+<input class="lv-radio" type="radio" name="nezet" id="n-mobil">
 <header class="lv-bar">
 <p class="lv-cim">Arculati látványtervek <span>· Stilet Dekor · ${esc(generalva)}</span></p>
-<div class="lv-lepes"><button type="button" data-lepes="-1" aria-label="Előző terv">‹</button><button type="button" data-lepes="1" aria-label="Következő terv">›</button></div>
-<nav class="lv-tervek" aria-label="Tervek">${gombok}</nav>
-<div class="lv-nezet" role="group" aria-label="Nézet"><button type="button" data-nezet="asztali" aria-pressed="true">Asztali</button><button type="button" data-nezet="mobil" aria-pressed="false">Mobil (390 px)</button></div>
-<p class="lv-leiras" aria-live="polite"></p>
+<nav class="lv-tervek" aria-label="Tervek">${cimkek}</nav>
+<div class="lv-nezet" aria-label="Nézet"><label for="n-asztali">Asztali</label><label for="n-mobil">Mobil (390 px)</label></div>
+<div class="lv-leirasok">
+${leirasok}
+</div>
 </header>
-<main class="lv-szinpad" data-nezet="asztali"><iframe title="Látványterv"></iframe></main>
-<script type="application/json" id="lv-adat">${adat}</script>
+<main class="lv-szinpad">
+${panelek}
+</main>
 <script>
+// Comfort only (the switching itself needs no script): keep the open design in the address and the window title.
 (() => {
-  const tervek = JSON.parse(document.getElementById('lv-adat').textContent);
-  const frame = document.querySelector('iframe');
-  const szinpad = document.querySelector('.lv-szinpad');
-  const leiras = document.querySelector('.lv-leiras');
-  const gombok = [...document.querySelectorAll('button[data-terv]')];
-  const nezetek = [...document.querySelectorAll('button[data-nezet]')];
-  const urlek = new Map();
-  let aktiv = 0;
-  // Opens a design: its document is made once, on first use, so the file opens fast.
-  const nyit = (index) => {
-    aktiv = (index + tervek.length) % tervek.length;
-    const t = tervek[aktiv];
-    if (!urlek.has(t.id)) urlek.set(t.id, URL.createObjectURL(new Blob([t.html], { type: 'text/html;charset=utf-8' })));
-    frame.src = urlek.get(t.id);
-    frame.title = t.cim;
-    gombok.forEach((g, i) => g.setAttribute('aria-pressed', String(i === aktiv)));
-    const cim = document.createElement('b');
-    cim.textContent = t.cim;
-    leiras.replaceChildren(cim, ' – ' + t.leiras);
-    document.title = t.cim + ' – Arculati látványtervek';
-    try { history.replaceState(null, '', '#' + t.id); } catch (e) { /* a cím nélkül is működik */ }
+  const radiok = [...document.querySelectorAll('input[name="terv"]')];
+  const mutat = (radio) => {
+    const label = document.querySelector('label[for="' + radio.id + '"]');
+    document.title = (label ? label.getAttribute('aria-label') : '') + ' – Arculati látványtervek';
+    try { history.replaceState(null, '', '#' + radio.id.slice(2)); } catch (e) { /* cím nélkül is működik */ }
   };
-  gombok.forEach((g, i) => g.addEventListener('click', () => nyit(i)));
-  document.querySelectorAll('button[data-lepes]').forEach((g) => g.addEventListener('click', () => nyit(aktiv + Number(g.dataset.lepes))));
-  nezetek.forEach((g) => g.addEventListener('click', () => {
-    szinpad.dataset.nezet = g.dataset.nezet;
-    nezetek.forEach((x) => x.setAttribute('aria-pressed', String(x === g)));
-  }));
-  // Arrow keys switch designs while the focus is on the bar (inside a design they belong to the design).
-  document.addEventListener('keydown', (e) => {
-    if (e.altKey || e.ctrlKey || e.metaKey) return;
-    if (e.key === 'ArrowLeft') nyit(aktiv - 1);
-    else if (e.key === 'ArrowRight') nyit(aktiv + 1);
-  });
-  const kezdo = tervek.findIndex((t) => '#' + t.id === location.hash);
-  nyit(kezdo < 0 ? 0 : kezdo);
+  const kezdo = radiok.find((r) => '#' + r.id.slice(2) === location.hash);
+  if (kezdo) kezdo.checked = true;
+  radiok.forEach((r) => r.addEventListener('change', () => mutat(r)));
+  mutat(radiok.find((r) => r.checked) || radiok[0]);
 })();
 </script>
 </body>
