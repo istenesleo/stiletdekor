@@ -1,0 +1,35 @@
+---
+// A page of the site: header, main content, footer and, on narrow screens, the action bar.
+import { ActionBar } from '@/ui/ActionBar/ActionBar';
+import { SiteFooter } from '@/ui/SiteFooter/SiteFooter';
+import { SiteHeader } from '@/ui/SiteHeader/SiteHeader';
+import type { SiteThemeId } from '@/site/themes';
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** href of the menu item to mark as current. */
+  currentHref?: string;
+  /** The mobile action bar; off on form pages and in the checkout. */
+  actionBar?: boolean;
+  theme?: SiteThemeId;
+}
+
+const { title, description, currentHref, actionBar = true, theme } = Astro.props;
+---
+
+<Base title={title} description={description} theme={theme}>
+  <SiteHeader currentHref={currentHref} />
+  <main id="tartalom" tabindex="-1">
+    <slot />
+  </main>
+  <SiteFooter />
+  {actionBar && <ActionBar />}
+</Base>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

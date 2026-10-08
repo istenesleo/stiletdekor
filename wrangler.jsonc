@@ -24,8 +24,9 @@
   "name": "stiletdekor",
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat"],
-  // Worker entry provided by the Astro adapter; the build replaces it with the bundled output.
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  // Worker entry: Astro answers requests, the cron retries the workshop's notifications (src/worker.ts).
+  // The build replaces it with the bundled output.
+  "main": "./src/worker.ts",
   // Static assets (dist/client) are wired up by the adapter; only the binding name is fixed here.
   "assets": {
     "binding": "ASSETS"
@@ -55,12 +56,18 @@
   // upload is built: enable R2 in the dashboard, create the bucket, then restore this block here, in
   // "previews" and in env.production, and make UPLOADS required again in src/env.d.ts.
   // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-dev" }],
+  // Callback form: at most 5 posts per visitor (IP) per minute. Not inherited: repeated in every environment.
+  "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+  // Retries the workshop's notification e-mails every 15 minutes (src/server/callback/notify.ts).
+  "triggers": { "crons": ["*/15 * * * *"] },
   "vars": {
     "PUBLIC_SITE_ENV": "dev",
     "SITE_THEME": "neon-muhely",
     "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
     // Comma-separated extra origins accepted by POST endpoints besides the site's own origin.
-    "ALLOWED_ORIGINS": ""
+    "ALLOWED_ORIGINS": "",
+    "NOTIFY_FROM_EMAIL": "",
+    "CF_BEACON_TOKEN": ""
   },
 
   // ---- Workers Previews (`npx wrangler preview`, the Workers Builds preview command) ----
@@ -70,11 +77,14 @@
   // Docs: https://developers.cloudflare.com/workers/previews/configuration/
   "previews": {
     "observability": { "enabled": true },
+    "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
     "vars": {
       "PUBLIC_SITE_ENV": "dev",
       "SITE_THEME": "neon-muhely",
       "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
-      "ALLOWED_ORIGINS": ""
+      "ALLOWED_ORIGINS": "",
+      "NOTIFY_FROM_EMAIL": "",
+      "CF_BEACON_TOKEN": ""
     },
     "d1_databases": [
       {
@@ -93,6 +103,9 @@
     // Same dev database as dev site A. Vars and bindings are not inherited, so they are repeated here.
     "galeria": {
       "name": "stiletdekor-galeria",
+      "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+      // Both dev sites share one database: dev site A's cron is enough.
+      "triggers": { "crons": [] },
       "observability": {
         "enabled": true,
         "issues": { "enabled": true }
@@ -109,7 +122,9 @@
         "PUBLIC_SITE_ENV": "dev",
         "SITE_THEME": "galeria-editorial",
         "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
-        "ALLOWED_ORIGINS": ""
+        "ALLOWED_ORIGINS": "",
+        "NOTIFY_FROM_EMAIL": "",
+        "CF_BEACON_TOKEN": ""
       }
     },
 
@@ -118,6 +133,8 @@
     // Bindings and vars are not inherited from the top level, so they are repeated here.
     "production": {
       "name": "stiletdekor-production",
+      "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+      "triggers": { "crons": ["*/15 * * * *"] },
       "d1_databases": [
         {
           "binding": "DB",
@@ -132,7 +149,9 @@
         // The chosen design direction; not decided yet (both directions are kept for now).
         "SITE_THEME": "neon-muhely",
         "ORDER_NOTIFY_EMAIL": "stiletdekor@gmail.com",
-        "ALLOWED_ORIGINS": ""
+        "ALLOWED_ORIGINS": "",
+        "NOTIFY_FROM_EMAIL": "",
+        "CF_BEACON_TOKEN": ""
       }
       // When the domain is connected:
       // "routes": [{ "pattern": "www.stiletdekor.hu", "custom_domain": true }]

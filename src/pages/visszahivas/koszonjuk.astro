@@ -1,0 +1,36 @@
+---
+// After a callback request: the reference (when the address carries a valid one) and what happens next.
+import { COMPANY } from '@/domain/company';
+import { parseReference } from '@/domain/reference';
+import Page from '@/layouts/Page.astro';
+import { ButtonLink } from '@/ui/ButtonLink/ButtonLink';
+import { SuccessPanel } from '@/ui/SuccessPanel/SuccessPanel';
+
+const reference = parseReference(Astro.url.searchParams.get('szam'), 'VH') ?? undefined;
+---
+
+<Page title="Megkaptuk – Visszahívás – Stilet Dekor" description="Megkaptuk a visszahívás-kérését.">
+  <section class="vh">
+    <SuccessPanel
+      title="Megkaptuk a visszahívás-kérését"
+      reference={reference}
+      referenceLabel="Hivatkozási szám"
+      nextSteps={[
+        'Megkaptuk a kérését.',
+        'Hamarosan visszahívjuk a megadott telefonszámon.',
+        'Ha kell, egyeztetjük a helyszíni felmérést, utána elküldjük az árajánlatot.',
+      ]}
+      note={`Sürgős? Hívjon minket: ${COMPANY.phone.display}`}
+    >
+      <ButtonLink href="/" variant="secondary">Vissza a kezdőlapra</ButtonLink>
+    </SuccessPanel>
+  </section>
+</Page>
+
+<style>
+  .vh {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter) var(--space-9);
+  }
+</style>

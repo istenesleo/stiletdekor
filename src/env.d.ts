@@ -30,6 +30,17 @@ declare namespace Cloudflare {
     ORDER_NOTIFY_EMAIL: string;
     /** Comma-separated extra origins allowed for POST /api/* besides the site's own origin. */
     ALLOWED_ORIGINS: string;
+    /** Rate limiter of the callback form: at most 5 posts per visitor per minute (wrangler.jsonc "ratelimits"). */
+    CALLBACK_LIMITER: RateLimit;
+    /**
+     * Email Service send binding for the workshop's notifications. Not bound yet: it needs the stiletdekor.hu
+     * domain on Cloudflare (README, "Visszahívás és értesítő e-mailek"). Until then the e-mails go to the log.
+     */
+    EMAIL?: SendEmail;
+    /** Sender address of the notifications, on the onboarded domain (e.g. ertesito@stiletdekor.hu); empty until then. */
+    NOTIFY_FROM_EMAIL: string;
+    /** Cloudflare Web Analytics site token; empty: no beacon. */
+    CF_BEACON_TOKEN: string;
   }
 }
 

@@ -1,0 +1,85 @@
+---
+// The callback form. GET shows it with a fresh token; POST saves the request and redirects to the thank-you page
+// (303), or shows the form again with the messages (docs/superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md, 4.).
+import { env, waitUntil } from 'cloudflare:workers';
+import { COMPANY } from '@/domain/company';
+import Page from '@/layouts/Page.astro';
+import { d1CallbackStore } from '@/server/callback/d1-store';
+import { notifyCallback } from '@/server/callback/notify';
+import { limiterAllows, type RejectedCallback, submitCallback } from '@/server/callback/submit';
+import { mailerFor } from '@/server/notify/mailer';
+import { CallbackForm } from '@/ui/CallbackForm/CallbackForm';
+
+const SOURCE = '/visszahivas';
+let rejected: RejectedCallback | null = null;
+
+if (Astro.request.method === 'POST') {
+  const store = d1CallbackStore(env.DB);
+  const now = () => new Date();
+  const result = await submitCallback(await Astro.request.formData(), {
+    store,
+    now,
+    newToken: () => crypto.randomUUID(),
+    allow: () => limiterAllows(env.CALLBACK_LIMITER, Astro.clientAddress),
+  });
+  if (result.kind === 'accepted') {
+    if (result.id !== null) {
+      waitUntil(
+        notifyCallback(result.id, { store, mailer: mailerFor(env), to: env.ORDER_NOTIFY_EMAIL, now }).catch((error) =>
+          console.error('A visszahívás értesítése hibával leállt:', error),
+        ),
+      );
+    }
+    return Astro.redirect(result.location, 303);
+  }
+  rejected = result;
+  Astro.response.status = result.status;
+}
+
+const title = rejected ? 'Hiba a beküldésben – Visszahívás – Stilet Dekor' : 'Visszahívást kérek – Stilet Dekor';
+---
+
+<Page
+  title={title}
+  description="Adja meg a nevét és a telefonszámát, és a Stilet Dekor műhelye visszahívja."
+  actionBar={false}
+>
+  <section class="vh">
+    <h1>Visszahívást kér?</h1>
+    <p class="vh__lead">
+      Adja meg a nevét és a telefonszámát, és hamarosan visszahívjuk. Ha inkább most beszélne:
+      <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a>.
+    </p>
+    <CallbackForm
+      token={rejected?.token ?? crypto.randomUUID()}
+      source={rejected?.source ?? SOURCE}
+      values={rejected?.values}
+      errors={rejected?.errors}
+      formError={rejected?.formError}
+    />
+  </section>
+</Page>
+
+<style>
+  .vh {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .vh__lead {
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-muted);
+  }
+  .vh__lead a {
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+</style>
