@@ -11,10 +11,10 @@ export function dontesek(iranyok = []) {
       cim: 'Irány',
       kerdes: 'Melyik irányban készüljön a végleges oldal?',
       opciok: [
-        { id: 'C', nev: 'C · Mérőlap', leiras: 'A B nyugodt, képes szerkezete az A mérési nyelvével; fény csak a hero cégérén és a fő gombon.', ful: 'proto-c' },
-        { id: 'A', nev: 'A · Neon műhely', leiras: 'Mélyfekete, a rózsaszín neonfényként; kondenzált, nagybetűs címek, vágóalátét-rács.', ful: 'proto-a' },
-        { id: 'B', nev: 'B · Galéria / editorial', leiras: 'Magazinszerű, nyugodt, prémium; antikva címek, a rózsaszín csak apró akcentus.', ful: 'proto-b' },
-        ...iranyok.map((x) => ({ id: x.rovid, nev: x.cim, leiras: x.leiras, ful: x.id })),
+        { id: 'C', nev: 'C · Mérőlap', leiras: 'A B nyugodt, képes szerkezete az A mérési nyelvével; fény csak a hero cégérén és a fő gombon.', ful: 'proto-c', kep: { ful: 'proto-c' } },
+        { id: 'A', nev: 'A · Neon műhely', leiras: 'Mélyfekete, a rózsaszín neonfényként; kondenzált, nagybetűs címek, vágóalátét-rács.', ful: 'proto-a', kep: { ful: 'proto-a' } },
+        { id: 'B', nev: 'B · Galéria / editorial', leiras: 'Magazinszerű, nyugodt, prémium; antikva címek, a rózsaszín csak apró akcentus.', ful: 'proto-b', kep: { ful: 'proto-b' } },
+        ...iranyok.map((x) => ({ id: x.rovid, nev: x.cim, leiras: x.leiras, ful: x.id, kep: { ful: x.id } })),
       ],
       ajanlott: 'C',
       indok:
@@ -100,16 +100,16 @@ export function dontesek(iranyok = []) {
       cim: 'Hero',
       kerdes: 'Milyen legyen a kezdőlap első képernyője?',
       opciok: [
-        { id: 'H2', nev: 'H2 · Két ajtó', leiras: 'A két belépő maga a hero: a webshop a „-tól” árakkal, az egyedi munkák a kilenc munkatípussal.', ful: 'cd-tablo' },
-        { id: 'H1', nev: 'H1 · Gyártási rajz', leiras: 'A cím egy műhelyi rajz, méretvonalakkal és rajzfejjel; „A = ? mm”, mert helyszínen mérünk.', ful: 'cd-tablo' },
-        { id: 'H3', nev: 'H3 · Azonnali ár', leiras: 'Molinó-gyorskalkulátor az első képernyőn.', ful: 'cd-tablo' },
-        { id: 'H4', nev: 'H4 · Anyagfal', leiras: 'Anyagminták fala, a cím egy címkén.', ful: 'cd-tablo' },
-        { id: 'H5', nev: 'H5 · Mérőszalag', leiras: 'Egy kihúzott mérőszalag fut át a heron.', ful: 'cd-tablo' },
-        { id: 'H6', nev: 'H6 · Fóliatekercs', leiras: 'Rózsaszín fóliatekercs gördül le, rajta a cím.', ful: 'cd-tablo' },
-        { id: 'H-K1', nev: 'H-K1 · Élő cégér', leiras: 'A látogató beírja a nevét, és világító betűs cégérként látja.', ful: 'cd-tablo' },
-        { id: 'H-K2', nev: 'H-K2 · Fóliafelhordás', leiras: 'A cím kirakatüvegre kerül, egy simítólapát húzza fel.', ful: 'cd-tablo' },
-        { id: 'H-K3', nev: 'H-K3 · Gyomlálás', leiras: 'A cím rózsaszín fóliából kivágva, a felesleg félig lehúzva.', ful: 'cd-tablo' },
-        { id: 'sajat', nev: 'Az irány saját herója', leiras: 'Ahogy a választott irány prototípusán látszik.', ful: 'proto-c' },
+        { id: 'H2', nev: 'H2 · Két ajtó', leiras: 'A két belépő maga a hero: a webshop a „-tól” árakkal, az egyedi munkák a kilenc munkatípussal.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H2' } },
+        { id: 'H1', nev: 'H1 · Gyártási rajz', leiras: 'A cím egy műhelyi rajz, méretvonalakkal és rajzfejjel; „A = ? mm”, mert helyszínen mérünk.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H1' } },
+        { id: 'H3', nev: 'H3 · Azonnali ár', leiras: 'Molinó-gyorskalkulátor az első képernyőn.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H3' } },
+        { id: 'H4', nev: 'H4 · Anyagfal', leiras: 'Anyagminták fala, a cím egy címkén.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H4' } },
+        { id: 'H5', nev: 'H5 · Mérőszalag', leiras: 'Egy kihúzott mérőszalag fut át a heron.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H5' } },
+        { id: 'H6', nev: 'H6 · Fóliatekercs', leiras: 'Rózsaszín fóliatekercs gördül le, rajta a cím.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H6' } },
+        { id: 'H-K1', nev: 'H-K1 · Élő cégér', leiras: 'A látogató beírja a nevét, és világító betűs cégérként látja.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H-K1' } },
+        { id: 'H-K2', nev: 'H-K2 · Fóliafelhordás', leiras: 'A cím kirakatüvegre kerül, egy simítólapát húzza fel.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H-K2' } },
+        { id: 'H-K3', nev: 'H-K3 · Gyomlálás', leiras: 'A cím rózsaszín fóliából kivágva, a felesleg félig lehúzva.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H-K3' } },
+        { id: 'sajat', nev: 'Az irány saját herója', leiras: 'Ahogy a választott irány prototípusán látszik.', ful: 'proto-c', kep: { ful: 'proto-c' } },
       ],
       ajanlott: 'H2',
       indok: 'A látogató az első pillantással utat választ, a kilenc munkatípus egyenesen az ajánlatkérésbe visz. Az ajánlat-ajtó kapja a hangsúlyt, mert az a fő cél. A H-K1 a „Világító betűk” oldalára javasolt.',
@@ -119,12 +119,12 @@ export function dontesek(iranyok = []) {
       cim: 'Szolgáltatások',
       kerdes: 'Hogyan mutassa a kezdőlap a szolgáltatásokat?',
       opciok: [
-        { id: 'SZ1', nev: 'SZ1 · Mit szeretne dekorálni?', leiras: 'Belépés felület szerint, a látogató nyelvén („a kirakatomra”).', ful: 'cd-tablo' },
-        { id: 'SZ2', nev: 'SZ2 · Azonnal rendelhető / Ajánlatra', leiras: 'Két sáv: webshop-termékek árral, alatta az egyedi munkák.', ful: 'cd-tablo' },
-        { id: 'SZ3', nev: 'SZ3 · Utcakép', leiras: 'Utcarészlet rajzként, számozott munkákkal és mellette listával.', ful: 'cd-tablo' },
-        { id: 'SZ4', nev: 'SZ4 · Tárgymutató', leiras: 'Ábécérendes mutató gépelés közbeni szűréssel.', ful: 'cd-tablo' },
-        { id: 'SZ5', nev: 'SZ5 · Betűtábla', leiras: 'Árlista egy filc betűtáblán.', ful: 'cd-tablo' },
-        { id: 'SZ-K1', nev: 'SZ-K1 · Kérdezzen bátran', leiras: 'Óriás beviteli mező; a szólista szolgáltatást javasol.', ful: 'cd-tablo' },
+        { id: 'SZ1', nev: 'SZ1 · Mit szeretne dekorálni?', leiras: 'Belépés felület szerint, a látogató nyelvén („a kirakatomra”).', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ1' } },
+        { id: 'SZ2', nev: 'SZ2 · Azonnal rendelhető / Ajánlatra', leiras: 'Két sáv: webshop-termékek árral, alatta az egyedi munkák.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ2' } },
+        { id: 'SZ3', nev: 'SZ3 · Utcakép', leiras: 'Utcarészlet rajzként, számozott munkákkal és mellette listával.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ3' } },
+        { id: 'SZ4', nev: 'SZ4 · Tárgymutató', leiras: 'Ábécérendes mutató gépelés közbeni szűréssel.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ4' } },
+        { id: 'SZ5', nev: 'SZ5 · Betűtábla', leiras: 'Árlista egy filc betűtáblán.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ5' } },
+        { id: 'SZ-K1', nev: 'SZ-K1 · Kérdezzen bátran', leiras: 'Óriás beviteli mező; a szólista szolgáltatást javasol.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#SZ-K1' } },
       ],
       ajanlott: 'SZ1',
       indok: 'A látogató nyelvén indul, és a munkatípushoz vezet. A /szolgaltatasok oldalra az SZ4 tárgymutatót javasoljuk.',
@@ -134,12 +134,12 @@ export function dontesek(iranyok = []) {
       cim: 'Folyamat',
       kerdes: 'Hogyan mutassa a kezdőlap a „hogyan dolgozunk” négy lépését?',
       opciok: [
-        { id: 'F2', nev: 'F2 · Vonalzó-idővonal', leiras: 'A négy lépés egy vonalzón, mint a beosztások.', ful: 'cd-tablo' },
-        { id: 'F1', nev: 'F1 · Ön és mi', leiras: 'Két sáv: mit tesz a megrendelő és mit a műhely; „Nincs teendője”.', ful: 'cd-tablo' },
-        { id: 'F3', nev: 'F3 · Egy munka útja', leiras: 'Ugyanaz a felirat vázlattól a világító betűig.', ful: 'cd-tablo' },
-        { id: 'F4', nev: 'F4 · Két útvonal', leiras: 'Metrótérkép: a webshop és az egyedi munka útja.', ful: 'cd-tablo' },
-        { id: 'F5', nev: 'F5 · Naptárcsík', leiras: 'A webshop határideje a valódi naptáron.', ful: 'cd-tablo' },
-        { id: 'F-K1', nev: 'F-K1 · Munkalap pecsétekkel', leiras: 'Műhelyi munkalap, görgetéskor lecsapódó pecsétekkel.', ful: 'cd-tablo' },
+        { id: 'F2', nev: 'F2 · Vonalzó-idővonal', leiras: 'A négy lépés egy vonalzón, mint a beosztások.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F2' } },
+        { id: 'F1', nev: 'F1 · Ön és mi', leiras: 'Két sáv: mit tesz a megrendelő és mit a műhely; „Nincs teendője”.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F1' } },
+        { id: 'F3', nev: 'F3 · Egy munka útja', leiras: 'Ugyanaz a felirat vázlattól a világító betűig.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F3' } },
+        { id: 'F4', nev: 'F4 · Két útvonal', leiras: 'Metrótérkép: a webshop és az egyedi munka útja.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F4' } },
+        { id: 'F5', nev: 'F5 · Naptárcsík', leiras: 'A webshop határideje a valódi naptáron.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F5' } },
+        { id: 'F-K1', nev: 'F-K1 · Munkalap pecsétekkel', leiras: 'Műhelyi munkalap, görgetéskor lecsapódó pecsétekkel.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F-K1' } },
       ],
       ajanlott: 'F2',
       indok: 'Rövid, és a mérés nyelvén beszél. Az F1 az ajánlatkérés oldalára, az F4 a webshop és a pénztár mellé kerülhet.',
@@ -149,9 +149,9 @@ export function dontesek(iranyok = []) {
       cim: 'Referenciák',
       kerdes: 'Hogyan mutassuk a munkákat?',
       opciok: [
-        { id: 'O3', nev: 'O3 · Szűrős aloldal', leiras: 'Felület szerinti szűrő, kiemelt munka előtte/utána csúszkával.', ful: 'cd-tablo' },
-        { id: 'O3+R-K2', nev: 'O3 és R-K2 · Éjszakai séta', leiras: 'Ugyanez, a világító munkáknál éjszakai nézettel.', ful: 'cd-tablo' },
-        { id: 'R-K1', nev: 'R-K1 · Mintalegyező', leiras: 'A munkák egy színmintalegyező lapjain.', ful: 'cd-tablo' },
+        { id: 'O3', nev: 'O3 · Szűrős aloldal', leiras: 'Felület szerinti szűrő, kiemelt munka előtte/utána csúszkával.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#O3' } },
+        { id: 'O3+R-K2', nev: 'O3 és R-K2 · Éjszakai séta', leiras: 'Ugyanez, a világító munkáknál éjszakai nézettel.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#R-K2' } },
+        { id: 'R-K1', nev: 'R-K1 · Mintalegyező', leiras: 'A munkák egy színmintalegyező lapjain.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#R-K1' } },
       ],
       ajanlott: 'O3',
       indok: 'Gyorsan áttekinthető, és JavaScript nélkül is működik (felületenként saját oldal). Az éjszakai nézet később hozzáadható.',
@@ -161,8 +161,8 @@ export function dontesek(iranyok = []) {
       cim: 'Képek, amíg nincsenek fotók',
       kerdes: 'Mi álljon a referenciaképek helyén?',
       opciok: [
-        { id: 'cd-g1', nev: 'Jelölt helyőrző és fotó-forgatókönyv', leiras: 'A helyőrző nem utánoz fotót; a nyolc jelenet forgatókönyve a fotózáshoz (Claude Design G1).', ful: 'cd-tablo' },
-        { id: 'repo-g1', nev: 'Illusztrált jelenetek', leiras: 'Nyolc rajzolt jelenet egy léptékben, nappal és éjjel (a tabló G1-e).', ful: 'elemek-c' },
+        { id: 'cd-g1', nev: 'Jelölt helyőrző és fotó-forgatókönyv', leiras: 'A helyőrző nem utánoz fotót; a nyolc jelenet forgatókönyve a fotózáshoz (Claude Design G1).', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#G1' } },
+        { id: 'repo-g1', nev: 'Illusztrált jelenetek', leiras: 'Nyolc rajzolt jelenet egy léptékben, nappal és éjjel (a tabló G1-e).', ful: 'elemek-c', kep: { ful: 'elemek-c', szelektor: '#v-G1' } },
         { id: 'mindketto', nev: 'Mindkettő', leiras: 'Helyőrző a rácsban, illusztráció a kiemelt helyeken.', ful: 'elemek-c' },
       ],
       ajanlott: 'cd-g1',
@@ -173,8 +173,8 @@ export function dontesek(iranyok = []) {
       cim: 'Piktogramok',
       kerdes: 'Melyik piktogramcsalád legyen?',
       opciok: [
-        { id: 'cd-g2', nev: 'Egy család a 9 munkatípushoz és a 6 termékhez', leiras: '24 px-es rács, 1,5 px-es vonal (Claude Design G2).', ful: 'cd-tablo' },
-        { id: 'repo-g2', nev: 'A tabló piktogramjai', leiras: 'Három stílusban (a tabló G2-e).', ful: 'elemek-c' },
+        { id: 'cd-g2', nev: 'Egy család a 9 munkatípushoz és a 6 termékhez', leiras: '24 px-es rács, 1,5 px-es vonal (Claude Design G2).', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#G2' } },
+        { id: 'repo-g2', nev: 'A tabló piktogramjai', leiras: 'Három stílusban (a tabló G2-e).', ful: 'elemek-c', kep: { ful: 'elemek-c', szelektor: '#v-G2' } },
       ],
       ajanlott: 'cd-g2',
       indok: 'Egy rendszer két külön készlet helyett; a „tervrajz” stílus a mérőszínnel rajzol.',
@@ -185,8 +185,8 @@ export function dontesek(iranyok = []) {
       kerdes: 'Mi legyen a szómárka, amíg nincs logó?',
       opciok: [
         { id: 'marad', nev: 'A mostani STILET • DEKOR', leiras: 'Tipografikus szómárka a választott irány címbetűjével.', ful: 'proto-c' },
-        { id: 'cd-g4', nev: 'Claude Design G4 (a–e)', leiras: 'Vágott fólia, méretvonal, neoncső, illesztőjel, SD monogram; a betűjelet a megjegyzésbe.', ful: 'cd-tablo' },
-        { id: 'repo-g4', nev: 'A tabló G4-e', leiras: 'Öt szómárka-irány; a változatot a megjegyzésbe.', ful: 'elemek-c' },
+        { id: 'cd-g4', nev: 'Claude Design G4 (a–e)', leiras: 'Vágott fólia, méretvonal, neoncső, illesztőjel, SD monogram; a betűjelet a megjegyzésbe.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#G4' } },
+        { id: 'repo-g4', nev: 'A tabló G4-e', leiras: 'Öt szómárka-irány; a változatot a megjegyzésbe.', ful: 'elemek-c', kep: { ful: 'elemek-c', szelektor: '#v-G4' } },
       ],
       ajanlott: 'marad',
       indok: 'A logó a megrendelő döntése; addig a mostani szómárka a legkevésbé köt meg.',
@@ -196,11 +196,11 @@ export function dontesek(iranyok = []) {
       cim: 'Mozgás',
       kerdes: 'Melyik legyen az oldal egyetlen megkomponált mozgása?',
       opciok: [
-        { id: 'neon', nev: 'A hero cégére bekapcsol', leiras: 'Egyszer, betöltéskor.', ful: 'proto-c' },
-        { id: 'szalag', nev: 'A mérőszalag kifut (H5)', leiras: 'Egyszer, betöltéskor.', ful: 'cd-tablo' },
-        { id: 'folia', nev: 'Fóliafelhordás (H-K2)', leiras: 'A simítólapát egyszer végighúz.', ful: 'cd-tablo' },
-        { id: 'gyomlalas', nev: 'Gyomlálás (H-K3)', leiras: 'A felesleg egyszer lehúzódik.', ful: 'cd-tablo' },
-        { id: 'pecset', nev: 'Pecsétek (F-K1)', leiras: 'Görgetéskor egyszer lecsapódnak.', ful: 'cd-tablo' },
+        { id: 'neon', nev: 'A hero cégére bekapcsol', leiras: 'Egyszer, betöltéskor.', ful: 'proto-c', kep: { ful: 'proto-c' } },
+        { id: 'szalag', nev: 'A mérőszalag kifut (H5)', leiras: 'Egyszer, betöltéskor.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H5' } },
+        { id: 'folia', nev: 'Fóliafelhordás (H-K2)', leiras: 'A simítólapát egyszer végighúz.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H-K2' } },
+        { id: 'gyomlalas', nev: 'Gyomlálás (H-K3)', leiras: 'A felesleg egyszer lehúzódik.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#H-K3' } },
+        { id: 'pecset', nev: 'Pecsétek (F-K1)', leiras: 'Görgetéskor egyszer lecsapódnak.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#F-K1' } },
         { id: 'nincs', nev: 'Nincs mozgás', leiras: 'Csak a finom átmenetek maradnak.', ful: 'proto-b' },
       ],
       ajanlott: 'neon',
@@ -211,7 +211,7 @@ export function dontesek(iranyok = []) {
       cim: 'Pénztár, rendelés állapota, referencia-aloldal',
       kerdes: 'Ezek legyenek a kiindulás (Claude Design O1–O3)?',
       opciok: [
-        { id: 'igen', nev: 'Igen, ezekből indulunk', leiras: 'A brief rendelési folyamatát követik; a „Most még nem fizet” a gomb fölött áll.', ful: 'cd-tablo' },
+        { id: 'igen', nev: 'Igen, ezekből indulunk', leiras: 'A brief rendelési folyamatát követik; a „Most még nem fizet” a gomb fölött áll.', ful: 'cd-tablo', kep: { ful: 'cd-tablo', szelektor: '#O1' } },
         { id: 'mas', nev: 'Mást szeretnék', leiras: 'Írd le a megjegyzésben, mit.', ful: 'cd-tablo' },
       ],
       ajanlott: 'igen',
@@ -222,24 +222,79 @@ export function dontesek(iranyok = []) {
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function opcio(dontes, o) {
+/** The type of each font pair, for the live samples (loaded from Google Fonts; fallbacks offline). */
+const BETUPAROK = {
+  '2c': { cim: "'Bricolage Grotesque'", cimStilus: "font-weight:700;font-variation-settings:'opsz' 96,'wdth' 80", szoveg: "'Hanken Grotesk'", mono: "'Geist Mono'" },
+  '2e': { cim: "'Big Shoulders Display'", cimStilus: 'font-weight:800;text-transform:uppercase', szoveg: "'Archivo'", mono: "'JetBrains Mono'" },
+  '2f': { cim: "'Bodoni Moda'", cimStilus: "font-weight:400;font-variation-settings:'opsz' 20", szoveg: "'Schibsted Grotesk'", mono: "'IBM Plex Mono'" },
+  '2a': { cim: "'Archivo'", cimStilus: "font-weight:800;font-variation-settings:'wdth' 62;text-transform:uppercase", szoveg: "'Archivo'", mono: "'JetBrains Mono'" },
+  '2b': { cim: "'Instrument Serif'", cimStilus: 'font-weight:400', szoveg: "'Instrument Sans'", mono: "'IBM Plex Mono'" },
+  '2d': { cim: "'Newsreader'", cimStilus: "font-weight:500;font-variation-settings:'opsz' 48", szoveg: "'Schibsted Grotesk'", mono: "'IBM Plex Mono'" },
+};
+const BETUK_HREF =
+  'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Big+Shoulders+Display:wght@700;800&family=Bodoni+Moda:opsz,wght@6..96,400..700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400..600&family=Schibsted+Grotesk:wght@400..700&display=swap';
+const ROZSA = '#FF2E8A';
+
+/** A live sample for the choices a picture would not show well: colours, type, corners, light, button. */
+function elominta(dontes, o) {
+  const gomb = (stilus) => `<span class="demo__gomb" style="${stilus}">Ajánlatkérés</span>`;
+  switch (dontes.id) {
+    case 'rozsaszin':
+      return `<span class="demo"><span class="demo__marka" style="color:${esc(o.szin)}">STILET • DEKOR</span>${gomb(`background:${esc(o.szin)}`)}</span>`;
+    case 'meroszin':
+      return `<span class="demo"><span class="demo__meret" style="color:${esc(o.szin)};border-color:${esc(o.szin)}">2 000 mm</span></span>`;
+    case 'betupar': {
+      const b = BETUPAROK[o.id];
+      if (!b) return '';
+      return (
+        '<span class="demo demo--betu">' +
+        `<span style="font-family:${b.cim};${b.cimStilus};font-size:22px;line-height:1.05">Kiszállunk, felmérjük, felszereljük.</span>` +
+        `<span style="font-family:${b.szoveg}">Árvíztűrő tükörfúrógép, ŐŰ</span>` +
+        `<span style="font-family:${b.mono};font-size:12.5px">12 990 Ft · 85×200 cm · 2,00 m²</span>` +
+        '</span>'
+      );
+    }
+    case 'sarok':
+      return `<span class="demo"><span class="demo__kartya" style="border-radius:${Number(o.id) + 4}px">${gomb(`background:${ROZSA};border-radius:${esc(o.id)}px`)}</span></span>`;
+    case 'feny': {
+      const fenyes = o.id !== 'nincs';
+      const ceger = fenyes ? `color:#ffe6f1;text-shadow:0 0 3px ${ROZSA},0 0 12px ${ROZSA},0 0 30px ${ROZSA}` : `color:${ROZSA}`;
+      const cim = o.id === 'cimek' ? `text-shadow:0 0 10px ${ROZSA}` : '';
+      const fenygomb = fenyes ? `;box-shadow:0 0 0 1px ${ROZSA}8c,0 0 22px -4px ${ROZSA}bf` : '';
+      return `<span class="demo"><span class="demo__cim" style="${cim}">Kiszállunk</span><span class="demo__ceger" style="${ceger}">Stilet</span>${gomb(`background:${ROZSA}${fenygomb}`)}</span>`;
+    }
+    case 'gomb':
+      return `<span class="demo">${gomb(o.id === 'rozsa' ? `background:${ROZSA}` : 'background:#ece8df;color:#0b0b0a')}</span>`;
+    default:
+      return '';
+  }
+}
+
+function opcio(dontes, o, kepek) {
   const ajanlott = o.id === dontes.ajanlott;
   const minta = o.szin ? `<span class="minta" style="background:${esc(o.szin)}" aria-hidden="true"></span>` : '';
+  const kep = kepek.get(`${dontes.id}/${o.id}`);
+  const demo = kep ? '' : elominta(dontes, o);
+  const vizual = kep
+    ? `<span class="op__vizual"><img src="${kep}" alt="Kép: ${esc(o.nev)}" loading="lazy" decoding="async"></span>`
+    : demo
+      ? `<span class="op__vizual op__vizual--demo" aria-hidden="true">${demo}</span>`
+      : '';
   const megnez = o.ful ? `<a class="megnez" href="#${esc(o.ful)}" target="_top">Megnézem<span class="sr"> (${esc(o.nev)})</span> →</a>` : '';
   return (
     `<div class="op${ajanlott ? ' op--ajanlott' : ''}">` +
-    `<label><input type="radio" name="${esc(dontes.id)}" value="${esc(o.id)}" data-nev="${esc(o.nev)}">` +
+    `<label>${vizual}<input type="radio" name="${esc(dontes.id)}" value="${esc(o.id)}" data-nev="${esc(o.nev)}">` +
     `<span class="op__fej">${minta}<b>${esc(o.nev)}</b>${ajanlott ? '<span class="jel">Ajánlott</span>' : ''}</span>` +
     `<span class="op__leiras">${esc(o.leiras)}</span></label>${megnez}</div>`
   );
 }
 
-function blokk(dontes, sorszam) {
+function blokk(dontes, sorszam, kepek) {
   return (
     `<fieldset data-dontes="${esc(dontes.id)}" data-cim="${esc(dontes.cim)}">` +
     `<legend><span class="sorszam">${sorszam}</span> ${esc(dontes.cim)}</legend>` +
     `<p class="kerdes">${esc(dontes.kerdes)}</p>` +
-    `<div class="opciok">${dontes.opciok.map((o) => opcio(dontes, o)).join('')}</div>` +
+    `<div class="opciok">${dontes.opciok.map((o) => opcio(dontes, o, kepek)).join('')}</div>` +
     `<p class="indok"><b>Ajánlásunk:</b> ${esc(dontes.opciok.find((o) => o.id === dontes.ajanlott)?.nev ?? '')}. ${esc(dontes.indok)}</p>` +
     '</fieldset>'
   );
@@ -257,7 +312,18 @@ fieldset { margin: 22px 0 0; padding: 18px 18px 14px; border: 1px solid var(--li
 legend { padding: 0 6px; font-size: 18px; font-weight: 700; }
 .sorszam { display: inline-grid; place-items: center; width: 26px; height: 26px; margin-right: 4px; border-radius: 50%; background: var(--line); font-size: 13px; }
 .kerdes { margin: 0 0 12px; color: var(--muted); }
-.opciok { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.opciok { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.op__vizual { grid-column: 1 / -1; display: block; margin: -12px -12px 4px; overflow: hidden; border-bottom: 1px solid var(--line); border-radius: 8px 8px 0 0; background: #050506; }
+.op__vizual img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+.op__vizual--demo { padding: 16px 14px; }
+.demo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; min-height: 70px; color: #f3f0ea; }
+.demo--betu { flex-direction: column; align-items: flex-start; gap: 6px; }
+.demo__marka { font: 800 20px/1 system-ui, sans-serif; letter-spacing: .08em; }
+.demo__gomb { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 6px; color: #0a0a0b; font: 700 14px/1 system-ui, sans-serif; }
+.demo__meret { display: inline-block; min-width: 180px; padding: 0 0 4px; border: 1.5px solid; border-top: 0; text-align: center; font: 500 13px/1 ui-monospace, monospace; }
+.demo__kartya { display: inline-flex; padding: 14px; border: 1px solid var(--line); background: var(--card); }
+.demo__ceger { font: 700 30px/1 system-ui, sans-serif; }
+.demo__cim { font: 800 22px/1 system-ui, sans-serif; }
 .op { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
 .op--ajanlott { border-color: color-mix(in oklab, var(--brand) 55%, var(--line)); }
 .op:has(input:checked) { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand); }
@@ -331,21 +397,23 @@ const SZKRIPT = `
 `;
 
 /** The decision sheet as a full document. */
-export function dontolapDokumentum({ dontesek: lista, generalva }) {
+export function dontolapDokumentum({ dontesek: lista, generalva, kepek = new Map() }) {
   return `<!doctype html>
 <html lang="hu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Döntőlap – Stilet Dekor arculat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="${BETUK_HREF}">
 <style>${STILUS}</style>
 </head>
 <body>
 <main>
 <h1>Döntőlap: a végleges arculat</h1>
-<p class="bev">Nézd át a füleket (prototípus A, B és C irányban, tabló keverővel, teljes irányok, elemek), aztán jelöld be itt, mit választasz. Minden pontnál ott az ajánlásunk és az indoka; a „Megnézem” a megfelelő fülre visz. <b>Az ajánlás javaslat, a döntés a tiéd és a megrendelőé.</b> Generálva: ${esc(generalva)}.</p>
+<p class="bev">Nézd át a füleket (prototípus A, B és C irányban, tabló keverővel, teljes irányok, elemek), aztán jelöld be itt, mit választasz. Minden opciónál ott a látványterv képe vagy egy élő minta, az ajánlásunk és az indoka; a „Megnézem” a teljes tervre visz. A képek a generáláskor készültek a fülek tartalmából (a Claude Design tabló a keverő alapállásában, C irányban). <b>Az ajánlás javaslat, a döntés a tiéd és a megrendelőé.</b> Generálva: ${esc(generalva)}.</p>
 <form>
-${lista.map((d, i) => blokk(d, i + 1)).join('\n')}
+${lista.map((d, i) => blokk(d, i + 1, kepek)).join('\n')}
 <fieldset><legend>Megjegyzés</legend>
 <p class="kerdes">Bármi, ami a jelölésekből nem derül ki (például: „a C, de a B betűivel”, „G4 c”).</p>
 <label class="sr" for="megjegyzes">Megjegyzés</label>

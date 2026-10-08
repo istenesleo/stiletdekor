@@ -17,8 +17,12 @@ megnyílik, felül gombokkal váltható, asztali vagy 390 px-es mobilnézetben. 
 
 - **Döntőlap** (az első): pontonként a végleges arculat (irány, márkaszín, betűpár, sarkok, fény, fő gomb,
   mérőszín, hero, szolgáltatások, folyamat, referenciák, képek, piktogramok, szómárka, mozgás, pénztár és
-  társai), mindegyiknél az ajánlásunkkal és az indokkal, „Megnézem” linkkel a megfelelő fülre. Böngészőben a
-  jelölésekből másolható összegzés lesz a chatbe, és a böngésző megjegyzi őket (`scripts/dontolap.mjs`).
+  társai), mindegyiknél az ajánlásunkkal és az indokkal, „Megnézem” linkkel a megfelelő fülre. Minden opciónál
+  ott a látványterv **képe**, a generáláskor fej nélküli Chromiummal fotózva a fülek tartalmáról
+  (`scripts/kepek.mjs`, `playwright-core` 1.62.0 a gépen lévő chromium-1234-gyel, ha nincs, az Edge-dzsel); a
+  színeknél, a betűpároknál, a sarkoknál, a fénynél és a gombnál élő minta. A képek a OneDrive-előnézetben is
+  látszanak. Böngészőben a jelölésekből másolható összegzés lesz a chatbe, és a böngésző megjegyzi őket
+  (`scripts/dontolap.mjs`).
 - **Prototípus C, A és B irányban, Tabló + keverő, Design system, Komponensek**: a Claude Design fájljai
   (`design/claude-design/`, elemzésük ott a README-ben). JavaScriptet és internetet igényelnek (a React és a
   Babel az unpkg-ről jön).

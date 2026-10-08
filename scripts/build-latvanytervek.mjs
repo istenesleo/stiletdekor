@@ -7,6 +7,7 @@ import { build as esbuild } from 'esbuild';
 import { VARIANTS } from '../src/tablo/variants.ts';
 import { claudeDesignDokumentum } from './claude-design.mjs';
 import { dontesek, dontolapDokumentum } from './dontolap.mjs';
+import { kepKeszites, kepTerv } from './kepek.mjs';
 import { beagyazas, CD_LINKEK, kapcsoloFajl, mockupDokumentum, oldalKiigazitasa, tervLista } from './latvanytervek.mjs';
 
 const PORT = 8790;
@@ -66,11 +67,11 @@ function leallitas(szerver) {
   else szerver.kill('SIGTERM');
 }
 
-console.log('1/3 Build…');
+console.log('1/4 Build…');
 const build = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: true });
 if (build.status !== 0) process.exit(build.status ?? 1);
 
-console.log(`2/3 Helyi szerver: ${BASE}`);
+console.log(`2/4 Helyi szerver: ${BASE}`);
 const szerver = spawn('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', String(PORT)], {
   shell: true,
   stdio: 'ignore',
@@ -78,21 +79,24 @@ const szerver = spawn('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', 
 
 try {
   await varakozas(Date.now() + 120_000);
-  console.log('3/3 Tervek összegyűjtése…');
-  const tervek = [];
+  console.log('3/4 Tervek összegyűjtése…');
   const lista = tervLista(VARIANTS);
   const generalva = new Date().toISOString().slice(0, 10);
-  for (const terv of lista) {
-    const html = terv.dontolap
-      ? dontolapDokumentum({ dontesek: dontesek(lista.filter((t) => t.irany)), generalva })
-      : terv.claudeDesign
-        ? await claudeDesign(terv.claudeDesign)
-        : terv.fajl
-          ? mockupDokumentum(await readFile(terv.fajl, 'utf8'))
-          : oldalKiigazitasa(await beagyazas(await szoveg(terv.utvonal), { szoveg, csomag }));
-    tervek.push({ ...terv, html });
+  const dokumentumok = new Map();
+  for (const terv of lista.filter((t) => !t.dontolap)) {
+    const html = terv.claudeDesign
+      ? await claudeDesign(terv.claudeDesign)
+      : terv.fajl
+        ? mockupDokumentum(await readFile(terv.fajl, 'utf8'))
+        : oldalKiigazitasa(await beagyazas(await szoveg(terv.utvonal), { szoveg, csomag }));
+    dokumentumok.set(terv.id, html);
     console.log(`   ${terv.cim} (${Math.round(html.length / 1024)} kB)`);
   }
+  console.log('4/4 Képek a Döntőlapra…');
+  const valasztasok = dontesek(lista.filter((t) => t.irany));
+  const kepek = await kepKeszites(kepTerv(valasztasok), dokumentumok);
+  dokumentumok.set('dontolap', dontolapDokumentum({ dontesek: valasztasok, generalva, kepek }));
+  const tervek = lista.map((terv) => ({ ...terv, html: dokumentumok.get(terv.id) }));
   const fajl = kapcsoloFajl(tervek, generalva);
   await writeFile(KIMENET, fajl, 'utf8');
   console.log(`Kész: ${KIMENET} (${Math.round(Buffer.byteLength(fajl) / 1024)} kB)`);
