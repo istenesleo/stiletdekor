@@ -279,3 +279,14 @@
   font-size: var(--text-sm);
   text-decoration: none;
 }
+
+/* Full-direction page: the sketch fills at least the window, so no black strip shows under a short one. */
+.tb-full {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.tb-full > div {
+  flex: 1;
+}

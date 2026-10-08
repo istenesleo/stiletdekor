@@ -1,0 +1,380 @@
+---
+// X6 · Cégérfestő: cream enamel signs, double frames, painted pink pinstripes and shadowed letters.
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Betuk3d from '../grafika/jelenetek/Betuk3d.astro';
+import { TARTALOM, arSzam } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, bevezeto, belepok, csoportok, arak, gyartasiIdo, folyamat } = TARTALOM;
+const jelenet = JELENETEK.find((j) => j.id === 'betuk-3d')!;
+---
+
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Pacifico&family=DM+Sans:wght@400;700&display=swap"
+/>
+<div class="x6">
+  <div class="x6__in">
+    <section class="x6__sign" aria-labelledby="x6-cim">
+      <p class="x6__script">Saját műhely · Budapest</p>
+      <p class="x6__name notranslate">Stilet Dekor</p>
+      <H id="x6-cim" class="x6__h">{szlogen}</H>
+      <p class="x6__lead">{bevezeto}</p>
+      <div class="x6__entries">
+        {
+          belepok.map((b) => (
+            <a href={b.href}>
+              <strong>{b.cim}</strong>
+              <span>{b.leiras}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="x6__sec" aria-labelledby="x6-szolg">
+      <Hk id="x6-szolg" class="x6__ribbon">Szolgáltatásaink</Hk>
+      <div class="x6__plaques">
+        {
+          csoportok.map((g) => (
+            <div class="x6__plaque">
+              <p class="x6__ptitle">{g.nev}</p>
+              <ul>
+                {g.elemek.map((e) => (
+                  <li>
+                    {e.nev}
+                    {e.online && <span class="x6__online"> · online ár</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="x6__sec" aria-labelledby="x6-arak">
+      <Hk id="x6-arak" class="x6__ribbon">Árak</Hk>
+      <ul class="x6__tags">
+        {
+          arak.map((a) => (
+            <li class="x6__tag">
+              <span class="x6__tname">{a.termek}</span>
+              <span class="x6__tprice">{arSzam(a)}</span>
+              <span class="x6__muted">{a.egyseg}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="x6__note">Bruttó, helyőrző árak. Gyártási idő: {gyartasiIdo}.</p>
+    </section>
+
+    <section class="x6__sec" aria-labelledby="x6-folyamat">
+      <Hk id="x6-folyamat" class="x6__ribbon">Így készül</Hk>
+      <ol class="x6__steps">
+        {
+          folyamat.map((l, i) => (
+            <li>
+              <span class="x6__num">{i + 1}.</span>
+              <strong>{l.cim}</strong>
+              <span class="x6__muted">{l.leiras}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <div class="x6__ref">
+      <Betuk3d info={jelenet} uid="x6-sc" />
+    </div>
+
+    <footer class="x6__sign x6__sign--small">
+      <p class="x6__script">Keressen bizalommal</p>
+      <p class="x6__phone"><a href={ceg.phone.href}>{ceg.phone.display}</a></p>
+      <p class="x6__contact">
+        <a href={`mailto:${ceg.email}`}>{ceg.email}</a>
+        <span>{ceg.address}</span>
+        <span>{ceg.openingHours} (helyőrző)</span>
+      </p>
+    </footer>
+  </div>
+</div>
+
+<style>
+  .x6 {
+    --color-bg: #efe3c6;
+    --color-surface: #f8f0de;
+    --color-surface-raised: #e6d6b2;
+    --color-line: #a98f5d;
+    --color-text: #1b1612;
+    --color-text-muted: #4a3f33;
+    --color-measure: #4a3f33;
+    --color-focus: #1b1612;
+    container: x6 / inline-size;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .x6 a {
+    color: inherit;
+  }
+
+  .x6__in {
+    display: grid;
+    gap: 3rem;
+    padding: clamp(1rem, 4cqi, 3rem);
+  }
+
+  .x6__sign {
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    padding: clamp(1.75rem, 6cqi, 4rem) clamp(1.25rem, 5cqi, 4rem);
+    border: 6px double var(--color-text);
+    border-radius: 18px;
+    background: var(--color-surface);
+    box-shadow:
+      inset 0 0 0 10px var(--color-surface),
+      inset 0 0 0 12px var(--color-brand),
+      6px 8px 0 var(--color-text);
+    text-align: center;
+  }
+
+  .x6__script {
+    margin: 0;
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(1.125rem, 3.5cqi, 1.75rem);
+  }
+
+  .x6__name {
+    margin: 0;
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-size: clamp(2.75rem, 12cqi, 8rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 0 var(--color-brand);
+  }
+
+  .x6__h {
+    margin: 0;
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 4.5cqi, 2.75rem);
+    line-height: 1.1;
+  }
+
+  .x6__lead {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .x6__entries {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .x6__entries a {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.8rem 1.4rem;
+    border: 2px solid var(--color-text);
+    border-radius: 999px;
+    background: var(--color-bg);
+    text-decoration: none;
+  }
+
+  .x6__entries a:first-child {
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+  }
+
+  .x6__entries a:hover {
+    box-shadow: 3px 3px 0 var(--color-text);
+  }
+
+  .x6__entries strong {
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+  }
+
+  .x6__entries span {
+    font-size: 0.8125rem;
+  }
+
+  .x6__sec {
+    display: grid;
+  }
+
+  .x6__ribbon {
+    justify-self: center;
+    width: fit-content;
+    margin: 0 0 1.5rem;
+    padding: 0.4rem 2.25rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
+  }
+
+  .x6__plaques,
+  .x6__tags,
+  .x6__steps {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x6__plaque {
+    padding: 1.25rem 1.5rem;
+    border: 3px solid var(--color-text);
+    border-radius: 12px;
+    background: var(--color-surface);
+    box-shadow:
+      inset 0 0 0 5px var(--color-surface),
+      inset 0 0 0 6.5px var(--color-brand);
+  }
+
+  .x6__plaque ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x6__plaque li {
+    padding-block: 0.15rem;
+  }
+
+  .x6__plaque li::before {
+    content: '✦ ' / '';
+    color: var(--color-text-muted);
+  }
+
+  .x6__ptitle {
+    margin: 0 0 0.5rem;
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-size: 1.5rem;
+  }
+
+  .x6__online,
+  .x6__muted,
+  .x6__note {
+    color: var(--color-text-muted);
+  }
+
+  .x6__tag {
+    position: relative;
+    display: grid;
+    gap: 0.1rem;
+    padding: 1.25rem 1.5rem 1.25rem 3rem;
+    border: 2px solid var(--color-text);
+    border-radius: 6px 18px 18px 6px;
+    background: var(--color-surface);
+  }
+
+  .x6__tag::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 1.1rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  .x6__tname {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.25rem;
+  }
+
+  .x6__tprice {
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-size: clamp(2rem, 6cqi, 3rem);
+    line-height: 1;
+  }
+
+  .x6__note {
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+
+  .x6__steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.1rem 1rem;
+    padding: 1rem 0.5rem;
+    border-block-end: 2px dotted var(--color-line);
+  }
+
+  .x6__num {
+    grid-row: span 2;
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-size: 2.5rem;
+    line-height: 1;
+    text-shadow: 2px 2px 0 var(--color-brand);
+  }
+
+  .x6__steps strong {
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.375rem;
+  }
+
+  .x6__ref {
+    padding: 1rem;
+    border: 6px double var(--color-text);
+    border-radius: 18px;
+    background: var(--color-surface);
+  }
+
+  .x6__phone {
+    margin: 0;
+    font-family: 'Abril Fatface', Georgia, serif;
+    font-size: clamp(2rem, 7cqi, 3.5rem);
+  }
+
+  .x6__phone a {
+    text-decoration: none;
+  }
+
+  .x6__contact {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container x6 (min-width: 720px) {
+    .x6__plaques,
+    .x6__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x6__tags {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .x6__ref {
+      max-width: 44rem;
+      justify-self: center;
+    }
+  }
+</style>

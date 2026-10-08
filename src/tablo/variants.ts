@@ -76,7 +76,7 @@ export const VARIANTS: readonly Variant[] = [
     tokenProposals: ['betonszürke alap', 'DM Sans, DM Mono'],
   },
   {
-    id: 'X5', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X5Mintakonyv.astro', page: 'x5',
+    id: 'X5', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X5Mintakonyv.astro', page: 'x5',
     name: 'Mintakönyv',
     idea: 'Lapozós anyagkatalógus kraftpapíron, regiszterfülekkel; minden szolgáltatás egy mintakártya.',
     novelty: 'Tárgyszerű böngészés; a navigáció a könyv fülei.',
@@ -84,7 +84,7 @@ export const VARIANTS: readonly Variant[] = [
     tokenProposals: ['kraftpapír alap', 'Fraunces, DM Mono'],
   },
   {
-    id: 'X6', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X6Cegerfesto.astro', page: 'x6',
+    id: 'X6', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X6Cegerfesto.astro', page: 'x6',
     name: 'Cégérfestő',
     idea: 'Krémszínű zománctábla-világ: kettős keretek, festett rózsaszín díszcsík, árnyékolt betűk, ártáblák.',
     novelty: 'A kézműves cégérfestés hagyománya, a műhely gyökere.',

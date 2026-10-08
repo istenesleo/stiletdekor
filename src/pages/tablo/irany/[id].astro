@@ -15,6 +15,8 @@ if (!boardAvailable(env.PUBLIC_SITE_ENV) || !variant) {
 
 <Base title={`${variant.id} ${variant.name} – Tabló`} description={variant.idea}>
   <h1 class="tb-sr">{variant.id} · {variant.name}</h1>
-  <Variant id={variant.id} fejlec={2} />
+  <div class="tb-full">
+    <Variant id={variant.id} fejlec={2} />
+  </div>
   <a class="tb-back" href={`/tablo#v-${variant.id}`}>← Vissza a tablóhoz</a>
 </Base>

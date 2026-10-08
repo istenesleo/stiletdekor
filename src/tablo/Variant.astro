@@ -9,6 +9,8 @@ import X1Arlista from './irany/X1Arlista.astro';
 import X2Tervrajz from './irany/X2Tervrajz.astro';
 import X3Rozsaszin from './irany/X3Rozsaszin.astro';
 import X4Eszkoz from './irany/X4Eszkoz.astro';
+import X5Mintakonyv from './irany/X5Mintakonyv.astro';
+import X6Cegerfesto from './irany/X6Cegerfesto.astro';
 
 interface Props {
   id: string;
@@ -23,6 +25,8 @@ const { id, fejlec = 4 } = Astro.props;
 {id === 'X2' && <X2Tervrajz fejlec={fejlec} />}
 {id === 'X3' && <X3Rozsaszin fejlec={fejlec} />}
 {id === 'X4' && <X4Eszkoz fejlec={fejlec} />}
+{id === 'X5' && <X5Mintakonyv fejlec={fejlec} />}
+{id === 'X6' && <X6Cegerfesto fejlec={fejlec} />}
 {id === 'G1' && <G1Jelenetek />}
 {id === 'G2' && <G2Piktogramok />}
 {id === 'G3' && <G3Motivumok />}
