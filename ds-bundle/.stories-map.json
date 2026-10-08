@@ -1,0 +1,418 @@
+{
+  "global": "StiletUI",
+  "pkg": "@stiletdekor/ui",
+  "pkgDir": "/home/user/stiletdekor/dist-ui",
+  "extraEntries": [],
+  "exported": [
+    "Badge",
+    "Button",
+    "ButtonLink",
+    "CartLine",
+    "CategoryTile",
+    "Checkbox",
+    "CheckoutSection",
+    "ChipGroup",
+    "ContactBlock",
+    "DimensionLine",
+    "DiscountHint",
+    "Divider",
+    "Drawer",
+    "Field",
+    "FileDrop",
+    "FileList",
+    "FitPicker",
+    "Icon",
+    "IconButton",
+    "JobTypePicker",
+    "LeadTimeNote",
+    "MaterialPicker",
+    "NavLink",
+    "Notice",
+    "OptionRow",
+    "OrderStatusBadge",
+    "OrderSubmit",
+    "PriceBreakdown",
+    "QuantityStepper",
+    "ReadinessLight",
+    "ScalePreview",
+    "SectionHeader",
+    "SegmentedChoice",
+    "SiteFooter",
+    "SiteHeader",
+    "SizeFields",
+    "Stepper",
+    "SuccessPanel",
+    "SurfaceList",
+    "Switch",
+    "TextField",
+    "TextLink",
+    "ThemeRoot",
+    "UnitField",
+    "Wordmark"
+  ],
+  "storybookStatic": null,
+  "keyRecipe": 7,
+  "cfgSliceGlobal": "3848c623559b00d1798df60cceedcae8824968ebf92cff240b0a8003b5794967",
+  "components": [
+    {
+      "name": "Badge",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "57bd34e181d4f9cb",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Button",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "58b8bcea46350cd5",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ButtonLink",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "76789720bc177522",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "CartLine",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "3f7742bdf1ecfd34",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "CategoryTile",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "2342e2f562d1b471",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Checkbox",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "78933006b6c6bec9",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "CheckoutSection",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "a39b680db4c584b5",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ChipGroup",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "8c098231ee15b722",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ContactBlock",
+      "group": "content",
+      "srcSha": null,
+      "sourceKey": "cbf99020d9a33457",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "DimensionLine",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "537923675e1098bb",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "DiscountHint",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "f1bdcbfa9b0dec33",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Divider",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "3bed9507dc6d02d4",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Drawer",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "f2e817f30cf2c31f",
+      "cfgSlice": "4033cd22dfb0407cee0fb7d0dc06a8874f68cf614cbcb0c5048545aaf64427c4",
+      "stories": []
+    },
+    {
+      "name": "Field",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "edc7386aa3a83bd0",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "FileDrop",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "189e81dea5db1fda",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "FileList",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "627abb68a34df1d9",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "FitPicker",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "c0fb4ac4e57016bf",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Icon",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "c2d53d23b58f3dcb",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "IconButton",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "2d1f257cdd25e4f5",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "JobTypePicker",
+      "group": "quote",
+      "srcSha": null,
+      "sourceKey": "6f3713915c5d46d7",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "LeadTimeNote",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "96a169ce4bd30025",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "MaterialPicker",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "449b60eec22be418",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "NavLink",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "ea0796bd7a7d4821",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Notice",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "5f7fa7358ff75270",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "OptionRow",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "3d647c06b526759c",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "OrderStatusBadge",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "f987b8f428ff55de",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "OrderSubmit",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "2575b114dffc2b4d",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "PriceBreakdown",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "b79abb8c957658bc",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "QuantityStepper",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "984eb601da24a652",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ReadinessLight",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "af6e975b8b529b80",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ScalePreview",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "caeb91a308ea29b1",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SectionHeader",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "0680671866df6146",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SegmentedChoice",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "5f900c49bad918d8",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SiteFooter",
+      "group": "content",
+      "srcSha": null,
+      "sourceKey": "93247506cf87a7ae",
+      "cfgSlice": "f13d08b2588950552f2892132889eb552885039e4557341cf0543414bf265da1",
+      "stories": []
+    },
+    {
+      "name": "SiteHeader",
+      "group": "content",
+      "srcSha": null,
+      "sourceKey": "64ade5f2e6c75c99",
+      "cfgSlice": "f778563ec4e7e9122b2838698f938bdc630939433ee7794ee48b0b860fcbdb08",
+      "stories": []
+    },
+    {
+      "name": "SizeFields",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "914f83ac10da4a8e",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Stepper",
+      "group": "quote",
+      "srcSha": null,
+      "sourceKey": "8e99bf76adbb9018",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SuccessPanel",
+      "group": "quote",
+      "srcSha": null,
+      "sourceKey": "2d5b71da178de8ad",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "SurfaceList",
+      "group": "shop",
+      "srcSha": null,
+      "sourceKey": "d21809c47a477f59",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Switch",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "28db322363c61bdc",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "TextField",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "ad8a0c753986e4e3",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "TextLink",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "41d6fbb77b745f95",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "ThemeRoot",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "691de7bbaf9df0b8",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "UnitField",
+      "group": "forms",
+      "srcSha": null,
+      "sourceKey": "fd73ed5bc42b3654",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    },
+    {
+      "name": "Wordmark",
+      "group": "basics",
+      "srcSha": null,
+      "sourceKey": "f0e0b7e1fe1b835c",
+      "cfgSlice": "5ff899b099eb6923833804cda955efdd69101524bec86f67dac5537cd81802e8",
+      "stories": []
+    }
+  ]
+}
