@@ -10,6 +10,14 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
 | `mockups/` | A két kattintható látványterv (önálló HTML, böngészőben megnyitható). A rövid kezdőlap mellett az aloldalak is benne vannak: `#/webshop`, `#/ajanlatkeres`, `#/referenciak`, `#/kapcsolat`. |
 | `mockups/mentes/` | Korábbi állapotok mentése. `2026-10-06-hosszu-szoveg/`: mindkét terv a kezdőlap szövegének rövidítése előtt. A dev oldalakon a `/mentes` címen látható. |
 
+## Arculati látványtervek: egy fájlban, váltóval
+
+Az `npm run latvanytervek` a projekt gyökerébe írja az **„Arculati látványtervek.html”** fájlt: dupla kattintással
+megnyílik, felül gombokkal (vagy a ← → nyilakkal) váltható a két látványterv (A, B), a hat teljes irány
+(X1–X6) és a kész arculati elemek (G1–G4, A és B irányban), asztali vagy 390 px-es mobilnézetben. A fájl a
+valódi kódból készül (build, helyi szerver, letöltés), ezért a tervek változása után újra kell generálni. Mivel
+generált, nem kerül a gitbe. A betűk a Google Fonts-ról töltődnek; internet nélkül tartalék betűkkel jelenik meg.
+
 ## Munkafolyamat a Claude Design-nal
 
 1. **GitHub-hozzáférés.** A repó privát, ezért a claude.ai-ban be kell kapcsolni a GitHub-integrációt

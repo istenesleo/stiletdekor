@@ -4,22 +4,30 @@ import Base from '@/layouts/Base.astro';
 import { SITE_THEMES, siteThemeOf } from '@/site/themes';
 import { boardAvailable } from '@/tablo/availability';
 import Frame from '@/tablo/Frame.astro';
+import { boardView } from '@/tablo/nezet';
 import Variant from '@/tablo/Variant.astro';
 import { LANE_LABELS, LANES, VARIANT_GROUPS, variantsOf } from '@/tablo/variants';
 import '@/tablo/tablo.css';
 
 // The variant board (docs/superpowers/specs/2026-10-07-tablo-design.md): alternative page elements and graphics
-// in either design direction (?tema=neon-muhely or ?tema=galeria-editorial). Dev sites only; production 404.
+// in either design direction (?tema=neon-muhely or ?tema=galeria-editorial); ?csoport, ?csak and ?beagyazott
+// narrow it (src/tablo/nezet.ts). Dev sites only; production 404.
 if (!boardAvailable(env.PUBLIC_SITE_ENV)) {
   return new Response(null, { status: 404 });
 }
 const requested = Astro.url.searchParams.get('tema');
 const theme = SITE_THEMES.find((t) => t.id === requested) ?? siteThemeOf(env.SITE_THEME);
+const view = boardView(Astro.url.searchParams);
+const groups = VARIANT_GROUPS.filter((g) => view.groups.includes(g.id));
+const listed = (group: (typeof groups)[number]['id'], lane: (typeof LANES)[number]) =>
+  variantsOf(group, lane).filter((v) => !view.onlyFinished || v.status === 'kesz');
 ---
 
 <Base title="Tabló – Stilet Dekor" description="Alternatív weblap-elemek és grafikák változatai." theme={theme.id}>
   <div class="tb-root">
-    <a class="tb-skip" href="#tablo-tartalom">Ugrás a változatokhoz</a>
+    {!view.embedded && <a class="tb-skip" href="#tablo-tartalom">Ugrás a változatokhoz</a>}
+    {
+      !view.embedded && (
     <header class="tb-bar">
       <p class="tb-bar__title">Tabló<span>{theme.label}</span></p>
       <nav aria-label="Design-irány">
@@ -39,14 +47,16 @@ const theme = SITE_THEMES.find((t) => t.id === requested) ?? siteThemeOf(env.SIT
         <span data-lane="kiserleti">{LANE_LABELS.kiserleti}</span>
       </p>
     </header>
+      )
+    }
     <main id="tablo-tartalom" tabindex="-1">
       <h1 class="tb-sr">Tabló: alternatív weblap-elemek és grafikák</h1>
       {
-        VARIANT_GROUPS.map((g) => (
+        groups.map((g) => (
           <section class="tb-group" id={g.id} aria-labelledby={`${g.id}-t`}>
             <h2 id={`${g.id}-t`}>{g.label}</h2>
             {LANES.map((lane) => {
-              const list = variantsOf(g.id, lane);
+              const list = listed(g.id, lane);
               return (
                 list.length > 0 && (
                   <div class="tb-lane">
