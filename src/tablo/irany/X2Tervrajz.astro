@@ -1,0 +1,398 @@
+---
+// X2 · Tervrajz-sorozat: the site as a set of blueprint sheets, each with a title block; pink only as a stamp.
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Ledfal from '../grafika/jelenetek/Ledfal.astro';
+import Rajzfej from './Rajzfej.astro';
+import { TARTALOM, arTeljes } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, bevezeto, belepok, csoportok, arak, gyartasiIdo, folyamat } = TARTALOM;
+const jelenet = JELENETEK.find((j) => j.id === 'ledfal')!;
+const BETUK = ['A', 'B', 'C', 'D'];
+---
+
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Space+Mono:wght@400;700&display=swap"
+/>
+<div class="x2">
+  <div class="x2__in">
+    <section class="x2__sheet x2__sheet--first" aria-labelledby="x2-cim">
+      <p class="x2__dim" aria-hidden="true">M 1:1</p>
+      <H id="x2-cim" class="x2__title">{szlogen}</H>
+      <p class="x2__lead">{bevezeto}</p>
+      <ol class="x2__callouts">
+        {
+          belepok.map((b, i) => (
+            <li>
+              <a href={b.href}>
+                <span class="x2__key">{BETUK[i]}</span>
+                <strong>{b.cim}</strong>
+                <span class="x2__muted">{b.leiras}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="x2__stamp">Saját műhely<br />Budapest</p>
+      <Rajzfej targy="Kezdőlap" lap="1/6" />
+    </section>
+
+    <section class="x2__sheet" aria-labelledby="x2-szolg">
+      <Hk id="x2-szolg" class="x2__h">Szolgáltatások</Hk>
+      <div class="x2__grid">
+        {
+          csoportok.map((g, i) => (
+            <div class="x2__detail">
+              <p class="x2__dname">
+                <span class="x2__key">{BETUK[i]}</span>
+                {g.nev}
+              </p>
+              <ul>
+                {g.elemek.map((e) => (
+                  <li>
+                    {e.nev}
+                    {e.online && <span class="x2__muted"> · online ár</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <Rajzfej targy="Szolgáltatások" lap="2/6" />
+    </section>
+
+    <section class="x2__sheet" aria-labelledby="x2-arak">
+      <Hk id="x2-arak" class="x2__h">Árak</Hk>
+      <table class="x2__table">
+        <thead>
+          <tr><th scope="col">Tétel</th><th scope="col">Bruttó ár</th></tr>
+        </thead>
+        <tbody>
+          {arak.map((a) => <tr><th scope="row">{a.termek}</th><td>{arTeljes(a)}</td></tr>)}
+          <tr><th scope="row">Gyártási idő</th><td>{gyartasiIdo}</td></tr>
+        </tbody>
+      </table>
+      <p class="x2__muted">Helyőrző árak; élesítés előtt a műhely véglegesíti.</p>
+      <Rajzfej targy="Árak" lap="3/6" />
+    </section>
+
+    <section class="x2__sheet" aria-labelledby="x2-folyamat">
+      <Hk id="x2-folyamat" class="x2__h">Folyamat</Hk>
+      <ol class="x2__flow">
+        {
+          folyamat.map((l, i) => (
+            <li>
+              <span class="x2__key">{i + 1}</span>
+              <strong>{l.cim}</strong>
+              <span class="x2__muted">{l.leiras}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <Rajzfej targy="Folyamat" lap="4/6" />
+    </section>
+
+    <section class="x2__sheet" aria-label="Referencia">
+      <Ledfal info={jelenet} uid="x2-sc" />
+      <Rajzfej targy="Referencia" lap="5/6" />
+    </section>
+
+    <section class="x2__sheet" aria-labelledby="x2-kapcsolat">
+      <Hk id="x2-kapcsolat" class="x2__h">Kapcsolat</Hk>
+      <dl class="x2__contact">
+        <div><dt>Telefon</dt><dd><a href={ceg.phone.href}>{ceg.phone.display}</a></dd></div>
+        <div><dt>E-mail</dt><dd><a href={`mailto:${ceg.email}`}>{ceg.email}</a></dd></div>
+        <div><dt>Műhely</dt><dd>{ceg.address}</dd></div>
+        <div><dt>Nyitvatartás</dt><dd>{ceg.openingHours} · helyőrző</dd></div>
+      </dl>
+      <Rajzfej targy="Kapcsolat" lap="6/6" />
+    </section>
+  </div>
+</div>
+
+<style>
+  .x2 {
+    --color-bg: #123a6a;
+    --color-surface: #164477;
+    --color-surface-raised: #1c4f88;
+    --color-line: #4a78ad;
+    --color-text: #eef4fb;
+    --color-text-muted: #b9cde4;
+    --color-measure: #eef4fb;
+    --color-focus: #ffffff;
+    container: x2 / inline-size;
+    background-color: var(--color-bg);
+    background-image:
+      linear-gradient(rgb(238 244 251 / 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(238 244 251 / 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--color-text);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  .x2 a {
+    color: inherit;
+  }
+
+  .x2__in {
+    display: grid;
+    gap: 2rem;
+    padding: clamp(1rem, 3cqi, 2.5rem);
+  }
+
+  .x2__sheet {
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 4cqi, 3rem);
+    padding-block-end: 6rem;
+    border: 2px solid var(--color-text);
+    outline: 1px solid var(--color-text);
+    outline-offset: -8px;
+  }
+
+  .x2__dim {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  .x2__dim::before,
+  .x2__dim::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .x2__title {
+    margin: 0;
+    font-size: clamp(2.25rem, 8cqi, 5.5rem);
+    font-weight: 700;
+    line-height: 1.08; /* room for Á, É, Ü accents on capitals */
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .x2__lead {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .x2__muted {
+    color: var(--color-text-muted);
+  }
+
+  .x2__sheet > p.x2__muted {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .x2__callouts,
+  .x2__flow,
+  .x2__detail ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x2__callouts {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .x2__callouts a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.1rem 1rem;
+    padding: 1rem;
+    border: 1px dashed var(--color-text);
+    text-decoration: none;
+  }
+
+  .x2__callouts a:hover,
+  .x2__callouts a:focus-visible {
+    border-style: solid;
+    background: var(--color-surface);
+  }
+
+  .x2__callouts strong {
+    font-size: 1.25rem;
+  }
+
+  .x2__callouts .x2__muted,
+  .x2__flow .x2__muted {
+    grid-column: 2;
+  }
+
+  .x2__key {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    margin-inline-end: 0.5rem;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .x2__callouts .x2__key,
+  .x2__flow .x2__key {
+    grid-row: span 2;
+  }
+
+  .x2__stamp {
+    justify-self: start;
+    margin: 0;
+    padding: 0.5rem 0.9rem;
+    border: 3px solid var(--color-brand);
+    color: var(--color-brand);
+    font-family: 'Space Mono', monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: uppercase;
+    transform: rotate(-6deg);
+  }
+
+  .x2__h {
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .x2__grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x2__detail {
+    padding: 1rem;
+    border: 1px solid var(--color-line);
+  }
+
+  .x2__dname {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .x2__detail li {
+    padding-block: 0.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.875rem;
+  }
+
+  .x2__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .x2__table th,
+  .x2__table td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-line);
+    text-align: start;
+  }
+
+  .x2__table td {
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  .x2__table thead th {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .x2__flow {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x2__flow li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    padding: 1rem;
+    border: 1px solid var(--color-line);
+  }
+
+  .x2__contact {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .x2__contact div {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) 1fr;
+    gap: 1rem;
+    padding-block: 0.4rem;
+    border-block-end: 1px solid var(--color-line);
+  }
+
+  .x2__contact dt {
+    color: var(--color-text-muted);
+  }
+
+  .x2__contact dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container x2 (min-width: 720px) {
+    .x2__grid,
+    .x2__flow,
+    .x2__callouts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x2__stamp {
+      position: absolute;
+      top: 1.75rem;
+      right: 1.75rem;
+    }
+
+    .x2__title {
+      padding-inline-end: 9rem;
+    }
+  }
+
+  @container x2 (min-width: 1100px) {
+    .x2__in {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x2__sheet--first {
+      grid-column: 1 / -1;
+    }
+  }
+</style>
