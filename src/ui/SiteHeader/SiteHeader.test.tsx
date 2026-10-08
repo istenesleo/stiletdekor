@@ -27,28 +27,29 @@ describe('SiteHeader', () => {
     expect(screen.queryByRole('button', { name: /Kosár/ })).toBeNull();
   });
 
-  it('toggles the mobile menu; Escape closes it and returns focus to the menu button', () => {
+  it('opens the mobile menu as a popover, without any script', () => {
     const { container } = render(<SiteHeader />);
     const button = screen.getByRole('button', { name: 'Menü' });
-    const panel = container.querySelector<HTMLElement>(`#${button.getAttribute('aria-controls')}`)!;
-    expect(button.getAttribute('aria-expanded')).toBe('false');
-    expect(panel.hidden).toBe(true);
-    fireEvent.click(button);
-    expect(button.getAttribute('aria-expanded')).toBe('true');
-    expect(panel.hidden).toBe(false);
-    const link = within(panel).getByRole('link', { name: 'Referenciák' });
-    link.focus();
-    fireEvent.keyDown(link, { key: 'Escape' });
-    expect(panel.hidden).toBe(true);
-    expect(document.activeElement).toBe(button);
+    const panel = container.querySelector<HTMLElement>(`#${button.getAttribute('popovertarget')}`)!;
+    expect(panel.getAttribute('popover')).toBe('auto');
+    // A closed popover is hidden from the accessibility tree, hence `hidden: true`.
+    expect(within(panel).getByRole('link', { name: 'Referenciák', hidden: true })).toBeTruthy();
+    expect(within(panel).getByRole('link', { name: 'Ajánlatkérés', hidden: true }).getAttribute('href')).toBe('/#ajanlat');
   });
 
-  it('closes the mobile menu when an item is chosen', () => {
+  it('closes the popover when an item is chosen, where scripts run', () => {
+    const { container } = render(<SiteHeader />);
+    const panel = container.querySelector<HTMLElement & { hidePopover: () => void }>('.sd-header__panel')!;
+    panel.hidePopover = vi.fn();
+    fireEvent.click(within(panel).getByRole('link', { name: 'Kapcsolat', hidden: true }));
+    expect(panel.hidePopover).toHaveBeenCalledOnce();
+  });
+
+  it('shows the menu open, as a plain panel, in previews', () => {
     const { container } = render(<SiteHeader defaultMenuOpen sticky={false} skipTo={null} />);
     const panel = container.querySelector<HTMLElement>('.sd-header__panel')!;
-    expect(panel.hidden).toBe(false);
-    fireEvent.click(within(panel).getByRole('link', { name: 'Kapcsolat' }));
-    expect(panel.hidden).toBe(true);
+    expect(panel.hasAttribute('popover')).toBe(false);
+    expect(screen.getByRole('banner').classList.contains('sd-header--menu-open')).toBe(true);
     expect(screen.queryByRole('link', { name: 'Ugrás a tartalomra' })).toBeNull();
     expect(screen.getByRole('banner').classList.contains('sd-header--sticky')).toBe(false);
   });

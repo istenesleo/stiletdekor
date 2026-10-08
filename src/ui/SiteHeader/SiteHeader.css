@@ -105,7 +105,24 @@
   border-bottom: 1px solid var(--color-line);
   background: var(--color-bg);
 }
-.sd-header__panel[hidden] {
+/* On a page the panel is a popover: it opens in the top layer, right under the header bar. */
+.sd-header__panel[popover] {
+  position: fixed;
+  inset: var(--layout-header-height) 0 auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-text);
+}
+.sd-header__panel[popover]:not(:popover-open) {
+  display: none;
+}
+/* The menu button shows a cross while the menu is open. */
+.sd-header:not(.sd-header--menu-open):not(:has(.sd-header__panel:popover-open)) .sd-header__close,
+.sd-header--menu-open .sd-header__open,
+.sd-header:has(.sd-header__panel:popover-open) .sd-header__open {
   display: none;
 }
 .sd-header__panel ul {
