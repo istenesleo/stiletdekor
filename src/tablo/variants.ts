@@ -68,7 +68,7 @@ export const VARIANTS: readonly Variant[] = [
     tokenProposals: ['rózsaszín alap', 'Anton, DM Sans'],
   },
   {
-    id: 'X4', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X4Eszkoz.astro', page: 'x4',
+    id: 'X4', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X4Eszkoz.astro', page: 'x4',
     name: 'Eszköz-első',
     idea: 'Az első képernyő egy élő molinó-kalkulátor (méret, darab, expressz → bruttó ár és várható elkészülés), minden más utána jön.',
     novelty: 'Bemutatkozás helyett azonnal használható eszköz, a valós árazóval.',

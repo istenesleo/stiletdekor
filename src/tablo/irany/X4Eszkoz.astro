@@ -1,0 +1,452 @@
+---
+// X4 · Eszköz-első: the first screen is a working molinó calculator; everything else comes after it.
+import { EXPRESS_LEAD_BUSINESS_DAYS, EXPRESS_SURCHARGE_PERCENT } from '@/domain/catalog';
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Uvegfolia from '../grafika/jelenetek/Uvegfolia.astro';
+import { molinoGyorsAr } from './gyorsar';
+import { TARTALOM, arTeljes } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, belepok, csoportok, arak, folyamat } = TARTALOM;
+const jelenet = JELENETEK.find((j) => j.id === 'uvegfolia')!;
+const kezdo = molinoGyorsAr({ widthCm: 300, heightCm: 100, quantity: 1, express: false }, new Date());
+---
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" />
+<div class="x4">
+  <div class="x4__in">
+    <header class="x4__top">
+      <span class="notranslate">STILET DEKOR</span>
+      <a href={ceg.phone.href}>{ceg.phone.display}</a>
+    </header>
+
+    <section class="x4__tool" aria-labelledby="x4-cim">
+      <H id="x4-cim" class="x4__h">Mennyibe kerül a molinója?</H>
+      <p class="x4__muted">Standard frontlit molinó, méretre vágva. {szlogen}</p>
+      <form class="x4__form" data-x4-form>
+        <div class="x4__fields">
+          <label>Szélesség<span class="x4__unit"><input name="w" type="number" inputmode="numeric" min="20" max="500" value="300" />cm</span></label>
+          <label>Magasság<span class="x4__unit"><input name="h" type="number" inputmode="numeric" min="20" max="500" value="100" />cm</span></label>
+          <label>Darab<span class="x4__unit"><input name="q" type="number" inputmode="numeric" min="1" max="999" value="1" />db</span></label>
+        </div>
+        <label class="x4__check">
+          <input name="x" type="checkbox" />
+          Expressz gyártás ({EXPRESS_LEAD_BUSINESS_DAYS} munkanap, +{EXPRESS_SURCHARGE_PERCENT}%)
+        </label>
+      </form>
+      <output class="x4__out" aria-live="polite">
+        <span class="x4__price" data-x4="brutto">{kezdo.ok ? kezdo.brutto : ''}</span>
+        <span class="x4__small" data-x4="reszlet">{kezdo.ok ? `Nettó ${kezdo.netto} + ÁFA ${kezdo.afa}` : ''}</span>
+        <span class="x4__ready" data-x4="kesz">{kezdo.ok ? `Várhatóan ${kezdo.kesz} elkészül.` : ''}</span>
+        <span class="x4__err" data-x4="hiba"></span>
+      </output>
+      <div class="x4__actions">
+        {belepok.map((b, i) => <a class:list={['x4__btn', i > 0 && 'x4__btn--ghost']} href={b.href}>{b.cim}</a>)}
+      </div>
+      <p class="x4__note">
+        Helyőrző árak. A végleges ár eltérhet a kalkulált ártól. További kiinduló árak: {arak.slice(1).map((a) => `${a.termek} ${arTeljes(a)}`).join(' · ')}.
+      </p>
+    </section>
+
+    <section class="x4__sec" aria-labelledby="x4-szolg">
+      <Hk id="x4-szolg" class="x4__h2">Minden szolgáltatás</Hk>
+      <div class="x4__cards">
+        {
+          csoportok.map((g) => (
+            <div class="x4__card">
+              <p class="x4__card-t">{g.nev}</p>
+              <ul>
+                {g.elemek.map((e) => (
+                  <li>
+                    <span>{e.nev}</span>
+                    <span class:list={['x4__badge', e.online && 'x4__badge--on']}>{e.online ? 'Online ár' : 'Ajánlatra'}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="x4__sec x4__split" aria-labelledby="x4-folyamat">
+      <div>
+        <Hk id="x4-folyamat" class="x4__h2">Így dolgozunk</Hk>
+        <ol class="x4__steps">
+          {
+            folyamat.map((l, i) => (
+              <li>
+                <span class="x4__step-n">{i + 1}</span>
+                <div>
+                  <strong>{l.cim}</strong>
+                  <p>{l.leiras}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <Uvegfolia info={jelenet} uid="x4-sc" />
+    </section>
+
+    <footer class="x4__foot">
+      <a href={ceg.phone.href}>{ceg.phone.display}</a>
+      <a href={`mailto:${ceg.email}`}>{ceg.email}</a>
+      <span>{ceg.address}</span>
+      <span>{ceg.openingHours} (helyőrző)</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+  import { molinoGyorsAr } from './gyorsar';
+
+  // Live quick quote: recalculates on every input with the real pricing and lead-time rules.
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-x4-form]')) {
+    const tool = form.closest('.x4__tool');
+    const slot = (name: string) => tool?.querySelector<HTMLElement>(`[data-x4="${name}"]`) ?? null;
+    const update = () => {
+      const data = new FormData(form);
+      const r = molinoGyorsAr(
+        {
+          widthCm: Number(data.get('w')),
+          heightCm: Number(data.get('h')),
+          quantity: Number(data.get('q')),
+          express: data.get('x') === 'on',
+        },
+        new Date(),
+      );
+      const set = (name: string, text: string) => {
+        const el = slot(name);
+        if (el) el.textContent = text;
+      };
+      if (r.ok) {
+        set('brutto', r.brutto);
+        set('reszlet', `Nettó ${r.netto} + ÁFA ${r.afa}${r.minimum ? ' · minimális tételár' : ''}`);
+        set('kesz', `Várhatóan ${r.kesz} elkészül.`);
+        set('hiba', '');
+      } else {
+        set('brutto', '–');
+        set('reszlet', '');
+        set('kesz', '');
+        set('hiba', r.uzenet);
+      }
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('submit', (event) => event.preventDefault());
+  }
+</script>
+
+<style>
+  .x4 {
+    --color-bg: #f2f2ef;
+    --color-surface: #ffffff;
+    --color-surface-raised: #e6e6e1;
+    --color-line: #c9c9c2;
+    --color-text: #17171a;
+    --color-text-muted: #55555c;
+    --color-measure: #55555c;
+    --color-focus: #17171a;
+    container: x4 / inline-size;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .x4 a {
+    color: inherit;
+  }
+
+  .x4__in {
+    display: grid;
+    gap: 2.5rem;
+    padding: clamp(1rem, 4cqi, 3rem);
+  }
+
+  .x4__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-weight: 700;
+  }
+
+  .x4__top a {
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  .x4__tool {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 4cqi, 2.5rem);
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    background: var(--color-surface);
+    box-shadow: 0 24px 48px -32px rgb(23 23 26 / 0.35);
+  }
+
+  .x4__h {
+    margin: 0;
+    font-size: clamp(1.75rem, 5cqi, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .x4__muted,
+  .x4__note {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .x4__note {
+    font-size: 0.875rem;
+  }
+
+  .x4__form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x4__fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .x4__fields label {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .x4__unit {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 0.75rem;
+    border: 1.5px solid var(--color-line);
+    border-radius: 10px;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+  }
+
+  .x4__unit:focus-within {
+    border-color: var(--color-text);
+    box-shadow: 0 0 0 2px var(--color-text);
+  }
+
+  .x4__unit input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.75rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: 500 1.25rem/1 'DM Mono', monospace;
+  }
+
+  .x4__unit input:focus-visible {
+    outline: none;
+  }
+
+  .x4__check {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+  }
+
+  .x4__check input {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--color-text);
+  }
+
+  .x4__out {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: var(--color-text);
+    color: var(--color-surface);
+  }
+
+  .x4__price {
+    font: 500 clamp(2.5rem, 9cqi, 4.5rem) / 1 'DM Mono', monospace;
+    letter-spacing: -0.03em;
+  }
+
+  .x4__small {
+    font-size: 0.875rem;
+  }
+
+  .x4__ready,
+  .x4__err {
+    font-weight: 700;
+  }
+
+  .x4__small:empty,
+  .x4__ready:empty,
+  .x4__err:empty {
+    display: none;
+  }
+
+  .x4__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .x4__btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 1.5rem;
+    border: 1.5px solid var(--color-brand);
+    border-radius: 999px;
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    font-weight: 700;
+    text-decoration: none;
+    touch-action: manipulation;
+  }
+
+  .x4__btn:hover {
+    box-shadow: 0 0 0 3px var(--color-surface-raised);
+  }
+
+  .x4 .x4__btn--ghost {
+    border-color: var(--color-text);
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .x4__sec {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .x4__h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 4cqi, 2.25rem);
+    letter-spacing: -0.01em;
+  }
+
+  .x4__cards {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x4__card {
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-surface);
+  }
+
+  .x4__card-t {
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .x4__card ul,
+  .x4__steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x4__card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.4rem;
+    border-block-start: 1px solid var(--color-surface-raised);
+  }
+
+  .x4__badge {
+    flex: none;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .x4__badge--on {
+    border-color: var(--color-text);
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  .x4__split {
+    align-items: start;
+  }
+
+  .x4__steps {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x4__steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+  }
+
+  .x4__step-n {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-text);
+    color: var(--color-surface);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .x4__steps p {
+    margin: 0.2rem 0 0;
+    color: var(--color-text-muted);
+  }
+
+  .x4__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    padding-block-start: 1.25rem;
+    border-block-start: 1px solid var(--color-line);
+    color: var(--color-text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.875rem;
+  }
+
+  @container x4 (max-width: 420px) {
+    .x4__fields {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @container x4 (min-width: 760px) {
+    .x4__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x4__split {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

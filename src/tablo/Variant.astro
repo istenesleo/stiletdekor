@@ -8,6 +8,7 @@ import G4Szomarka from './grafika/G4Szomarka.astro';
 import X1Arlista from './irany/X1Arlista.astro';
 import X2Tervrajz from './irany/X2Tervrajz.astro';
 import X3Rozsaszin from './irany/X3Rozsaszin.astro';
+import X4Eszkoz from './irany/X4Eszkoz.astro';
 
 interface Props {
   id: string;
@@ -21,6 +22,7 @@ const { id, fejlec = 4 } = Astro.props;
 {id === 'X1' && <X1Arlista fejlec={fejlec} />}
 {id === 'X2' && <X2Tervrajz fejlec={fejlec} />}
 {id === 'X3' && <X3Rozsaszin fejlec={fejlec} />}
+{id === 'X4' && <X4Eszkoz fejlec={fejlec} />}
 {id === 'G1' && <G1Jelenetek />}
 {id === 'G2' && <G2Piktogramok />}
 {id === 'G3' && <G3Motivumok />}
