@@ -34,6 +34,18 @@ this repo:
    (grades are machine-local, so the run captures and grades them again).
 3. The render check needs Playwright with Chromium; the skill asks before installing it.
 
+## Local Windows machine (Claude Desktop, 2026-10-08)
+
+- Playwright: a Chromium is cached in `%LOCALAPPDATA%\ms-playwright\chromium-1234`, which Playwright **1.62.0**
+  pins (1.63.0 pins 1243, 1.64.0 pins 1248). Install `playwright@1.62.0` into `.ds-sync/` and nothing downloads.
+- DesignSync needs `/design-login` once from an interactive `claude` terminal on this machine; the Desktop app's
+  Code session cannot run it and reuses the authorization afterwards.
+- Grading gotcha: `.sd-input` animates `border-color` (0.12s). A capture can land mid-transition and show an
+  invalid field's border half red, half grey (seen on UnitField WithError). The live render is fully red; check
+  with the served preview before calling it a bug.
+- The repo lives in OneDrive. If a build fails with `EPERM … dist\client`, a leftover `wrangler dev` holds it:
+  kill that process tree.
+
 ## Cloud container specifics
 
 - Chromium reaches the web only through the agent proxy. The render check and captures ran with
