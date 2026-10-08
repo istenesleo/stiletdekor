@@ -52,7 +52,7 @@ export const VARIANTS: readonly Variant[] = [
     tokenProposals: ['papírfehér alap', 'Inter Tight'],
   },
   {
-    id: 'X2', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X2Tervrajz.astro', page: 'x2',
+    id: 'X2', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X2Tervrajz.astro', page: 'x2',
     name: 'Tervrajz-sorozat',
     idea: 'Tervrajzkék alapon az oldal egy rajzsorozat lapjai („1/6. lap”), mindegyik rajzfejjel; a rózsaszín csak pecsét.',
     novelty: 'A mérés nyelve az egész oldal műfaja lesz, nem díszítés.',
@@ -60,7 +60,7 @@ export const VARIANTS: readonly Variant[] = [
     tokenProposals: ['tervrajzkék alap', 'Space Grotesk, Space Mono'],
   },
   {
-    id: 'X3', group: 'irany', lane: 'kiserleti', round: 6, status: 'tervezett', file: 'irany/X3Rozsaszin.astro', page: 'x3',
+    id: 'X3', group: 'irany', lane: 'kiserleti', round: 6, status: 'kesz', file: 'irany/X3Rozsaszin.astro', page: 'x3',
     name: 'Rózsaszín áradat',
     idea: 'Teljes rózsaszín felület, fekete óriásbetűk: kampányoldal nagy állításokkal; a fekete az akcentus.',
     novelty: 'A márkaszín környezet lesz, nem kiemelés.',
