@@ -3,7 +3,8 @@
 Kérés (2026-10-06): a kezdőlapon túl sok a szöveg; egyelőre ne módosítsunk, csak nézzük át.
 Az átnézés a két látványterv (`design/mockups/`) 2026-10-06-i állapotát méri; ez az állapot a dev oldalakon a
 `/mentes` címen látható. 2026-10-07: a javasolt rövidítést megnézésre beépítettük mindkét tervbe
-([lent](#a-rövidített-változat-a-látványtervekben-2026-10-07)). Döntés még nincs.
+([lent](#a-rövidített-változat-a-látványtervekben-2026-10-07)). **Döntés (2026-10-08): marad a rövid kezdőlap az
+aloldalakkal** ([működési elvek](superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md)).
 
 **Mérés:** a betöltés után látható szavak 1440 px széles nézetben, Chromiumban. A rejtett varázslólépések, a
 kosár és a tervezői jegyzetek nincsenek benne.
@@ -37,7 +38,7 @@ oldalról eleve kimaradnak, de a mostani benyomást növelik.
 **Hosszú bekezdés kevés van** (22 szónál hosszabb blokk szakaszonként legfeljebb 1–2). A sok szöveg nem
 bekezdésekből, hanem a sok apró elemből (címke, adat, képaláírás, súgó) adódik.
 
-## Javaslat (döntésre vár)
+## Javaslat (elfogadva 2026-10-08)
 
 A kezdőlap legyen áttekintés, a részletek kerüljenek az aloldalakra. Ezek az aloldalak a tervben már
 szerepelnek: `/webshop`, `/ajanlatkeres`, `/referenciak`, `/kapcsolat`. Célérték: **450–600 szó** a kezdőlapon.

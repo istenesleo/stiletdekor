@@ -45,7 +45,12 @@ scripts/           # build-tokens.mjs (token → CSS, kontrasztellenőrzés)
 ## Oldalak (magyar slugok)
 
 `/` · `/szolgaltatasok` · `/szolgaltatasok/[csoport]` · `/webshop` · `/webshop/[termek]` · `/ajanlatkeres` ·
-`/referenciak` · `/rolunk` · `/kapcsolat` · `/kosar` · `/penztar` · `/rendeles/[azonosito]` · `/aszf` · `/adatvedelem`
+`/ajanlatkeres/[tipus]` · `/ajanlatkeres/koszonjuk` · `/visszahivas` · `/visszahivas/koszonjuk` · `/referenciak` ·
+`/referenciak/[felulet]` · `/rolunk` · `/kapcsolat` · `/kosar` · `/penztar` · `/rendeles/[azonosito]` · `/aszf` ·
+`/adatkezeles` · `/impresszum`
+
+Az oldalak működése (előállítás, navigáció, űrlapok, sebesség, mérés):
+[`superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md`](superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md).
 
 ## API
 

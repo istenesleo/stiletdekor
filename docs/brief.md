@@ -303,7 +303,8 @@ szöveget jogász nézze át.
 - A kezdőlapon túl sok a szöveg (A: 1 449, B: 1 298 szó betöltéskor). Átnézve, javaslattal:
   [`szovegmennyiseg.md`](szovegmennyiseg.md). A javasolt rövid kezdőlap (A: 510, B: 453 szó) 2026-10-07 óta a
   látványtervekben megnézhető, a webshop, az ajánlatkérés, a referenciák és a kapcsolat külön oldalon; a régi
-  változat a `/mentes` címen. Döntés: marad-e a rövid kezdőlap az aloldalakkal.
+  változat a `/mentes` címen. **Eldöntve (2026-10-08): marad a rövid kezdőlap az aloldalakkal**
+  ([működési elvek](superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md)).
 - Táblák furatolása (átnézve 2026-10-06): a szabad darabszámból (0–40) nem derül ki, hova kerüljenek a furatok,
   és az előnézet csak találgat (3 furatnál egy pötty az egyik sarokban). Javaslat: darabszám helyett rögzítési
   mód: nincs furat · 2 furat felül (akasztáshoz) · 4 sarokfurat · távtartó csavarral · egyedi elrendezés
