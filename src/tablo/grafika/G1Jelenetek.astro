@@ -1,0 +1,118 @@
+---
+// G1: the eight reference placeholders in one style and one scale, with a day/night switch for lit work.
+import { JELENETEK, type JelenetId } from './jelenet-lista';
+import Betuk3d from './jelenetek/Betuk3d.astro';
+import Fotofal from './jelenetek/Fotofal.astro';
+import Kinalopult from './jelenetek/Kinalopult.astro';
+import KirakatEjjel from './jelenetek/KirakatEjjel.astro';
+import Kisbusz from './jelenetek/Kisbusz.astro';
+import Ledfal from './jelenetek/Ledfal.astro';
+import Rollup from './jelenetek/Rollup.astro';
+import Uvegfolia from './jelenetek/Uvegfolia.astro';
+
+const SCENES = {
+  'kirakat-ejjel': KirakatEjjel,
+  kisbusz: Kisbusz,
+  rollup: Rollup,
+  fotofal: Fotofal,
+  ledfal: Ledfal,
+  uvegfolia: Uvegfolia,
+  kinalopult: Kinalopult,
+  'betuk-3d': Betuk3d,
+} satisfies Record<JelenetId, unknown>;
+---
+
+<div class="g1">
+  <div class="g1__bar">
+    <div class="g1__seg" role="group" aria-label="Napszak">
+      <button type="button" data-mode="nappal" aria-pressed="true">Nappal</button>
+      <button type="button" data-mode="ejjel" aria-pressed="false">Éjjel</button>
+    </div>
+    <p class="g1__note">Egy lépték minden jeleneten: a 180 cm-es alak mindenhol ugyanakkora. A méretek példák. Éjjel csak a világító munkák változnak.</p>
+  </div>
+  <div class="g1__grid">
+    {
+      JELENETEK.map((j) => {
+        const Scene = SCENES[j.id];
+        return <Scene info={j} />;
+      })
+    }
+  </div>
+</div>
+
+<script>
+  // Day/night switch: changes only the scenes that have a night view.
+  for (const root of document.querySelectorAll<HTMLElement>('.g1')) {
+    root.querySelector('.g1__seg')?.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-mode]');
+      if (!button) return;
+      for (const b of root.querySelectorAll('.g1__seg button')) b.setAttribute('aria-pressed', String(b === button));
+      for (const scene of root.querySelectorAll<HTMLElement>('.tb-scene[data-night="true"]')) {
+        scene.dataset.mode = button.dataset.mode;
+      }
+    });
+  }
+</script>
+
+<style>
+  .g1 {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .g1__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .g1__seg {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-pill);
+  }
+
+  .g1__seg button {
+    padding: var(--space-2) var(--space-4);
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+
+  .g1__seg button {
+    touch-action: manipulation;
+  }
+
+  .g1__seg button:hover {
+    background: var(--color-surface-raised);
+  }
+
+  .g1__seg button[aria-pressed='true'] {
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+  }
+
+  .g1__note {
+    max-width: 60ch;
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .g1__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  @container variant (min-width: 760px) {
+    .g1__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

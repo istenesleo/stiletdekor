@@ -1,0 +1,24 @@
+---
+import Alak from '../Alak.astro';
+import Jelenet from '../Jelenet.astro';
+import Meretvonal from '../Meretvonal.astro';
+import type { JelenetInfo } from '../jelenet-lista';
+
+interface Props {
+  info: JelenetInfo;
+  uid?: string;
+}
+
+const { info, uid } = Astro.props;
+---
+
+<Jelenet info={info} uid={uid}>
+  <rect class="sc-wall" x="0" y="40" width="480" height="230"></rect>
+  <rect class="sc-led sc-glow" x="115" y="80" width="250" height="150"></rect>
+  <path class="sc-line" d="M140 80v150M165 80v150M190 80v150M215 80v150M240 80v150M265 80v150M290 80v150M315 80v150M340 80v150M115 105h250M115 130h250M115 155h250M115 180h250M115 205h250"></path>
+  <rect class="sc-edge" x="115" y="80" width="250" height="150"></rect>
+  <rect class="sc-glass" x="60" y="240" width="360" height="30"></rect>
+  <rect class="sc-edge" x="60" y="240" width="360" height="30"></rect>
+  <Meretvonal x1={115} y1={66} x2={365} y2={66} label="5 000 mm" />
+  <Alak x={335} ground={240} />
+</Jelenet>

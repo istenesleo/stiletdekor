@@ -1,0 +1,28 @@
+---
+import Alak from '../Alak.astro';
+import Jelenet from '../Jelenet.astro';
+import Meretvonal from '../Meretvonal.astro';
+import type { JelenetInfo } from '../jelenet-lista';
+
+interface Props {
+  info: JelenetInfo;
+  uid?: string;
+}
+
+const { info, uid } = Astro.props;
+---
+
+<Jelenet info={info} uid={uid}>
+  <defs>
+    <pattern id="sc-fotofal-minta" width="25" height="25" patternUnits="userSpaceOnUse">
+      <path class="sc-light" d="M12.5 6 19 12.5 12.5 19 6 12.5Z"></path>
+    </pattern>
+  </defs>
+  <rect class="sc-wall" x="165" y="160" width="150" height="110"></rect>
+  <rect x="165" y="160" width="150" height="110" fill="url(#sc-fotofal-minta)"></rect>
+  <rect class="sc-edge" x="165" y="160" width="150" height="110"></rect>
+  <Meretvonal x1={165} y1={148} x2={315} y2={148} label="3 000 mm" />
+  <Meretvonal x1={336} y1={160} x2={336} y2={270} label="2 200 mm" />
+  <Alak x={215} />
+  <Alak x={262} />
+</Jelenet>

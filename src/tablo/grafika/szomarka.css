@@ -1,0 +1,85 @@
+/* G4 wordmarks. On the brand background everything turns to the on-brand color. */
+
+.sm {
+  --sm-ink: var(--color-text);
+  --sm-accent: var(--color-brand);
+  --sm-measure: var(--color-measure);
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+.sm--marka {
+  --sm-ink: var(--color-on-brand);
+  --sm-accent: var(--color-on-brand);
+  --sm-measure: var(--color-on-brand);
+}
+
+.sm text {
+  fill: var(--sm-ink);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: 44px;
+}
+
+.sm .sm-accent { fill: var(--sm-accent); }
+
+.sm-cut {
+  stroke: var(--sm-measure);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.sm-measure {
+  fill: none;
+  stroke: var(--sm-measure);
+  stroke-width: 1;
+}
+
+.sm .sm-measure-label {
+  fill: var(--sm-measure);
+  font-family: var(--font-mono);
+  font-weight: var(--weight-regular);
+  font-size: 10px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.sm .sm-neon {
+  fill: none;
+  stroke: var(--sm-accent);
+  stroke-width: 1.6;
+}
+
+.sm--sotet .sm-neon {
+  filter: drop-shadow(0 0 2px var(--sm-accent)) drop-shadow(0 0 8px var(--sm-accent));
+}
+
+.sm-reg * {
+  fill: none;
+  stroke: var(--sm-accent);
+  stroke-width: 1.5;
+}
+
+.sm .sm-mono {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+  font-size: 18px;
+}
+
+.sm--monogram {
+  width: auto;
+  max-width: none;
+}
+
+.sm-tile { fill: var(--color-brand); }
+.sm .sm-gram { fill: var(--color-on-brand); font-size: 20px; }
+.sm--marka .sm-tile { fill: var(--color-on-brand); }
+.sm--marka .sm-gram { fill: var(--color-brand); }
+
+.sm-cropmarks {
+  fill: none;
+  stroke: var(--sm-measure);
+  stroke-width: 1;
+}

@@ -1,0 +1,60 @@
+---
+// One G4 wordmark direction, drawn as SVG so it scales; `uid` keeps clip-path ids unique on the page.
+import type { SzomarkaValtozat } from './szomarka';
+import './szomarka.css';
+
+interface Props {
+  valtozat: SzomarkaValtozat;
+  uid: string;
+  alap?: 'sotet' | 'marka';
+  /** Monogram only: rendered size in px (16, 32 … for the favicon test). */
+  size?: number;
+}
+
+const { valtozat, uid, alap = 'sotet', size = 96 } = Astro.props;
+const classes = ['sm', 'notranslate', `sm--${alap}`, valtozat === 'monogram' && 'sm--monogram'];
+---
+
+{
+  valtozat === 'monogram' ? (
+    <svg class:list={classes} viewBox="0 0 48 48" width={size} height={size} role="img" aria-label="Stilet Dekor, SD monogram">
+      <rect class="sm-tile" x="6" y="6" width="36" height="36"></rect>
+      <text class="sm-gram" x="24" y="31" text-anchor="middle" textLength="24" lengthAdjust="spacingAndGlyphs">SD</text>
+      <path class="sm-cropmarks" d="M6 0v3M0 6h3M42 0v3M45 6h3M6 45v3M0 42h3M42 45v3M45 42h3"></path>
+    </svg>
+  ) : (
+    <svg class:list={classes} viewBox="0 0 360 80" role="img" aria-label="Stilet Dekor">
+      {valtozat === 'vagott' && (
+        <>
+          <defs>
+            <clipPath id={`${uid}-fent`}><rect x="0" y="0" width="360" height="39"></rect></clipPath>
+            <clipPath id={`${uid}-lent`}><rect x="0" y="39" width="360" height="41"></rect></clipPath>
+          </defs>
+          <text x="20" y="56" textLength="320" lengthAdjust="spacingAndGlyphs" clip-path={`url(#${uid}-fent)`}>STILET DEKOR</text>
+          <text class="sm-accent" x="23" y="57" textLength="320" lengthAdjust="spacingAndGlyphs" clip-path={`url(#${uid}-lent)`}>STILET DEKOR</text>
+          <path class="sm-cut" d="M14 39H346"></path>
+        </>
+      )}
+      {valtozat === 'meretvonal' && (
+        <>
+          <path class="sm-measure" d="M20 14v10M340 14v10M20 19H158M202 19H340"></path>
+          <text class="sm-measure-label" x="180" y="19">M 1:1</text>
+          <text x="20" y="66" textLength="320" lengthAdjust="spacingAndGlyphs">STILET DEKOR</text>
+        </>
+      )}
+      {valtozat === 'neon' && (
+        <text class="sm-neon" x="20" y="56" textLength="320" lengthAdjust="spacingAndGlyphs">STILET DEKOR</text>
+      )}
+      {valtozat === 'illesztojel' && (
+        <>
+          <text x="20" y="56" textLength="170" lengthAdjust="spacingAndGlyphs">STILET</text>
+          <g class="sm-reg">
+            <circle cx="214" cy="40" r="9"></circle>
+            <path d="M214 24v32M198 40h32"></path>
+          </g>
+          <text class="sm-mono" x="242" y="47" textLength="98" lengthAdjust="spacing">DEKOR</text>
+        </>
+      )}
+    </svg>
+  )
+}

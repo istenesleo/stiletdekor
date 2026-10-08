@@ -1,0 +1,138 @@
+---
+// G3: the measuring motifs as one kit, each with its rule of use.
+import { DimensionLine } from '@/ui/DimensionLine/DimensionLine';
+import Illesztojel from './motivumok/Illesztojel.astro';
+import VagojelKeret from './motivumok/VagojelKeret.astro';
+import Vonalzo from './motivumok/Vonalzo.astro';
+import './motivumok/motivumok.css';
+---
+
+<div class="g3">
+  <section class="g3-item">
+    <h4>Vonalzó</h4>
+    <Vonalzo lengthCm={30} />
+    <Vonalzo lengthCm={10} detail="half" />
+    <p class="g3-rule"><b>Szabály:</b> csak ott, ahol valós méretről van szó (konfigurátor, léptékfal, gyártási rajz); díszítésnek nem.</p>
+  </section>
+
+  <section class="g3-item">
+    <h4>Méretvonal</h4>
+    <DimensionLine valueMm={4200} />
+    <div class="g3-dim-pair">
+      <div class="g3-dim-v"><DimensionLine orientation="vertical" valueMm={880} /></div>
+      <DimensionLine label="85 cm" />
+    </div>
+    <p class="g3-rule"><b>Szabály:</b> mindig valós vagy „példa” jelölésű méretet mutat, a mérés színével.</p>
+  </section>
+
+  <section class="g3-item">
+    <h4>Illesztőjel</h4>
+    <div class="g3-row">
+      <Illesztojel size={16} />
+      <Illesztojel size={24} />
+      <Illesztojel size={40} />
+    </div>
+    <p class="g3-rule"><b>Szabály:</b> szakaszok és rajzfejek sarkán, szakaszonként legfeljebb egy.</p>
+  </section>
+
+  <section class="g3-item">
+    <h4>Vágójeles keret</h4>
+    <VagojelKeret>
+      <div class="g3-ph">Referenciakép helye</div>
+    </VagojelKeret>
+    <p class="g3-rule"><b>Szabály:</b> referenciaképek és nyomdai előnézetek kerete.</p>
+  </section>
+
+  <section class="g3-item g3-item--wide">
+    <h4>Vágóalátét-rács</h4>
+    <div class="g3-mat tb-cutmat">
+      <div class="g3-mat__card">
+        <Illesztojel size={20} />
+        <p>Szöveg a rácson: a kontraszt nem romolhat, ezért a szöveg mindig saját felületen áll.</p>
+      </div>
+    </div>
+    <p class="g3-rule"><b>Szabály:</b> csak háttér, oldalanként legfeljebb egy szakaszban.</p>
+  </section>
+</div>
+
+<style>
+  .g3 {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @container variant (min-width: 760px) {
+    .g3 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .g3-item--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .g3-item {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+  }
+
+  .g3-item h4 {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+  }
+
+  .g3-rule {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .g3-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .g3-dim-pair {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .g3-dim-v {
+    height: 8rem;
+  }
+
+  .g3-ph {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background: var(--color-surface-raised);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .g3-mat {
+    padding: var(--space-7) var(--space-5);
+    border-radius: var(--radius-md);
+  }
+
+  .g3-mat__card {
+    display: flex;
+    gap: var(--space-3);
+    align-items: start;
+    max-width: 36rem;
+    padding: var(--space-4);
+    background: var(--color-surface-raised);
+    border-radius: var(--radius-sm);
+  }
+
+  .g3-mat__card p {
+    margin: 0;
+  }
+</style>

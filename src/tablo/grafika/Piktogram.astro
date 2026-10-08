@@ -1,0 +1,24 @@
+---
+// One pictogram of the G2 family on its 24×24 grid, in one of the three styles.
+import type { PiktogramStilus } from './piktogramok';
+import './piktogram.css';
+
+interface Props {
+  markup: string;
+  label: string;
+  stilus?: PiktogramStilus;
+  size?: number;
+  /** The name is printed next to it: hide the drawing from screen readers. */
+  decorative?: boolean;
+}
+
+const { markup, label, stilus = 'vonal', size = 48, decorative = false } = Astro.props;
+---
+
+{
+  decorative ? (
+    <svg class:list={['tb-pk', `tb-pk--${stilus}`]} viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" set:html={markup} />
+  ) : (
+    <svg class:list={['tb-pk', `tb-pk--${stilus}`]} viewBox="0 0 24 24" width={size} height={size} role="img" aria-label={label} set:html={markup} />
+  )
+}

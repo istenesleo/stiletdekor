@@ -110,12 +110,45 @@
   --text-xl: clamp(1.5rem, 1.25rem + 1vw, 2.125rem);
   --text-2xl: clamp(2.375rem, 1.4rem + 3.4vw, 4.75rem);
   --text-hero: clamp(3rem, 0.9rem + 7.4vw, 8rem);
+  --leading-tight: 1.05;
   --radius-sm: 0;
   --radius-md: 0;
   --layout-gutter: clamp(16px, 4vw, 64px);
   --layout-header-height: 68px;
   --layout-section-gap: clamp(88px, 11vw, 168px);
   --effect-brand-glow: none;
+}
+
+:root[data-theme="merolap"],
+[data-theme="merolap"] {
+  --color-bg: #0c0c0d;
+  --color-surface: #141416;
+  --color-surface-raised: #1c1c1f;
+  --color-line: #2c2c30;
+  --color-text: #f2efe9;
+  --color-text-muted: #a19ea7;
+  --color-measure: #f0c43c;
+  --color-signal-ok: #4fd394;
+  --color-signal-warn: #ecc94b;
+  --color-signal-bad: #ff6150;
+  --font-display: "Bricolage Grotesque", "Helvetica Neue", "Arial", sans-serif;
+  --font-body: "Hanken Grotesk", "Helvetica Neue", "Arial", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+  --font-variation-text: "wdth" 80;
+  --font-variation-display: "opsz" 96, "wdth" 80;
+  --weight-display: 700;
+  --text-md: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem);
+  --text-2xl: clamp(2.3rem, 1.5rem + 3.2vw, 4rem);
+  --text-hero: clamp(3rem, 1.6rem + 5.6vw, 6.4rem);
+  --leading-tight: 1;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --layout-gutter: clamp(16px, 3.4vw, 48px);
+  --layout-header-height: 64px;
+  --layout-section-gap: clamp(64px, 9vw, 140px);
+  --effect-brand-glow: 0 0 0 1px color-mix(in oklab, var(--color-brand) 55%, transparent), 0 0 22px -4px color-mix(in oklab, var(--color-brand) 75%, transparent);
 }
 
 :root[data-theme="neon-muhely"],
@@ -141,6 +174,7 @@
   --text-xl: clamp(1.45rem, 1.2rem + 0.9vw, 1.9rem);
   --text-2xl: clamp(2.3rem, 1.5rem + 3.2vw, 4rem);
   --text-hero: clamp(3rem, 1.6rem + 5.6vw, 6.4rem);
+  --leading-tight: 1.05;
   --radius-sm: 2px;
   --radius-md: 2px;
   --layout-gutter: clamp(16px, 3.4vw, 48px);

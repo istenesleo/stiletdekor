@@ -1,0 +1,50 @@
+---
+// Title block in the corner of an X2 blueprint sheet: subject, sheet number, drawn by.
+interface Props {
+  targy: string;
+  lap: string;
+}
+
+const { targy, lap } = Astro.props;
+---
+
+<dl class="rajzfej">
+  <div><dt>Tárgy</dt><dd>{targy}</dd></div>
+  <div><dt>Lap</dt><dd>{lap}</dd></div>
+  <div><dt>Rajzolta</dt><dd class="notranslate">STILET DEKOR</dd></div>
+</dl>
+
+<style>
+  .rajzfej {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    margin: 0;
+    border-block-start: 1.5px solid currentColor;
+    border-inline-start: 1.5px solid currentColor;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  .rajzfej div {
+    padding: 0.4rem 0.75rem;
+    border-inline-start: 1px solid currentColor;
+  }
+
+  .rajzfej div:first-child {
+    border-inline-start: 0;
+  }
+
+  .rajzfej dt {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .rajzfej dd {
+    margin: 0;
+    font-weight: 700;
+  }
+</style>

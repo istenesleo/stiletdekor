@@ -1,0 +1,26 @@
+---
+// Frame of a G1 scene: the SVG (480×300, 1 unit = 2 cm, ground at y = 270), its text alternative and caption.
+import type { JelenetInfo } from './jelenet-lista';
+import './jelenet.css';
+
+interface Props {
+  info: JelenetInfo;
+  /** Prefix of the title and description ids; give a new one when the scene appears twice on a page. */
+  uid?: string;
+}
+
+const { info, uid = `sc-${info.id}` } = Astro.props;
+const titleId = `${uid}-t`;
+const descId = `${uid}-d`;
+---
+
+<figure class="tb-scene" data-mode="nappal" data-night={String(info.night)}>
+  <svg class="tb-scene__svg" viewBox="0 0 480 300" role="img" aria-labelledby={`${titleId} ${descId}`}>
+    <title id={titleId}>{info.name}</title>
+    <desc id={descId}>{`Illusztráció, a referenciakép helye. ${info.desc}`}</desc>
+    <rect class="sc-sky" width="480" height="300"></rect>
+    <slot />
+    <path class="sc-ground" d="M0 270H480"></path>
+  </svg>
+  <figcaption><span class="tb-scene__ph">Referenciakép helye</span><span>{info.name}</span></figcaption>
+</figure>

@@ -1,0 +1,14 @@
+---
+// A 180 cm standing figure for scale (1 unit = 2 cm), feet on the ground line.
+interface Props {
+  x: number;
+  ground?: number;
+}
+
+const { x, ground = 270 } = Astro.props;
+---
+
+<g class="sc-ink" transform={`translate(${x} ${ground})`} aria-hidden="true">
+  <circle cx="0" cy="-83" r="6"></circle>
+  <path d="M-8 -75H8L11 -45H7L5 -51V0H1L0 -38L-1 0H-5V-51L-7 -45H-11Z"></path>
+</g>

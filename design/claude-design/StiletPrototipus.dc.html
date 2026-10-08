@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>body{margin:0;background:#0c0c0d}*{box-sizing:border-box}a{color:inherit}a:hover{color:inherit}button,input,textarea{font:inherit;color:inherit}input::placeholder,textarea::placeholder{color:#8f8c95}</style>
+</helmet>
+<div ref="{{ rootRef }}" style="{{ themeVars }}">
+<div style="position:relative;container-type:inline-size;min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--f-b);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased">
+
+<header style="position:{{ headerPos }};top:0;z-index:30;background:color-mix(in oklab,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)">
+  <div style="max-width:1440px;margin:0 auto;height:68px;padding:0 var(--gut);display:flex;align-items:center;gap:28px">
+    <button onClick="{{ goHome }}" aria-label="Stilet Dekor, kezdőlap" style="display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;color:var(--text);cursor:pointer;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);font-size:21px;line-height:1;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap">STILET<i style="width:7px;height:7px;border-radius:50%;background:var(--brand);box-shadow:var(--badge-glow)"></i>DEKOR</button>
+    <sc-if value="{{ hdrDesk }}" hint-placeholder-val="{{ true }}">
+      <nav aria-label="Fő menü" style="display:flex;gap:26px">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.onClick }}" style="background:none;border:0;padding:8px 0;cursor:pointer;font:500 14px/1 var(--f-b);color:{{ n.col }};text-decoration:underline;text-decoration-color:{{ n.ul }};text-decoration-thickness:2px;text-underline-offset:9px" style-hover="color:var(--text)">{{ n.label }}</button>
+        </sc-for>
+      </nav>
+    </sc-if>
+    <span style="flex:1"></span>
+    <sc-if value="{{ hdrDesk }}" hint-placeholder-val="{{ true }}">
+      <a href="tel:+36705385030" style="font:500 13px/1 var(--f-m);color:var(--muted);text-decoration:none;white-space:nowrap" style-hover="color:var(--text)">+36&nbsp;70&nbsp;538&nbsp;5030</a>
+      <button onClick="{{ goQuoteBlank }}" style="display:inline-flex;align-items:center;min-height:40px;padding:0 16px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b);color:var(--text);cursor:pointer;white-space:nowrap" style-hover="border-color:var(--muted)">Ajánlatkérés</button>
+    </sc-if>
+    <button onClick="{{ openCart }}" aria-label="{{ cartAria }}" style="position:relative;display:grid;place-items:center;width:44px;height:44px;flex:none;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer" style-hover="border-color:var(--muted)">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 4h2.8l2.3 10.5h10.8L21 7.5H6.4"></path><circle cx="9.5" cy="19" r="1.5"></circle><circle cx="17" cy="19" r="1.5"></circle></svg>
+      <span style="position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:{{ badge.bg }};color:{{ badge.fg }};border:1px solid {{ badge.bd }};box-shadow:{{ badge.glow }};font:700 11px/18px var(--f-m);text-align:center">{{ cartCount }}</span>
+    </button>
+    <sc-if value="{{ hdrMobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" aria-expanded="{{ menuAria }}" aria-label="Menü" style="display:grid;place-items:center;width:44px;height:44px;flex:none;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer">
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"></path></svg></sc-if>
+        <sc-if value="{{ menuClosed }}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"></path></svg></sc-if>
+      </button>
+    </sc-if>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:8px var(--gut) 24px;border-top:1px solid var(--line-soft);display:flex;flex-direction:column;gap:18px">
+      <nav aria-label="Mobil menü" style="display:flex;flex-direction:column">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.onClick }}" style="display:flex;justify-content:space-between;align-items:center;min-height:52px;background:none;border:0;border-bottom:1px solid var(--line-soft);padding:0;cursor:pointer;font:500 17px/1 var(--f-b);color:var(--text);text-align:left">{{ n.label }}<span style="font-family:var(--f-m);color:var(--muted)">→</span></button>
+        </sc-for>
+      </nav>
+      <button onClick="{{ goQuoteBlank }}" style="min-height:48px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border:0;border-radius:var(--r);font:600 15px/1 var(--f-b);cursor:pointer">Ajánlatkérés</button>
+      <span style="font:400 13px/1.6 var(--f-m);color:var(--muted)">+36&nbsp;70&nbsp;538&nbsp;5030 · stiletdekor@gmail.com</span>
+    </div>
+  </sc-if>
+</header>
+
+<main>
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+
+  <section style="padding:clamp(36px,6cqi,96px) var(--gut) clamp(48px,7cqi,104px)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(24px,3.4cqi,44px)">
+      <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Dekoros műhely · Budapest</span>
+      <h1 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(44px,10.4cqi,168px)">
+        <span style="display:block">Kiszállunk,</span>
+        <span style="display:block;padding-left:var(--stair)"><em style="font-style:var(--em)">felmérjük,</em></span>
+        <span style="display:block;padding-left:calc(var(--stair) * 2)">felszereljük<span style="color:var(--dotc)">.</span></span>
+      </h1>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px 48px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <p style="margin:0;max-width:48ch;font-size:clamp(17px,1.5cqi,20px);line-height:1.5;text-wrap:pretty">Fóliázás, cégér és világító reklám, nyomtatás, rendezvénydíszlet: a felméréstől a telepítésig egy csapat, saját műhellyel.</p>
+          <ol aria-label="A munka menete" style="display:flex;flex-wrap:wrap;gap:6px 12px;margin:0;padding:0;list-style:none;font:500 12px/1.4 var(--f-m);color:var(--muted)">
+            <li>Felmérés</li><li aria-hidden="true" style="color:var(--measure)">→</li><li>Tervezés</li><li aria-hidden="true" style="color:var(--measure)">→</li><li>Gyártás saját műhelyben</li><li aria-hidden="true" style="color:var(--measure)">→</li><li>Telepítés</li>
+          </ol>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px">
+          <button onClick="{{ goShop }}" style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;min-height:88px;padding:18px 20px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border:0;border-radius:var(--r);text-align:left;cursor:pointer" style-hover="box-shadow:var(--btn-glow-hi)">
+            <span style="font:700 18px/1.2 var(--f-b)">Online rendelés</span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" style="grid-row:span 2"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+            <span style="font:400 13.5px/1.4 var(--f-b)">Azonnali ár, grafikafeltöltés.</span>
+          </button>
+          <button onClick="{{ goQuoteBlank }}" style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;min-height:88px;padding:18px 20px;background:var(--raise);color:var(--text);border:1px solid var(--line);border-radius:var(--r);text-align:left;cursor:pointer" style-hover="border-color:var(--muted)">
+            <span style="font:700 18px/1.2 var(--f-b)">Egyedi ajánlat</span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" style="grid-row:span 2"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+            <span style="font:400 13.5px/1.4 var(--f-b);color:var(--muted)">Négy lépésben, kérésre helyszíni felméréssel.</span>
+          </button>
+        </div>
+      </div>
+
+      <sc-if value="{{ isA }}" hint-placeholder-val="{{ false }}">
+        <div style="position:relative;height:clamp(280px,36cqi,500px);border:1px solid var(--line);border-radius:var(--r);background-color:#0a0a0c;background-image:linear-gradient(#17171b 1px,transparent 1px),linear-gradient(90deg,#17171b 1px,transparent 1px),linear-gradient(#302b1f 1px,transparent 1px),linear-gradient(90deg,#302b1f 1px,transparent 1px);background-size:20px 20px,20px 20px,100px 100px,100px 100px;display:grid;place-items:center;overflow:hidden">
+          <span style="position:absolute;left:14px;top:12px;font:500 10.5px/1 var(--f-m);letter-spacing:.1em;color:var(--muted)">VÁGÓALÁTÉT · 10 MM RÁCS</span>
+          <div style="display:flex;flex-direction:column;gap:10px;width:min(80%,820px)">
+            <div style="display:flex;align-items:center;gap:6px;color:var(--measure);font:500 11px/1 var(--f-m)"><i style="width:1px;height:10px;background:currentColor"></i><i style="flex:1;height:1px;background:currentColor"></i><span>3 600 mm</span><i style="flex:1;height:1px;background:currentColor"></i><i style="width:1px;height:10px;background:currentColor"></i></div>
+            <div style="height:clamp(110px,15cqi,220px);background:#111114;border:1px solid #2c2c32;display:grid;place-items:center;font:800 clamp(54px,11cqi,176px)/1 'Archivo',sans-serif;font-variation-settings:'wdth' 62;letter-spacing:.06em;color:{{ neon.core }};text-shadow:{{ neon.shadow }}">STILET</div>
+          </div>
+          <div role="group" aria-label="Nappali vagy éjszakai nézet" style="position:absolute;right:12px;bottom:12px;display:flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--bg)">
+            <button onClick="{{ setDay }}" aria-pressed="{{ neon.dayP }}" style="min-height:36px;padding:0 12px;border:0;background:{{ neon.dayBg }};color:{{ neon.dayFg }};font:500 12px/1 var(--f-m);cursor:pointer">Nappal</button>
+            <button onClick="{{ setNight }}" aria-pressed="{{ neon.nightP }}" style="min-height:36px;padding:0 12px;border:0;border-left:1px solid var(--line);background:{{ neon.nightBg }};color:{{ neon.nightFg }};font:500 12px/1 var(--f-m);cursor:pointer">Éjjel</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isB }}" hint-placeholder-val="{{ false }}">
+        <figure style="margin:0;display:flex;flex-direction:column;gap:10px">
+          <div style="aspect-ratio:16/7;min-height:240px;background:var(--ph);display:grid;place-items:center"><span style="font:500 10.5px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--bg);padding:7px 9px">Referenciakép helye · üzlethomlokzat világító betűkkel</span></div>
+          <figcaption style="display:flex;justify-content:space-between;gap:12px;padding-top:8px;border-top:1px solid var(--line);font:400 11px/1.4 var(--f-m);letter-spacing:.04em;color:var(--muted)"><span><b style="font-weight:500;color:var(--text)">Világító betűk</b> · illusztráció</span><span>Felület · Anyag · Méret · Helyszín</span></figcaption>
+        </figure>
+      </sc-if>
+      <sc-if value="{{ isC }}" hint-placeholder-val="{{ false }}">
+        <div style="position:relative;height:clamp(300px,38cqi,560px);background:var(--ph);border-radius:var(--r-lg);overflow:hidden">
+          <div style="position:absolute;left:14%;right:14%;top:13%;display:flex;align-items:center;gap:6px;color:var(--measure);font:500 11px/1 var(--f-m)"><i style="width:1px;height:10px;background:currentColor"></i><i style="flex:1;height:1px;background:currentColor"></i><span>[szélesség] mm</span><i style="flex:1;height:1px;background:currentColor"></i><i style="width:1px;height:10px;background:currentColor"></i></div>
+          <div style="position:absolute;left:14%;right:14%;top:22%;bottom:30%;border:1px dashed color-mix(in oklab,var(--measure) 60%,transparent);display:grid;place-items:center;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:800;font-size:clamp(40px,8cqi,128px);letter-spacing:-.02em;line-height:1;color:color-mix(in oklab,var(--brand) 22%,#ffffff);text-shadow:0 0 3px var(--brand),0 0 12px var(--brand),0 0 34px var(--brand)">Stilet</div>
+          <div style="position:absolute;right:calc(14% - 34px);top:22%;bottom:30%;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--measure);font:500 11px/1 var(--f-m)"><i style="width:10px;height:1px;background:currentColor"></i><i style="flex:1;width:1px;background:currentColor"></i><span style="writing-mode:vertical-rl">[magasság] mm</span><i style="flex:1;width:1px;background:currentColor"></i><i style="width:10px;height:1px;background:currentColor"></i></div>
+          <span style="position:absolute;left:12px;bottom:12px;font:500 10.5px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg);padding:7px 9px;border-radius:var(--r-sm)">Referenciakép · világító betűk üzletportálon</span>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <section data-anchor="svc" style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Szolgáltatások</span>
+        <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Fóliától a <em style="font-style:var(--em)">világító</em> betűig<span style="display:var(--dot);color:var(--brand)">.</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:36px 28px">
+        <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column">
+            <h3 style="margin:0 0 8px;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:22px;line-height:1.1">{{ g.name }}</h3>
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+              <button onClick="{{ it.onClick }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;padding:10px 0;background:none;border:0;border-bottom:1px solid var(--line-soft);color:var(--text);font:400 15px/1.35 var(--f-b);text-align:left;cursor:pointer" style-hover="color:var(--brand-ink)">
+                <span>{{ it.name }}</span><span style="flex:none;font:500 11px/1 var(--f-m);letter-spacing:.06em;text-transform:uppercase;color:{{ it.tagCol }}">{{ it.tag }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px 48px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Webshop · Azonnali ár</span>
+          <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Rendelje meg <em style="font-style:var(--em)">online</em><span style="display:var(--dot);color:var(--brand)">.</span></h2>
+        </div>
+        <p style="margin:0;max-width:44ch;font-size:17px;color:var(--muted);text-wrap:pretty">Méret, anyag, grafika: az árat és az elkészülés napját azonnal látja.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px">
+        <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="6">
+          <button onClick="{{ t.onClick }}" style="display:flex;flex-direction:column;gap:6px;padding:14px 14px 16px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer" style-hover="border-color:var(--muted)">
+            <span style="height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
+              <span style="font:500 10px/1 var(--f-m);color:var(--measure)">{{ t.dim }}</span>
+              <span style="width:{{ t.rw }}px;height:{{ t.rh }}px;border:1px solid var(--text);border-radius:{{ t.rr }};background:var(--ph)"></span>
+            </span>
+            <span style="font:600 15px/1.2 var(--f-b)">{{ t.name }}</span>
+            <span style="font:500 12.5px/1.2 var(--f-m);color:var(--brand-ink)">{{ t.price }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px">
+        <button onClick="{{ goShop }}" style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);color:var(--text);font:600 14px/1 var(--f-b);cursor:pointer" style-hover="border-color:var(--muted)">Webshop megnyitása <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+        <span style="font:400 12px/1 var(--f-m);color:var(--muted)">Minden ár bruttó.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px 48px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Egyedi ajánlat · 4 lépés</span>
+          <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Kérjen ajánlatot <em style="font-style:var(--em)">egyedi</em> munkára<span style="display:var(--dot);color:var(--brand)">.</span></h2>
+        </div>
+        <p style="margin:0;max-width:44ch;font-size:17px;color:var(--muted);text-wrap:pretty">Ha kéri, kimegyünk és felmérjük a helyszínt.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:0 28px">
+        <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="9">
+          <button onClick="{{ j.onClick }}" style="display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px;padding:12px 0;background:none;border:0;border-bottom:1px solid var(--line-soft);color:var(--text);font:500 16px/1.3 var(--f-b);text-align:left;cursor:pointer" style-hover="color:var(--brand-ink)">{{ j.name }}<span style="font-family:var(--f-m);color:var(--muted)">→</span></button>
+        </sc-for>
+      </div>
+      <div><button onClick="{{ goQuoteBlank }}" style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);color:var(--text);font:600 14px/1 var(--f-b);cursor:pointer" style-hover="border-color:var(--muted)">Ajánlatot kérek <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button></div>
+    </div>
+  </section>
+
+  <section data-anchor="works" style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Referenciák</span>
+        <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px)">Munkáink<span style="display:var(--dot);color:var(--brand)">.</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:28px 20px">
+        <sc-for list="{{ works }}" as="w" hint-placeholder-count="6">
+          <button onClick="{{ soon }}" style="display:flex;flex-direction:column;gap:12px;padding:0;background:none;border:0;color:var(--text);text-align:left;cursor:pointer">
+            <span style="width:100%;aspect-ratio:4/3;background:var(--ph);border-radius:var(--r);display:grid;place-items:center"><span style="font:500 10px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg);padding:6px 8px;border-radius:var(--r-sm)">Referenciakép helye</span></span>
+            <span style="font:500 15px/1.3 var(--f-b)">{{ w }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div><button onClick="{{ soon }}" style="background:none;border:0;padding:6px 0;color:var(--text);font:600 14px/1 var(--f-b);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:6px;cursor:pointer" style-hover="color:var(--brand-ink)">Összes munka →</button></div>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Folyamat</span>
+        <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px)">Négy lépés, <em style="font-style:var(--em)">egy</em> csapat<span style="display:var(--dot);color:var(--brand)">.</span></h2>
+      </div>
+      <ol style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:28px 24px;margin:0;padding:0;list-style:none">
+        <sc-for list="{{ process }}" as="p" hint-placeholder-count="4">
+          <li style="display:flex;flex-direction:column;gap:10px;padding-top:16px;border-top:1px solid var(--line)">
+            <span style="font:500 13px/1 var(--f-m);color:var(--measure)">{{ p.n }}</span>
+            <h3 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:24px;line-height:1.1">{{ p.t }}</h3>
+            <p style="margin:0;font-size:15px;color:var(--muted);text-wrap:pretty">{{ p.d }}</p>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </section>
+
+  <section style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Rólunk</span>
+        <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px)">Saját műhely, <em style="font-style:var(--em)">saját</em> csapat<span style="display:var(--dot);color:var(--brand)">.</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:28px 24px">
+        <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:20px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)">
+            <h3 style="margin:0;font:600 17px/1.3 var(--f-b)">{{ p.t }}</h3>
+            <p style="margin:0;font-size:15px;color:var(--muted);text-wrap:pretty">{{ p.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section data-anchor="contact" style="padding:clamp(56px,8cqi,120px) var(--gut);border-top:1px solid var(--line-soft)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,3.4cqi,48px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Kapcsolat</span>
+        <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Hívjon, írjon, vagy jöjjön be a <em style="font-style:var(--em)">műhelybe</em><span style="display:var(--dot);color:var(--brand)">.</span></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:32px 48px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;min-height:60px;padding:12px 0;border-bottom:1px solid var(--line-soft)">
+                <span style="width:110px;font:500 11px/1.2 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">{{ c.k }}</span>
+                <span style="flex:1;min-width:200px;font:500 16px/1.35 var(--f-b);user-select:all">{{ c.v }}</span>
+                <sc-if value="{{ c.canCopy }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ c.copy }}" style="min-height:36px;padding:0 12px;background:none;border:1px solid var(--line);border-radius:var(--r);font:500 12px/1 var(--f-m);color:var(--text);cursor:pointer" style-hover="border-color:var(--muted)">Másolás</button>
+                </sc-if>
+                <sc-if value="{{ c.isTag }}" hint-placeholder-val="{{ false }}">
+                  <span style="display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border:1px dashed var(--measure);color:var(--measure);border-radius:var(--r);font:500 10.5px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase">Helyőrző</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div><a href="mailto:stiletdekor@gmail.com" style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);color:var(--text);font:600 14px/1 var(--f-b);text-decoration:none" style-hover="border-color:var(--muted)">Üzenetet írok <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></a></div>
+        </div>
+        <figure style="margin:0;display:flex;flex-direction:column;gap:10px">
+          <div style="aspect-ratio:4/3;background:var(--ph);border-radius:var(--r);display:grid;place-items:center"><span style="font:500 10px/1 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--bg);padding:6px 8px;border-radius:var(--r-sm)">Térkép helye</span></div>
+          <figcaption style="font:400 12px/1.4 var(--f-m);color:var(--muted)">Budapest, Schweidel József u.&nbsp;1–3.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+  <section style="padding:clamp(32px,5cqi,72px) var(--gut) clamp(48px,7cqi,104px)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(24px,3cqi,40px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px 48px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Webshop · Azonnali ár</span>
+          <h1 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Rendeljen online, <em style="font-style:var(--em)">centire</em> pontosan<span style="display:var(--dot);color:var(--brand)">.</span></h1>
+        </div>
+        <p style="margin:0;max-width:46ch;font-size:17px;color:var(--muted);text-wrap:pretty">Adja meg a méretet, válasszon anyagot, töltse fel a grafikát. Az árat tételesen látja, a határidőt naptári dátummal.</p>
+      </div>
+      <div role="group" aria-label="Termékkategóriák" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,108px),1fr));gap:8px">
+        <sc-for list="{{ cats }}" as="t" hint-placeholder-count="6">
+          <button onClick="{{ t.onClick }}" aria-pressed="{{ t.pressed }}" style="display:flex;flex-direction:column;gap:3px;padding:12px;background:{{ t.bg }};border:1px solid {{ t.bd }};border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer" style-hover="border-color:var(--muted)">
+            <span style="font:600 14px/1.2 var(--f-b)">{{ t.name }}</span>
+            <span style="font:500 11px/1.3 var(--f-m);color:var(--muted)">{{ t.price }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:{{ cfgCols }};gap:clamp(24px,3.4cqi,56px);align-items:start">
+        <div style="position:{{ prevPos }};top:92px;display:flex;flex-direction:column;gap:12px">
+          <div ref="{{ previewRef }}" role="img" aria-label="{{ sp.aria }}" style="position:relative;height:{{ sp.h }}px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg);overflow:hidden">
+            <div style="position:absolute;left:0;right:0;bottom:{{ sp.floor }}px;height:1px;background:var(--line)"></div>
+            <div style="position:absolute;left:{{ sp.px }}px;bottom:{{ sp.floor }}px;width:{{ sp.pw }}px;height:{{ sp.ph }}px;display:flex;flex-direction:column;align-items:center;gap:{{ sp.neck }}px">
+              <span style="width:{{ sp.head }}px;height:{{ sp.head }}px;border-radius:50%;background:var(--muted);opacity:.55;flex:none"></span>
+              <span style="flex:1;width:100%;border-radius:{{ sp.head }}px {{ sp.head }}px 4px 4px;background:var(--muted);opacity:.55"></span>
+            </div>
+            <div style="position:absolute;left:{{ sp.pdx }}px;bottom:{{ sp.floor }}px;height:{{ sp.ph }}px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);font:500 10px/1 var(--f-m)"><i style="width:8px;height:1px;background:currentColor"></i><i style="flex:1;width:1px;background:currentColor"></i><span style="writing-mode:vertical-rl;transform:rotate(180deg)">1 800 mm</span><i style="flex:1;width:1px;background:currentColor"></i><i style="width:8px;height:1px;background:currentColor"></i></div>
+            <div style="position:absolute;left:{{ sp.bx }}px;bottom:{{ sp.floor }}px;width:{{ sp.bw }}px;height:{{ sp.bh }}px;background:{{ sp.bBg }};border:1px {{ sp.bStyle }} {{ sp.bBd }};display:grid;place-items:center;overflow:hidden">
+              <span style="font:500 10px/1.3 var(--f-m);letter-spacing:.06em;color:var(--muted);text-align:center;padding:4px">{{ sp.label }}</span>
+              <sc-for list="{{ sp.rings }}" as="r" hint-placeholder-count="0">
+                <i style="position:absolute;left:{{ r.x }}px;top:{{ r.y }}px;width:5px;height:5px;border-radius:50%;border:1px solid var(--text);background:var(--bg)"></i>
+              </sc-for>
+            </div>
+            <div style="position:absolute;left:{{ sp.bx }}px;width:{{ sp.bw }}px;bottom:{{ sp.hdy }}px;display:flex;align-items:center;gap:5px;color:var(--measure);font:500 11px/1 var(--f-m);white-space:nowrap"><i style="width:1px;height:9px;background:currentColor"></i><i style="flex:1;height:1px;background:currentColor"></i><span>{{ sp.wmm }}</span><i style="flex:1;height:1px;background:currentColor"></i><i style="width:1px;height:9px;background:currentColor"></i></div>
+            <div style="position:absolute;left:{{ sp.vdx }}px;bottom:{{ sp.floor }}px;height:{{ sp.bh }}px;display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--measure);font:500 11px/1 var(--f-m);white-space:nowrap"><i style="width:9px;height:1px;background:currentColor"></i><i style="flex:1;width:1px;background:currentColor"></i><span style="writing-mode:vertical-rl">{{ sp.hmm }}</span><i style="flex:1;width:1px;background:currentColor"></i><i style="width:9px;height:1px;background:currentColor"></i></div>
+            <div style="position:absolute;right:14px;bottom:12px;display:flex;align-items:center;gap:6px;font:500 10px/1 var(--f-m);color:var(--muted)"><i style="width:{{ sp.m1 }}px;height:4px;border:1px solid var(--muted);border-top:0"></i>1 m</div>
+            <span style="position:absolute;left:14px;bottom:10px;font:500 10px/1 var(--f-m);letter-spacing:.06em;color:var(--muted)">Valós lépték · alak: 180 cm</span>
+            <sc-if value="{{ sp.invalid }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in oklab,var(--surface) 88%,transparent);font:500 13px var(--f-m);color:var(--bad)">Adjon meg érvényes méretet.</div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ fileOk }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)">
+              <span style="display:flex;flex-direction:column;gap:4px;padding:5px;border:1px solid var(--line);border-radius:10px;background:var(--bg);align-self:start">
+                <i style="width:11px;height:11px;border-radius:50%;background:{{ lamp.c1 }};box-shadow:{{ lamp.g1 }}"></i><i style="width:11px;height:11px;border-radius:50%;background:{{ lamp.c2 }};box-shadow:{{ lamp.g2 }}"></i><i style="width:11px;height:11px;border-radius:50%;background:{{ lamp.c3 }};box-shadow:{{ lamp.g3 }}"></i>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:3px">
+                <span style="font:500 10.5px/1.2 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Nyomdakész-ellenőrzés</span>
+                <b style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);font-size:20px;line-height:1.1;color:{{ lamp.col }}">{{ lamp.verdict }}</b>
+                <span style="font-size:13.5px;color:var(--muted)">{{ lamp.text }}</span>
+                <span style="font:400 11.5px/1.4 var(--f-m);color:var(--muted)">{{ lamp.data }}</span>
+              </span>
+            </div>
+            <sc-if value="{{ fit.show }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px;padding:14px;background:color-mix(in oklab,var(--warn) 7%,var(--surface));border:1px solid color-mix(in oklab,var(--warn) 45%,var(--line));border-radius:var(--r)">
+                <span style="font-size:13.5px">{{ fit.msg }}</span>
+                <div role="radiogroup" aria-label="Arányeltérés kezelése" style="display:flex;flex-wrap:wrap;gap:8px">
+                  <button onClick="{{ fit.setFill }}" role="radio" aria-checked="{{ fit.fillA }}" style="min-height:40px;padding:0 12px;border:1px solid {{ fit.fillBd }};background:{{ fit.fillBg }};border-radius:var(--r);font:500 13px/1 var(--f-b);color:var(--text);cursor:pointer">Kitöltés (vágással)</button>
+                  <button onClick="{{ fit.setFit }}" role="radio" aria-checked="{{ fit.fitA }}" style="min-height:40px;padding:0 12px;border:1px solid {{ fit.fitBd }};background:{{ fit.fitBg }};border-radius:var(--r);font:500 13px/1 var(--f-b);color:var(--text);cursor:pointer">Illesztés (kerettel)</button>
+                  <button onClick="{{ fit.match }}" style="min-height:40px;padding:0 4px;border:0;background:none;font:600 13px/1 var(--f-b);color:var(--text);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:5px;cursor:pointer">Méret igazítása a képhez</button>
+                </div>
+              </div>
+            </sc-if>
+          </sc-if>
+          <sc-if value="{{ fileNotOk }}" hint-placeholder-val="{{ true }}">
+            <p style="margin:0;font:400 12px/1.5 var(--f-m);color:var(--muted)">Alul a padlóvonal, a méretek mm-ben. Töltse fel a grafikát: a felbontást a választott méreten azonnal ellenőrizzük.</p>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:20px">
+            <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Konfigurátor</span>
+            <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:34px;line-height:1">Molinó</h2>
+            <span style="font-size:14px;color:var(--muted)">Nyomtatott molinó bármilyen méretben, 20 és 500 cm között oldalanként.</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px 0;border-top:1px solid var(--line-soft)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-size:15px;font-weight:600">Méret</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">20–500 cm</span></div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:end">
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Szélesség</span><span style="position:relative;display:block"><input value="{{ cfg.Ws }}" onChange="{{ cfg.onW }}" inputmode="decimal" autocomplete="off" style="width:100%;height:48px;padding:0 44px 0 12px;background:var(--field);border:1px solid {{ cfg.wBd }};border-radius:var(--r);font:500 19px/1 var(--f-m);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font:500 13px var(--f-m);color:var(--muted)">cm</span></span></label>
+              <button onClick="{{ cfg.swap }}" aria-label="Szélesség és magasság cseréje" style="display:grid;place-items:center;width:44px;height:48px;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer" style-hover="border-color:var(--muted)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7h12M15 3l4 4-4 4M17 17H5M9 13l-4 4 4 4"></path></svg></button>
+              <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Magasság</span><span style="position:relative;display:block"><input value="{{ cfg.Hs }}" onChange="{{ cfg.onH }}" inputmode="decimal" autocomplete="off" style="width:100%;height:48px;padding:0 44px 0 12px;background:var(--field);border:1px solid {{ cfg.hBd }};border-radius:var(--r);font:500 19px/1 var(--f-m);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font:500 13px var(--f-m);color:var(--muted)">cm</span></span></label>
+            </div>
+            <sc-if value="{{ cfg.fromFile }}" hint-placeholder-val="{{ false }}">
+              <span style="display:flex;align-items:center;gap:8px;font:400 12px/1.4 var(--f-m);color:var(--measure)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v4h4"></path></svg>A méret a fájlból: 300,0 × 100,0 cm · TrimBox</span>
+            </sc-if>
+            <sc-if value="{{ cfg.hasErr }}" hint-placeholder-val="{{ false }}">
+              <span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ cfg.err }}</span>
+            </sc-if>
+            <div role="group" aria-label="Gyakori méretek" style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
+                <button onClick="{{ p.onClick }}" aria-pressed="{{ p.pressed }}" style="min-height:36px;padding:0 11px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.col }};border-radius:var(--r);font:500 12.5px/1 var(--f-m);cursor:pointer" style-hover="border-color:var(--text)">{{ p.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px 0;border-top:1px solid var(--line-soft)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-size:15px;font-weight:600">Anyag</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">bruttó m²-ár</span></div>
+            <div role="radiogroup" aria-label="Anyag" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px;align-items:start">
+              <sc-for list="{{ mats }}" as="m" hint-placeholder-count="4">
+                <div onClick="{{ m.onClick }}" role="radio" aria-checked="{{ m.checked }}" tabIndex="0" style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;padding:12px;background:{{ m.bg }};border:1px solid {{ m.bd }};border-radius:var(--r);cursor:pointer" style-hover="border-color:var(--muted)">
+                  <span style="grid-row:1/span 2;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);background:{{ m.tex }}"></span>
+                  <b style="font-size:13.5px;font-weight:600;line-height:1.25;align-self:end">{{ m.name }}</b>
+                  <span style="font:500 12px var(--f-m);color:var(--brand-ink)">{{ m.price }}</span>
+                  <span style="grid-column:1/-1;font-size:12.5px;color:var(--muted);padding-top:6px">{{ m.desc }}</span>
+                  <button onClick="{{ m.toggle }}" aria-expanded="{{ m.openA }}" style="grid-column:1/-1;justify-self:start;display:flex;align-items:center;gap:6px;min-height:32px;padding:0;background:none;border:0;font:500 12px var(--f-m);color:var(--text);cursor:pointer">Adatok <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate({{ m.rot }}deg)"><path d="m6 9 6 6 6-6"></path></svg></button>
+                  <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;padding-top:8px;border-top:1px dashed var(--line);font:400 11.5px/1.45 var(--f-m);color:var(--muted)">
+                      <sc-for list="{{ m.specs }}" as="s" hint-placeholder-count="2"><span>{{ s.k }}</span><span style="text-align:right;color:var(--text)">{{ s.v }}</span></sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <span style="font:400 11px/1.4 var(--f-m);color:var(--muted)">* tájékoztató adat, a műhely jóváhagyására vár.</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px 0;border-top:1px solid var(--line-soft)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-size:15px;font-weight:600">Szélkidolgozás</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ cfg.perLabel }}</span></div>
+            <div role="radiogroup" aria-label="Szélkidolgozás" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px">
+              <sc-for list="{{ edges }}" as="e" hint-placeholder-count="4">
+                <button onClick="{{ e.onClick }}" role="radio" aria-checked="{{ e.checked }}" style="display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 12px;background:var(--surface);border:1px solid {{ e.bd }};border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer" style-hover="border-color:var(--muted)">
+                  <span style="width:18px;height:18px;border-radius:50%;border:{{ e.ring }}"></span>
+                  <span style="display:flex;flex-direction:column"><b style="font-size:13.5px;font-weight:600">{{ e.name }}</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ e.unit }}</span></span>
+                  <span style="font:500 13px var(--f-m)">{{ e.amt }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px 0;border-top:1px solid var(--line-soft)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-size:15px;font-weight:600">Darabszám</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">azonos tételből</span></div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px">
+              <div style="display:inline-flex;border:1px solid var(--line);border-radius:var(--r);background:var(--field)">
+                <button onClick="{{ qty.dec }}" aria-label="Eggyel kevesebb" disabled="{{ qty.atMin }}" style="width:44px;height:46px;background:none;border:0;font:500 20px var(--f-m);color:{{ qty.decCol }};cursor:pointer">−</button>
+                <input value="{{ qty.val }}" onChange="{{ qty.onInput }}" inputmode="numeric" aria-label="Darabszám" style="width:56px;height:46px;text-align:center;background:none;border:0;border-inline:1px solid var(--line-soft);font:500 18px var(--f-m);color:var(--text);outline:0" style-focus="box-shadow:inset 0 0 0 2px var(--focus)">
+                <button onClick="{{ qty.inc }}" aria-label="Eggyel több" style="width:44px;height:46px;background:none;border:0;font:500 20px var(--f-m);color:var(--text);cursor:pointer">+</button>
+              </div>
+              <span aria-live="polite" style="font:500 13px var(--f-m);color:var(--brand-ink)">{{ qty.hint }}</span>
+            </div>
+            <span style="font:400 11.5px/1.4 var(--f-m);color:var(--muted)">Mennyiségi kedvezmény: 2–4&nbsp;db −5% · 5–9&nbsp;db −10% · 10&nbsp;db-tól −15%</span>
+          </div>
+
+          <div style="padding:20px 0;border-top:1px solid var(--line-soft)">
+            <button onClick="{{ toggleExpress }}" role="switch" aria-checked="{{ sw.on }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:12px;background:var(--surface);border:1px solid {{ sw.bd }};border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer">
+              <span style="position:relative;width:46px;height:26px;border:1px solid {{ sw.bd }};border-radius:13px;background:{{ sw.track }};flex:none"><i style="position:absolute;top:3px;left:{{ sw.x }}px;width:18px;height:18px;border-radius:50%;background:{{ sw.knob }};transition:left .15s"></i></span>
+              <span style="display:flex;flex-direction:column"><b style="font-size:14px;font-weight:600">Expressz gyártás</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">1 munkanap · +30% a kedvezményes árra</span></span>
+            </button>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;padding:20px 0;border-top:1px solid var(--line-soft)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-size:15px;font-weight:600">Grafika</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">PDF · AI · EPS · TIFF · JPG · PNG</span></div>
+            <sc-if value="{{ file.none }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ upload }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px;border:1px dashed var(--line);border-radius:var(--r);background:var(--surface);color:var(--text);text-align:left;cursor:pointer" style-hover="border-color:var(--measure)">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>
+                <b style="font-size:14px;font-weight:600">Töltse fel a grafikát</b>
+                <span style="font-size:12.5px;color:var(--muted)">Húzza ide a fájlt, vagy kattintson. Legfeljebb 200 MB. A méretet kiolvassuk belőle.</span>
+              </button>
+              <button onClick="{{ badFile }}" style="align-self:flex-start;background:none;border:0;padding:4px 0;font:400 11.5px var(--f-m);color:var(--muted);text-decoration:underline;text-underline-offset:4px;cursor:pointer">Hibás fájl kipróbálása</button>
+            </sc-if>
+            <sc-if value="{{ file.up }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)">
+                <span style="font:500 12.5px var(--f-m)">kerites-molino_300x100.pdf</span>
+                <span style="height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden"><i style="display:block;width:{{ file.prog }}%;height:100%;background:var(--text)"></i></span>
+                <span style="font:400 11.5px var(--f-m);color:var(--muted)">Feltöltés · {{ file.prog }}%</span>
+              </div>
+            </sc-if>
+            <sc-if value="{{ file.ok }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)">
+                <span style="width:56px;height:42px;background:var(--ph);border:1px solid var(--line);border-radius:var(--r-sm)"></span>
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><b style="font:500 12.5px var(--f-m);overflow-wrap:anywhere">kerites-molino_300x100.pdf</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">6 000 × 2 000 px · 1 oldal · 28,4 MB</span></span>
+                <button onClick="{{ clearFile }}" aria-label="Grafika eltávolítása" style="display:grid;place-items:center;width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer" style-hover="border-color:var(--muted)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ file.bad }}" hint-placeholder-val="{{ false }}">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--bad);border-radius:var(--r);background:color-mix(in oklab,var(--bad) 7%,var(--surface))">
+                <span style="display:flex;flex-direction:column;gap:4px"><b style="font:500 12.5px var(--f-m)">logo.docx</b><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">Ezt a fájltípust nem tudjuk nyomtatni. Küldjön PDF-et.</span></span>
+                <button onClick="{{ clearFile }}" style="min-height:40px;padding:0 12px;background:none;border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b);color:var(--text);cursor:pointer">Másik fájl</button>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
+              <span style="display:flex;flex-direction:column;gap:4px"><span style="font:500 10.5px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Bruttó végösszeg</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ price.netLine }}</span></span>
+              <b style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);font-size:40px;line-height:1;letter-spacing:-.01em;white-space:nowrap">{{ price.total }}</b>
+            </div>
+            <button onClick="{{ toggleBd }}" aria-expanded="{{ price.bdA }}" style="align-self:flex-start;display:flex;align-items:center;gap:6px;min-height:32px;padding:0;background:none;border:0;font:500 12.5px var(--f-m);color:var(--text);cursor:pointer">Részletek <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" style="transform:rotate({{ price.rot }}deg)"><path d="m6 9 6 6 6-6"></path></svg></button>
+            <sc-if value="{{ price.bd }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;font-size:13.5px">
+                <sc-for list="{{ price.rows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft);color:{{ r.col }}"><span style="display:flex;flex-direction:column">{{ r.label }}<span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ r.sub }}</span></span><span style="font-family:var(--f-m);white-space:nowrap">{{ r.amt }}</span></div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="display:flex;align-items:flex-start;gap:10px;padding-top:12px;border-top:1px solid var(--line-soft);font-size:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--measure)" stroke-width="1.7" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg><span style="display:flex;flex-direction:column;gap:2px"><span>Várhatóan <b>{{ price.lead }}</b> elkészül</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ price.leadMeta }}</span></span></div>
+            <button onClick="{{ addToCart }}" disabled="{{ price.invalid }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 20px;background:{{ price.btnBg }};color:{{ price.btnFg }};box-shadow:{{ price.btnGlow }};border:0;border-radius:var(--r);font:600 15px/1 var(--f-b);cursor:pointer" style-hover="box-shadow:var(--btn-glow-hi)">Kosárba</button>
+            <span style="font:400 11.5px/1.45 var(--f-m);color:var(--muted)">A végleges ár eltérhet a kalkulált ártól. Átvétel a műhelyben ingyenes · futár 3&nbsp;797&nbsp;Ft.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <sc-if value="{{ mobileBar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px var(--gut);background:color-mix(in oklab,var(--bg) 94%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line)">
+      <span style="display:flex;flex-direction:column"><b style="font:600 19px/1.1 var(--f-m)">{{ price.total }}</b><span style="font:400 11px var(--f-m);color:var(--muted)">bruttó · {{ price.leadShort }}</span></span>
+      <button onClick="{{ addToCart }}" disabled="{{ price.invalid }}" style="min-height:48px;padding:0 22px;background:{{ price.btnBg }};color:{{ price.btnFg }};box-shadow:{{ price.btnGlow }};border:0;border-radius:var(--r);font:600 15px/1 var(--f-b);cursor:pointer">Kosárba</button>
+    </div>
+  </sc-if>
+</sc-if>
+
+<sc-if value="{{ isQuote }}" hint-placeholder-val="{{ false }}">
+  <section style="padding:clamp(32px,5cqi,72px) var(--gut) clamp(56px,8cqi,120px)">
+    <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(24px,3cqi,40px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px 48px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Egyedi ajánlat · Négy lépés</span>
+          <h1 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);line-height:var(--lh-d);font-size:clamp(36px,5.4cqi,80px);text-wrap:balance">Egyedi munkára kérjen <em style="font-style:var(--em)">ajánlatot</em><span style="display:var(--dot);color:var(--brand)">.</span></h1>
+        </div>
+        <p style="margin:0;max-width:46ch;font-size:17px;color:var(--muted);text-wrap:pretty">Egyedi munka pontos árához felmérés kell. A varázsló összegyűjti, amire az árazáshoz szükségünk van, a végén felmérési időpontot is kérhet.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ wzCols }};gap:clamp(24px,3.4cqi,56px);align-items:start">
+        <div data-anchor="wz" style="display:flex;flex-direction:column;gap:24px;min-width:0">
+          <ol aria-label="Lépések" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none">
+            <sc-for list="{{ wzSteps }}" as="s" hint-placeholder-count="4">
+              <li><button onClick="{{ s.onClick }}" disabled="{{ s.locked }}" aria-current="{{ s.cur }}" style="display:flex;flex-direction:column;gap:8px;width:100%;padding:0;background:none;border:0;text-align:left;color:var(--text);cursor:{{ s.cursor }}"><i style="display:block;width:100%;height:3px;background:{{ s.bar }};border-radius:2px"></i><span style="font:500 11px var(--f-m);color:var(--muted)">{{ s.n }}</span><span style="font-size:13px;line-height:1.25;font-weight:{{ s.w }};color:{{ s.col }}">{{ s.label }}</span></button></li>
+            </sc-for>
+          </ol>
+
+          <sc-if value="{{ wzShow.form }}" hint-placeholder-val="{{ true }}">
+            <sc-if value="{{ wzShow.s1 }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:28px;line-height:1.1">Milyen munkáról van szó?</h2>
+                <div role="radiogroup" aria-label="Munkatípus" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:8px">
+                  <sc-for list="{{ wzTypes }}" as="t" hint-placeholder-count="9">
+                    <button onClick="{{ t.onClick }}" role="radio" aria-checked="{{ t.checked }}" style="display:flex;align-items:center;gap:12px;min-height:60px;padding:12px 14px;background:{{ t.bg }};border:1px solid {{ t.bd }};border-radius:var(--r);color:var(--text);font:500 14.5px/1.3 var(--f-b);text-align:left;cursor:pointer" style-hover="border-color:var(--muted)"><span style="width:18px;height:18px;flex:none;border-radius:50%;border:{{ t.ring }}"></span>{{ t.name }}</button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ wzE.hasType }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ wzE.type }}</span></sc-if>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wzShow.s2 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;flex-direction:column;gap:4px"><h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:28px;line-height:1.1">Részletek</h2><span style="font:400 12px var(--f-m);color:var(--muted)">{{ wzTypeName }}</span></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Szélesség (kb.)</span><span style="position:relative;display:block"><input value="{{ wz.w }}" onChange="{{ on.w }}" inputmode="decimal" style="width:100%;height:46px;padding:0 44px 0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:500 16px var(--f-m);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font:500 13px var(--f-m);color:var(--muted)">cm</span></span></label>
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Magasság (kb.)</span><span style="position:relative;display:block"><input value="{{ wz.h }}" onChange="{{ on.h }}" inputmode="decimal" style="width:100%;height:46px;padding:0 44px 0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:500 16px var(--f-m);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font:500 13px var(--f-m);color:var(--muted)">cm</span></span></label>
+                </div>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Leírás</span><textarea value="{{ wz.desc }}" onChange="{{ on.desc }}" rows="4" placeholder="Mit, hová, milyen felületre?" style="padding:12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:400 15px/1.5 var(--f-b);color:var(--text);resize:vertical;outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"></textarea><span style="font-size:12px;color:var(--muted)">Nem kötelező. Ha van meglévő arculat vagy minta, a következő lépésben feltöltheti.</span></label>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wzShow.s3 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:28px;line-height:1.1">Helyszín és fotók</h2>
+                <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">A munka helyszíne, cím <span style="color:var(--brand-ink)">*</span></span><input value="{{ wz.addr }}" onChange="{{ on.addr }}" autocomplete="street-address" placeholder="Város, utca, házszám" style="height:46px;padding:0 12px;background:var(--field);border:1px solid {{ wzE.addrB }};border-radius:var(--r);font:400 15px var(--f-b);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><sc-if value="{{ wzE.hasAddr }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ wzE.addr }}</span></sc-if></label>
+                <label style="display:flex;flex-direction:column;gap:6px;max-width:320px"><span style="font-size:13px;font-weight:500">Határidő</span><input value="{{ wz.deadline }}" onChange="{{ on.deadline }}" placeholder="pl. november 20." style="height:46px;padding:0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:400 15px var(--f-b);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"></label>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font-size:13px;font-weight:500">Fotók, fájlok</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ wzPhotos }}" as="p" hint-placeholder-count="0">
+                      <span style="position:relative;width:96px;height:72px;background:var(--ph);border:1px solid var(--line);border-radius:var(--r-sm);display:grid;place-items:end start;padding:6px;font:400 10px var(--f-m);color:var(--muted)">{{ p.name }}<button onClick="{{ p.remove }}" aria-label="Fotó törlése" style="position:absolute;top:4px;right:4px;width:24px;height:24px;display:grid;place-items:center;background:var(--bg);border:1px solid var(--line);border-radius:50%;color:var(--text);cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"></path></svg></button></span>
+                    </sc-for>
+                    <button onClick="{{ addPhoto }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:96px;height:72px;background:var(--surface);border:1px dashed var(--line);border-radius:var(--r-sm);color:var(--text);font:500 11px var(--f-m);cursor:pointer" style-hover="border-color:var(--measure)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"></path></svg>Hozzáadás</button>
+                  </div>
+                  <span style="font-size:12px;color:var(--muted)">Több fájl is választható. Ebből látjuk a felületet, így pontosabban árazunk.</span>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ wzShow.s4 }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:28px;line-height:1.1">Kapcsolat és felmérés</h2>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px">
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Név <span style="color:var(--brand-ink)">*</span></span><input value="{{ wz.name }}" onChange="{{ on.name }}" autocomplete="name" style="height:46px;padding:0 12px;background:var(--field);border:1px solid {{ wzE.nameB }};border-radius:var(--r);font:400 15px var(--f-b);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><sc-if value="{{ wzE.hasName }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ wzE.name }}</span></sc-if></label>
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Cég</span><input value="{{ wz.company }}" onChange="{{ on.company }}" autocomplete="organization" placeholder="Nem kötelező" style="height:46px;padding:0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:400 15px var(--f-b);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Telefon</span><input value="{{ wz.phone }}" onChange="{{ on.phone }}" autocomplete="tel" inputmode="tel" placeholder="+36 …" style="height:46px;padding:0 12px;background:var(--field);border:1px solid {{ wzE.phoneB }};border-radius:var(--r);font:400 15px var(--f-m);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"></label>
+                  <label style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">E-mail</span><input value="{{ wz.email }}" onChange="{{ on.email }}" autocomplete="email" inputmode="email" style="height:46px;padding:0 12px;background:var(--field);border:1px solid {{ wzE.emailB }};border-radius:var(--r);font:400 15px var(--f-b);color:var(--text);outline:0" style-focus="border-color:var(--focus);box-shadow:0 0 0 1px var(--focus)"><sc-if value="{{ wzE.hasEmail }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ wzE.email }}</span></sc-if></label>
+                </div>
+                <span style="font-size:12.5px;color:{{ wzE.contactCol }}">{{ wzE.contactMsg }}</span>
+                <button onClick="{{ toggleSurvey }}" role="switch" aria-checked="{{ svSw.on }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:12px;background:var(--surface);border:1px solid {{ svSw.bd }};border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer">
+                  <span style="position:relative;width:46px;height:26px;border:1px solid {{ svSw.bd }};border-radius:13px;background:{{ svSw.track }};flex:none"><i style="position:absolute;top:3px;left:{{ svSw.x }}px;width:18px;height:18px;border-radius:50%;background:{{ svSw.knob }};transition:left .15s"></i></span>
+                  <span style="display:flex;flex-direction:column"><b style="font-size:14px;font-weight:600">Helyszíni felmérést kérek</b><span style="font-size:12.5px;color:var(--muted)">Kiszállunk, felmérjük, és utána adunk pontos árat. Az időpontot telefonon egyeztetjük.</span></span>
+                </button>
+                <button onClick="{{ toggleConsent }}" role="checkbox" aria-checked="{{ wzE.consentA }}" style="display:flex;align-items:center;gap:10px;padding:4px 0;background:none;border:0;color:{{ wzE.consentCol }};font-size:14px;text-align:left;cursor:pointer">
+                  <span style="width:22px;height:22px;flex:none;display:grid;place-items:center;border:1px solid {{ wzE.consentBd }};background:{{ wzE.consentBg }};color:var(--on-brand);border-radius:var(--r-sm)"><sc-if value="{{ wz.consent }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12.5 4.5 4.5L19 7"></path></svg></sc-if></span>
+                  <span>Elfogadom az adatkezelési tájékoztatót <span style="color:var(--brand-ink)">*</span></span>
+                </button>
+                <sc-if value="{{ wzE.hasConsent }}" hint-placeholder-val="{{ false }}"><span role="alert" style="font:500 12px/1.4 var(--f-m);color:var(--bad)">{{ wzE.consent }}</span></sc-if>
+                <span style="font:400 11.5px var(--f-m);color:var(--muted)">A végleges árajánlat eltérhet a kalkulált ártól.</span>
+              </div>
+            </sc-if>
+            <div style="display:flex;align-items:center;gap:10px;padding-top:20px;border-top:1px solid var(--line-soft)">
+              <sc-if value="{{ wzShow.back }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ wzBack }}" style="min-height:48px;padding:0 18px;background:none;border:1px solid var(--line);border-radius:var(--r);font:600 14px/1 var(--f-b);color:var(--text);cursor:pointer" style-hover="background:var(--surface)">Vissza</button>
+              </sc-if>
+              <span style="flex:1"></span>
+              <button onClick="{{ wzNext }}" style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border:0;border-radius:var(--r);font:600 14px/1 var(--f-b);cursor:pointer" style-hover="box-shadow:var(--btn-glow-hi)">{{ wzNextLabel }} <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ wzShow.done }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:14px;padding:24px;background:color-mix(in oklab,var(--ok) 6%,var(--surface));border:1px solid color-mix(in oklab,var(--ok) 45%,var(--line));border-radius:var(--r-lg)">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--ok)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="m8 12.5 3 3 5-6"></path></svg>
+              <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:30px;line-height:1.1">Köszönjük, megkaptuk.</h2>
+              <span style="font:500 13px var(--f-m)">Ajánlatkérés száma: {{ wz.done }}</span>
+              <p style="margin:0;font-size:15px;color:var(--muted);max-width:52ch">{{ wzDoneText }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:6px">
+                <button onClick="{{ wzRestart }}" style="min-height:44px;padding:0 16px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 14px/1 var(--f-b);color:var(--text);cursor:pointer">Új ajánlatkérés</button>
+                <button onClick="{{ goHome }}" style="min-height:44px;padding:0 4px;background:none;border:0;font:600 14px/1 var(--f-b);color:var(--text);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:6px;cursor:pointer">Vissza a kezdőlapra</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ isDesk }}" hint-placeholder-val="{{ true }}">
+          <aside aria-label="Az ajánlatkérés összegzése" style="position:{{ prevPos }};top:92px;display:flex;flex-direction:column;gap:12px;padding:18px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-lg)">
+            <span style="font:500 10.5px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Összegzés</span>
+            <dl style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13.5px">
+              <sc-for list="{{ wzSum }}" as="r" hint-placeholder-count="6"><dt style="font:400 12px/1.5 var(--f-m);color:var(--muted)">{{ r.k }}</dt><dd style="margin:0;text-align:right;overflow-wrap:anywhere">{{ r.v }}</dd></sc-for>
+            </dl>
+          </aside>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+</main>
+
+<footer style="padding:clamp(48px,7cqi,96px) var(--gut) 28px;border-top:1px solid var(--line)">
+  <div style="max-width:1328px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+    <span aria-label="Stilet Dekor" style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);font-size:clamp(44px,11cqi,180px);line-height:.9;letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:.12em;flex-wrap:wrap">STILET<i style="width:.12em;height:.12em;border-radius:50%;background:var(--brand)"></i>DEKOR</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:28px">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Oldal</span><sc-for list="{{ nav }}" as="n" hint-placeholder-count="4"><button onClick="{{ n.onClick }}" style="align-self:flex-start;background:none;border:0;padding:2px 0;font-size:14.5px;color:var(--text);cursor:pointer;text-align:left" style-hover="color:var(--brand-ink)">{{ n.label }}</button></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Webshop</span><sc-for list="{{ tiles }}" as="t" hint-placeholder-count="6"><button onClick="{{ t.onClick }}" style="align-self:flex-start;background:none;border:0;padding:2px 0;font-size:14.5px;color:var(--text);cursor:pointer;text-align:left" style-hover="color:var(--brand-ink)">{{ t.name }}</button></sc-for></div>
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Kapcsolat</span><span style="font-size:14.5px;line-height:1.7">+36&nbsp;70&nbsp;538&nbsp;5030<br>stiletdekor@gmail.com<br>Budapest, Schweidel József&nbsp;u.&nbsp;1–3.<br><span style="color:var(--muted)">H–P 8:00–17:00 (helyőrző)</span></span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14.5px;color:var(--muted)"><span style="font:500 11px/1.2 var(--f-m);letter-spacing:.12em;text-transform:uppercase">Jogi</span><span>ÁSZF [helyőrző]</span><span>Adatkezelési tájékoztató [helyőrző]</span><span>Impresszum [helyőrző]</span></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;padding-top:16px;border-top:1px solid var(--line-soft);font:400 11.5px/1.4 var(--f-m);color:var(--muted)"><span>© 2026 Stilet Dekor</span><span>Prototípus · {{ themeName }} · a képek helyőrzők</span></div>
+  </div>
+</footer>
+
+<sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeCart }}" style="position:{{ layerPos }};inset:0;z-index:50;background:rgba(0,0,0,.62)"></div>
+  <aside role="dialog" aria-modal="true" aria-label="Kosár" style="position:{{ layerPos }};top:0;right:0;bottom:0;z-index:51;width:min(460px,100%);display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line);box-shadow:-20px 0 60px rgba(0,0,0,.5)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;height:68px;padding:0 20px;border-bottom:1px solid var(--line-soft);flex:none">
+      <h2 style="margin:0;font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:24px;line-height:1">Kosár</h2>
+      <button onClick="{{ closeCart }}" aria-label="Bezárás" style="display:grid;place-items:center;width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer" style-hover="border-color:var(--text)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+    </div>
+    <div style="flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:18px">
+      <sc-if value="{{ cartView.empty }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px;padding:8px 0">
+          <p style="margin:0;font-size:15px;color:var(--muted)">A kosár üres. Állítsa össze a terméket a konfigurátorban, és tegye kosárba.</p>
+          <div><button onClick="{{ goShopFromCart }}" style="min-height:44px;padding:0 16px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 14px/1 var(--f-b);color:var(--text);cursor:pointer">Webshop megnyitása</button></div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ cartView.done }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:color-mix(in oklab,var(--ok) 7%,var(--surface));border:1px solid color-mix(in oklab,var(--ok) 45%,var(--line));border-radius:var(--r)">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ok)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="m8 12.5 3 3 5-6"></path></svg>
+          <b style="font-size:15px">Megkaptuk a rendelését. Ellenőrizzük, és e-mailben válaszolunk.</b>
+          <span style="font:500 12.5px var(--f-m)">Rendelésszám: {{ orderDone }}</span>
+          <span style="font-size:13.5px;color:var(--muted)">Fizetni csak akkor kell, ha a visszaigazolt végleges árat elfogadja.</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ cartView.has }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ cartLines }}" as="l" hint-placeholder-count="1">
+            <div style="display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line-soft)">
+              <span style="width:56px;height:42px;background:var(--ph);border:1px solid var(--line);border-radius:var(--r-sm)"></span>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0"><b style="font-size:14.5px">{{ l.title }}</b><span style="font:400 11.5px/1.45 var(--f-m);color:var(--muted)">{{ l.meta }}</span><span style="font:500 13px var(--f-m)">{{ l.price }}</span></span>
+              <button onClick="{{ l.remove }}" aria-label="Tétel törlése" style="display:grid;place-items:center;width:40px;height:40px;background:none;border:1px solid var(--line);border-radius:var(--r);color:var(--text);cursor:pointer" style-hover="border-color:var(--bad);color:var(--bad)"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button>
+            </div>
+          </sc-for>
+        </div>
+        <div role="radiogroup" aria-label="Átvétel" style="display:flex;flex-direction:column;gap:8px">
+          <span style="font:500 10.5px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Átvétel</span>
+          <sc-for list="{{ ships }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.onClick }}" role="radio" aria-checked="{{ s.checked }}" style="display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 12px;background:var(--bg);border:1px solid {{ s.bd }};border-radius:var(--r);color:var(--text);text-align:left;cursor:pointer"><span style="width:18px;height:18px;border-radius:50%;border:{{ s.ring }}"></span><span style="font-size:13.5px;font-weight:600">{{ s.name }}</span><span style="font:500 12px var(--f-m);color:var(--muted)">{{ s.price }}</span></button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;font-size:14px">
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line-soft)"><span>Termékek</span><span style="font-family:var(--f-m)">{{ cartSum.items }}</span></div>
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)"><span>Átvétel</span><span style="font-family:var(--f-m)">{{ cartSum.ship }}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0 2px"><b>Bruttó végösszeg</b><b style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);font-size:30px;line-height:1">{{ cartSum.total }}</b></div>
+          <span style="font:400 11.5px var(--f-m);color:var(--muted);text-align:right">{{ cartSum.net }}</span>
+        </div>
+        <p style="margin:0;font-size:12.5px;line-height:1.55;color:var(--muted)">A rendelés elküldése még nem jár fizetési kötelezettséggel. Ellenőrizzük a fájlt, az anyagot és a határidőt, majd visszaigazoljuk a végleges árat, és küldjük a díjbekérőt. A megrendelést a díjbekérő befizetésével fogadja el. A végleges ár eltérhet a kalkulált ártól.</p>
+        <button onClick="{{ submitOrder }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 20px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border:0;border-radius:var(--r);font:600 15px/1 var(--f-b);cursor:pointer" style-hover="box-shadow:var(--btn-glow-hi)">Rendelés elküldése ellenőrzésre <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></button>
+      </sc-if>
+    </div>
+  </aside>
+</sc-if>
+
+<sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position:{{ layerPos }};left:50%;bottom:{{ toastBottom }}px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 14px;background:var(--text);color:var(--bg);border-radius:var(--r);font:500 14px/1 var(--f-b);box-shadow:0 10px 30px rgba(0,0,0,.5);white-space:nowrap">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12.5 4.5 4.5L19 7"></path></svg>{{ toastText }}
+    <sc-if value="{{ toastHasAction }}" hint-placeholder-val="{{ false }}"><button onClick="{{ openCart }}" style="min-height:34px;padding:0 12px;background:none;border:1px solid color-mix(in oklab,var(--bg) 35%,transparent);border-radius:var(--r);font:600 13px/1 var(--f-b);color:var(--bg);cursor:pointer">Kosár</button></sc-if>
+  </div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;direction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;],&quot;default&quot;:&quot;C&quot;,&quot;tsType&quot;:&quot;'A'|'B'|'C'&quot;,&quot;section&quot;:&quot;Irány&quot;},&quot;brand&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#FF2E8A&quot;,&quot;#FF47A3&quot;,&quot;#FF5C85&quot;,&quot;#FF7AB8&quot;],&quot;default&quot;:&quot;#FF2E8A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Irány&quot;},&quot;startPage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;webshop&quot;,&quot;ajanlat&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;'home'|'webshop'|'ajanlat'&quot;,&quot;section&quot;:&quot;Nézet&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Nézet&quot;}}">
+const THEMES = {
+  A: { name: 'A · Neon műhely 2.0', vars: {
+    '--bg': '#0a0a0c', '--surface': '#131316', '--raise': '#1b1b1f', '--field': '#0a0a0c', '--line': '#2c2c32', '--line-soft': '#1d1d21',
+    '--text': '#f3f0ea', '--muted': '#9d9aa5', '--measure': '#f0c43c', '--ok': '#3fd68f', '--warn': '#f0c43c', '--bad': '#ff5b4d', '--focus': '#f0c43c',
+    '--f-d': '"Archivo", "Arial Narrow", sans-serif', '--fv-d': '"wdth" 62', '--w-d': '800', '--case': 'uppercase', '--track': '0.005em', '--lh-d': '0.92',
+    '--f-b': '"Archivo", "Helvetica Neue", Arial, sans-serif', '--f-m': '"JetBrains Mono", ui-monospace, monospace',
+    '--r': '2px', '--r-sm': '2px', '--r-lg': '2px',
+    '--btn-bg': 'var(--brand)', '--btn-fg': 'var(--on-brand)',
+    '--btn-glow': '0 0 0 1px color-mix(in oklab, var(--brand) 55%, transparent), 0 0 24px -4px color-mix(in oklab, var(--brand) 80%, transparent)',
+    '--btn-glow-hi': '0 0 0 1px color-mix(in oklab, var(--brand) 80%, transparent), 0 0 34px -2px color-mix(in oklab, var(--brand) 90%, transparent)',
+    '--badge-glow': '0 0 12px color-mix(in oklab, var(--brand) 70%, transparent)',
+    '--ph': 'repeating-linear-gradient(135deg, #1a1a1e 0 1px, #121215 1px 9px)',
+    '--em': 'normal', '--dot': 'none', '--dotc': 'currentColor', '--stair': '0px',
+  } },
+  B: { name: 'B · Galéria 2.0', vars: {
+    '--bg': '#0b0b0a', '--surface': '#151513', '--raise': '#1d1c1a', '--field': '#0b0b0a', '--line': '#2d2c29', '--line-soft': '#1f1e1c',
+    '--text': '#ece8df', '--muted': '#979188', '--measure': '#9ea8b2', '--ok': '#8fc79c', '--warn': '#e2b866', '--bad': '#ff6b5b', '--focus': 'var(--brand)',
+    '--f-d': '"Instrument Serif", "Times New Roman", serif', '--fv-d': 'normal', '--w-d': '400', '--case': 'none', '--track': '-0.015em', '--lh-d': '0.98',
+    '--f-b': '"Instrument Sans", "Helvetica Neue", Arial, sans-serif', '--f-m': '"IBM Plex Mono", ui-monospace, monospace',
+    '--r': '0px', '--r-sm': '0px', '--r-lg': '0px',
+    '--btn-bg': 'var(--text)', '--btn-fg': 'var(--bg)', '--btn-glow': 'none', '--btn-glow-hi': 'none', '--badge-glow': 'none',
+    '--ph': 'repeating-linear-gradient(135deg, #1a1917 0 1px, #151513 1px 9px)',
+    '--em': 'italic', '--dot': 'inline', '--dotc': 'var(--brand)', '--stair': 'clamp(0px, 6cqi, 140px)',
+  } },
+  C: { name: 'C · Szintézis „Mérőlap”', vars: {
+    '--bg': '#0c0c0d', '--surface': '#141416', '--raise': '#1c1c1f', '--field': '#101012', '--line': '#2c2c30', '--line-soft': '#1e1e21',
+    '--text': '#f2efe9', '--muted': '#a19ea7', '--measure': '#ecc94b', '--ok': '#4fd394', '--warn': '#ecc94b', '--bad': '#ff6150', '--focus': '#ecc94b',
+    '--f-d': '"Bricolage Grotesque", "Helvetica Neue", sans-serif', '--fv-d': '"opsz" 96, "wdth" 80', '--w-d': '700', '--case': 'none', '--track': '-0.03em', '--lh-d': '0.96',
+    '--f-b': '"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif', '--f-m': '"Geist Mono", ui-monospace, monospace',
+    '--r': '6px', '--r-sm': '4px', '--r-lg': '10px',
+    '--btn-bg': 'var(--brand)', '--btn-fg': 'var(--on-brand)',
+    '--btn-glow': '0 0 0 1px color-mix(in oklab, var(--brand) 50%, transparent), 0 0 18px -6px color-mix(in oklab, var(--brand) 90%, transparent)',
+    '--btn-glow-hi': '0 0 0 1px color-mix(in oklab, var(--brand) 75%, transparent), 0 0 26px -4px color-mix(in oklab, var(--brand) 95%, transparent)',
+    '--badge-glow': 'none',
+    '--ph': 'repeating-linear-gradient(135deg, #19191b 0 1px, #141416 1px 9px)',
+    '--em': 'normal', '--dot': 'none', '--dotc': 'currentColor', '--stair': '0px',
+  } },
+};
+
+const NB = '\u00a0';
+const fmtN = (n, d = 0) => {
+  const p = Math.abs(n).toFixed(d).split('.');
+  return (n < 0 ? '−' : '') + p[0].replace(/\B(?=(\d{3})+(?!\d))/g, NB) + (p[1] ? ',' + p[1] : '');
+};
+const ft = n => fmtN(Math.round(n)) + NB + 'Ft';
+const G = net => Math.round(net * 1.27);
+const cmTxt = n => (Number.isInteger(n) ? fmtN(n) : fmtN(n, 1));
+const MONTHS = ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+const DAYS = ['vasárnapra', 'hétfőre', 'keddre', 'szerdára', 'csütörtökre', 'péntekre', 'szombatra'];
+const SUF = d => (d === 1 ? 'jére' : d % 10 === 0 ? (d === 10 ? 'ére' : 'ára') : ({ 1: 'ére', 2: 'ára', 3: 'ára', 4: 'ére', 5: 'ére', 6: 'ára', 7: 'ére', 8: 'ára', 9: 'ére' })[d % 10]);
+
+const MATS = [
+  { id: 'standard', name: 'Standard frontlit molinó', net: 3990, desc: 'Kül- és beltérre, UV-álló.', tex: 'linear-gradient(115deg,#d9d6cf 0 38%,#f3f0ea 48%,#cfccc5 62%)', specs: [['Súly', '440–510 g/m²'], ['Felhasználás', 'kül- és beltér'], ['Élettartam', '≈ 1–3 év kültéren*']] },
+  { id: 'mesh', name: 'Hálós (mesh) molinó', net: 4490, desc: 'Szélálló, kerítésre és állványra.', tex: 'radial-gradient(circle,#0c0c0d 0 1.3px,transparent 1.7px) 0 0/5px 5px,#e9e6df', specs: [['Felhasználás', 'kültér'], ['Élettartam', '≈ 1–3 év kültéren*']] },
+  { id: 'blockout', name: 'Blockout molinó', net: 6990, desc: 'Fényzáró anyag, kétoldalas nyomtatásra.', tex: 'linear-gradient(90deg,#f3f0ea 0 50%,#d2cfc8 50%)', specs: [['Felhasználás', 'kül- és beltér'], ['Élettartam', '≈ 1–3 év kültéren*']] },
+  { id: 'textil', name: 'Textil (zászlóanyag)', net: 5490, desc: 'Beltéri, gyűrődésmentes.', tex: 'repeating-linear-gradient(45deg,#e9e6df 0 2px,#d4d0c8 2px 4px)', specs: [['Felhasználás', 'beltér']] },
+];
+const EDGES = [
+  { id: 'meretre-vagas', name: 'Méretre vágás', net: 0 },
+  { id: 'ringli', name: 'Ringli 50 cm-enként', net: 200 },
+  { id: 'szeges-ringli', name: 'Szegés + ringli', net: 350 },
+  { id: 'alagut', name: 'Alagútvarrás (rúdhoz)', net: 600 },
+];
+const PRESETS = [[100, 50], [200, 100], [300, 100], [300, 200]];
+const PRODUCTS = [
+  { id: 'molino', name: 'Molinó', net: 3990, u: '/m²', dim: [200, 100], dimL: '2 000 mm', r: '0' },
+  { id: 'rollup', name: 'Roll-up', net: 24900, u: '', dim: [85, 200], dimL: '850 mm', r: '0' },
+  { id: 'matrica', name: 'Matrica', net: 6990, u: '/m²', dim: [60, 60], dimL: '600 mm', r: '10px' },
+  { id: 'plakat', name: 'Plakát', net: 990, u: '', dim: [59.4, 84.1], dimL: 'A1', r: '0' },
+  { id: 'tabla', name: 'Tábla', net: 9990, u: '/m²', dim: [100, 70], dimL: '1 000 mm', r: '0' },
+  { id: 'vaszon', name: 'Vászonkép', net: 7990, u: '', dim: [50, 70], dimL: '500 mm', r: '0' },
+];
+const JOBS = [
+  ['autofoliazas', 'Autófóliázás, flotta-dekor'], ['kirakat', 'Kirakat- és üvegfóliázás'], ['ceger', 'Cégér, reklámtábla'],
+  ['betuk', 'Világító és plasztik betűk, logók'], ['led-fal', 'LED-fal'], ['rendezveny', 'Rendezvény díszlet, fotófal'],
+  ['kinalopult', 'Kínálópult fóliázás és telepítés'], ['3d', '3D nyomtatás'], ['egyeb', 'Egyéb arculati megoldás'],
+];
+const SVC = [
+  { name: 'Fóliázás', items: [['Autófóliázás és flotta-dekor', 'autofoliazas'], ['Kirakat- és üvegfóliázás', 'kirakat'], ['Kínálópultok fóliázása', 'kinalopult'], ['Egyéb felületek fóliázása', 'egyeb']] },
+  { name: 'Cégér és világító reklám', items: [['Cégérek és reklámtáblák', 'ceger'], ['Világító betűk', 'betuk'], ['Plasztik betűk és logók', 'betuk'], ['LED-falak', 'led-fal']] },
+  { name: 'Nyomtatás', items: [['Molinók', '@'], ['Roll-upok', '@'], ['Matricák', '@'], ['Plakátok', '@'], ['Táblák', '@'], ['Vászonképek', '@'], ['Feszített ponyva kihelyezéssel', 'egyeb']] },
+  { name: 'Rendezvény és egyedi', items: [['Díszletek és fotófalak', 'rendezveny'], ['3D nyomtatás', '3d'], ['Egyedi reklám- és díszítési munkák', 'egyeb']] },
+];
+const WZ0 = { step: 1, type: null, w: '', h: '', desc: '', addr: '', deadline: '', photos: [], name: '', company: '', phone: '', email: '', survey: true, consent: false, err: {}, done: null };
+
+class Component extends DCLogic {
+  state = {
+    w: typeof window !== 'undefined' ? window.innerWidth : 1440, pw: 560, page: null, menu: false, night: true,
+    Ws: '200', Hs: '100', mat: 'standard', specs: null, edge: 'ringli', qty: 1, qtyS: '1', express: false,
+    file: 'none', prog: 0, fit: 'fill', bd: false,
+    cart: [], cartOpen: false, ship: 'szemelyes', orderDone: null, toast: null,
+    wz: WZ0,
+  };
+
+  componentDidUpdate(pp) {
+    if (pp.startPage !== this.props.startPage) this.setState({ page: this.props.startPage || 'home' });
+  }
+  componentWillUnmount() {
+    if (this.ro) this.ro.disconnect();
+    if (this.pro) this.pro.disconnect();
+    clearInterval(this.upT); clearTimeout(this.toastT);
+  }
+  rootRef = el => {
+    this.root = el;
+    if (this.ro) this.ro.disconnect();
+    if (el && typeof ResizeObserver !== 'undefined') {
+      this.ro = new ResizeObserver(([e]) => { const w = Math.round(e.contentRect.width); if (w && Math.abs(w - this.state.w) > 2) this.setState({ w }); });
+      this.ro.observe(el);
+    }
+  };
+  previewRef = el => {
+    if (this.pro) this.pro.disconnect();
+    if (el && typeof ResizeObserver !== 'undefined') {
+      this.pro = new ResizeObserver(([e]) => { const pw = Math.round(e.contentRect.width); if (pw && Math.abs(pw - this.state.pw) > 2) this.setState({ pw }); });
+      this.pro.observe(el);
+    }
+  };
+  reduce() { return typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  toTop() {
+    const r = this.root && this.root.getBoundingClientRect();
+    if (r && r.top < 0) window.scrollBy(0, r.top);
+  }
+  toAnchor(id) {
+    requestAnimationFrame(() => {
+      const el = this.root && this.root.querySelector(`[data-anchor="${id}"]`);
+      if (!el) return;
+      const off = this.props.embedded ? 0 : 68;
+      window.scrollBy({ top: el.getBoundingClientRect().top - off, behavior: this.reduce() ? 'auto' : 'smooth' });
+    });
+  }
+  go(page, anchor) {
+    this.setState({ page, menu: false }, () => (anchor ? this.toAnchor(anchor) : this.toTop()));
+  }
+  goQuote(type) {
+    this.setState({ wz: { ...WZ0, type, step: type ? 2 : 1 } });
+    this.go('ajanlat');
+  }
+  toast(text, action) {
+    clearTimeout(this.toastT);
+    this.setState({ toast: { text, action } });
+    this.toastT = setTimeout(() => this.setState({ toast: null }), 2800);
+  }
+  num(s) { const n = parseFloat(String(s).replace(/\s/g, '').replace(',', '.')); return isFinite(n) ? n : NaN; }
+  upload() {
+    if (this.state.file === 'up') return;
+    clearInterval(this.upT);
+    this.setState({ file: 'up', prog: 0 });
+    this.upT = setInterval(() => {
+      const p = this.state.prog + 8;
+      if (p >= 100) { clearInterval(this.upT); this.setState({ file: 'ok', prog: 100, Ws: '300', Hs: '100', fit: 'fill' }); }
+      else this.setState({ prog: p });
+    }, 80);
+  }
+  setQty(q) { const n = Math.max(1, Math.min(999, q)); this.setState({ qty: n, qtyS: String(n) }); }
+  leadDate(days) {
+    const d = new Date(); d.setHours(12, 0, 0, 0);
+    let left = 1 + days;
+    while (left > 0) { d.setDate(d.getDate() + 1); const wd = d.getDay(); if (wd !== 0 && wd !== 6) left--; }
+    return d;
+  }
+  wzErrors(z) {
+    const e = {};
+    if (z.step === 1 && !z.type) e.type = 'Válassza ki a munka típusát.';
+    if (z.step === 3 && !z.addr.trim()) e.addr = 'Adja meg a helyszín címét.';
+    if (z.step === 4) {
+      if (!z.name.trim()) e.name = 'Adja meg a nevét.';
+      if (!z.phone.trim() && !z.email.trim()) e.contact = 'Adjon meg telefonszámot vagy e-mail-címet.';
+      else if (z.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(z.email.trim())) e.email = 'Ellenőrizze az e-mail-címet.';
+      if (!z.consent) e.consent = 'Az adatkezelési tájékoztató elfogadása kötelező.';
+    }
+    return e;
+  }
+  setWz(patch) { this.setState(s => ({ wz: { ...s.wz, ...patch } })); }
+
+  renderVals() {
+    const s = this.state;
+    const dir = THEMES[this.props.direction] ? this.props.direction : 'C';
+    const theme = THEMES[dir];
+    const brand = this.props.brand || '#FF2E8A';
+    const embedded = !!this.props.embedded;
+    const page = s.page || this.props.startPage || 'home';
+    const isMobile = s.w < 760;
+    const hdrDesk = s.w >= 1080;
+    const themeVars = { ...theme.vars, '--brand': brand, '--on-brand': '#0a0a0b', '--brand-ink': `color-mix(in oklab, ${brand} 72%, ${theme.vars['--text']})`, '--gut': 'clamp(18px, 4cqi, 56px)' };
+    const soon = () => this.toast('Ez az aloldal még nincs a prototípusban.');
+
+    const nav = [
+      { label: 'Szolgáltatások', onClick: () => this.go('home', 'svc'), active: false },
+      { label: 'Webshop', onClick: () => this.go('webshop'), active: page === 'webshop' },
+      { label: 'Referenciák', onClick: () => this.go('home', 'works'), active: false },
+      { label: 'Kapcsolat', onClick: () => this.go('home', 'contact'), active: false },
+    ].map(n => ({ ...n, col: n.active ? 'var(--text)' : 'var(--muted)', ul: n.active ? 'var(--brand)' : 'transparent' }));
+
+    const cartCount = s.cart.length;
+    const badge = cartCount
+      ? { bg: 'var(--brand)', fg: 'var(--on-brand)', bd: 'var(--brand)', glow: 'var(--badge-glow)' }
+      : { bg: 'var(--raise)', fg: 'var(--muted)', bd: 'var(--line)', glow: 'none' };
+
+    const neon = s.night
+      ? { core: `color-mix(in oklab, ${brand} 22%, #ffffff)`, shadow: `0 0 3px ${brand}, 0 0 12px ${brand}, 0 0 34px ${brand}`, dayBg: 'transparent', dayFg: 'var(--muted)', nightBg: 'var(--text)', nightFg: 'var(--bg)', dayP: 'false', nightP: 'true' }
+      : { core: brand, shadow: 'none', dayBg: 'var(--text)', dayFg: 'var(--bg)', nightBg: 'transparent', nightFg: 'var(--muted)', dayP: 'true', nightP: 'false' };
+
+    const svcGroups = SVC.map(g => ({
+      name: g.name,
+      items: g.items.map(([name, t]) => ({
+        name, tag: t === '@' ? 'Online ár' : '→', tagCol: t === '@' ? 'var(--brand-ink)' : 'var(--muted)',
+        onClick: () => (t === '@' ? this.go('webshop') : this.goQuote(t)),
+      })),
+    }));
+    const tiles = PRODUCTS.map(p => {
+      const mx = Math.max(p.dim[0], p.dim[1]);
+      return { name: p.name, price: `${ft(G(p.net))}${p.u}-tól`, dim: p.dimL, rw: Math.round(84 * p.dim[0] / mx), rh: Math.round(64 * p.dim[1] / mx * (p.dim[1] > p.dim[0] ? 1.2 : 1)), rr: p.r, onClick: () => this.go('webshop') };
+    });
+    const jobs = JOBS.map(([id, name]) => ({ name, onClick: () => this.goQuote(id) }));
+    const works = ['Világító betűk üzletportálon', 'Fóliázott kisbusz', 'Homokfúvott hatású üvegfólia', 'Roll-upok rendezvényen', 'LED-fal színpadon', 'Hálós molinó állványon'];
+    const process = [
+      { n: '01', t: 'Felmérés', d: 'Kimegyünk, lemérjük a felületet, és megbeszéljük, mire van szüksége.' },
+      { n: '02', t: 'Tervezés', d: 'Látványtervet küldünk, és a jóváhagyásig finomítjuk.' },
+      { n: '03', t: 'Gyártás saját műhelyben', d: 'Nyomtatás, fóliavágás, táblák és betűk egy helyen.' },
+      { n: '04', t: 'Telepítés', d: 'Kiszállítjuk, felszereljük, és átadás előtt együtt ellenőrizzük.' },
+    ];
+    const pillars = [
+      { t: 'Saját műhely', d: 'Mindent egy helyen gyártunk, ezért a minőségért és a határidőért mi felelünk.' },
+      { t: 'Helyszíni felmérés és telepítés', d: 'Mi mérjük le a felületet, és mi szereljük fel a kész munkát.' },
+      { t: 'Egyedi megoldások', d: 'Ha nincs rá kész termék, megtervezzük: díszlet, fotófal, 3D nyomtatás.' },
+    ];
+    const copy = v => () => { try { navigator.clipboard && navigator.clipboard.writeText(v); } catch (e) {} this.toast('Másolva'); };
+    const contacts = [
+      { k: 'Telefon', v: '+36 70 538 5030', canCopy: true, isTag: false, copy: copy('+36 70 538 5030') },
+      { k: 'E-mail', v: 'stiletdekor@gmail.com', canCopy: true, isTag: false, copy: copy('stiletdekor@gmail.com') },
+      { k: 'Műhely', v: 'Budapest, Schweidel József u. 1–3.', canCopy: true, isTag: false, copy: copy('Budapest, Schweidel József u. 1–3.') },
+      { k: 'Nyitvatartás', v: 'H–P 8:00–17:00', canCopy: false, isTag: true, copy: null },
+    ];
+
+    // Configurator
+    const W = this.num(s.Ws), H = this.num(s.Hs);
+    const okW = W >= 20 && W <= 500, okH = H >= 20 && H <= 500;
+    const valid = okW && okH;
+    const err = !valid ? (isNaN(W) || isNaN(H) ? 'Adjon meg számot centiméterben.' : 'A szélesség és a magasság 20 és 500 cm között lehet. Ennél nagyobb molinót toldással készítünk. Kérjen rá egyedi ajánlatot.') : '';
+    const m = MATS.find(x => x.id === s.mat), e = EDGES.find(x => x.id === s.edge);
+    const area = valid ? W * H / 10000 : 0, per = valid ? 2 * (W + H) / 100 : 0;
+    const matNet = area * m.net, edgeNet = per * e.net;
+    const raw = matNet + edgeNet, itemNet = Math.max(raw, 4990), minApplied = valid && raw < 4990;
+    const pct = s.qty >= 10 ? 15 : s.qty >= 5 ? 10 : s.qty >= 2 ? 5 : 0;
+    const sub = itemNet * s.qty, disc = sub * pct / 100, after = sub - disc, exp = s.express ? after * 0.3 : 0;
+    const totalNet = after + exp, gross = Math.round(totalNet * 1.27);
+    const fromFile = s.file === 'ok' && W === 300 && H === 100;
+
+    const cfg = {
+      Ws: s.Ws, Hs: s.Hs, fromFile, hasErr: !valid, err,
+      wBd: okW ? 'var(--line)' : 'var(--bad)', hBd: okH ? 'var(--line)' : 'var(--bad)',
+      onW: ev => this.setState({ Ws: ev.target.value }), onH: ev => this.setState({ Hs: ev.target.value }),
+      swap: () => this.setState({ Ws: s.Hs, Hs: s.Ws }),
+      perLabel: valid ? `kerület: ${fmtN(per, 1)} fm` : 'kerület folyóméterre',
+    };
+    const presets = PRESETS.map(([pw, ph]) => {
+      const on = W === pw && H === ph;
+      return { label: `${pw}×${ph}`, pressed: on ? 'true' : 'false', bd: on ? 'var(--brand)' : 'var(--line)', bg: on ? 'color-mix(in oklab,var(--brand) 9%,transparent)' : 'transparent', col: on ? 'var(--brand-ink)' : 'var(--text)', onClick: () => this.setState({ Ws: String(pw), Hs: String(ph) }) };
+    });
+    const mats = MATS.map(x => {
+      const on = x.id === s.mat, open = s.specs === x.id;
+      return {
+        name: x.name, desc: x.desc, tex: x.tex, price: `${ft(G(x.net))}/m²`, checked: on ? 'true' : 'false',
+        bg: on ? 'color-mix(in oklab,var(--brand) 7%,var(--surface))' : 'var(--surface)', bd: on ? 'var(--brand)' : 'var(--line-soft)',
+        open, openA: open ? 'true' : 'false', rot: open ? 180 : 0, specs: x.specs.map(([k, v]) => ({ k, v })),
+        onClick: () => this.setState({ mat: x.id }),
+        toggle: ev => { ev.stopPropagation(); this.setState({ specs: open ? null : x.id }); },
+      };
+    });
+    const edges = EDGES.map(x => {
+      const on = x.id === s.edge;
+      return {
+        name: x.name, checked: on ? 'true' : 'false', bd: on ? 'var(--brand)' : 'var(--line-soft)', ring: on ? '5px solid var(--brand)' : '1px solid var(--muted)',
+        unit: x.net ? `+${ft(G(x.net))}/fm` : '0 Ft/fm', amt: valid ? (x.net ? '+' + ft(G(per * x.net)) : '0 Ft') : '—',
+        onClick: () => this.setState({ edge: x.id }),
+      };
+    });
+    const nextTier = s.qty < 2 ? [2, 5] : s.qty < 5 ? [5, 10] : s.qty < 10 ? [10, 15] : null;
+    const qty = {
+      val: s.qtyS, atMin: s.qty <= 1, decCol: s.qty <= 1 ? 'var(--line)' : 'var(--text)',
+      hint: nextTier ? `Még ${nextTier[0] - s.qty} db és −${nextTier[1]}%` : '−15% mennyiségi kedvezmény',
+      dec: () => this.setQty(s.qty - 1), inc: () => this.setQty(s.qty + 1),
+      onInput: ev => { const v = ev.target.value.replace(/\D/g, ''); const n = parseInt(v, 10); this.setState({ qtyS: v, qty: n >= 1 ? Math.min(999, n) : 1 }); },
+    };
+    const swv = on => ({ on: on ? 'true' : 'false', bd: on ? 'var(--brand)' : 'var(--line)', track: on ? 'color-mix(in oklab,var(--brand) 22%,var(--bg))' : 'var(--bg)', knob: on ? 'var(--brand)' : 'var(--muted)', x: on ? 23 : 3 });
+    const sw = swv(s.express);
+
+    const rows = [];
+    if (valid) {
+      rows.push({ label: m.name, sub: `${fmtN(area, 2)} m² × ${ft(G(m.net))}`, amt: ft(G(matNet)), col: 'var(--text)' });
+      if (e.net) rows.push({ label: `Szélkidolgozás: ${e.name.toLowerCase()}`, sub: `${fmtN(per, 1)} fm × ${ft(G(e.net))}`, amt: ft(G(edgeNet)), col: 'var(--text)' });
+      if (minApplied) rows.push({ label: 'Minimális tételár', sub: 'kis méretnél ezt számoljuk', amt: ft(G(4990)), col: 'var(--text)' });
+      if (s.qty > 1) rows.push({ label: `× ${s.qty} db`, sub: '', amt: ft(G(sub)), col: 'var(--text)' });
+      if (pct) rows.push({ label: `Mennyiségi kedvezmény −${pct}%`, sub: '', amt: '−' + ft(G(disc)), col: 'var(--ok)' });
+      if (s.express) rows.push({ label: 'Expressz +30%', sub: '', amt: '+' + ft(G(exp)), col: 'var(--text)' });
+    }
+    const ld = this.leadDate(s.express ? 1 : 3);
+    const leadTxt = `${MONTHS[ld.getMonth()]} ${ld.getDate()}-${SUF(ld.getDate())}, ${DAYS[ld.getDay()]}`;
+    const price = {
+      total: valid ? ft(gross) : '—', invalid: !valid,
+      netLine: valid ? `nettó ${ft(Math.round(totalNet))} + ÁFA ${ft(gross - Math.round(totalNet))}` : 'adjon meg érvényes méretet',
+      bd: s.bd && valid, bdA: s.bd ? 'true' : 'false', rot: s.bd ? 180 : 0, rows,
+      lead: leadTxt, leadMeta: `${s.express ? 1 : 3} munkanap a befizetéstől`, leadShort: `kész: ${MONTHS[ld.getMonth()].slice(0, 3)}. ${ld.getDate()}.`,
+      btnBg: valid ? 'var(--btn-bg)' : 'var(--raise)', btnFg: valid ? 'var(--btn-fg)' : 'var(--muted)', btnGlow: valid ? 'var(--btn-glow)' : 'none',
+    };
+
+    // Scale preview
+    const fh = isMobile ? 280 : 420, floor = 40, padL = 34, padR = 64, padT = 52;
+    const Wv = valid ? W : 200, Hv = valid ? H : 100;
+    const worldW = 90 + Wv, worldH = Math.max(Hv, 180);
+    const sc = Math.max(0.05, Math.min((s.pw - padL - padR) / worldW, (fh - floor - padT) / worldH));
+    const bw = Wv * sc, bh = Hv * sc, bx = padL + 90 * sc;
+    const rings = [];
+    if (valid && (s.edge === 'ringli' || s.edge === 'szeges-ringli') && bw > 30) {
+      const nx = Math.max(1, Math.round(Wv / 50)), ny = Math.max(1, Math.round(Hv / 50));
+      for (let i = 0; i <= nx; i++) { const x = 3 + (bw - 13) * i / nx; rings.push({ x, y: 3 }, { x, y: bh - 10 }); }
+      for (let j = 1; j < ny; j++) { const y = 3 + (bh - 13) * j / ny; rings.push({ x: 3, y }, { x: bw - 10, y }); }
+    }
+    const ratio = Wv / Hv;
+    const sp = {
+      h: fh, floor, px: padL, pw: Math.max(6, 50 * sc), ph: 180 * sc, head: Math.max(4, 22 * sc), neck: Math.max(1, 3 * sc), pdx: 8,
+      bx, bw, bh, hdy: floor + bh + 10, vdx: bx + bw + 12, m1: Math.max(4, 100 * sc),
+      wmm: `${fmtN(Math.round(Wv * 10))} mm`, hmm: `${fmtN(Math.round(Hv * 10))} mm`,
+      bBg: s.file === 'ok' ? 'var(--ph)' : 'transparent', bStyle: s.file === 'ok' ? 'solid' : 'dashed', bBd: s.file === 'ok' ? 'var(--text)' : 'var(--line)',
+      label: s.file === 'ok' ? (bw > 120 ? 'kerites-molino_300x100.pdf' : '') : (bw > 70 ? `Grafika helye · ${ratio >= 1 ? fmtN(ratio, ratio % 1 ? 1 : 0) + ':1' : '1:' + fmtN(1 / ratio, (1 / ratio) % 1 ? 1 : 0)}` : ''),
+      rings, invalid: !valid,
+      aria: valid ? `Valós léptékű előnézet: ${cmTxt(W)}×${cmTxt(H)} cm molinó egy 180 cm-es alak mellett` : 'Érvénytelen méret',
+    };
+    const dpi = valid ? Math.round(6000 / (W / 2.54)) : 0;
+    const lv = dpi >= 150 ? 'ok' : dpi >= 72 ? 'mid' : 'bad';
+    const lc = ['var(--bad)', 'var(--warn)', 'var(--ok)'], li = { bad: 0, mid: 1, ok: 2 }[lv];
+    const lamp = {
+      c1: li === 0 ? lc[0] : 'var(--line)', c2: li === 1 ? lc[1] : 'var(--line)', c3: li === 2 ? lc[2] : 'var(--line)',
+      g1: li === 0 ? `0 0 9px ${lc[0]}` : 'none', g2: li === 1 ? `0 0 9px ${lc[1]}` : 'none', g3: li === 2 ? `0 0 9px ${lc[2]}` : 'none',
+      col: lc[li], verdict: { ok: 'Kiváló', mid: 'Molinóra megfelelő', bad: 'Gyenge' }[lv],
+      text: { ok: 'Közelről nézve is éles.', mid: 'Néhány méterről nézve éles; közelről kissé lágy.', bad: 'Látszani fognak a képpontok. Kérjen nagyobb fájlt a tervezőtől.' }[lv],
+      data: valid ? `6 000 × 2 000 px · ${cmTxt(W)}×${cmTxt(H)} cm · ${dpi} dpi` : '',
+    };
+    const fitOn = s.fit === 'fill';
+    const fit = {
+      show: valid && Math.abs(W / H - 3) / 3 > 0.02,
+      msg: `A grafika aránya (3:1) eltér a választott mérettől (${cmTxt(W)}×${cmTxt(H)} cm).`,
+      fillA: fitOn ? 'true' : 'false', fitA: fitOn ? 'false' : 'true',
+      fillBd: fitOn ? 'var(--brand)' : 'var(--line)', fitBd: fitOn ? 'var(--line)' : 'var(--brand)',
+      fillBg: fitOn ? 'color-mix(in oklab,var(--brand) 9%,transparent)' : 'transparent', fitBg: fitOn ? 'transparent' : 'color-mix(in oklab,var(--brand) 9%,transparent)',
+      setFill: () => this.setState({ fit: 'fill' }), setFit: () => this.setState({ fit: 'fit' }),
+      match: () => this.setState({ Hs: fmtN(Math.round(W / 3 * 10) / 10, (W / 3) % 1 ? 1 : 0).replace(/\s/g, '') }),
+    };
+    const file = { none: s.file === 'none', up: s.file === 'up', ok: s.file === 'ok', bad: s.file === 'bad', prog: s.prog };
+    const cats = PRODUCTS.map(p => {
+      const sel = p.id === 'molino';
+      return { name: p.name, price: `${ft(G(p.net))}${p.u}-tól`, pressed: sel ? 'true' : 'false', bg: sel ? 'color-mix(in oklab,var(--brand) 7%,var(--surface))' : 'var(--surface)', bd: sel ? 'var(--brand)' : 'var(--line-soft)', onClick: sel ? () => {} : () => this.toast('A prototípusban a molinó konfigurátora működik.') };
+    });
+    const addToCart = () => {
+      if (!valid) return;
+      const meta = `${cmTxt(W)}×${cmTxt(H)} cm · ${m.name} · ${e.name.toLowerCase()}${s.qty > 1 ? ` · ${s.qty} db` : ''}${s.express ? ' · expressz' : ''}`;
+      this.setState(st => ({ cart: [...st.cart, { id: Date.now(), title: 'Molinó', meta, gross }], orderDone: null }));
+      this.toast('Kosárba tettük', 'cart');
+    };
+
+    // Cart
+    const shipList = [
+      { id: 'szemelyes', name: 'Személyes átvétel a műhelyben', price: 'ingyenes', amt: 0 },
+      { id: 'futar', name: 'Futár', price: ft(G(2990)), amt: G(2990) },
+      { id: 'telepites', name: 'Telepítéssel', price: 'egyedi ár', amt: null },
+    ];
+    const ships = shipList.map(x => ({ ...x, checked: x.id === s.ship ? 'true' : 'false', bd: x.id === s.ship ? 'var(--brand)' : 'var(--line-soft)', ring: x.id === s.ship ? '5px solid var(--brand)' : '1px solid var(--muted)', onClick: () => this.setState({ ship: x.id }) }));
+    const itemsG = s.cart.reduce((a, l) => a + l.gross, 0);
+    const shipSel = shipList.find(x => x.id === s.ship);
+    const totalG = itemsG + (shipSel.amt || 0);
+    const cartSum = { items: ft(itemsG), ship: shipSel.amt === null ? 'a visszaigazoláskor' : shipSel.amt ? ft(shipSel.amt) : '0 Ft', total: ft(totalG), net: `nettó ${ft(Math.round(totalG / 1.27))} + ÁFA ${ft(totalG - Math.round(totalG / 1.27))}` };
+    const cartLines = s.cart.map(l => ({ ...l, price: ft(l.gross), remove: () => this.setState(st => ({ cart: st.cart.filter(x => x.id !== l.id) })) }));
+    const cartView = { empty: !s.cart.length && !s.orderDone, done: !!s.orderDone, has: s.cart.length > 0 };
+    const submitOrder = () => this.setState({ cart: [], orderDone: 'R-2026-' + String(1000 + Math.floor(Math.random() * 9000)) });
+
+    // Wizard
+    const z = s.wz;
+    const typeName = (JOBS.find(j => j[0] === z.type) || [null, '—'])[1];
+    const wzStepLabels = ['Típus', 'Részletek', 'Helyszín és fotók', 'Kapcsolat és felmérés'];
+    const wzSteps = wzStepLabels.map((label, i) => {
+      const n = i + 1, done = !!z.done || n < z.step, cur = !z.done && n === z.step;
+      return {
+        n: `${n}/4`, label, locked: !done || !!z.done, cur: cur ? 'step' : 'false', cursor: done && !z.done ? 'pointer' : 'default',
+        bar: done || cur ? 'var(--brand)' : 'var(--line)', col: done || cur ? 'var(--text)' : 'var(--muted)', w: cur ? '700' : '500',
+        onClick: () => { if (done && !z.done) this.setWz({ step: n, err: {} }); },
+      };
+    });
+    const wzTypes = JOBS.map(([id, name]) => {
+      const on = z.type === id;
+      return { name, checked: on ? 'true' : 'false', bg: on ? 'color-mix(in oklab,var(--brand) 7%,var(--surface))' : 'var(--surface)', bd: on ? 'var(--brand)' : 'var(--line-soft)', ring: on ? '5px solid var(--brand)' : '1px solid var(--muted)', onClick: () => this.setWz({ type: id, err: {} }) };
+    });
+    const er = z.err || {};
+    const wzE = {
+      type: er.type || '', hasType: !!er.type, addr: er.addr || '', hasAddr: !!er.addr, addrB: er.addr ? 'var(--bad)' : 'var(--line)',
+      name: er.name || '', hasName: !!er.name, nameB: er.name ? 'var(--bad)' : 'var(--line)',
+      email: er.email || '', hasEmail: !!er.email, emailB: er.email || er.contact ? 'var(--bad)' : 'var(--line)', phoneB: er.contact ? 'var(--bad)' : 'var(--line)',
+      contactMsg: er.contact || 'Telefonszám vagy e-mail-cím közül legalább az egyik kell.', contactCol: er.contact ? 'var(--bad)' : 'var(--muted)',
+      consent: er.consent || '', hasConsent: !!er.consent, consentA: z.consent ? 'true' : 'false', consentCol: er.consent ? 'var(--bad)' : 'var(--text)',
+      consentBd: z.consent ? 'var(--brand)' : er.consent ? 'var(--bad)' : 'var(--muted)', consentBg: z.consent ? 'var(--brand)' : 'transparent',
+    };
+    const fld = k => ev => this.setWz({ [k]: ev.target.value });
+    const on = { w: fld('w'), h: fld('h'), desc: fld('desc'), addr: fld('addr'), deadline: fld('deadline'), name: fld('name'), company: fld('company'), phone: fld('phone'), email: fld('email') };
+    const wzPhotos = z.photos.map((p, i) => ({ name: p, remove: () => this.setWz({ photos: z.photos.filter((_, j) => j !== i) }) }));
+    const wzSum = [
+      { k: 'Típus', v: typeName },
+      { k: 'Méret', v: z.w && z.h ? `${z.w}×${z.h} cm` : '—' },
+      { k: 'Helyszín', v: z.addr.trim() || '—' },
+      { k: 'Határidő', v: z.deadline.trim() || '—' },
+      { k: 'Fotók', v: z.photos.length ? `${z.photos.length} db` : '—' },
+      { k: 'Felmérés', v: z.survey ? 'kérek' : 'nem kérek' },
+    ];
+    const wzNext = () => {
+      const errs = this.wzErrors(z);
+      if (Object.keys(errs).length) return this.setWz({ err: errs });
+      if (z.step < 4) this.setWz({ step: z.step + 1, err: {} });
+      else this.setWz({ err: {}, done: 'AK-2026-' + String(1000 + Math.floor(Math.random() * 9000)) });
+      this.toAnchor('wz');
+    };
+
+    return {
+      themeVars, themeName: theme.name, isA: dir === 'A', isB: dir === 'B', isC: dir === 'C',
+      isMobile, isDesk: !isMobile, hdrDesk, hdrMobile: !hdrDesk, headerPos: embedded ? 'relative' : 'sticky', layerPos: embedded ? 'absolute' : 'fixed',
+      isHome: page === 'home', isShop: page === 'webshop', isQuote: page === 'ajanlat',
+      nav, menuOpen: s.menu && !hdrDesk, menuClosed: !(s.menu && !hdrDesk), menuAria: s.menu ? 'true' : 'false', toggleMenu: () => this.setState({ menu: !s.menu }),
+      goHome: () => this.go('home'), goShop: () => this.go('webshop'), goQuoteBlank: () => this.goQuote(null), soon,
+      cartCount, badge, cartAria: `Kosár, ${cartCount} tétel`,
+      openCart: () => this.setState({ cartOpen: true, toast: null, menu: false }), closeCart: () => this.setState({ cartOpen: false }),
+      goShopFromCart: () => { this.setState({ cartOpen: false }); this.go('webshop'); },
+      neon, setDay: () => this.setState({ night: false }), setNight: () => this.setState({ night: true }),
+      svcGroups, tiles, jobs, works, process, pillars, contacts,
+      cats, cfgCols: isMobile ? 'minmax(0,1fr)' : 'minmax(0,1.05fr) minmax(0,1fr)', prevPos: isMobile || embedded ? 'relative' : 'sticky',
+      previewRef: this.previewRef, cfg, presets, mats, edges, qty, sw, toggleExpress: () => this.setState({ express: !s.express }),
+      file, upload: () => this.upload(), badFile: () => this.setState({ file: 'bad' }), clearFile: () => { clearInterval(this.upT); this.setState({ file: 'none', prog: 0 }); },
+      fileOk: s.file === 'ok', fileNotOk: s.file !== 'ok', sp, lamp, fit,
+      price, toggleBd: () => this.setState({ bd: !s.bd }), addToCart, mobileBar: isMobile && page === 'webshop',
+      cartOpen: s.cartOpen, cartView, cartLines, ships, cartSum, submitOrder, orderDone: s.orderDone,
+      toastOn: !!s.toast, toastText: s.toast ? s.toast.text : '', toastHasAction: !!(s.toast && s.toast.action), toastBottom: isMobile && page === 'webshop' ? 88 : 24,
+      wz: z, wzCols: isMobile ? 'minmax(0,1fr)' : 'minmax(0,1fr) 300px', wzSteps, wzTypes, wzE, on, wzPhotos, wzSum, wzTypeName: typeName,
+      wzShow: { form: !z.done, done: !!z.done, s1: z.step === 1, s2: z.step === 2, s3: z.step === 3, s4: z.step === 4, back: z.step > 1 },
+      wzNextLabel: z.step < 4 ? 'Tovább' : 'Ajánlatkérés elküldése', wzNext,
+      wzBack: () => { this.setWz({ step: Math.max(1, z.step - 1), err: {} }); this.toAnchor('wz'); },
+      wzRestart: () => this.setState({ wz: WZ0 }),
+      wzDoneText: z.survey ? 'Hamarosan visszahívjuk, és egyeztetjük a felmérés időpontját. A pontos árat a felmérés után adjuk meg.' : 'Hamarosan visszahívjuk vagy e-mailben válaszolunk.',
+      addPhoto: () => { if (z.photos.length < 6) this.setWz({ photos: [...z.photos, `foto-${z.photos.length + 1}.jpg`] }); },
+      toggleSurvey: () => this.setWz({ survey: !z.survey }), svSw: swv(z.survey),
+      toggleConsent: () => this.setWz({ consent: !z.consent, err: { ...er, consent: undefined } }),
+      rootRef: this.rootRef,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+---
+// One variant on the /tablo board: what it is and what is new, then the variant itself at 390 px or full width.
+import { LANE_LABELS, type Variant } from './variants';
+
+interface Props {
+  variant: Variant;
+}
+
+const { variant: v } = Astro.props;
+const titleId = `v-${v.id}-t`;
+---
+
+<article class="tb-frame" id={`v-${v.id}`} data-lane={v.lane} aria-labelledby={titleId}>
+  <header class="tb-frame__head">
+    <div class="tb-frame__top">
+      <p class="tb-frame__id">{v.id}</p>
+      <h3 class="tb-frame__name" id={titleId}>{v.name}</h3>
+      <p class="tb-frame__lane">{LANE_LABELS[v.lane]}</p>
+      {
+        v.status === 'kesz' && (
+          <div class="tb-frame__width" role="group" aria-label={`${v.id} szélessége`}>
+            <button type="button" data-width="390" aria-pressed="false">390 px</button>
+            <button type="button" data-width="full" aria-pressed="true">Teljes</button>
+          </div>
+        )
+      }
+      {
+        v.page && v.status === 'kesz' && (
+          <a class="tb-frame__full" href={`/tablo/irany/${v.page}`}>
+            Teljes képernyő
+          </a>
+        )
+      }
+    </div>
+    <p>{v.idea}</p>
+    <p class="tb-frame__note"><b>Újdonság:</b> {v.novelty}</p>
+    {v.breaks && <p class="tb-frame__note"><b>Túllép:</b> {v.breaks}</p>}
+    {
+      v.tokenProposals && v.tokenProposals.length > 0 && (
+        <p class="tb-frame__note"><b>Token-javaslat:</b> {v.tokenProposals.join(' · ')}</p>
+      )
+    }
+  </header>
+  {
+    v.status === 'kesz' ? (
+      <div class="tb-stage-wrap">
+        <div class="tb-stage" data-width="full">
+          <slot />
+        </div>
+      </div>
+    ) : (
+      <p class="tb-planned">Tervezett · {v.round}. kör</p>
+    )
+  }
+</article>
+
+<script>
+  // Width switch: the variant at phone width (390 px) or at the frame's full width.
+  for (const group of document.querySelectorAll<HTMLElement>('.tb-frame__width')) {
+    const stage = group.closest('.tb-frame')?.querySelector<HTMLElement>('.tb-stage');
+    if (!stage) continue;
+    group.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-width]');
+      if (!button) return;
+      stage.dataset.width = button.dataset.width;
+      for (const b of group.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
+    });
+  }
+</script>

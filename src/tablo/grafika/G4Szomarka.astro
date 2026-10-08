@@ -1,0 +1,119 @@
+---
+// G4: five wordmark directions on dark and on brand backgrounds, at header size, and the monogram as a favicon.
+import Szomarka from './Szomarka.astro';
+import { SZOMARKAK } from './szomarka';
+---
+
+<div class="g4">
+  {
+    SZOMARKAK.map((s) => (
+      <section class="g4-item" aria-labelledby={`g4-${s.id}`}>
+        <h4 id={`g4-${s.id}`}>{s.nev}</h4>
+        <p class="g4-desc">{s.leiras}</p>
+        <div class="g4-tiles">
+          <div class="g4-tile g4-tile--sotet">
+            <Szomarka valtozat={s.id} uid={`g4-${s.id}-sotet`} />
+          </div>
+          <div class="g4-tile g4-tile--marka">
+            <Szomarka valtozat={s.id} uid={`g4-${s.id}-marka`} alap="marka" />
+          </div>
+        </div>
+        {s.id === 'monogram' ? (
+          <div class="g4-sizes">
+            {[16, 32, 48].map((px) => (
+              <figure>
+                <Szomarka valtozat="monogram" uid={`g4-favicon-${px}`} size={px} />
+                <figcaption>{px} px</figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div class="g4-sizes">
+            <figure class="g4-header">
+              <Szomarka valtozat={s.id} uid={`g4-${s.id}-kicsi`} />
+              <figcaption>Fejlécméret (140 px)</figcaption>
+            </figure>
+          </div>
+        )}
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .g4 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .g4-item {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .g4-item h4 {
+    margin: 0;
+    font-size: var(--text-md);
+    font-weight: var(--weight-semibold);
+  }
+
+  .g4-desc {
+    max-width: 60ch;
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .g4-tiles {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  @container variant (min-width: 760px) {
+    .g4-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .g4-tile {
+    display: grid;
+    place-items: center;
+    padding: var(--space-6) var(--space-4);
+    border-radius: var(--radius-md);
+  }
+
+  .g4-tile--sotet {
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+  }
+
+  .g4-tile--marka {
+    background: var(--color-brand);
+  }
+
+  .g4-sizes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--space-5);
+  }
+
+  .g4-sizes figure {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  .g4-sizes figcaption {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .g4-header :global(.sm) {
+    width: 140px;
+  }
+</style>

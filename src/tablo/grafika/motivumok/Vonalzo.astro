@@ -1,0 +1,52 @@
+---
+// A centimetre ruler in the measure color. Use it only where real sizes are shown.
+import { type RulerDetail, rulerTicks } from './ruler';
+import './motivumok.css';
+
+interface Props {
+  lengthCm?: number;
+  detail?: RulerDetail;
+  orientation?: 'horizontal' | 'vertical';
+}
+
+const { lengthCm = 30, detail = 'mm', orientation = 'horizontal' } = Astro.props;
+const ticks = rulerTicks(lengthCm, detail);
+const vertical = orientation === 'vertical';
+const margin = 4; // mm before zero and after the last mark
+const along = lengthCm * 10 + 2 * margin;
+const across = 24;
+const tickLength = { cm: 10, half: 6, mm: 3 } as const;
+/** Point at `a` along the ruler and `c` across it. */
+const at = (a: number, c: number) => (vertical ? { x: c, y: a } : { x: a, y: c });
+const edgeEnd = at(along, 0);
+const viewBox = vertical ? `0 0 ${across} ${along}` : `0 0 ${along} ${across}`;
+---
+
+<svg
+  class:list={['tb-ruler', `tb-ruler--${orientation}`]}
+  viewBox={viewBox}
+  style={`--ruler-cm: ${lengthCm}`}
+  role="img"
+  aria-label={`Vonalzó, ${lengthCm} cm`}
+>
+  <line class="tb-ruler__edge" x1="0" y1="0" x2={edgeEnd.x} y2={edgeEnd.y} />
+  {
+    ticks.map((t) => {
+      const from = at(t.mm + margin, 0);
+      const to = at(t.mm + margin, tickLength[t.kind]);
+      return <line class={`tb-ruler__tick--${t.kind}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />;
+    })
+  }
+  {
+    ticks
+      .filter((t) => t.label !== null)
+      .map((t) => {
+        const p = at(t.mm + margin, 17);
+        return (
+          <text class="tb-ruler__label" x={p.x} y={p.y}>
+            {t.label}
+          </text>
+        );
+      })
+  }
+</svg>

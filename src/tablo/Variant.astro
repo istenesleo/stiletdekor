@@ -1,0 +1,33 @@
+---
+// Renders a finished variant of the /tablo board by its id. When a variant's status becomes 'kesz', import its
+// component here and add its line below; variants.test.ts checks that every finished variant is listed.
+import G1Jelenetek from './grafika/G1Jelenetek.astro';
+import G2Piktogramok from './grafika/G2Piktogramok.astro';
+import G3Motivumok from './grafika/G3Motivumok.astro';
+import G4Szomarka from './grafika/G4Szomarka.astro';
+import X1Arlista from './irany/X1Arlista.astro';
+import X2Tervrajz from './irany/X2Tervrajz.astro';
+import X3Rozsaszin from './irany/X3Rozsaszin.astro';
+import X4Eszkoz from './irany/X4Eszkoz.astro';
+import X5Mintakonyv from './irany/X5Mintakonyv.astro';
+import X6Cegerfesto from './irany/X6Cegerfesto.astro';
+
+interface Props {
+  id: string;
+  /** Heading level of a full direction's main heading: 4 on the board (default), 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { id, fejlec = 4 } = Astro.props;
+---
+
+{id === 'X1' && <X1Arlista fejlec={fejlec} />}
+{id === 'X2' && <X2Tervrajz fejlec={fejlec} />}
+{id === 'X3' && <X3Rozsaszin fejlec={fejlec} />}
+{id === 'X4' && <X4Eszkoz fejlec={fejlec} />}
+{id === 'X5' && <X5Mintakonyv fejlec={fejlec} />}
+{id === 'X6' && <X6Cegerfesto fejlec={fejlec} />}
+{id === 'G1' && <G1Jelenetek />}
+{id === 'G2' && <G2Piktogramok />}
+{id === 'G3' && <G3Motivumok />}
+{id === 'G4' && <G4Szomarka />}

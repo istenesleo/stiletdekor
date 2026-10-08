@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400&family=Schibsted+Grotesk:wght@400..700&display=swap">
+<style>
+body{margin:0;background:#e9e6df;font-family:"Hanken Grotesk",system-ui,sans-serif;color:#1a1a1a}
+a{color:#b0105a}a:hover{color:#1a1a1a}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+</style>
+</helmet>
+<section class="dv-turn" id="t0">
+  <div class="dv-thd"><a class="dv-tid" href="#t0">0</a><span class="dv-tname">Kiindulás és feltevések</span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;max-width:1280px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font:700 34px/1.05 'Bricolage Grotesque',sans-serif;font-variation-settings:'opsz' 96,'wdth' 80;letter-spacing:-.02em">Stilet Dekor · design system, 1. kör</div>
+      <p style="margin:0;font-size:15px;line-height:1.55;max-width:52ch;text-wrap:pretty">Három irány egymás mellett: a két meglévő (A, B) újragondolva és a DESIGN.md-ben javasolt szintézis (C). A márkaszínre négy árnyalatot, a betűkre négy párosítást javaslok, mért kontraszttal.</p>
+    </div>
+    <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;line-height:1.5">
+      <li>Kötött: fekete alap, egy rózsaszín token (<code>color.brand</code>), bruttó árak, magázó hang, WCAG 2.2 AA.</li>
+      <li>A mérés nyelve (méretvonal, mm, mono számok) mindhárom irányban marad: ez a márka legegyedibb eleme.</li>
+      <li>A Bodoni Moda helyett olyan betűk, amelyek 1× kijelzőn is megtartják a vonalaikat.</li>
+      <li>A tokennevek nem változnak, csak az értékek. Új token: <code>color.brand-ink</code> (rózsaszín szöveg sötéten).</li>
+      <li>Referenciaképek helyett jelölt helyőrzők; nincs kitalált ügyfél, szám, vélemény.</li>
+    </ul>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px">
+      <div style="font:600 11px ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.5)">Fájlok</div>
+      <a href="Stilet Tablo.dc.html">Tabló, 1. kör: alternatív elemek és grafikák, keverővel</a>
+      <a href="StiletPrototipus.dc.html">Kattintható prototípus (Tweaks: irány, márkaszín, kezdő oldal)</a>
+      <a href="#t5">Oldal-összevetés: kezdőlap</a>
+      <a href="#t6">Oldal-összevetés: webshop konfigurátor</a>
+      <a href="StiletKomponensek.dc.html">Komponensek minden állapottal</a>
+      <a href="reference/a-neon-muhely.html">Jelenlegi A látványterv</a>
+      <a href="reference/b-galeria-editorial.html">Jelenlegi B látványterv</a>
+    </div>
+  </div>
+</section>
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Márkaszín: négy rózsaszín, mért kontraszttal</span></div>
+  <div class="dv-opts">
+    <sc-for list="{{ pinks }}" as="p" hint-placeholder-count="4">
+      <div class="dv-opt" id="{{ p.id }}">
+        <div class="dv-olabel"><a class="dv-oid" href="#{{ p.id }}">{{ p.id }}</a>{{ p.name }}</div>
+        <div class="dv-card" style="width:300px;background:#0a0a0c;border-color:#000;color:#f3f0ea">
+          <div style="height:120px;background:{{ p.hex }};display:flex;align-items:flex-end;justify-content:space-between;padding:12px 14px;color:#0a0a0b">
+            <span style="font:700 20px/1 'JetBrains Mono',monospace">{{ p.hex }}</span>
+            <span style="font:500 11px/1.3 'JetBrains Mono',monospace;text-align:right">{{ p.oklch }}</span>
+          </div>
+          <div style="padding:16px 14px;display:flex;flex-direction:column;gap:14px">
+            <p style="margin:0;font-size:13px;line-height:1.5;color:#c9c6cf;min-height:58px">{{ p.note }}</p>
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px 10px;font:400 12px/1.3 'JetBrains Mono',monospace;color:#9d9aa5">
+              <span>Feketén (A háttér)</span><b style="color:#f3f0ea;font-weight:500">{{ p.cA }}</b><span style="color:{{ p.cAcol }}">{{ p.cApass }}</span>
+              <span>Feketén (B háttér)</span><b style="color:#f3f0ea;font-weight:500">{{ p.cB }}</b><span style="color:{{ p.cBcol }}">{{ p.cBpass }}</span>
+              <span>Fekete betű rajta</span><b style="color:#f3f0ea;font-weight:500">{{ p.cOn }}</b><span style="color:{{ p.cOncol }}">{{ p.cOnpass }}</span>
+              <span>Fehér betű rajta</span><b style="color:#f3f0ea;font-weight:500">{{ p.cW }}</b><span style="color:{{ p.cWcol }}">{{ p.cWpass }}</span>
+            </div>
+            <div style="height:1px;background:#1f1f23"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+              <span style="display:inline-flex;align-items:center;min-height:42px;padding:0 16px;background:{{ p.hex }};color:#0a0a0b;font:600 13px/1 'Hanken Grotesk',sans-serif;border-radius:4px;box-shadow:{{ p.glowBtn }}">Ajánlatot kérek</span>
+              <span style="font:600 13px/1 'Hanken Grotesk',sans-serif;color:{{ p.ink }};text-decoration:underline;text-underline-offset:4px">Webshop</span>
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ p.hex }}"></span>
+            </div>
+            <div style="padding:18px 0 8px;text-align:center;font:800 40px/1 'Archivo',sans-serif;font-variation-settings:'wdth' 62;letter-spacing:.06em;color:{{ p.core }};text-shadow:{{ p.neon }}">STILET</div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <p class="dv-next">Mindegyik átmegy AA-n feketén, és mindegyiken fekete betű kell (fehér betű egyiken sem éri el a 4,5:1-et). Próbálja: „<a class="dv-oid" href="#1b">1b</a> a prototípusban” (Tweaks → Márkaszín) · „<a class="dv-oid" href="#1a">1a</a> és <a class="dv-oid" href="#1c">1c</a> között egy köztes” · „nyomdai Pantone-egyezés”</p>
+</section>
+<section class="dv-turn" id="t2">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Betűpárok: mind Latin Extended, mind tartja a vonalait 1× kijelzőn</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="2a">
+      <div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Archivo két szélességben + JetBrains Mono · az A irányhoz</div>
+      <div class="dv-card" style="width:520px;background:#0a0a0c;color:#f3f0ea;border-color:#000">
+        <div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:800 54px/.95 'Archivo',sans-serif;font-variation-settings:'wdth' 62;text-transform:uppercase;letter-spacing:.005em">Kiszállunk, felmérjük, felszereljük.</div>
+          <p style="margin:0;font:400 15px/1.55 'Archivo',sans-serif">Egy család, két szélesség: a cím keskeny (wdth 62), a szöveg normál. Kevesebb betöltés, egységes rajzolat, a kondenzált cím a cégérbetűk világát idézi.</p>
+          <div style="font:400 13px/1.5 'JetBrains Mono',monospace;color:#9d9aa5">Árvíztűrő tükörfúrógép, ŐŰ, 12 990 Ft, 85×200 cm</div>
+          <div style="display:flex;gap:18px;font:500 11px/1 'JetBrains Mono',monospace;color:#f0c43c"><span>2 000 × 1 000 mm</span><span>5 067 Ft/m²</span><span>152 dpi</span></div>
+        </div>
+        <div style="padding:10px 22px;border-top:1px solid #1d1d21;font:400 11.5px/1.45 'JetBrains Mono',monospace;color:#9d9aa5">display: Archivo 800, wdth 62 · body: Archivo 400–600 · mono: JetBrains Mono</div>
+      </div>
+    </div>
+    <div class="dv-opt" id="2b">
+      <div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Instrument Serif + Instrument Sans + IBM Plex Mono · a B irányhoz</div>
+      <div class="dv-card" style="width:520px;background:#0b0b0a;color:#ece8df;border-color:#000">
+        <div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:400 58px/.98 'Instrument Serif',serif;letter-spacing:-.015em">Kiszállunk, felmérjük, <i>felszereljük.</i></div>
+          <p style="margin:0;font:400 15px/1.55 'Instrument Sans',sans-serif">A Bodoni Moda utódja. Mérsékelt kontraszt, vastagabb hajszálvonal: 1× kijelzőn sem esik szét az „e”. Nincs optikai tengely, nincs mit rögzíteni.</p>
+          <div style="font:400 13px/1.5 'IBM Plex Mono',monospace;color:#979188">Árvíztűrő tükörfúrógép, ŐŰ, 12 990 Ft, 85×200 cm</div>
+          <div style="display:flex;gap:18px;font:400 11px/1 'IBM Plex Mono',monospace;color:#9ea8b2;text-transform:uppercase;letter-spacing:.08em"><span>Felület · Kirakat</span><span>Anyag · Polimer fólia</span></div>
+        </div>
+        <div style="padding:10px 22px;border-top:1px solid #1f1e1c;font:400 11.5px/1.45 'IBM Plex Mono',monospace;color:#979188">display: Instrument Serif 400 + dőlt · body: Instrument Sans · mono: IBM Plex Mono</div>
+      </div>
+    </div>
+    <div class="dv-opt" id="2c">
+      <div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>Bricolage Grotesque + Hanken Grotesk + Geist Mono · a C irányhoz</div>
+      <div class="dv-card" style="width:520px;background:#0c0c0d;color:#f2efe9;border-color:#000">
+        <div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:700 52px/.98 'Bricolage Grotesque',sans-serif;font-variation-settings:'opsz' 96,'wdth' 80;letter-spacing:-.03em">Kiszállunk, felmérjük, felszereljük.</div>
+          <p style="margin:0;font:400 15px/1.55 'Hanken Grotesk',sans-serif">Karakteres, kicsit kézműves grotesk a címekhez (saját műhely), semleges, jól olvasható szövegbetű mellé. Mondatkezdő nagybetű, nem csupa nagybetű: nyugodtabb, mint az A.</p>
+          <div style="font:400 13px/1.5 'Geist Mono',monospace;color:#a19ea7">Árvíztűrő tükörfúrógép, ŐŰ, 12 990 Ft, 85×200 cm</div>
+          <div style="display:flex;gap:18px;font:500 11px/1 'Geist Mono',monospace;color:#ecc94b"><span>2 000 × 1 000 mm</span><span>5 067 Ft/m²</span><span>152 dpi</span></div>
+        </div>
+        <div style="padding:10px 22px;border-top:1px solid #1e1e21;font:400 11.5px/1.45 'Geist Mono',monospace;color:#a19ea7">display: Bricolage Grotesque 700, opsz 96, wdth 80 · body: Hanken Grotesk · mono: Geist Mono</div>
+      </div>
+    </div>
+    <div class="dv-opt" id="2d">
+      <div class="dv-olabel"><a class="dv-oid" href="#2d">2d</a>Newsreader + Schibsted Grotesk + IBM Plex Mono · a mostani B-hez legközelebb</div>
+      <div class="dv-card" style="width:520px;background:#0b0b0a;color:#ece8df;border-color:#000">
+        <div style="padding:22px 22px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:500 52px/1 'Newsreader',serif;font-variation-settings:'opsz' 48;letter-spacing:-.02em">Kiszállunk, felmérjük, <i style="font-weight:400">felszereljük.</i></div>
+          <p style="margin:0;font:400 15px/1.55 'Schibsted Grotesk',sans-serif">Szerkesztőségi antikva, amelynek optikai tengelye 48-ig biztonságos. A Schibsted Grotesk marad a szövegben, így a B váltása kicsi.</p>
+          <div style="font:400 13px/1.5 'IBM Plex Mono',monospace;color:#979188">Árvíztűrő tükörfúrógép, ŐŰ, 12 990 Ft, 85×200 cm</div>
+          <div style="display:flex;gap:18px;font:400 11px/1 'IBM Plex Mono',monospace;color:#9ea8b2;text-transform:uppercase;letter-spacing:.08em"><span>Méret · 300 × 100 cm</span><span>Helyszín · Budapest</span></div>
+        </div>
+        <div style="padding:10px 22px;border-top:1px solid #1f1e1c;font:400 11.5px/1.45 'IBM Plex Mono',monospace;color:#979188">display: Newsreader 500, opsz rögzítve 48 · body: Schibsted Grotesk · mono: IBM Plex Mono</div>
+      </div>
+    </div>
+  </div>
+  <p class="dv-next">Próbálja: „<a class="dv-oid" href="#2c">2c</a> címbetűje, de <a class="dv-oid" href="#2a">2a</a> szövegbetűje” · „<a class="dv-oid" href="#2b">2b</a> mono nélkül” · „mutasd mobilon, 390 px-en”</p>
+</section>
+<section class="dv-turn" id="t3">
+  <div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Három irány: tokenek, motívumok, szabályok</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="3a">
+      <div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>A · Neon műhely 2.0</div>
+      <div class="dv-card" style="width:460px;background:#0a0a0c;color:#f3f0ea;border-color:#000">
+        <div style="position:relative;height:230px;overflow:hidden;background-color:#0a0a0c;background-image:linear-gradient(#1d1d21 1px,transparent 1px),linear-gradient(90deg,#1d1d21 1px,transparent 1px),linear-gradient(#3a3424 1px,transparent 1px),linear-gradient(90deg,#3a3424 1px,transparent 1px);background-size:20px 20px,20px 20px,100px 100px,100px 100px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:8px;width:300px">
+            <div style="display:flex;align-items:center;gap:6px;color:#f0c43c;font:500 11px/1 'JetBrains Mono',monospace"><div style="width:1px;height:10px;background:currentColor"></div><div style="flex:1;height:1px;background:currentColor"></div><span>1 200 mm</span><div style="flex:1;height:1px;background:currentColor"></div><div style="width:1px;height:10px;background:currentColor"></div></div>
+            <div style="height:110px;background:#131316;border:1px solid #2c2c32;display:grid;place-items:center;font:800 58px/1 'Archivo',sans-serif;font-variation-settings:'wdth' 62;letter-spacing:.06em;color:#ffd3e7;text-shadow:0 0 3px #ff2e8a,0 0 12px #ff2e8a,0 0 34px #ff2e8a">STILET</div>
+          </div>
+          <div style="position:absolute;left:10px;top:8px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#9d9aa5">VÁGÓALÁTÉT · 10 MM RÁCS</div>
+        </div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <p style="margin:0;font:400 14px/1.55 'Archivo',sans-serif;color:#c9c6cf">A műhely éjjel. Egyetlen fényforrás a rózsaszín neon. Kevesebb dísz, mint eddig: a rács csak a heroban és a konfigurátor munkaasztalán.</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#0a0a0c;border:1px solid #2c2c32"></div><span style="font:400 10px 'JetBrains Mono',monospace;color:#9d9aa5">bg #0A0A0C</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#131316;border:1px solid #2c2c32"></div><span style="font:400 10px 'JetBrains Mono',monospace;color:#9d9aa5">surface #131316</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#f0c43c"></div><span style="font:400 10px 'JetBrains Mono',monospace;color:#9d9aa5">measure #F0C43C</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#ff2e8a"></div><span style="font:400 10px 'JetBrains Mono',monospace;color:#9d9aa5">brand</span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;background:#ff2e8a;color:#0a0a0b;font:600 13px/1 'Archivo',sans-serif;border-radius:2px;box-shadow:0 0 0 1px rgba(255,46,138,.55),0 0 24px -4px rgba(255,46,138,.8)">Online rendelés</span>
+            <span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid #2c2c32;font:600 13px/1 'Archivo',sans-serif;border-radius:2px">Egyedi ajánlat</span>
+          </div>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font:400 12px/1.45 'JetBrains Mono',monospace;color:#9d9aa5">
+            <span style="color:#ff6aa8">Neon</span><span>hero cégére, fő gomb, kosár-jelvény. Máshol nem világít.</span>
+            <span style="color:#f0c43c">Sárga</span><span>csak mérés: méretvonal, vonalzó, fókuszkeret.</span>
+            <span style="color:#f3f0ea">Sarok</span><span>2 px, mint egy vágott lemez.</span>
+            <span style="color:#ff5b4d">Nem</span><span>vonalzó minden szakasz fölött; szálkereszt dísznek.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dv-opt" id="3b">
+      <div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>B · Galéria 2.0</div>
+      <div class="dv-card" style="width:460px;background:#0b0b0a;color:#ece8df;border-color:#000">
+        <div style="padding:18px 20px 0;display:flex;flex-direction:column;gap:10px">
+          <div style="position:relative;height:200px;background:repeating-linear-gradient(135deg,#1a1917 0 1px,#151513 1px 9px);display:grid;place-items:center">
+            <span style="font:500 10px/1 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#979188;background:#0b0b0a;padding:6px 8px">Referenciakép helye · éjszakai kirakat</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:12px;border-top:1px solid #2d2c29;padding-top:8px;font:400 10.5px/1.5 'IBM Plex Mono',monospace;letter-spacing:.04em;color:#979188">
+            <span>Felület <b style="color:#ece8df;font-weight:500">Kirakat</b></span><span>Anyag <b style="color:#ece8df;font-weight:500">[anyag]</b></span><span>Méret <b style="color:#ece8df;font-weight:500">[méret]</b></span><span>Helyszín <b style="color:#ece8df;font-weight:500">[helyszín]</b></span>
+          </div>
+        </div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <p style="margin:0;font:400 14px/1.55 'Instrument Sans',sans-serif;color:#cfcac0">Nyomdafekete papír, óriási képek, sok levegő. A rózsaszín csak pont: aktív menü, link, egy kiemelés. Ugyanaz a rend, mint eddig, csak a betű cserélődik és a rács lazul.</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#0b0b0a;border:1px solid #2d2c29"></div><span style="font:400 10px 'IBM Plex Mono',monospace;color:#979188">bg #0B0B0A</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#ece8df"></div><span style="font:400 10px 'IBM Plex Mono',monospace;color:#979188">text #ECE8DF</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#9ea8b2"></div><span style="font:400 10px 'IBM Plex Mono',monospace;color:#979188">measure #9EA8B2</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#ff2e8a"></div><span style="font:400 10px 'IBM Plex Mono',monospace;color:#979188">brand</span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <span style="display:inline-flex;align-items:center;min-height:44px;padding:0 20px;background:#ece8df;color:#0b0b0a;font:500 13px/1 'Instrument Sans',sans-serif">Online rendelés</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #6e6a63;font:500 13px/1 'Instrument Sans',sans-serif"><i style="width:6px;height:6px;border-radius:50%;background:#ff2e8a"></i>Egyedi ajánlat</span>
+          </div>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font:400 12px/1.45 'IBM Plex Mono',monospace;color:#979188">
+            <span style="color:#ff6aa8">Pont</span><span>aktív állapot, link aláhúzás, kosár-jelvény.</span>
+            <span style="color:#9ea8b2">Acél</span><span>méretvonal, műszaki adat, képaláírás.</span>
+            <span style="color:#ece8df">Sarok</span><span>0, hajszálvonalak 1 px.</span>
+            <span style="color:#ff6b5b">Nem</span><span>rózsaszín gombfelület; fény; dísz-ikonok.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dv-opt" id="3c">
+      <div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a>C · Szintézis „Mérőlap” · javasolt</div>
+      <div class="dv-card" style="width:460px;background:#0c0c0d;color:#f2efe9;border-color:#000">
+        <div style="padding:18px 20px 0">
+          <div style="position:relative;height:212px;background:repeating-linear-gradient(135deg,#19191b 0 1px,#141416 1px 9px);border-radius:6px;overflow:hidden">
+            <span style="position:absolute;left:10px;bottom:10px;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#a19ea7;background:#0c0c0d;padding:6px 8px;border-radius:3px">Referenciakép · fóliázott kisbusz</span>
+            <div style="position:absolute;left:70px;right:70px;top:34px;display:flex;align-items:center;gap:6px;color:#ecc94b;font:500 10.5px/1 'Geist Mono',monospace"><div style="width:1px;height:10px;background:currentColor"></div><div style="flex:1;height:1px;background:currentColor"></div><span>4 800 mm</span><div style="flex:1;height:1px;background:currentColor"></div><div style="width:1px;height:10px;background:currentColor"></div></div>
+            <div style="position:absolute;left:70px;right:70px;top:56px;bottom:56px;border:1px dashed rgba(236,201,75,.6)"></div>
+            <div style="position:absolute;right:42px;top:56px;bottom:56px;display:flex;flex-direction:column;align-items:center;gap:6px;color:#ecc94b;font:500 10.5px/1 'Geist Mono',monospace"><div style="width:10px;height:1px;background:currentColor"></div><div style="flex:1;width:1px;background:currentColor"></div><span style="writing-mode:vertical-rl">1 900 mm</span><div style="flex:1;width:1px;background:currentColor"></div><div style="width:10px;height:1px;background:currentColor"></div></div>
+          </div>
+        </div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <p style="margin:0;font:400 14px/1.55 'Hanken Grotesk',sans-serif;color:#cdcad2">B nyugodt, képközpontú rendje A mérési nyelvével. A méretvonal a képekre is rákerül: a munka mérete a hitelesség. Neon csak a heroban és a fő gombon.</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#0c0c0d;border:1px solid #2c2c30;border-radius:4px"></div><span style="font:400 10px 'Geist Mono',monospace;color:#a19ea7">bg #0C0C0D</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#1c1c1f;border-radius:4px"></div><span style="font:400 10px 'Geist Mono',monospace;color:#a19ea7">raise #1C1C1F</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#ecc94b;border-radius:4px"></div><span style="font:400 10px 'Geist Mono',monospace;color:#a19ea7">measure #ECC94B</span></div>
+            <div style="display:flex;flex-direction:column;gap:4px"><div style="height:34px;background:#ff2e8a;border-radius:4px"></div><span style="font:400 10px 'Geist Mono',monospace;color:#a19ea7">brand</span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;background:#ff2e8a;color:#0a0a0b;font:600 13px/1 'Hanken Grotesk',sans-serif;border-radius:6px;box-shadow:0 0 0 1px rgba(255,46,138,.5),0 0 18px -6px rgba(255,46,138,.9)">Online rendelés</span>
+            <span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;background:#1c1c1f;border:1px solid #2c2c30;font:600 13px/1 'Hanken Grotesk',sans-serif;border-radius:6px">Egyedi ajánlat</span>
+          </div>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font:400 12px/1.45 'Geist Mono',monospace;color:#a19ea7">
+            <span style="color:#ff6aa8">Neon</span><span>hero, fő gomb. Minden más rózsaszín lapos.</span>
+            <span style="color:#ecc94b">Sárga</span><span>méretvonal a képeken és az előnézetben.</span>
+            <span style="color:#f2efe9">Sarok</span><span>6 px: barátságosabb, mint az A.</span>
+            <span style="color:#ff6150">Nem</span><span>vágóalátét-rács a tartalom mögött; csupa nagybetűs címek.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="dv-next">Próbálja: „<a class="dv-oid" href="#3c">3c</a>, de <a class="dv-oid" href="#2b">2b</a> betűivel” · „<a class="dv-oid" href="#3a">3a</a> nappali módban” · „<a class="dv-oid" href="#3b">3b</a> egy rózsaszín gombbal”</p>
+</section>
+<section class="dv-turn" id="t4">
+  <div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Komponensek minden állapottal, három irányban</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="4a">
+      <div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a>A · Neon műhely 2.0</div>
+      <div class="dv-card" style="width:760px"><dc-import name="StiletKomponensek" direction="A" hint-size="760px,3200px"></dc-import></div>
+    </div>
+    <div class="dv-opt" id="4b">
+      <div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a>B · Galéria 2.0</div>
+      <div class="dv-card" style="width:760px"><dc-import name="StiletKomponensek" direction="B" hint-size="760px,3200px"></dc-import></div>
+    </div>
+    <div class="dv-opt" id="4c">
+      <div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a>C · Szintézis „Mérőlap”</div>
+      <div class="dv-card" style="width:760px"><dc-import name="StiletKomponensek" direction="C" hint-size="760px,3200px"></dc-import></div>
+    </div>
+  </div>
+  <p class="dv-next">Próbálja: „<a class="dv-oid" href="#4c">4c</a> gombjai <a class="dv-oid" href="#4b">4b</a> sarkaival” · „anyagkártya adatai mindig nyitva” · „sűrűbb űrlapmezők mobilon”</p>
+</section>
+<section class="dv-turn" id="t5">
+  <div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">Kezdőlap, 1440 és 390 px · a rövidített szöveggel (2026-10-07)</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="5a">
+      <div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a>A · Neon műhely 2.0</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="A" start-page="home" embedded="{{ true }}" hint-size="1440px,5600px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="A" start-page="home" embedded="{{ true }}" hint-size="390px,8000px"></dc-import></div>
+      </div>
+    </div>
+    <div class="dv-opt" id="5b">
+      <div class="dv-olabel"><a class="dv-oid" href="#5b">5b</a>B · Galéria 2.0</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="B" start-page="home" embedded="{{ true }}" hint-size="1440px,5600px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="B" start-page="home" embedded="{{ true }}" hint-size="390px,8000px"></dc-import></div>
+      </div>
+    </div>
+    <div class="dv-opt" id="5c">
+      <div class="dv-olabel"><a class="dv-oid" href="#5c">5c</a>C · Szintézis „Mérőlap”</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="C" start-page="home" embedded="{{ true }}" hint-size="1440px,5600px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="C" start-page="home" embedded="{{ true }}" hint-size="390px,8000px"></dc-import></div>
+      </div>
+    </div>
+  </div>
+  <p class="dv-next">Mindhárom ugyanazt a szöveget és szerkezetet használja; csak a tokenek és a hero képi eleme tér el. A képek jelölt helyőrzők. Kattintható: menü, belépők, munkatípusok (a varázsló 2. lépésén nyitnak), kosár. Próbálja: „<a class="dv-oid" href="#5c">5c</a> hero <a class="dv-oid" href="#5b">5b</a> lépcsős címével” · „<a class="dv-oid" href="#5a">5a</a> rács nélkül”</p>
+</section>
+<section class="dv-turn" id="t6">
+  <div class="dv-thd"><a class="dv-tid" href="#t6">6</a><span class="dv-tname">Webshop konfigurátor (molinó), 1440 és 390 px</span></div>
+  <div class="dv-opts">
+    <div class="dv-opt" id="6a">
+      <div class="dv-olabel"><a class="dv-oid" href="#6a">6a</a>A · Neon műhely 2.0</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="A" start-page="webshop" embedded="{{ true }}" hint-size="1440px,2400px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="A" start-page="webshop" embedded="{{ true }}" hint-size="390px,4200px"></dc-import></div>
+      </div>
+    </div>
+    <div class="dv-opt" id="6b">
+      <div class="dv-olabel"><a class="dv-oid" href="#6b">6b</a>B · Galéria 2.0</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="B" start-page="webshop" embedded="{{ true }}" hint-size="1440px,2400px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="B" start-page="webshop" embedded="{{ true }}" hint-size="390px,4200px"></dc-import></div>
+      </div>
+    </div>
+    <div class="dv-opt" id="6c">
+      <div class="dv-olabel"><a class="dv-oid" href="#6c">6c</a>C · Szintézis „Mérőlap”</div>
+      <div style="display:flex;gap:20px;align-items:flex-start">
+        <div class="dv-card" style="width:1440px"><dc-import name="StiletPrototipus" direction="C" start-page="webshop" embedded="{{ true }}" hint-size="1440px,2400px"></dc-import></div>
+        <div class="dv-card" style="width:390px"><dc-import name="StiletPrototipus" direction="C" start-page="webshop" embedded="{{ true }}" hint-size="390px,4200px"></dc-import></div>
+      </div>
+    </div>
+  </div>
+  <p class="dv-next">Működik: méret, csere, méretsablonok, anyag és adatlap, szélkidolgozás, darabszám-kedvezmény, expressz, grafikafeltöltés (szimulált, a méretet a fájlból veszi), nyomdakész-lámpa, arányeltérés, árbontás, határidő naptári dátummal, kosár és rendelés. Az árak a <code>catalog.ts</code> helyőrző nettó árai, bruttóban. Mobilon a végösszeg és a Kosárba gomb alul tapad.</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  lum(hex) {
+    const n = hex.replace('#', '');
+    const c = [0, 2, 4].map(i => parseInt(n.slice(i, i + 2), 16) / 255)
+      .map(v => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  ratio(a, b) {
+    const x = this.lum(a), y = this.lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+  rgba(hex, a) {
+    const n = hex.replace('#', '');
+    return `rgba(${parseInt(n.slice(0, 2), 16)},${parseInt(n.slice(2, 4), 16)},${parseInt(n.slice(4, 6), 16)},${a})`;
+  }
+  renderVals() {
+    const list = [
+      { id: '1a', name: 'Jelenlegi helyőrző', hex: '#FF2E8A', oklch: 'oklch 0.66 0.25 358', note: 'A mostani token. Erős, tiszta pink; a neonfényben enyhén vörösbe hajlik.' },
+      { id: '1b', name: 'Rodamin', hex: '#FF47A3', oklch: 'oklch 0.69 0.24 354', note: 'Hidegebb, a magenta felé. Neoncsőként a leghitelesebb, nyomdában a rodamin-pinkhez közel.' },
+      { id: '1c', name: 'Korall-rózsa', hex: '#FF5C85', oklch: 'oklch 0.70 0.20 10', note: 'Melegebb, kevésbé „digitális”. A sárga mérőszínnel a legjobban megfér.' },
+      { id: '1d', name: 'Púder neon', hex: '#FF7AB8', oklch: 'oklch 0.75 0.17 352', note: 'Világosabb, a legnagyobb kontraszt. Szövegként is jól olvasható, de gombként kevésbé üt.' },
+    ];
+    const fmt = r => r.toFixed(2).replace('.', ',') + ':1';
+    const pass = (r, min) => (r >= min ? 'AA ✓' : 'AA ✗');
+    const col = (r, min) => (r >= min ? '#3fd68f' : '#ff5b4d');
+    const pinks = list.map(p => {
+      const cA = this.ratio(p.hex, '#0a0a0c'), cB = this.ratio(p.hex, '#0b0b0a');
+      const cOn = this.ratio(p.hex, '#0a0a0b'), cW = this.ratio(p.hex, '#ffffff');
+      return {
+        ...p,
+        cA: fmt(cA), cApass: pass(cA, 4.5), cAcol: col(cA, 4.5),
+        cB: fmt(cB), cBpass: pass(cB, 4.5), cBcol: col(cB, 4.5),
+        cOn: fmt(cOn), cOnpass: pass(cOn, 4.5), cOncol: col(cOn, 4.5),
+        cW: fmt(cW), cWpass: pass(cW, 4.5), cWcol: col(cW, 4.5),
+        glowBtn: `0 0 0 1px ${this.rgba(p.hex, 0.55)}, 0 0 22px -4px ${this.rgba(p.hex, 0.85)}`,
+        neon: `0 0 3px ${p.hex}, 0 0 12px ${p.hex}, 0 0 34px ${p.hex}`,
+        core: `color-mix(in oklab, ${p.hex} 22%, #ffffff)`,
+        ink: `color-mix(in oklab, ${p.hex} 72%, #f3f0ea)`,
+      };
+    });
+    return { pinks };
+  }
+}
+</script>
+</body>
+</html>

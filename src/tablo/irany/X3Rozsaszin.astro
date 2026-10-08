@@ -1,0 +1,285 @@
+---
+// X3 · Rózsaszín áradat: the brand color becomes the whole surface; black giant type is the accent.
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Kisbusz from '../grafika/jelenetek/Kisbusz.astro';
+import { TARTALOM, arSzam } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, belepok, csoportok, arak, folyamat } = TARTALOM;
+// "Kiszállunk, felmérjük, felszereljük." → one line per verb, punctuation kept.
+const szavak = szlogen.replace(/\.$/, '').split(', ');
+const jelenet = JELENETEK.find((j) => j.id === 'kisbusz')!;
+---
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;700&display=swap" />
+<div class="x3">
+  <div class="x3__in">
+    <p class="x3__brand notranslate">STILET DEKOR</p>
+    <H class="x3__claim">{szavak.map((s, i) => <span>{s}{i < szavak.length - 1 ? ',' : '.'}</span>)}</H>
+
+    <div class="x3__band">
+      {
+        belepok.map((b) => (
+          <a href={b.href}>
+            <strong>{b.cim}</strong>
+            <span>{b.leiras}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <section aria-labelledby="x3-szolg">
+      <Hk id="x3-szolg" class="x3__label">Szolgáltatások</Hk>
+      <ul class="x3__list">
+        {csoportok.map((g) => <li>{g.nev}</li>)}
+      </ul>
+    </section>
+
+    <section aria-labelledby="x3-arak">
+      <Hk id="x3-arak" class="x3__label">Árak, bruttó</Hk>
+      <ul class="x3__prices">
+        {
+          arak.map((a) => (
+            <li>
+              <span class="x3__num">{arSzam(a)}</span>
+              <span>{a.egyseg} · {a.termek}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="x3__note">Helyőrző árak; élesítés előtt a műhely véglegesíti.</p>
+    </section>
+
+    <section aria-labelledby="x3-folyamat">
+      <Hk id="x3-folyamat" class="x3__label">Folyamat</Hk>
+      <ol class="x3__steps">
+        {
+          folyamat.map((l, i) => (
+            <li>
+              <span class="x3__num">{i + 1}</span>
+              <strong>{l.cim}</strong>
+              <span>{l.leiras}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <div class="x3__ref">
+      <Kisbusz info={jelenet} uid="x3-sc" />
+    </div>
+
+    <footer class="x3__foot">
+      <a class="x3__phone" href={ceg.phone.href}>{ceg.phone.display}</a>
+      <p><a href={`mailto:${ceg.email}`}>{ceg.email}</a> · {ceg.address} · {ceg.openingHours} (helyőrző)</p>
+    </footer>
+  </div>
+</div>
+
+<style>
+  .x3 {
+    --color-focus: var(--color-on-brand);
+    container: x3 / inline-size;
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .x3 a {
+    color: inherit;
+  }
+
+  .x3__in {
+    display: grid;
+    gap: clamp(2rem, 6cqi, 4.5rem);
+    padding: clamp(1rem, 4cqi, 3rem);
+  }
+
+  .x3__brand {
+    margin: 0;
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+  }
+
+  .x3__claim {
+    display: grid;
+    margin: 0;
+    font-family: 'Anton', Impact, sans-serif;
+    font-weight: 400;
+    font-size: clamp(3.25rem, 16cqi, 12rem);
+    line-height: 1.02; /* room for Á, É, Ü accents on capitals */
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .x3__band {
+    display: grid;
+    gap: 2px;
+    padding: 2px;
+    background: var(--color-on-brand);
+  }
+
+  .x3__band a {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.5rem;
+    background: var(--color-on-brand);
+    color: var(--color-brand);
+    text-decoration: none;
+  }
+
+  .x3__band a:focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: -8px;
+  }
+
+  .x3__band a:hover strong,
+  .x3__band a:focus-visible strong {
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
+  }
+
+  .x3__band strong {
+    font-family: 'Anton', Impact, sans-serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 6cqi, 3.5rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .x3__label {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .x3__list,
+  .x3__prices,
+  .x3__steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x3__list {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(2rem, 7cqi, 5rem);
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .x3__list li {
+    border-block-start: 3px solid currentColor;
+    padding-block-start: 0.15em;
+  }
+
+  .x3__prices {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .x3__prices li {
+    display: grid;
+    padding-block-start: 0.5rem;
+    border-block-start: 3px solid currentColor;
+    font-weight: 700;
+  }
+
+  .x3__num {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(3rem, 12cqi, 8rem);
+    font-variant-numeric: tabular-nums;
+    line-height: 0.9;
+  }
+
+  .x3__note {
+    margin: 1rem 0 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .x3__steps {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .x3__steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0 1rem;
+    padding-block-start: 0.5rem;
+    border-block-start: 3px solid currentColor;
+  }
+
+  .x3__steps .x3__num {
+    grid-row: span 2;
+    font-size: clamp(2.5rem, 8cqi, 5rem);
+  }
+
+  .x3__steps strong {
+    font-size: 1.5rem;
+  }
+
+  .x3__ref {
+    --color-bg: #0a0a0b;
+    --color-surface: #141416;
+    --color-surface-raised: #1d1d20;
+    --color-line: #3a3a3f;
+    --color-text: #f3f0ea;
+    --color-text-muted: #a3a1a8;
+    --color-measure: #f3f0ea;
+    --color-focus: #f3f0ea;
+    padding: 1rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .x3__foot {
+    display: grid;
+    gap: 0.5rem;
+    padding-block-start: 1rem;
+    border-block-start: 3px solid currentColor;
+  }
+
+  .x3__phone {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(2.5rem, 12cqi, 8rem);
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .x3__foot p {
+    margin: 0;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  @container x3 (min-width: 720px) {
+    .x3__band {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .x3__prices {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .x3__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .x3__ref {
+      max-width: 44rem;
+    }
+  }
+</style>

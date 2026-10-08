@@ -1,0 +1,379 @@
+---
+// X5 · Mintakönyv: a kraft-paper sample book; register tabs page through the services as swatch cards.
+import { JELENETEK } from '../grafika/jelenet-lista';
+import Kinalopult from '../grafika/jelenetek/Kinalopult.astro';
+import { TARTALOM, arTeljes } from './tartalom';
+
+interface Props {
+  /** Heading level of the main heading: 4 on the board, 2 on its own page. */
+  fejlec?: 2 | 4;
+}
+
+const { fejlec = 4 } = Astro.props;
+const H = `h${fejlec}` as 'h2' | 'h4';
+const Hk = `h${fejlec + 1}` as 'h3' | 'h5';
+const { ceg, szlogen, bevezeto, belepok, csoportok, arak, gyartasiIdo, folyamat } = TARTALOM;
+const jelenet = JELENETEK.find((j) => j.id === 'kinalopult')!;
+const lapok = ['Borító', ...csoportok.map((g) => g.nev), 'Árak, kapcsolat'];
+const utolso = lapok.length - 1;
+/** Swatch texture per service group: film sheen, LED dots, print halftone, event stripes. */
+const MINTAK = ['folia', 'led', 'raszter', 'csik'];
+---
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;800&family=DM+Mono&display=swap" />
+<div class="x5" data-x5>
+  <div class="x5__book">
+    <div class="x5__tabs" role="tablist" aria-label="A mintakönyv fejezetei">
+      {
+        lapok.map((cim, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`x5-ful-${i}`}
+            aria-controls={`x5-lap-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+          >
+            {cim}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="x5__pages">
+      <section class="x5__page" id="x5-lap-0" role="tabpanel" aria-labelledby="x5-ful-0">
+        <p class="x5__over">Mintakönyv · <span class="notranslate">Stilet Dekor</span></p>
+        <H class="x5__h">{szlogen}</H>
+        <p>{bevezeto}</p>
+        <div class="x5__entries">
+          {
+            belepok.map((b) => (
+              <a href={b.href}>
+                <strong>{b.cim}</strong>
+                <span>{b.leiras}</span>
+              </a>
+            ))
+          }
+        </div>
+        <ol class="x5__steps">
+          {folyamat.map((l, i) => <li><strong>{i + 1}. {l.cim}</strong> – {l.leiras}</li>)}
+        </ol>
+      </section>
+
+      {
+        csoportok.map((g, i) => (
+          <section class="x5__page" id={`x5-lap-${i + 1}`} role="tabpanel" aria-labelledby={`x5-ful-${i + 1}`}>
+            <Hk class="x5__h2">{g.nev}</Hk>
+            <ul class="x5__swatches">
+              {g.elemek.map((e) => (
+                <li class="x5__swatch">
+                  <span class={`x5__chip x5__chip--${MINTAK[i]}`} aria-hidden="true" />
+                  <span class="x5__sname">{e.nev}</span>
+                  <span class="x5__meta">{e.online ? 'Online rendelhető' : 'Egyedi ajánlat'}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+
+      <section class="x5__page" id={`x5-lap-${utolso}`} role="tabpanel" aria-labelledby={`x5-ful-${utolso}`}>
+        <Hk class="x5__h2">Árak, kapcsolat</Hk>
+        <ul class="x5__prices">
+          {arak.map((a) => <li><span>{a.termek}</span><strong>{arTeljes(a)}</strong></li>)}
+        </ul>
+        <p class="x5__meta">Bruttó, helyőrző árak; gyártási idő: {gyartasiIdo}.</p>
+        <Kinalopult info={jelenet} uid="x5-sc" />
+        <dl class="x5__contact">
+          <div><dt>Telefon</dt><dd><a href={ceg.phone.href}>{ceg.phone.display}</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href={`mailto:${ceg.email}`}>{ceg.email}</a></dd></div>
+          <div><dt>Műhely</dt><dd>{ceg.address}</dd></div>
+          <div><dt>Nyitvatartás</dt><dd>{ceg.openingHours} (helyőrző)</dd></div>
+        </dl>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Register tabs: click, arrow keys, Home and End. Without this script every page stays visible.
+  const MOVES: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+  for (const root of document.querySelectorAll<HTMLElement>('[data-x5]')) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = tabs.map((t) => root.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`));
+    const select = (index: number, focus: boolean) => {
+      tabs.forEach((tab, k) => {
+        const on = k === index;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        panels[k]?.toggleAttribute('hidden', !on);
+      });
+      if (focus) tabs[index]?.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i, false));
+      tab.addEventListener('keydown', (event) => {
+        const move = MOVES[event.key];
+        if (move !== undefined) select((i + move + tabs.length) % tabs.length, true);
+        else if (event.key === 'Home') select(0, true);
+        else if (event.key === 'End') select(tabs.length - 1, true);
+        else return;
+        event.preventDefault();
+      });
+    });
+    select(0, false);
+  }
+</script>
+
+<style>
+  .x5 {
+    --color-bg: #d6c19b;
+    --color-surface: #ebdfc5;
+    --color-surface-raised: #dfcfab;
+    --color-line: #a08a62;
+    --color-text: #2a2016;
+    --color-text-muted: #554533;
+    --color-measure: #554533;
+    --color-focus: #2a2016;
+    container: x5 / inline-size;
+    padding: clamp(1rem, 3cqi, 2.5rem);
+    background-color: var(--color-bg);
+    background-image: repeating-linear-gradient(105deg, rgb(42 32 22 / 0.035) 0 2px, transparent 2px 7px);
+    color: var(--color-text);
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  .x5 a {
+    color: inherit;
+  }
+
+  .x5__book {
+    display: grid;
+  }
+
+  .x5__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .x5__tabs button {
+    padding: 0.6rem 0.9rem;
+    border: 1.5px solid var(--color-text);
+    border-block-end: 0;
+    border-radius: 10px 10px 0 0;
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+    font: 600 0.9375rem / 1.1 'Fraunces', Georgia, serif;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .x5__tabs button:hover {
+    background: var(--color-surface);
+  }
+
+  .x5__tabs button[aria-selected='true'] {
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+  }
+
+  .x5__pages {
+    border: 1.5px solid var(--color-text);
+    background: var(--color-surface);
+    box-shadow: 6px 6px 0 var(--color-text);
+  }
+
+  .x5__page {
+    display: grid;
+    align-content: start;
+    gap: 1.25rem;
+    min-height: 26rem;
+    padding: clamp(1.25rem, 4cqi, 3rem);
+  }
+
+  .x5__page + .x5__page {
+    border-block-start: 1.5px dashed var(--color-line);
+  }
+
+  .x5__page[hidden] {
+    display: none;
+  }
+
+  .x5__over,
+  .x5__meta,
+  .x5__entries span {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8125rem;
+  }
+
+  .x5__over {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .x5__h {
+    margin: 0;
+    font-size: clamp(2rem, 7cqi, 4.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .x5__h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 4.5cqi, 2.5rem);
+    font-weight: 800;
+  }
+
+  .x5__page > p {
+    max-width: 54ch;
+    margin: 0;
+  }
+
+  .x5__entries {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .x5__entries a {
+    display: grid;
+    gap: 0.2rem;
+    padding: 1rem 1.25rem;
+    border: 1.5px solid var(--color-text);
+    background: var(--color-bg);
+    text-decoration: none;
+  }
+
+  .x5__entries a:hover {
+    background: var(--color-surface-raised);
+  }
+
+  .x5__entries strong {
+    font-size: 1.25rem;
+  }
+
+  .x5__steps,
+  .x5__swatches,
+  .x5__prices {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .x5__steps {
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.9375rem;
+  }
+
+  .x5__swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+    gap: 1rem;
+  }
+
+  .x5__swatch {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-bg);
+    box-shadow: 2px 2px 0 var(--color-line);
+  }
+
+  .x5__chip {
+    display: block;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-text);
+  }
+
+  .x5__chip--folia {
+    background: linear-gradient(135deg, #f7f4ee 0 35%, #d9d4ca 50%, #f7f4ee 65%);
+  }
+
+  .x5__chip--led {
+    background-color: #1a1a1a;
+    background-image: radial-gradient(circle, var(--color-brand) 0 2px, transparent 2.5px);
+    background-size: 10px 10px;
+  }
+
+  .x5__chip--raszter {
+    background-color: #f7f4ee;
+    background-image: radial-gradient(circle, #2a2016 0 1.6px, transparent 2px);
+    background-size: 7px 7px;
+  }
+
+  .x5__chip--csik {
+    background: repeating-linear-gradient(45deg, var(--color-brand) 0 8px, #f7f4ee 8px 16px);
+  }
+
+  .x5__sname {
+    font-weight: 600;
+  }
+
+  .x5__prices li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.6rem;
+    border-block-end: 1px dashed var(--color-line);
+    font-size: 1.125rem;
+  }
+
+  .x5__prices strong {
+    font-family: 'DM Mono', monospace;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  .x5__contact {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  .x5__contact div {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) 1fr;
+    gap: 1rem;
+  }
+
+  .x5__contact dt {
+    color: var(--color-text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8125rem;
+  }
+
+  .x5__contact dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @container x5 (min-width: 760px) {
+    .x5__book {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .x5__tabs {
+      order: 2;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      padding-block-start: 1.5rem;
+    }
+
+    .x5__tabs button {
+      border-block-end: 1.5px solid var(--color-text);
+      border-inline-start: 0;
+      border-radius: 0 10px 10px 0;
+      text-align: start;
+    }
+
+    .x5__entries {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

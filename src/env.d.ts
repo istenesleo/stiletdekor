@@ -24,7 +24,7 @@ declare namespace Cloudflare {
     ASSETS: Fetcher;
     /** "dev" for the dev sites (main branch), Previews and local dev; "production" for the live site. */
     PUBLIC_SITE_ENV: 'dev' | 'production';
-    /** Design direction of this deployment: "neon-muhely" (dev site A) or "galeria-editorial" (dev site B). */
+    /** Design direction of this deployment: "neon-muhely" (dev site A), "galeria-editorial" (dev site B) or "merolap" (C, local only). */
     SITE_THEME: string;
     /** Where new order and quote notifications are sent. */
     ORDER_NOTIFY_EMAIL: string;

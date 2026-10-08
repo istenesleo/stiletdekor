@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Geist+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>body{margin:0;background:#0a0a0c}a{color:inherit}a:hover{color:inherit}@keyframes sdspin{to{transform:rotate(360deg)}}</style>
+</helmet>
+<div style="{{ themeVars }}">
+<div style="background:var(--bg);color:var(--text);font-family:var(--f-b);font-size:14px;line-height:1.5;padding:30px 30px 40px;display:flex;flex-direction:column;gap:34px">
+
+  <div style="display:flex;flex-direction:column;gap:6px;padding-bottom:18px;border-bottom:1px solid var(--line)">
+    <span style="font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Komponensek · src/ui</span>
+    <span style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);letter-spacing:var(--track);font-size:40px;line-height:1">{{ themeName }}</span>
+    <span style="font-size:13px;color:var(--muted)">Alap · hover · fókusz · lenyomott · tiltott · betöltés · hiba · üres</span>
+  </div>
+
+  <!-- Gombok -->
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Gomb · Button<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 10px;align-items:center">
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">Alap</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">Hover</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">Fókusz</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">Lenyomott</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">Tiltott</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">Betöltés</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border-radius:var(--r);font:600 13px/1 var(--f-b)">Kosárba</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:color-mix(in oklab,var(--btn-bg) 86%,var(--text));color:var(--btn-fg);box-shadow:var(--btn-glow-hi);border-radius:var(--r);font:600 13px/1 var(--f-b)">Kosárba</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--btn-bg);color:var(--btn-fg);border-radius:var(--r);font:600 13px/1 var(--f-b);outline:2px solid var(--focus);outline-offset:3px">Kosárba</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:color-mix(in oklab,var(--btn-bg) 82%,var(--bg));color:var(--btn-fg);border-radius:var(--r);font:600 13px/1 var(--f-b);transform:translateY(1px)">Kosárba</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);color:var(--muted);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b)">Kosárba</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--btn-bg);color:var(--btn-fg);border-radius:var(--r)"><span style="width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sdspin .8s linear infinite"></span></span>
+
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b)">Részletek</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);border:1px solid var(--muted);border-radius:var(--r);font:600 13px/1 var(--f-b)">Részletek</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b);outline:2px solid var(--focus);outline-offset:3px">Részletek</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b);transform:translateY(1px)">Részletek</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--line-soft);color:var(--muted);border-radius:var(--r);font:600 13px/1 var(--f-b)">Részletek</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r)"><span style="width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sdspin .8s linear infinite"></span></span>
+
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b)">Mégse</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b)">Mégse</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b);outline:2px solid var(--focus);outline-offset:3px">Mégse</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 13px/1 var(--f-b)">Mégse</span>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border:1px solid var(--line-soft);color:var(--muted);border-radius:var(--r);font:600 13px/1 var(--f-b)">Mégse</span>
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">—</span>
+
+      <span style="font:600 13px/1 var(--f-b);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:5px">Összes munka</span>
+      <span style="font:600 13px/1 var(--f-b);color:var(--brand-ink);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:5px">Összes munka</span>
+      <span style="font:600 13px/1 var(--f-b);text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:5px;outline:2px solid var(--focus);outline-offset:4px">Összes munka</span>
+      <span style="font:600 13px/1 var(--f-b);color:var(--brand-ink);text-decoration:underline;text-underline-offset:5px">Összes munka</span>
+      <span style="font:600 13px/1 var(--f-b);color:var(--muted);text-decoration:underline;text-underline-offset:5px">Összes munka</span>
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">—</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:4px">
+      <span style="display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;background:var(--btn-bg);color:var(--btn-fg);border-radius:var(--r);font:600 12px/1 var(--f-b)">Kicsi</span>
+      <span style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;background:var(--btn-bg);color:var(--btn-fg);box-shadow:var(--btn-glow);border-radius:var(--r);font:600 14px/1 var(--f-b)">Rendelés elküldése ellenőrzésre <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6"></path></svg></span>
+      <span style="display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 18px;background:var(--raise);border:1px solid var(--line);border-radius:var(--r);font:600 14px/1 var(--f-b)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>Grafika feltöltése</span>
+    </div>
+  </div>
+
+  <!-- Ikongombok, jelvények -->
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Ikongomb<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+        <span style="position:relative;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 4h2.8l2.3 10.5h10.8L21 7.5H6.4"></path><circle cx="9.5" cy="19" r="1.5"></circle><circle cx="17" cy="19" r="1.5"></circle></svg><span style="position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--raise);border:1px solid var(--line);color:var(--muted);font:600 11px/18px var(--f-m);text-align:center">0</span></span>
+        <span style="position:relative;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 4h2.8l2.3 10.5h10.8L21 7.5H6.4"></path><circle cx="9.5" cy="19" r="1.5"></circle><circle cx="17" cy="19" r="1.5"></circle></svg><span style="position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--brand);color:var(--on-brand);font:700 11px/20px var(--f-m);text-align:center;box-shadow:var(--badge-glow)">3</span></span>
+        <span style="display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"></path></svg></span>
+        <span style="display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--text);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"></path></svg></span>
+        <span style="display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r);outline:2px solid var(--focus);outline-offset:3px"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7h12M15 3l4 4-4 4M17 17H5M9 13l-4 4 4 4"></path></svg></span>
+      </div>
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">kosár üres · kosár 3 · menü · bezárás (hover) · csere (fókusz)</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Jelvény · Badge · OrderStatusBadge<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <span style="display:inline-flex;align-items:center;gap:6px;min-height:24px;padding:0 8px;background:var(--brand);color:var(--on-brand);border-radius:var(--r);font:600 11px/1 var(--f-m);letter-spacing:.06em;text-transform:uppercase">Expressz</span>
+        <span style="display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border:1px dashed var(--measure);color:var(--measure);border-radius:var(--r);font:500 10.5px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase">Helyőrző</span>
+        <span style="display:inline-flex;align-items:center;min-height:24px;padding:0 8px;border:1px solid var(--line);color:var(--brand-ink);border-radius:var(--r);font:500 10.5px/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase">Online ár</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="6">
+          <span style="display:inline-flex;align-items:center;gap:7px;min-height:28px;padding:0 10px;border:1px solid var(--line);border-radius:999px;font:500 12px/1 var(--f-b)"><i style="width:7px;height:7px;border-radius:50%;background:{{ s.color }}"></i>{{ s.label }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- Értesítések -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Értesítősáv · Notice · Toast<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--text)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.6v.4"></path></svg><span style="font-size:13px">A rendelés elküldése még nem jár fizetési kötelezettséggel.</span></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 14px;background:color-mix(in oklab,var(--warn) 8%,var(--surface));border:1px solid color-mix(in oklab,var(--warn) 45%,var(--line));border-radius:var(--r)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--warn)" stroke-width="1.7"><path d="M12 3.5 2.5 20h19z"></path><path d="M12 10v5M12 17.6v.4"></path></svg><span style="font-size:13px">A végleges ár eltérhet a kalkulált ártól.</span></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 14px;background:color-mix(in oklab,var(--bad) 8%,var(--surface));border:1px solid color-mix(in oklab,var(--bad) 50%,var(--line));border-radius:var(--r)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--bad)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6M15 9l-6 6"></path></svg><span style="font-size:13px">A fájl feltöltése nem sikerült. Próbálja újra, vagy küldje e-mailben.</span></div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 14px;background:color-mix(in oklab,var(--ok) 8%,var(--surface));border:1px solid color-mix(in oklab,var(--ok) 45%,var(--line));border-radius:var(--r)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--ok)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="m8 12.5 3 3 5-6"></path></svg><span style="font-size:13px">Megkaptuk a rendelését. Ellenőrizzük, és e-mailben válaszolunk.</span></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:14px;padding:10px 10px 10px 14px;background:var(--text);color:var(--bg);border-radius:var(--r);font:500 13px/1 var(--f-b);box-shadow:0 10px 30px rgba(0,0,0,.5)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 12.5 4.5 4.5L19 7"></path></svg>Kosárba tettük<span style="padding:6px 10px;border:1px solid color-mix(in oklab,var(--bg) 30%,transparent);border-radius:var(--r);font-weight:600">Kosár</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--text);color:var(--bg);border-radius:var(--r);font:500 13px/1 var(--f-b)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12"></rect><path d="M4 16V4h12"></path></svg>Másolva</div>
+    </div>
+  </div>
+
+  <!-- Szövegmező -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Szövegmező · TextField<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 14px">
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Név <span style="color:var(--brand-ink)">*</span></span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);color:var(--muted);font-size:14px">Kovács Anna</div><span style="font:400 10.5px var(--f-m);color:var(--muted)">alap, helyőrző</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">E-mail <span style="color:var(--brand-ink)">*</span></span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--field);border:1px solid var(--focus);box-shadow:0 0 0 1px var(--focus);border-radius:var(--r);font-size:14px">anna@<span style="width:1px;height:18px;background:var(--text);margin-left:1px"></span></div><span style="font:400 10.5px var(--f-m);color:var(--muted)">fókusz</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Telefon <span style="color:var(--brand-ink)">*</span></span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);font:400 14px var(--f-m)">+36 70 538 5030</div><span style="font:400 10.5px var(--f-m);color:var(--muted)">kitöltve</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">E-mail <span style="color:var(--brand-ink)">*</span></span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--field);border:1px solid var(--bad);border-radius:var(--r);font-size:14px">anna.gmail.com</div><span style="font:500 12px/1.35 var(--f-m);color:var(--bad)">Ellenőrizze az e-mail-címet.</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500;color:var(--muted)">Adószám</span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);color:var(--muted);font-size:14px">Csak cégnek</div><span style="font:400 10.5px var(--f-m);color:var(--muted)">tiltott</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Megjegyzés</span><div style="height:46px;display:flex;align-items:center;padding:0 12px;background:var(--field);border:1px solid var(--line);border-radius:var(--r);color:var(--muted);font-size:14px">Nem kötelező</div><span style="font-size:12px;color:var(--muted)">Pl. kapukód, hívható időpont.</span></div>
+    </div>
+  </div>
+
+  <!-- Méretmezők -->
+  <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Méret · SizeFields · UnitField<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:end">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Szélesség</span><div style="display:flex;height:48px;background:var(--field);border:1px solid var(--measure);border-radius:var(--r)"><span style="flex:1;display:flex;align-items:center;padding:0 12px;font:500 19px/1 var(--f-m)">300,0</span><span style="display:grid;place-items:center;padding:0 12px;border-left:1px solid var(--line-soft);color:var(--muted);font:500 13px var(--f-m)">cm</span></div></div>
+        <span style="display:grid;place-items:center;width:44px;height:48px;border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 7h12M15 3l4 4-4 4M17 17H5M9 13l-4 4 4 4"></path></svg></span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Magasság</span><div style="display:flex;height:48px;background:var(--field);border:1px solid var(--measure);border-radius:var(--r)"><span style="flex:1;display:flex;align-items:center;padding:0 12px;font:500 19px/1 var(--f-m)">100,0</span><span style="display:grid;place-items:center;padding:0 12px;border-left:1px solid var(--line-soft);color:var(--muted);font:500 13px var(--f-m)">cm</span></div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;font:400 12px var(--f-m);color:var(--measure)"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v4h4"></path></svg>A méret a fájlból: 300,0 × 100,0 cm · TrimBox</div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:end;padding-top:6px">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Szélesség</span><div style="display:flex;height:48px;background:var(--field);border:1px solid var(--bad);border-radius:var(--r)"><span style="flex:1;display:flex;align-items:center;padding:0 12px;font:500 19px/1 var(--f-m)">640</span><span style="display:grid;place-items:center;padding:0 12px;border-left:1px solid var(--line-soft);color:var(--muted);font:500 13px var(--f-m)">cm</span></div></div>
+        <span style="width:44px"></span>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:500">Magasság</span><div style="display:flex;height:48px;background:var(--field);border:1px solid var(--line);border-radius:var(--r)"><span style="flex:1;display:flex;align-items:center;padding:0 12px;font:500 19px/1 var(--f-m)">100</span><span style="display:grid;place-items:center;padding:0 12px;border-left:1px solid var(--line-soft);color:var(--muted);font:500 13px var(--f-m)">cm</span></div></div>
+      </div>
+      <span style="font:500 12px/1.35 var(--f-m);color:var(--bad)">A szélesség 20 és 500 cm között lehet. Ennél nagyobb molinót toldással készítünk.</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Méretarány · Chip<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:inline-flex;align-self:flex-start;border:1px solid var(--line);border-radius:var(--r);overflow:hidden">
+        <span style="padding:10px 14px;font:500 13px/1 var(--f-m);background:var(--text);color:var(--bg)">1:1</span><span style="padding:10px 14px;font:500 13px/1 var(--f-m);border-left:1px solid var(--line)">1:10</span><span style="padding:10px 14px;font:500 13px/1 var(--f-m);border-left:1px solid var(--line);color:var(--muted)">Egyéb</span>
+      </div>
+      <span style="font-size:12px;color:var(--muted)">Csak akkor jelenik meg, ha a fájlnév („M1-10”) vagy a felismert méret indokolja.</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:6px">
+        <span style="min-height:36px;display:inline-flex;align-items:center;padding:0 11px;border:1px solid var(--line);border-radius:var(--r);font:500 12.5px var(--f-m)">100×50</span>
+        <span style="min-height:36px;display:inline-flex;align-items:center;padding:0 11px;border:1px solid var(--brand);color:var(--brand-ink);background:color-mix(in oklab,var(--brand) 9%,transparent);border-radius:var(--r);font:500 12.5px var(--f-m)">200×100</span>
+        <span style="min-height:36px;display:inline-flex;align-items:center;padding:0 11px;border:1px solid var(--text);border-radius:var(--r);font:500 12.5px var(--f-m)">300×100</span>
+        <span style="min-height:36px;display:inline-flex;align-items:center;padding:0 11px;border:1px solid var(--line);border-radius:var(--r);font:500 12.5px var(--f-m);outline:2px solid var(--focus);outline-offset:2px">300×200</span>
+      </div>
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">alap · kiválasztott · hover · fókusz</span>
+    </div>
+  </div>
+
+  <!-- Léptető, kapcsoló, jelölő -->
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Darabszám<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:inline-flex;align-self:flex-start;border:1px solid var(--line);border-radius:var(--r);background:var(--field)"><span style="width:44px;height:46px;display:grid;place-items:center;font:500 20px var(--f-m)">−</span><span style="width:56px;display:grid;place-items:center;border-inline:1px solid var(--line-soft);font:500 18px var(--f-m)">3</span><span style="width:44px;height:46px;display:grid;place-items:center;font:500 20px var(--f-m)">+</span></div>
+      <span style="font:500 13px var(--f-m);color:var(--brand-ink)">Még 2 db és −10%</span>
+      <div style="display:inline-flex;align-self:flex-start;border:1px solid var(--line);border-radius:var(--r);background:var(--field)"><span style="width:44px;height:46px;display:grid;place-items:center;font:500 20px var(--f-m);color:var(--line)">−</span><span style="width:56px;display:grid;place-items:center;border-inline:1px solid var(--line-soft);font:500 18px var(--f-m)">1</span><span style="width:44px;height:46px;display:grid;place-items:center;font:500 20px var(--f-m)">+</span></div>
+      <span style="font:400 10.5px var(--f-m);color:var(--muted)">minimum: a − tiltva</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Kapcsoló · Switch<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)"><span style="position:relative;width:46px;height:26px;border:1px solid var(--line);border-radius:13px;background:var(--bg);flex:none"><i style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--muted)"></i></span><span style="display:flex;flex-direction:column"><b style="font-size:13px;font-weight:600">Expressz gyártás</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">1 munkanap · +30%</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--brand);border-radius:var(--r)"><span style="position:relative;width:46px;height:26px;border:1px solid var(--brand);border-radius:13px;background:color-mix(in oklab,var(--brand) 22%,var(--bg));flex:none"><i style="position:absolute;top:3px;left:23px;width:18px;height:18px;border-radius:50%;background:var(--brand);box-shadow:var(--badge-glow)"></i></span><span style="display:flex;flex-direction:column"><b style="font-size:13px;font-weight:600">Expressz gyártás</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">Kérés: a visszaigazoláskor dől el</span></span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Jelölőnégyzet<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:20px;height:20px;border:1px solid var(--muted);border-radius:var(--r-sm);flex:none"></span>Helyszíni felmérést kérek</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:20px;height:20px;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;border-radius:var(--r-sm);flex:none"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12.5 4.5 4.5L19 7"></path></svg></span>Helyszíni felmérést kérek</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:20px;height:20px;border:1px solid var(--muted);border-radius:var(--r-sm);flex:none;outline:2px solid var(--focus);outline-offset:2px"></span><span>Elfogadom az <u>ÁSZF</u>-et</span></div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--bad)"><span style="width:20px;height:20px;border:1px solid var(--bad);border-radius:var(--r-sm);flex:none"></span>Az ÁSZF elfogadása kötelező.</div>
+    </div>
+  </div>
+
+  <!-- Anyagkártya -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Anyagkártya · MaterialPicker · „Adatok” nyitógomb<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:start">
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;padding:12px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)">
+        <span style="grid-row:1/span 2;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);background:radial-gradient(circle,var(--bg) 0 1.3px,transparent 1.7px) 0 0/5px 5px,var(--text)"></span>
+        <b style="font-size:13px;font-weight:600;align-self:end">Hálós (mesh) molinó</b><span style="font:500 12px var(--f-m);color:var(--brand-ink)">5 702 Ft/m²</span>
+        <span style="grid-column:1/-1;font-size:12px;color:var(--muted);padding-top:6px">Szélálló, kerítésre és állványra.</span>
+        <span style="grid-column:1/-1;display:flex;align-items:center;gap:6px;padding-top:4px;font:500 12px var(--f-m);color:var(--text)">Adatok <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;padding:12px;background:color-mix(in oklab,var(--brand) 7%,var(--surface));border:1px solid var(--brand);border-radius:var(--r)">
+        <span style="grid-row:1/span 2;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);background:linear-gradient(115deg,#d9d6cf 0 38%,#f3f0ea 48%,#cfccc5 62%)"></span>
+        <b style="font-size:13px;font-weight:600;align-self:end">Standard frontlit molinó</b><span style="font:500 12px var(--f-m);color:var(--brand-ink)">5 067 Ft/m²</span>
+        <span style="grid-column:1/-1;font-size:12px;color:var(--muted);padding-top:6px">Kül- és beltérre, UV-álló.</span>
+        <span style="grid-column:1/-1;display:flex;align-items:center;gap:6px;padding-top:4px;font:500 12px var(--f-m)">Adatok <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"></path></svg></span>
+      </div>
+      <div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;padding:12px;background:color-mix(in oklab,var(--brand) 7%,var(--surface));border:1px solid var(--brand);border-radius:var(--r)">
+        <span style="grid-row:1/span 2;width:44px;height:44px;border:1px solid var(--line);border-radius:var(--r-sm);background:linear-gradient(115deg,#d9d6cf 0 38%,#f3f0ea 48%,#cfccc5 62%)"></span>
+        <b style="font-size:13px;font-weight:600;align-self:end">Standard frontlit molinó</b><span style="font:500 12px var(--f-m);color:var(--brand-ink)">5 067 Ft/m²</span>
+        <span style="grid-column:1/-1;font-size:12px;color:var(--muted);padding-top:6px">Kül- és beltérre, UV-álló.</span>
+        <span style="grid-column:1/-1;display:flex;align-items:center;gap:6px;padding-top:4px;font:500 12px var(--f-m)">Adatok <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 15 6-6 6 6"></path></svg></span>
+        <div style="grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin-top:6px;padding-top:8px;border-top:1px dashed var(--line);font:400 11.5px/1.4 var(--f-m);color:var(--muted)">
+          <span>Grammsúly</span><span style="text-align:right;color:var(--text)">440–510 g/m²</span>
+          <span>Használat</span><span style="text-align:right;color:var(--text)">kül- és beltér</span>
+          <span>Élettartam</span><span style="text-align:right;color:var(--text)">kb. 1–3 év kültéren</span>
+        </div>
+      </div>
+    </div>
+    <span style="font:400 10.5px var(--f-m);color:var(--muted)">alap · kiválasztott · kiválasztott, adatok nyitva (a becsült értékek a műhely jóváhagyására várnak)</span>
+  </div>
+
+  <!-- Opciósor -->
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Opciósor ár-előnézettel · OptionRow<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 12px;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)"><span style="width:18px;height:18px;border:1px solid var(--muted);border-radius:50%"></span><span style="display:flex;flex-direction:column"><b style="font-size:13px;font-weight:600">Méretre vágás</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">0 Ft/fm</span></span><span style="font:500 13px var(--f-m)">0 Ft</span></div>
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 12px;background:var(--surface);border:1px solid var(--brand);border-radius:var(--r)"><span style="width:18px;height:18px;border:5px solid var(--brand);border-radius:50%"></span><span style="display:flex;flex-direction:column"><b style="font-size:13px;font-weight:600">Ringli 50 cm-enként</b><span style="font:400 11.5px var(--f-m);color:var(--muted)">+254 Ft/fm · 8,0 fm</span></span><span style="font:500 13px var(--f-m)">+2 032 Ft</span></div>
+    </div>
+  </div>
+
+  <!-- Fájlfeltöltő -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Fájlfeltöltő · FileDrop · FileList<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1px dashed var(--line);border-radius:var(--r);background:var(--surface)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg><b style="font-size:13px;font-weight:600">Töltse fel a grafikát</b><span style="font-size:12px;color:var(--muted)">PDF, AI, EPS, TIFF, JPG, PNG · legfeljebb 200 MB</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">üres</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1px dashed var(--measure);border-radius:var(--r);background:color-mix(in oklab,var(--measure) 8%,var(--surface))"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--measure)" stroke-width="1.6"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg><b style="font-size:13px;font-weight:600;color:var(--measure)">Engedje el a fájlt</b><span style="font-size:12px;color:var(--muted)">A méretet kiolvassuk belőle.</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">ráhúzás közben</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)"><span style="font:500 12.5px var(--f-m)">kerites-molino_300x100.pdf</span><span style="height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden"><i style="display:block;width:64%;height:100%;background:var(--text)"></i></span><span style="font:400 11.5px var(--f-m);color:var(--muted)">Feltöltés · 64% · 18,2 / 28,4 MB</span><span style="font:400 10.5px var(--f-m);color:var(--muted)">betöltés</span></div>
+      <div style="grid-column:span 2;display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)"><span style="width:56px;height:42px;background:var(--ph);border:1px solid var(--line);border-radius:var(--r-sm)"></span><span style="display:flex;flex-direction:column;gap:2px"><b style="font:500 12.5px var(--f-m)">kerites-molino_300x100.pdf</b><span style="font:400 11.5px var(--f-m);color:var(--measure)">A méret a fájlból: 300,0 × 100,0 cm · 1 oldal</span></span><span style="display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--line);border-radius:var(--r)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></span></div>
+      <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--bad);border-radius:var(--r);background:color-mix(in oklab,var(--bad) 7%,var(--surface))"><b style="font:500 12.5px var(--f-m)">logo.docx</b><span style="font:500 12px/1.35 var(--f-m);color:var(--bad)">Ezt a fájltípust nem tudjuk nyomtatni. Küldjön PDF-et.</span></div>
+    </div>
+  </div>
+
+  <!-- Nyomdakész-lámpa + méretvonal -->
+  <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Nyomdakész-lámpa · ReadinessLight<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <sc-for list="{{ lamps }}" as="l" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:14px;padding:12px 14px;border:1px solid var(--line-soft);background:var(--surface);border-radius:var(--r)">
+          <span style="display:flex;flex-direction:column;gap:4px;padding:5px;border:1px solid var(--line);border-radius:10px;background:var(--bg);align-self:start">
+            <i style="width:11px;height:11px;border-radius:50%;background:{{ l.c1 }};box-shadow:{{ l.g1 }}"></i><i style="width:11px;height:11px;border-radius:50%;background:{{ l.c2 }};box-shadow:{{ l.g2 }}"></i><i style="width:11px;height:11px;border-radius:50%;background:{{ l.c3 }};box-shadow:{{ l.g3 }}"></i>
+          </span>
+          <span style="display:flex;flex-direction:column;gap:3px"><b style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);text-transform:var(--case);font-size:19px;line-height:1.05;color:{{ l.col }}">{{ l.verdict }}</b><span style="font-size:12.5px;color:var(--muted)">{{ l.text }}</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">{{ l.data }}</span></span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Méretvonal · DimensionLine<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+      <div style="position:relative;height:190px;border:1px solid var(--line-soft);background:var(--surface);border-radius:var(--r)">
+        <div style="position:absolute;left:46px;right:20px;top:20px;display:flex;align-items:center;gap:6px;color:var(--measure);font:500 11px/1 var(--f-m)"><i style="width:1px;height:10px;background:currentColor"></i><i style="flex:1;height:1px;background:currentColor"></i><span>3 000 mm</span><i style="flex:1;height:1px;background:currentColor"></i><i style="width:1px;height:10px;background:currentColor"></i></div>
+        <div style="position:absolute;left:46px;right:20px;top:42px;bottom:20px;background:var(--text);opacity:.9;border-radius:1px"></div>
+        <div style="position:absolute;left:14px;top:42px;bottom:20px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--measure);font:500 11px/1 var(--f-m)"><i style="width:10px;height:1px;background:currentColor"></i><i style="flex:1;width:1px;background:currentColor"></i><span style="writing-mode:vertical-rl;transform:rotate(180deg)">1 000 mm</span><i style="flex:1;width:1px;background:currentColor"></i><i style="width:10px;height:1px;background:currentColor"></i></div>
+      </div>
+      <span style="font-size:12px;color:var(--muted)">Mindig mm-ben, ezres tagolással. Szín: <code style="font-family:var(--f-m)">color.measure</code>.</span>
+    </div>
+  </div>
+
+  <!-- Árbontás -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Árbontás · PriceBreakdown · LeadTimeNote<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><span style="display:flex;flex-direction:column;gap:4px"><span style="font:500 10.5px var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Bruttó végösszeg</span><span style="font:400 11.5px var(--f-m);color:var(--muted)">nettó 33 519 Ft + ÁFA 9 050 Ft</span></span><b style="font-family:var(--f-d);font-variation-settings:var(--fv-d);font-weight:var(--w-d);font-size:38px;line-height:1;letter-spacing:-.01em;white-space:nowrap">42 569 Ft</b></div>
+        <span style="display:flex;align-items:center;gap:6px;font:500 12.5px var(--f-m)">Részletek <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"></path></svg></span>
+        <div style="display:flex;align-items:center;gap:10px;padding-top:10px;border-top:1px solid var(--line-soft);font-size:13px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--measure)" stroke-width="1.7"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg><span>Várhatóan <b>október 13-ára, keddre</b> elkészül</span></div>
+        <span style="font:400 11.5px var(--f-m);color:var(--muted)">3 munkanap a befizetéstől</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;padding:6px 16px 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);font-size:13px">
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft)"><span>Standard frontlit molinó<br><span style="font:400 11.5px var(--f-m);color:var(--muted)">3,00 m² × 5 067 Ft</span></span><span style="font-family:var(--f-m)">15 202 Ft</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft)"><span>Szélkidolgozás: ringli<br><span style="font:400 11.5px var(--f-m);color:var(--muted)">8,0 fm × 254 Ft</span></span><span style="font-family:var(--f-m)">2 032 Ft</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft)"><span>× 2 db</span><span style="font-family:var(--f-m)">34 468 Ft</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line-soft);color:var(--ok)"><span>Mennyiségi kedvezmény −5%</span><span style="font-family:var(--f-m)">−1 723 Ft</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);"><span>Expressz +30%</span><span style="font-family:var(--f-m)">+9 824 Ft</span></div>
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:10px 0 0;font-weight:700"><span>Bruttó</span><span style="font-family:var(--f-m)">42 569 Ft</span></div>
+        <span style="font:400 10.5px var(--f-m);color:var(--muted);padding-top:8px">Részletek nyitva · minden sor bruttó</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lépésjelző + idővonal -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Lépésjelző · Stepper<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:8px"><i style="height:3px;background:{{ s.bar }};border-radius:2px"></i><span style="font:500 11px var(--f-m);color:var(--muted)">{{ s.n }}</span><span style="font-size:13px;font-weight:{{ s.w }};color:{{ s.col }}">{{ s.label }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:10px;font:500 11px/1 var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Rendelés állapota · idővonal (új, P2)<span style="flex:1;height:1px;background:var(--line-soft)"></span></div>
+    <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr))">
+      <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center"><span style="width:14px;height:14px;border-radius:50%;flex:none;background:{{ t.dot }};border:2px solid {{ t.ring }};box-shadow:{{ t.glow }}"></span><i style="flex:1;height:2px;background:{{ t.line }}"></i></div>
+          <span style="font-size:12.5px;font-weight:600;color:{{ t.col }};padding-right:6px">{{ t.label }}</span>
+          <span style="font:400 11px var(--f-m);color:var(--muted)">{{ t.date }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:3200},&quot;direction&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;],&quot;default&quot;:&quot;C&quot;,&quot;tsType&quot;:&quot;'A'|'B'|'C'&quot;},&quot;brand&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#FF2E8A&quot;,&quot;#FF47A3&quot;,&quot;#FF5C85&quot;,&quot;#FF7AB8&quot;],&quot;default&quot;:&quot;#FF2E8A&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const STILET_THEMES = {
+  A: {
+    name: 'A · Neon műhely 2.0',
+    vars: {
+      '--bg': '#0a0a0c', '--surface': '#131316', '--raise': '#1b1b1f', '--field': '#0a0a0c', '--line': '#2c2c32', '--line-soft': '#1d1d21',
+      '--text': '#f3f0ea', '--muted': '#9d9aa5', '--measure': '#f0c43c', '--ok': '#3fd68f', '--warn': '#f0c43c', '--bad': '#ff5b4d', '--focus': '#f0c43c',
+      '--f-d': '"Archivo", "Arial Narrow", sans-serif', '--fv-d': '"wdth" 62', '--w-d': '800', '--case': 'uppercase', '--track': '0.01em', '--lh-d': '0.94',
+      '--f-b': '"Archivo", "Helvetica Neue", Arial, sans-serif', '--f-m': '"JetBrains Mono", ui-monospace, monospace',
+      '--r': '2px', '--r-sm': '2px', '--r-lg': '2px',
+      '--btn-bg': 'var(--brand)', '--btn-fg': 'var(--on-brand)',
+      '--btn-glow': '0 0 0 1px color-mix(in oklab, var(--brand) 55%, transparent), 0 0 24px -4px color-mix(in oklab, var(--brand) 80%, transparent)',
+      '--btn-glow-hi': '0 0 0 1px color-mix(in oklab, var(--brand) 80%, transparent), 0 0 34px -2px color-mix(in oklab, var(--brand) 90%, transparent)',
+      '--badge-glow': '0 0 12px color-mix(in oklab, var(--brand) 70%, transparent)',
+      '--ph': 'repeating-linear-gradient(135deg, #1a1a1e 0 1px, #121215 1px 9px)',
+      '--mat': 'linear-gradient(#1a1a1e 1px, transparent 1px), linear-gradient(90deg, #1a1a1e 1px, transparent 1px), linear-gradient(#352f21 1px, transparent 1px), linear-gradient(90deg, #352f21 1px, transparent 1px)',
+    },
+  },
+  B: {
+    name: 'B · Galéria 2.0',
+    vars: {
+      '--bg': '#0b0b0a', '--surface': '#151513', '--raise': '#1d1c1a', '--field': '#0b0b0a', '--line': '#2d2c29', '--line-soft': '#1f1e1c',
+      '--text': '#ece8df', '--muted': '#979188', '--measure': '#9ea8b2', '--ok': '#8fc79c', '--warn': '#e2b866', '--bad': '#ff6b5b', '--focus': 'var(--brand)',
+      '--f-d': '"Instrument Serif", "Times New Roman", serif', '--fv-d': 'normal', '--w-d': '400', '--case': 'none', '--track': '-0.015em', '--lh-d': '0.98',
+      '--f-b': '"Instrument Sans", "Helvetica Neue", Arial, sans-serif', '--f-m': '"IBM Plex Mono", ui-monospace, monospace',
+      '--r': '0px', '--r-sm': '0px', '--r-lg': '0px',
+      '--btn-bg': 'var(--text)', '--btn-fg': 'var(--bg)', '--btn-glow': 'none', '--btn-glow-hi': 'none', '--badge-glow': 'none',
+      '--ph': 'repeating-linear-gradient(135deg, #1a1917 0 1px, #151513 1px 9px)',
+      '--mat': 'none',
+    },
+  },
+  C: {
+    name: 'C · Szintézis „Mérőlap”',
+    vars: {
+      '--bg': '#0c0c0d', '--surface': '#141416', '--raise': '#1c1c1f', '--field': '#101012', '--line': '#2c2c30', '--line-soft': '#1e1e21',
+      '--text': '#f2efe9', '--muted': '#a19ea7', '--measure': '#ecc94b', '--ok': '#4fd394', '--warn': '#ecc94b', '--bad': '#ff6150', '--focus': '#ecc94b',
+      '--f-d': '"Bricolage Grotesque", "Helvetica Neue", sans-serif', '--fv-d': '"opsz" 96, "wdth" 80', '--w-d': '700', '--case': 'none', '--track': '-0.03em', '--lh-d': '0.98',
+      '--f-b': '"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif', '--f-m': '"Geist Mono", ui-monospace, monospace',
+      '--r': '6px', '--r-sm': '4px', '--r-lg': '10px',
+      '--btn-bg': 'var(--brand)', '--btn-fg': 'var(--on-brand)',
+      '--btn-glow': '0 0 0 1px color-mix(in oklab, var(--brand) 50%, transparent), 0 0 18px -6px color-mix(in oklab, var(--brand) 90%, transparent)',
+      '--btn-glow-hi': '0 0 0 1px color-mix(in oklab, var(--brand) 75%, transparent), 0 0 26px -4px color-mix(in oklab, var(--brand) 95%, transparent)',
+      '--badge-glow': 'none',
+      '--ph': 'repeating-linear-gradient(135deg, #19191b 0 1px, #141416 1px 9px)',
+      '--mat': 'none',
+    },
+  },
+};
+
+class Component extends DCLogic {
+  renderVals() {
+    const dir = STILET_THEMES[this.props.direction] ? this.props.direction : 'C';
+    const theme = STILET_THEMES[dir];
+    const brand = this.props.brand || '#ff2e8a';
+    const themeVars = {
+      ...theme.vars,
+      '--brand': brand,
+      '--on-brand': '#0a0a0b',
+      '--brand-ink': `color-mix(in oklab, ${brand} 72%, ${theme.vars['--text']})`,
+    };
+    const statuses = [
+      { label: 'Beérkezett, ellenőrizzük', color: 'var(--muted)' },
+      { label: 'Módosítást kértünk', color: 'var(--warn)' },
+      { label: 'Visszaigazolva, befizetésre vár', color: 'var(--brand)' },
+      { label: 'Gyártás alatt', color: 'var(--measure)' },
+      { label: 'Elkészült', color: 'var(--ok)' },
+      { label: 'Lezárva', color: 'var(--line)' },
+    ];
+    const lamp = (state) => {
+      const on = { bad: [1, 0, 0], mid: [0, 1, 0], ok: [0, 0, 1] }[state];
+      const cols = ['var(--bad)', 'var(--warn)', 'var(--ok)'];
+      const o = {};
+      on.forEach((v, i) => {
+        o['c' + (i + 1)] = v ? cols[i] : 'var(--line)';
+        o['g' + (i + 1)] = v ? `0 0 9px ${cols[i]}` : 'none';
+      });
+      return o;
+    };
+    const lamps = [
+      { ...lamp('ok'), col: 'var(--ok)', verdict: 'Kiváló', text: 'Közelről nézve is éles.', data: '6 000 × 2 000 px · 300 × 100 cm · 508 dpi' },
+      { ...lamp('mid'), col: 'var(--warn)', verdict: 'Molinóra megfelelő', text: 'Néhány méterről nézve éles; közelről kissé lágy.', data: '2 400 × 800 px · 300 × 100 cm · 81 dpi' },
+      { ...lamp('bad'), col: 'var(--bad)', verdict: 'Gyenge', text: 'Látszani fognak a képpontok. Kérjen nagyobb fájlt a tervezőtől.', data: '1 200 × 400 px · 300 × 100 cm · 41 dpi' },
+    ];
+    const stepLabels = ['Típus', 'Részletek', 'Helyszín és fotók', 'Kapcsolat'];
+    const steps = stepLabels.map((label, i) => ({
+      n: `${i + 1}/4`, label,
+      bar: i < 2 ? 'var(--brand)' : 'var(--line)',
+      col: i === 1 ? 'var(--text)' : i < 1 ? 'var(--text)' : 'var(--muted)',
+      w: i === 1 ? '700' : '500',
+    }));
+    const tl = ['Beérkezett', 'Ellenőrzés', 'Visszaigazolva', 'Befizetve', 'Gyártás', 'Kész'];
+    const dates = ['okt. 7.', 'okt. 7.', 'okt. 8.', 'várjuk', '', ''];
+    const cur = 2;
+    const timeline = tl.map((label, i) => ({
+      label, date: dates[i],
+      dot: i < cur ? 'var(--text)' : i === cur ? 'var(--brand)' : 'var(--bg)',
+      ring: i < cur ? 'var(--text)' : i === cur ? 'var(--brand)' : 'var(--line)',
+      glow: i === cur ? 'var(--badge-glow)' : 'none',
+      line: i < cur ? 'var(--text)' : i === tl.length - 1 ? 'transparent' : 'var(--line)',
+      col: i <= cur ? 'var(--text)' : 'var(--muted)',
+    }));
+    return { themeVars, themeName: theme.name, statuses, lamps, steps, timeline };
+  }
+}
+</script>
+</body>
+</html>

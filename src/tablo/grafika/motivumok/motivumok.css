@@ -1,0 +1,97 @@
+/* Measuring motifs (G3): ruler, registration mark, crop-mark frame, cutting-mat grid. Measure color only. */
+
+/* One scale for every ruler on a page: 24 px per centimetre, never wider than the container. */
+.tb-ruler {
+  display: block;
+  width: min(100%, calc(var(--ruler-cm, 30) * 24px));
+  height: auto;
+  color: var(--color-measure);
+}
+
+.tb-ruler--vertical {
+  width: auto;
+  height: min(32rem, calc(var(--ruler-cm, 30) * 24px));
+}
+
+.tb-ruler line {
+  stroke: currentColor;
+  stroke-width: 0.4;
+}
+
+.tb-ruler .tb-ruler__edge,
+.tb-ruler .tb-ruler__tick--cm {
+  stroke-width: 0.7;
+}
+
+.tb-ruler__label {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 5px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.tb-reg {
+  flex: none;
+  color: var(--color-measure);
+}
+
+.tb-reg * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.tb-crop {
+  --crop-gap: 14px;
+  --crop-len: 10px;
+  position: relative;
+  padding: var(--crop-gap);
+}
+
+.tb-crop__c {
+  position: absolute;
+  width: var(--crop-gap);
+  height: var(--crop-gap);
+  color: var(--color-measure);
+}
+
+.tb-crop__c::before,
+.tb-crop__c::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+
+.tb-crop__c::before {
+  width: 1px;
+  height: var(--crop-len);
+}
+
+.tb-crop__c::after {
+  width: var(--crop-len);
+  height: 1px;
+}
+
+.tb-crop__c--tl { top: 0; left: 0; }
+.tb-crop__c--tl::before { top: 0; right: 0; }
+.tb-crop__c--tl::after { bottom: 0; left: 0; }
+.tb-crop__c--tr { top: 0; right: 0; }
+.tb-crop__c--tr::before { top: 0; left: 0; }
+.tb-crop__c--tr::after { bottom: 0; right: 0; }
+.tb-crop__c--bl { bottom: 0; left: 0; }
+.tb-crop__c--bl::before { bottom: 0; right: 0; }
+.tb-crop__c--bl::after { top: 0; left: 0; }
+.tb-crop__c--br { bottom: 0; right: 0; }
+.tb-crop__c--br::before { bottom: 0; left: 0; }
+.tb-crop__c--br::after { top: 0; right: 0; }
+
+.tb-cutmat {
+  background-color: var(--color-surface);
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklab, var(--color-line) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-line) 45%, transparent) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+}
