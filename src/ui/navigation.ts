@@ -26,6 +26,9 @@ export const MAIN_NAV: readonly NavItem[] = [
 /** Where "Ajánlatkérés" leads: the quote wizard. */
 export const QUOTE_HREF = '/#ajanlat';
 
+/** The quick callback form. */
+export const CALLBACK_HREF = '/visszahivas';
+
 /** The footer's link columns; the contact column comes from the company data. */
 export const FOOTER_COLUMNS: readonly FooterColumn[] = [
   {

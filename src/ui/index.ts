@@ -7,6 +7,8 @@ export { Button } from './Button/Button';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './Button/Button';
 export { ButtonLink } from './ButtonLink/ButtonLink';
 export type { ButtonLinkProps } from './ButtonLink/ButtonLink';
+export { CallbackForm } from './CallbackForm/CallbackForm';
+export type { CallbackFormProps } from './CallbackForm/CallbackForm';
 export { CartLine } from './CartLine/CartLine';
 export type { CartLineProps } from './CartLine/CartLine';
 export { CategoryTile } from './CategoryTile/CategoryTile';

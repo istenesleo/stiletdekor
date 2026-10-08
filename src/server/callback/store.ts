@@ -1,5 +1,5 @@
 // Where callback requests are kept, as an interface: the pages use the D1 version (d1-store.ts), the tests a fake.
-import type { CallbackJobTypeId, CallbackRequest } from '@/domain/schemas';
+import type { CallbackJobTypeId } from '@/domain/schemas';
 
 /** A saved callback request. Its reference is formatReference('VH', id). */
 export interface StoredCallback {
@@ -13,8 +13,13 @@ export interface StoredCallback {
   createdAt: string;
 }
 
-/** A request to save: the checked form plus its one-time token and the time it arrived. */
-export interface NewCallback extends CallbackRequest {
+/** A request to save: the checked form (a CallbackRequest fits) plus its one-time token and the time it arrived. */
+export interface NewCallback {
+  name: string;
+  phone: string;
+  jobType?: CallbackJobTypeId | undefined;
+  message?: string | undefined;
+  source?: string | undefined;
   formToken: string;
   createdAt: string;
 }
