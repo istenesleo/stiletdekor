@@ -504,3 +504,20 @@ describe('files sent by e-mail', () => {
     expect(isQuoteFieldVisible(def, { grafika: 'tervezes' })).toBe(false);
   });
 });
+
+describe('QuoteRequestSchema in one round', () => {
+  it('reports the job type rules together with a wrong contact or date', () => {
+    const schema = createQuoteRequestSchema({ now: () => new Date('2026-10-05T10:00:00+02:00') });
+    const issues = issuesOf(schema, {
+      quoteType: 'betuk',
+      fields: { betumagassagCm: 40, anyag: 'plexi', vilagitas: 'nincs' },
+      location: 'Budapest, Minta utca 1.',
+      contact: { name: 'Minta Mária', email: '', phone: '06 30 123 4567' },
+    });
+    expect(issues).toEqual([
+      ['deadline', 'Adja meg a határidőt.'],
+      ['contact.email', 'Adja meg az e-mail-címét.'],
+      ['fields.feliratSzoveg', 'Adja meg a felirat szövegét, vagy töltse fel a logót.'],
+    ]);
+  });
+});

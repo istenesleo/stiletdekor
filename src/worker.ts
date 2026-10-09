@@ -4,18 +4,21 @@ import { handle } from '@astrojs/cloudflare/handler';
 import { d1CallbackStore } from './server/callback/d1-store';
 import { deliverPendingCallbacks } from './server/callback/notify';
 import { mailerFor } from './server/notify/mailer';
+import { d1QuoteStore } from './server/quote/d1-store';
+import { deliverPendingQuotes } from './server/quote/notify';
 
 export default {
   fetch: handle,
   async scheduled(_controller, env, ctx) {
+    const common = { mailer: mailerFor(env), to: env.ORDER_NOTIFY_EMAIL, now: () => new Date() };
     ctx.waitUntil(
-      deliverPendingCallbacks({
-        store: d1CallbackStore(env.DB),
-        mailer: mailerFor(env),
-        to: env.ORDER_NOTIFY_EMAIL,
-        now: () => new Date(),
-      }).then((result) => {
-        if (result.sent || result.failed) console.info('Értesítések újrapróbálva:', result);
+      Promise.all([
+        deliverPendingCallbacks({ store: d1CallbackStore(env.DB), ...common }),
+        deliverPendingQuotes({ store: d1QuoteStore(env.DB), ...common }),
+      ]).then(([visszahivas, ajanlat]) => {
+        if (visszahivas.sent || visszahivas.failed || ajanlat.sent || ajanlat.failed) {
+          console.info('Értesítések újrapróbálva:', { visszahivas, ajanlat });
+        }
       }),
     );
   },

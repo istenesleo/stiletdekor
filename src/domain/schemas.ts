@@ -526,6 +526,11 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
       if (request.deadline < today) {
         ctx.addIssue({ code: 'custom', path: ['deadline'], message: 'A határidő nem lehet múltbeli dátum.' });
       }
+    }, {
+      // Also when the contact or the date is wrong, so the form shows every message in one round; but only when the
+      // job type and the shape of the answers are right, since the rules depend on them.
+      when: (payload) =>
+        !payload.issues.some((issue) => ['quoteType', 'fields', 'emailedFiles'].includes(String(issue.path?.[0]))),
     })
     .transform((request) => {
       const type = getQuoteType(request.quoteType);
