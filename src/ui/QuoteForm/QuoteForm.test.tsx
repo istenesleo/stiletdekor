@@ -22,6 +22,8 @@ describe('QuoteForm', () => {
   it('asks the job type questions with fitting controls', () => {
     const { container } = render(<QuoteForm type={getQuoteType('betuk')} token={TOKEN} today={TODAY} />);
     expect(container.querySelector('input[name="f_feliratSzoveg"]')?.getAttribute('type')).toBe('text');
+    // Part of the "text or logo" rule, so not marked optional.
+    expect(screen.getByLabelText('Felirat szövege')).toBeTruthy();
     expect(container.querySelector('input[name="f_betumagassagCm"]')?.getAttribute('inputmode')).toBe('decimal');
     const anyag = [...container.querySelectorAll<HTMLInputElement>('input[name="f_anyag"]')];
     expect(anyag.map((r) => r.type)).toEqual(['radio', 'radio', 'radio', 'radio']);
@@ -61,7 +63,7 @@ describe('QuoteForm', () => {
         token={TOKEN}
         today={TODAY}
         values={{ f_betumagassagCm: '40', f_anyag: 'alu', name: 'Minta Mária' }}
-        errors={{ f_feliratSzoveg: 'Adja meg a felirat szövegét, vagy töltse fel a logót.', email: 'Adja meg az e-mail-címét.' }}
+        errors={{ email: 'Adja meg az e-mail-címét.', f_feliratSzoveg: 'Adja meg a felirat szövegét, vagy töltse fel a logót.' }}
       />,
     );
     const summary = screen.getByRole('alert');

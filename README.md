@@ -119,9 +119,10 @@ kívánatos, a Worker beállításainál Cloudflare Access-szel védhetők.
 **D1-migrációk:** a Workers Builds automatikus tokenje nem kap D1-jogosultságot. A migrációkat ezért
 helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jogosultsággal bővített tokennel.
 
-### Visszahívás és értesítő e-mailek
+### Visszahívás, ajánlatkérés és értesítő e-mailek
 
-- **Tábla:** `migrations/0001_callback_requests.sql`. Helyben `npm run db:migrate:local`; a dev adatbázisba
+- **Táblák:** `migrations/0001_callback_requests.sql` (visszahívás, `VH-…`) és `0002_quote_requests.sql`
+  (ajánlatkérés, `AK-…`). Helyben `npm run db:migrate:local`; a dev adatbázisba
   push előtt `npx wrangler d1 migrations apply DB --remote` (élesben `--env production` is).
 - **Beküldési korlát:** `FORM_LIMITER` (60 másodpercenként 5 beküldés IP-címenként és űrlaponként), minden környezetben.
 - **Értesítő e-mailek:** amíg nincs `EMAIL` kötés, a levelek a Worker naplójába mennek, és a kérés
@@ -138,6 +139,11 @@ helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jog
 - **Mérés:** Web Analytics token a `CF_BEACON_TOKEN` változóba (Analytics & Logs → Web Analytics). Heti
   visszahívások forrás szerint:
   `npx wrangler d1 execute DB --remote --command "SELECT strftime('%Y-%W', created_at) AS het, COALESCE(source, '–') AS forras, COUNT(*) AS db FROM callback_requests GROUP BY het, forras ORDER BY het DESC"`
+  Heti ajánlatkérések munkatípus szerint:
+  `npx wrangler d1 execute DB --remote --command "SELECT strftime('%Y-%W', created_at) AS het, quote_type, COUNT(*) AS db FROM quote_requests GROUP BY het, quote_type ORDER BY het DESC"`
+- **Ajánlatkérő varázsló:** `/ajanlatkeres` (munkatípusok és visszahívás), `/ajanlatkeres/<típus>`. Az űrlap
+  szerveroldali HTML, JavaScript nélkül egyetlen hosszú űrlap; a `src/scripts/quote-wizard.ts` (kb. 1 KB) bontja
+  lépésekre. Fájlfeltöltés még nincs (az R2 nincs bekapcsolva): a fájlmezők helyén „e-mailben küldöm” jelölő áll.
 
 ### Éles környezet (később)
 

@@ -1949,6 +1949,8 @@ export const WizardStep = () => <QuoteForm type={BETUK} token="3f8a2b6c-1d4e-4f5
 
 ### Task 6: A varázsló szigete
 
+> **Megvalósításkor módosítva (2026-10-09):** a React-sziget a mérés szerint 113 KB (gzip) JavaScriptet tett az oldalra, a keret ~70 KB. Helyette a `QuoteForm` mindig a teljes, szerveroldali űrlapot adja rejtett lépésjelzővel, gombokkal és `data-` jelölésekkel, a lépésekre bontást pedig egy keretrendszer nélküli szkript végzi (`src/scripts/quote-wizard.ts`, tesztje `quote-wizard.test.tsx`; 1,3 KB gzip). A `QuoteForm` `step`/`answers`/`navigation` propjai így megszűntek. Az alábbi szigetkód csak a döntés nyomaként maradt itt.
+
 **Files:** Create `src/islands/QuoteWizard.tsx`, `src/islands/QuoteWizard.test.tsx`
 
 **Interfaces:**

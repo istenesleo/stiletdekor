@@ -76,7 +76,9 @@ function TypeField({ type, def, values, errors, today }: {
   const name = quoteFieldName(def.id);
   const id = quoteFieldDomId(name);
   const error = errors[name];
-  const label = def.required || def.type === 'file' ? def.label : `${def.label} (nem kötelező)`;
+  // A field of a "one of" group is not optional either: the note above the step says which one to give.
+  const inOneOf = type.requireOneOf?.some((group) => group.fields.includes(def.id)) ?? false;
+  const label = def.required || def.type === 'file' || inOneOf ? def.label : `${def.label} (nem kötelező)`;
   const help = def.help;
   const hint = conditionHint(type, def);
   let control: ReactNode;
@@ -229,7 +231,13 @@ function TypeField({ type, def, values, errors, today }: {
  * @category quote
  */
 export function QuoteForm({ type, token, source, values = {}, errors = {}, formError, today, className, ...rest }: QuoteFormProps) {
-  const summary = Object.entries(errors);
+  // The summary lists the messages in the order of the form.
+  const order = [...type.fields.map((def) => ruleName(def).replace(EMAILED_SUFFIX, '')), 'location', 'deadline', 'name', 'email', 'phone', 'company'];
+  const place = (name: string) => {
+    const index = order.indexOf(name.replace(EMAILED_SUFFIX, ''));
+    return index < 0 ? order.length : index;
+  };
+  const summary = Object.entries(errors).sort(([a], [b]) => place(a) - place(b));
   const answered = Boolean(formError) || summary.length > 0 || Object.keys(values).length > 0;
   const legend = (index: number) => (
     <legend className="sd-quote__legend" tabIndex={-1}>
