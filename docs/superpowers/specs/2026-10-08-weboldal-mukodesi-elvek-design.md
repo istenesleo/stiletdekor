@@ -41,7 +41,7 @@ Az üzleti tartalom forrása továbbra is a [brief](../../brief.md), a műszaki 
 | `/visszahivas/koszonjuk` | Szerveren | Köszönő oldal hivatkozási számmal |
 | `/webshop`, `/webshop/[termek]` | Előre generált + sziget | Kategóriák, konfigurátor (brief 4.1) |
 | `/kosar`, `/penztar` | Előre generált + sziget | Kosár, rendelés elküldése ellenőrzésre (brief 10.) |
-| `/rendeles/[azonosito]` | Szerveren | Rendelés állapota |
+| `/rendeles/[token]` | Szerveren | Rendelés állapota titkos linken; beküldés után köszönő nézettel ([webshop spec](2026-10-09-webshop-4a-4b-design.md)) |
 | `/referenciak`, `/referenciak/[felulet]` | Előre generált | Rács, előtte/utána csúszka. A felület szerinti szűrés linkekkel, felületenként saját oldallal (például `/referenciak/jarmu`), így JavaScript nélkül is működik, és a keresők is látják |
 | `/rolunk` | Előre generált | Folyamat (Felmérés → Tervezés → Gyártás saját műhelyben → Telepítés), miért mi |
 | `/kapcsolat` | Előre generált | Telefon, e-mail, cím másolás gombbal, nyitvatartás, statikus térkép, visszahívó blokk |
@@ -116,7 +116,7 @@ Minden beküldés eltárolja a forrását (`forras`): az oldal útvonala és a g
 
 ### 4.2 Hivatkozási szám
 
-Rövid, telefonon kimondható: `AK-` (ajánlatkérés) vagy `VH-` (visszahívás), utána legalább 4 számjegyű sorszám a
+Rövid, telefonon kimondható: `AK-` (ajánlatkérés), `VH-` (visszahívás) vagy `R-` (webshop-rendelés), utána legalább 4 számjegyű sorszám a
 D1-ből, például **AK-0142**. Megjelenik a köszönő oldalon és az értesítő e-mail tárgyában.
 
 ### 4.3 Űrlapszabályok
@@ -183,7 +183,8 @@ Ennél több mező nincs. A beágyazott blokk és a `/visszahivas` oldal ugyanaz
 | Mit | Keret |
 |---|---|
 | Tartalmi oldalak JavaScriptje | 0 KB keretrendszer-JS; kivétel csak a mérés jeladója (7. fejezet). A fejléc script nélkül működik |
-| Varázsló- és webshop-szigetek | Oldalanként legfeljebb ~70 KB (gzip); `client:visible` vagy `client:idle` |
+| Varázsló | Oldalanként legfeljebb ~70 KB (gzip); `client:visible` vagy `client:idle` |
+| Webshop eszközoldalai (termék, kosár, pénztár) | Oldalanként legfeljebb ~130 KB (gzip), `client:idle`; a fájlelemző csak fájlválasztáskor töltődik be, nem számít bele (2026-10-09) |
 | LCP (mobil, 4G, p75) | ≤ 2,0 s |
 | CLS | ≤ 0,05 |
 | INP | ≤ 200 ms |
