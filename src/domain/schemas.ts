@@ -370,7 +370,8 @@ export interface FieldIssue {
 const isEmptyValue = (value: unknown): boolean =>
   value === undefined || value === null || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0);
 
-function isFieldVisible(def: QuoteFieldDef, fields: Readonly<Record<string, unknown>>): boolean {
+/** Whether a field of the wizard shows, given the answers so far (its visibleWhen rule). */
+export function isQuoteFieldVisible(def: QuoteFieldDef, fields: Readonly<Record<string, unknown>>): boolean {
   if (!def.visibleWhen) return true;
   const controller = fields[def.visibleWhen.field];
   return typeof controller === 'string' && def.visibleWhen.equals.includes(controller);
@@ -438,17 +439,19 @@ function checkFieldValue(def: QuoteFieldDef, value: unknown, today: IsoDate): st
 export function validateQuoteFields(
   quoteTypeId: string,
   fields: Readonly<Record<string, unknown>>,
-  { today }: { today: IsoDate },
+  { today, emailedFiles = [] }: { today: IsoDate; emailedFiles?: readonly string[] },
 ): FieldIssue[] {
   const type = getQuoteType(quoteTypeId);
   if (!type) return [{ path: [], message: 'Ismeretlen munkatípus.' }];
+  // A file the customer sends by e-mail (no uploads yet) counts as given.
+  const emailed = (def: QuoteFieldDef) => def.type === 'file' && emailedFiles.includes(def.id);
   const issues: FieldIssue[] = [];
   const known = new Set(type.fields.map((def) => def.id));
   for (const key of Object.keys(fields)) {
     if (!known.has(key)) issues.push({ path: [key], message: 'Ismeretlen mező.' });
   }
   for (const def of type.fields) {
-    if (!isFieldVisible(def, fields)) continue;
+    if (!isQuoteFieldVisible(def, fields) || emailed(def)) continue;
     const value = fields[def.id];
     if (isEmptyValue(value)) {
       if (def.required) issues.push({ path: [def.id], message: requiredMessage(def) });
@@ -458,8 +461,8 @@ export function validateQuoteFields(
     if (message) issues.push({ path: [def.id], message });
   }
   for (const group of type.requireOneOf ?? []) {
-    const visible = type.fields.filter((def) => group.fields.includes(def.id) && isFieldVisible(def, fields));
-    if (visible.length > 0 && visible.every((def) => isEmptyValue(fields[def.id]))) {
+    const visible = type.fields.filter((def) => group.fields.includes(def.id) && isQuoteFieldVisible(def, fields));
+    if (visible.length > 0 && visible.every((def) => isEmptyValue(fields[def.id]) && !emailed(def))) {
       issues.push({ path: [visible[0]?.id ?? ''], message: group.message });
     }
   }
@@ -476,7 +479,7 @@ export function pruneQuoteFields(
   if (!type) return result;
   for (const def of type.fields) {
     const value = fields[def.id];
-    if (value === undefined || value === null || isEmptyValue(value) || !isFieldVisible(def, fields)) continue;
+    if (value === undefined || value === null || isEmptyValue(value) || !isQuoteFieldVisible(def, fields)) continue;
     result[def.id] = typeof value === 'string' ? value.trim() : value;
   }
   return result;
@@ -499,6 +502,11 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
           .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
           .max(MAX_QUOTE_UPLOADS, `Legfeljebb ${MAX_QUOTE_UPLOADS} fájl tölthető fel.`)
           .default([]),
+        /** File fields the customer will send by e-mail with the reference (no uploads yet, 2026-10-09). */
+        emailedFiles: z
+          .array(z.string({ error: 'Érvénytelen fájlmező.' }), { error: 'Érvénytelen fájlmező.' })
+          .max(MAX_QUOTE_UPLOADS, 'Túl sok fájlmező.')
+          .default([]),
         contact: ContactSchema,
         /** No date: the workshop calls back and arranges the survey by phone (decision of 2026-10-05). */
         surveyRequested: z.boolean({ error: 'Érvénytelen érték.' }).default(false),
@@ -508,7 +516,7 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
     .superRefine((request, ctx) => {
       const today = budapestToday(now());
       const type = getQuoteType(request.quoteType);
-      for (const issue of validateQuoteFields(request.quoteType, request.fields, { today })) {
+      for (const issue of validateQuoteFields(request.quoteType, request.fields, { today, emailedFiles: request.emailedFiles })) {
         ctx.addIssue({ code: 'custom', path: ['fields', ...issue.path], message: issue.message });
       }
       if (!request.location && (type.locationRequired || request.surveyRequested)) {
@@ -519,7 +527,16 @@ export function createQuoteRequestSchema({ now = () => new Date() }: QuoteSchema
         ctx.addIssue({ code: 'custom', path: ['deadline'], message: 'A határidő nem lehet múltbeli dátum.' });
       }
     })
-    .transform((request) => ({ ...request, fields: pruneQuoteFields(request.quoteType, request.fields) }));
+    .transform((request) => {
+      const type = getQuoteType(request.quoteType);
+      return {
+        ...request,
+        fields: pruneQuoteFields(request.quoteType, request.fields),
+        emailedFiles: request.emailedFiles.filter((id) =>
+          type.fields.some((def) => def.id === id && def.type === 'file' && isQuoteFieldVisible(def, request.fields)),
+        ),
+      };
+    });
 }
 
 export const QuoteRequestSchema = createQuoteRequestSchema();

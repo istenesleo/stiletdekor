@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { z } from 'zod';
-import { QUOTE_TYPES, type QuoteType } from './catalog';
+import { getQuoteType, QUOTE_TYPES, type QuoteType } from './catalog';
 import {
   CallbackRequestSchema,
   callbackJobTypeName,
@@ -11,6 +11,7 @@ import {
   QuoteRequestSchema,
   createQuoteRequestSchema,
   isPlausiblePhone,
+  isQuoteFieldVisible,
   isValidHuTaxNumber,
   validateQuoteFields,
 } from './schemas';
@@ -466,5 +467,40 @@ describe('callback job types', () => {
   it('accepts only paths of the site as a form source', () => {
     expect(formSource('/visszahivas')).toBe('/visszahivas');
     expect(formSource(`/${'a'.repeat(200)}`)).toBeUndefined();
+  });
+});
+
+describe('files sent by e-mail', () => {
+  const today = '2026-10-05';
+  const betuk = { betumagassagCm: 40, anyag: 'plexi', vilagitas: 'nincs' };
+
+  it('count as given for a "one of" group, so a logo can come by e-mail instead of the text', () => {
+    expect(validateQuoteFields('betuk', betuk, { today })).toEqual([
+      { path: ['feliratSzoveg'], message: 'Adja meg a felirat szövegét, vagy töltse fel a logót.' },
+    ]);
+    expect(validateQuoteFields('betuk', betuk, { today, emailedFiles: ['logo'] })).toEqual([]);
+  });
+
+  it('are kept only for the visible file fields of the job type', () => {
+    const schema = createQuoteRequestSchema({ now: () => new Date('2026-10-05T10:00:00+02:00') });
+    const base = {
+      location: 'Budapest, Minta utca 1.',
+      deadline: '2026-11-15',
+      contact: { name: 'Minta Mária', email: 'maria@example.hu', phone: '06 30 123 4567' },
+    };
+    const parsed = schema.parse({
+      ...base,
+      quoteType: 'autofoliazas',
+      fields: { jarmuTipus: 'Ford Transit', darabszam: 2, terjedelem: 'felirat', grafika: 'tervezes' },
+      emailedFiles: ['jarmuFotok', 'grafikaFajlok', 'terjedelem'],
+    });
+    expect(parsed.emailedFiles).toEqual(['jarmuFotok']);
+    expect(schema.parse({ ...base, quoteType: 'egyeb', fields: { leiras: 'Ajtófelirat.' } }).emailedFiles).toEqual([]);
+  });
+
+  it('lets the wizard ask whether a field shows', () => {
+    const def = getQuoteType('autofoliazas').fields.find((f) => f.id === 'grafikaFajlok')!;
+    expect(isQuoteFieldVisible(def, { grafika: 'van' })).toBe(true);
+    expect(isQuoteFieldVisible(def, { grafika: 'tervezes' })).toBe(false);
   });
 });
