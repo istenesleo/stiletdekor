@@ -1,8 +1,7 @@
-import type { FormHTMLAttributes, ReactNode, Ref } from 'react';
+import type { FormHTMLAttributes, ReactNode } from 'react';
 import type { QuoteFieldDef, QuoteType } from '@/domain/catalog';
 import { COMPANY } from '@/domain/company';
 import { EMAILED_SUFFIX, type QuoteFormErrors, type QuoteFormValues, quoteFieldName } from '@/domain/quote-form';
-import { isQuoteFieldVisible } from '@/domain/schemas';
 import '../base.css';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
@@ -10,6 +9,7 @@ import { cx } from '../cx';
 import { describedBy, Field } from '../Field/Field';
 import { Notice } from '../Notice/Notice';
 import '../SegmentedChoice/SegmentedChoice.css';
+import { Stepper } from '../Stepper/Stepper';
 import { TextField } from '../TextField/TextField';
 import { UnitField } from '../UnitField/UnitField';
 import './QuoteForm.css';
@@ -44,13 +44,6 @@ export interface QuoteFormProps extends Omit<FormHTMLAttributes<HTMLFormElement>
   formError?: string;
   /** Today in Budapest (YYYY-MM-DD): the earliest date the date fields offer. */
   today: string;
-  /** Wizard mode (the island): show only this step. Without it every step shows (no JavaScript). */
-  step?: number | null;
-  /** The answers so far (the island): fields whose condition is not met are hidden. Without it they show with their condition. */
-  answers?: Readonly<Record<string, unknown>>;
-  /** The island's Back and Next buttons, shown in wizard mode. */
-  navigation?: ReactNode;
-  ref?: Ref<HTMLFormElement>;
 }
 
 const textOf = (values: QuoteFormValues, name: string): string | undefined => {
@@ -70,21 +63,22 @@ function conditionHint(type: QuoteType, def: QuoteFieldDef): string | undefined 
   return `Csak akkor töltse ki, ha erre: „${controller.label}” a válasza: ${labels.join(' vagy ')}.`;
 }
 
-function TypeField({ type, def, values, errors, today, answers }: {
+/** The form name a "one of" rule checks for a field: a file field counts through its "by e-mail" checkbox. */
+const ruleName = (def: QuoteFieldDef): string => quoteFieldName(def.id) + (def.type === 'file' ? EMAILED_SUFFIX : '');
+
+function TypeField({ type, def, values, errors, today }: {
   type: QuoteType;
   def: QuoteFieldDef;
   values: QuoteFormValues;
   errors: QuoteFormErrors;
   today: string;
-  answers?: Readonly<Record<string, unknown>>;
 }) {
   const name = quoteFieldName(def.id);
   const id = quoteFieldDomId(name);
   const error = errors[name];
   const label = def.required || def.type === 'file' ? def.label : `${def.label} (nem kötelező)`;
-  const visible = answers ? isQuoteFieldVisible(def, answers) : true;
-  const hint = answers ? undefined : conditionHint(type, def);
-  const help = [def.help, hint].filter(Boolean).join(' ') || undefined;
+  const help = def.help;
+  const hint = conditionHint(type, def);
   let control: ReactNode;
   switch (def.type) {
     case 'text':
@@ -117,10 +111,14 @@ function TypeField({ type, def, values, errors, today, answers }: {
     case 'select':
       if (def.options.length <= 4) {
         control = (
-          <fieldset className="sd-seg sd-quote__choice" id={id} aria-describedby={error ? `${id}-error` : undefined}>
+          <fieldset className="sd-seg sd-quote__choice" id={id} tabIndex={-1} aria-describedby={error ? `${id}-error` : undefined}>
             <legend className="sd-seg__legend">
               {label}
-              {def.required && <span className="sd-field__req" aria-hidden="true">*</span>}
+              {def.required && (
+                <span className="sd-field__req" aria-hidden="true">
+                  *
+                </span>
+              )}
             </legend>
             {help && <p className="sd-field__help">{help}</p>}
             <div className="sd-seg__wrap">
@@ -144,7 +142,11 @@ function TypeField({ type, def, values, errors, today, answers }: {
                 ))}
               </div>
             </div>
-            {error && <p className="sd-field__error" id={`${id}-error`}>{error}</p>}
+            {error && (
+              <p className="sd-field__error" id={`${id}-error`}>
+                {error}
+              </p>
+            )}
           </fieldset>
         );
       } else {
@@ -173,16 +175,24 @@ function TypeField({ type, def, values, errors, today, answers }: {
       break;
     case 'multiselect':
       control = (
-        <fieldset className="sd-quote__multi" id={id} data-required={def.required ? 'true' : undefined}>
+        <fieldset className="sd-quote__multi" id={id} tabIndex={-1} data-required={def.required ? 'true' : undefined}>
           <legend className="sd-field__label">
             {label}
-            {def.required && <span className="sd-field__req" aria-hidden="true">*</span>}
+            {def.required && (
+              <span className="sd-field__req" aria-hidden="true">
+                *
+              </span>
+            )}
           </legend>
           {help && <p className="sd-field__help">{help}</p>}
           {def.options.map((o) => (
             <Checkbox key={o.value} id={`${id}-${o.value}`} name={name} value={o.value} label={o.label} defaultChecked={listOf(values, name).includes(o.value)} />
           ))}
-          {error && <p className="sd-field__error" id={`${id}-error`}>{error}</p>}
+          {error && (
+            <p className="sd-field__error" id={`${id}-error`}>
+              {error}
+            </p>
+          )}
         </fieldset>
       );
       break;
@@ -192,7 +202,7 @@ function TypeField({ type, def, values, errors, today, answers }: {
           id={id}
           name={name + EMAILED_SUFFIX}
           label={`${def.label}: e-mailben küldöm`}
-          description={`A beküldés után a hivatkozási számmal a ${COMPANY.email} címre. ${hint ?? ''}`.trim()}
+          description={`A beküldés után a hivatkozási számmal a ${COMPANY.email} címre.`}
           defaultChecked={textOf(values, name + EMAILED_SUFFIX) === 'on'}
           error={error}
         />
@@ -200,44 +210,48 @@ function TypeField({ type, def, values, errors, today, answers }: {
       break;
   }
   return (
-    <div className="sd-quote__field" data-field={def.id} hidden={!visible}>
+    <div className="sd-quote__field" data-field={def.id} data-visible-when={def.visibleWhen ? JSON.stringify(def.visibleWhen) : undefined}>
       {control}
+      {hint && (
+        <p className="sd-field__help sd-quote__condition" data-condition>
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
 
 /**
  * The quote wizard's form for one job type: its questions, the place and the deadline, then the contact details.
- * A plain HTML form that works without JavaScript (all steps at once); the quote page's island turns it into steps.
+ * A plain HTML form that works without JavaScript (all steps at once). It carries a hidden step bar, Back/Next
+ * buttons and data attributes (data-step, data-visible-when, data-require-one-of) for the small script of the
+ * quote page (src/scripts/quote-wizard.ts), which turns it into steps.
  * @category quote
  */
-export function QuoteForm({
-  type,
-  token,
-  source,
-  values = {},
-  errors = {},
-  formError,
-  today,
-  step = null,
-  answers,
-  navigation,
-  ref,
-  className,
-  ...rest
-}: QuoteFormProps) {
-  const wizard = step !== null;
-  const last = QUOTE_STEPS.length - 1;
+export function QuoteForm({ type, token, source, values = {}, errors = {}, formError, today, className, ...rest }: QuoteFormProps) {
   const summary = Object.entries(errors);
-  const stepAttrs = (index: number) => ({ 'data-step': String(index), hidden: wizard && step !== index });
+  const answered = Boolean(formError) || summary.length > 0 || Object.keys(values).length > 0;
   const legend = (index: number) => (
     <legend className="sd-quote__legend" tabIndex={-1}>
       {index + 1}. {QUOTE_STEPS[index]}
     </legend>
   );
   const fieldLabel = (name: string) => COMMON_LABELS[name] ?? type.fields.find((f) => quoteFieldName(f.id) === name)?.label ?? name;
+  const oneOf = type.requireOneOf?.map((group) => ({
+    names: type.fields.filter((def) => group.fields.includes(def.id)).map(ruleName),
+    message: group.message,
+  }));
   return (
-    <form ref={ref} className={cx('sd-quote', className)} method="post" {...rest}>
+    <form
+      className={cx('sd-quote', className)}
+      method="post"
+      data-quote-type={type.id}
+      data-answered={answered ? 'true' : undefined}
+      {...rest}
+    >
+      <div className="sd-quote__stepper" data-wizard-stepper hidden>
+        <Stepper steps={QUOTE_STEPS} current={0} />
+      </div>
       {(formError || summary.length > 0) && (
         <Notice className="sd-quote__summary" tone="error" live="assertive" title={formError ?? 'Kérjük, javítsa a következőket:'} tabIndex={-1} autoFocus>
           {summary.length > 0 && (
@@ -255,7 +269,7 @@ export function QuoteForm({
       <input type="hidden" name="token" value={token} />
       {source && <input type="hidden" name="source" value={source} />}
 
-      <fieldset className="sd-quote__step" {...stepAttrs(0)}>
+      <fieldset className="sd-quote__step" data-step="0" data-require-one-of={oneOf ? JSON.stringify(oneOf) : undefined}>
         {legend(0)}
         {type.requireOneOf?.map((group) => (
           <p className="sd-quote__note" key={group.fields.join()}>
@@ -263,11 +277,11 @@ export function QuoteForm({
           </p>
         ))}
         {type.fields.map((def) => (
-          <TypeField key={def.id} type={type} def={def} values={values} errors={errors} today={today} answers={answers} />
+          <TypeField key={def.id} type={type} def={def} values={values} errors={errors} today={today} />
         ))}
       </fieldset>
 
-      <fieldset className="sd-quote__step" {...stepAttrs(1)}>
+      <fieldset className="sd-quote__step" data-step="1">
         {legend(1)}
         <TextField
           id={quoteFieldDomId('location')}
@@ -293,12 +307,43 @@ export function QuoteForm({
         />
       </fieldset>
 
-      <fieldset className="sd-quote__step" {...stepAttrs(2)}>
+      <fieldset className="sd-quote__step" data-step="2">
         {legend(2)}
         <TextField id={quoteFieldDomId('name')} name="name" label="Név" required autoComplete="name" maxLength={100} defaultValue={textOf(values, 'name')} error={errors.name} />
-        <TextField id={quoteFieldDomId('email')} name="email" label="E-mail" type="email" required autoComplete="email" maxLength={254} defaultValue={textOf(values, 'email')} help="Ide küldjük az árajánlatot." error={errors.email} />
-        <TextField id={quoteFieldDomId('phone')} name="phone" label="Telefonszám" type="tel" inputMode="tel" required autoComplete="tel" maxLength={30} defaultValue={textOf(values, 'phone')} help="Ezen hívjuk vissza." error={errors.phone} />
-        <TextField id={quoteFieldDomId('company')} name="company" label="Cégnév (nem kötelező)" autoComplete="organization" maxLength={150} defaultValue={textOf(values, 'company')} error={errors.company} />
+        <TextField
+          id={quoteFieldDomId('email')}
+          name="email"
+          label="E-mail"
+          type="email"
+          required
+          autoComplete="email"
+          maxLength={254}
+          defaultValue={textOf(values, 'email')}
+          help="Ide küldjük az árajánlatot."
+          error={errors.email}
+        />
+        <TextField
+          id={quoteFieldDomId('phone')}
+          name="phone"
+          label="Telefonszám"
+          type="tel"
+          inputMode="tel"
+          required
+          autoComplete="tel"
+          maxLength={30}
+          defaultValue={textOf(values, 'phone')}
+          help="Ezen hívjuk vissza."
+          error={errors.phone}
+        />
+        <TextField
+          id={quoteFieldDomId('company')}
+          name="company"
+          label="Cégnév (nem kötelező)"
+          autoComplete="organization"
+          maxLength={150}
+          defaultValue={textOf(values, 'company')}
+          error={errors.company}
+        />
         <Checkbox
           id={quoteFieldDomId('surveyRequested')}
           name="surveyRequested"
@@ -314,16 +359,22 @@ export function QuoteForm({
         <input id="ak-honlap" name="honlap" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {wizard && <div className="sd-quote__nav">{navigation}</div>}
-      {(!wizard || step === last) && (
-        <div className="sd-quote__send">
-          <Button type="submit">Ajánlatkérés elküldése</Button>
-          <p className="sd-quote__privacy">
-            A beküldés nem jár kötelezettséggel. Az adatait csak az ajánlathoz használjuk.{' '}
-            <a href="/adatkezeles">Adatkezelési tájékoztató</a>
-          </p>
-        </div>
-      )}
+      <p className="sd-quote__steperror" role="alert" data-wizard-error hidden />
+      <div className="sd-quote__nav" data-wizard-nav hidden>
+        <Button type="button" variant="secondary" data-wizard-back>
+          Vissza
+        </Button>
+        <Button type="button" data-wizard-next>
+          Tovább
+        </Button>
+      </div>
+      <div className="sd-quote__send" data-wizard-send>
+        <Button type="submit">Ajánlatkérés elküldése</Button>
+        <p className="sd-quote__privacy">
+          A beküldés nem jár kötelezettséggel. Az adatait csak az ajánlathoz használjuk.{' '}
+          <a href="/adatkezeles">Adatkezelési tájékoztató</a>
+        </p>
+      </div>
     </form>
   );
 }

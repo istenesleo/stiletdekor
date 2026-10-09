@@ -1,0 +1,47 @@
+---
+// After a quote request: the reference, what happens next, and, when files were marked, where to send them.
+import { COMPANY } from '@/domain/company';
+import { parseReference } from '@/domain/reference';
+import Page from '@/layouts/Page.astro';
+import { ButtonLink } from '@/ui/ButtonLink/ButtonLink';
+import { Notice } from '@/ui/Notice/Notice';
+import { SuccessPanel } from '@/ui/SuccessPanel/SuccessPanel';
+
+const reference = parseReference(Astro.url.searchParams.get('szam'), 'AK') ?? undefined;
+const files = Astro.url.searchParams.get('fajl') === '1';
+const mailto = `mailto:${COMPANY.email}${reference ? `?subject=${encodeURIComponent(reference)}` : ''}`;
+---
+
+<Page title="Megkaptuk – Ajánlatkérés – Stilet Dekor" description="Megkaptuk az ajánlatkérését.">
+  <section class="ak">
+    <SuccessPanel
+      title="Megkaptuk az ajánlatkérését"
+      reference={reference}
+      referenceLabel="Hivatkozási szám"
+      nextSteps={[
+        'Átnézzük, amit megadott.',
+        'Hamarosan felvesszük Önnel a kapcsolatot, és ha kell, egyeztetjük a helyszíni felmérést.',
+        'E-mailben elküldjük az árajánlatot.',
+      ]}
+    >
+      {
+        files && (
+          <Notice title="A fájlokat e-mailben várjuk">
+            Küldje el őket a <a href={mailto}>{COMPANY.email}</a> címre, a levél tárgyában a hivatkozási számmal
+            {reference ? ` (${reference})` : ''}.
+          </Notice>
+        )
+      }
+      <Fragment slot="note">Sürgős? Hívjon minket: <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a></Fragment>
+      <Fragment slot="actions"><ButtonLink href="/" variant="secondary">Vissza a kezdőlapra</ButtonLink></Fragment>
+    </SuccessPanel>
+  </section>
+</Page>
+
+<style>
+  .ak {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter) var(--space-9);
+  }
+</style>

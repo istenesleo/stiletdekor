@@ -1,0 +1,108 @@
+---
+// The wizard of one job type. GET shows the whole form (a small script turns it into steps); POST saves the request
+// and redirects to the thank-you page (303), or shows the form again with the messages.
+import { env, waitUntil } from 'cloudflare:workers';
+import { getQuoteType } from '@/domain/catalog';
+import { COMPANY } from '@/domain/company';
+import { budapestToday } from '@/domain/leadtime';
+import Page from '@/layouts/Page.astro';
+import { limiterAllows } from '@/server/forms';
+import { mailerFor } from '@/server/notify/mailer';
+import { d1QuoteStore } from '@/server/quote/d1-store';
+import { notifyQuote } from '@/server/quote/notify';
+import { type RejectedQuote, submitQuote } from '@/server/quote/submit';
+import { QuoteForm } from '@/ui/QuoteForm/QuoteForm';
+
+const type = getQuoteType(Astro.params.tipus ?? '');
+// Unknown job type: an empty 404 makes Astro show the site's 404 page.
+if (!type) return new Response(null, { status: 404 });
+const quoteType = type.id as Parameters<typeof submitQuote>[0];
+
+let rejected: RejectedQuote | null = null;
+if (Astro.request.method === 'POST') {
+  const store = d1QuoteStore(env.DB);
+  const now = () => new Date();
+  const result = await submitQuote(quoteType, await Astro.request.formData(), {
+    store,
+    now,
+    newToken: () => crypto.randomUUID(),
+    allow: () => limiterAllows(env.FORM_LIMITER, `ajanlat:${Astro.clientAddress}`),
+  });
+  if (result.kind === 'accepted') {
+    if (result.id !== null) {
+      waitUntil(
+        notifyQuote(result.id, { store, mailer: mailerFor(env), to: env.ORDER_NOTIFY_EMAIL, now }).catch((error) =>
+          console.error('Az ajánlatkérés értesítése hibával leállt:', error),
+        ),
+      );
+    }
+    return Astro.redirect(result.location, 303);
+  }
+  rejected = result;
+  Astro.response.status = result.status;
+}
+
+const source = `/ajanlatkeres/${type.id}`;
+const title = rejected ? `Hiba a beküldésben – ${type.name} – Stilet Dekor` : `${type.name}: ajánlatkérés – Stilet Dekor`;
+---
+
+<Page title={title} description={`${type.name}: kérjen árajánlatot a Stilet Dekortól. ${type.description}`} currentHref="/ajanlatkeres" actionBar={false}>
+  <section class="ak">
+    <p class="ak__back"><a href="/ajanlatkeres">← Másik munkatípus</a></p>
+    <h1>{type.name}</h1>
+    <p class="ak__lead">{type.description}</p>
+    <QuoteForm
+      type={type}
+      token={rejected?.token ?? crypto.randomUUID()}
+      source={rejected?.source ?? source}
+      values={rejected?.values}
+      errors={rejected?.errors}
+      formError={rejected?.formError}
+      today={budapestToday(new Date())}
+    />
+    <p class="ak__vh">
+      Inkább beszélne róla? <a href="/visszahivas">Kérjen visszahívást</a>, vagy hívjon:{' '}
+      <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a>.
+    </p>
+  </section>
+</Page>
+
+<style>
+  .ak {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--layout-gutter) var(--space-9);
+  }
+  .ak__back {
+    margin: 0 0 var(--space-4);
+  }
+  .ak__back a,
+  .ak__vh a {
+    color: var(--color-text);
+  }
+  h1 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .ak__lead {
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-muted);
+  }
+  .ak__vh {
+    margin: var(--space-8) 0 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-text-muted);
+  }
+</style>
+
+<script>
+  import { initQuoteWizard } from '@/scripts/quote-wizard';
+
+  const form = document.querySelector<HTMLFormElement>('form.sd-quote');
+  if (form) initQuoteWizard(form, { draftKey: `stilet-ajanlat-${form.dataset.quoteType}` });
+</script>

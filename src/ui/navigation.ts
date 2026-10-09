@@ -27,7 +27,7 @@ export const MAIN_NAV: readonly NavItem[] = [
 ];
 
 /** Where "Ajánlatkérés" leads: the quote wizard. */
-export const QUOTE_HREF = '/#ajanlat';
+export const QUOTE_HREF = '/ajanlatkeres';
 
 /** The quick callback form. */
 export const CALLBACK_HREF = '/visszahivas';

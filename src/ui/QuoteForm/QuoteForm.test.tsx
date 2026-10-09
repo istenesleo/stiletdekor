@@ -46,17 +46,12 @@ describe('QuoteForm', () => {
     expect(harom.querySelector<HTMLInputElement>('input[name="location"]')!.required).toBe(false);
   });
 
-  it('shows a conditional field with its condition without answers, and hides it when the answers say so', () => {
-    const type = getQuoteType('autofoliazas');
-    const { container, rerender } = render(<QuoteForm type={type} token={TOKEN} today={TODAY} />);
-    const wrap = () => container.querySelector('[data-field="grafikaFajlok"]')!;
-    expect(wrap().hasAttribute('hidden')).toBe(false);
-    expect(wrap().textContent).toContain('Csak akkor');
-    rerender(<QuoteForm type={type} token={TOKEN} today={TODAY} answers={{ grafika: 'tervezes' }} />);
-    expect(wrap().hasAttribute('hidden')).toBe(true);
-    rerender(<QuoteForm type={type} token={TOKEN} today={TODAY} answers={{ grafika: 'van' }} />);
-    expect(wrap().hasAttribute('hidden')).toBe(false);
-    expect(wrap().textContent).not.toContain('Csak akkor');
+  it('shows a conditional field with its condition, and marks the rule for the page script', () => {
+    const { container } = render(<QuoteForm type={getQuoteType('autofoliazas')} token={TOKEN} today={TODAY} />);
+    const wrap = container.querySelector<HTMLElement>('[data-field="grafikaFajlok"]')!;
+    expect(wrap.hasAttribute('hidden')).toBe(false);
+    expect(JSON.parse(wrap.dataset.visibleWhen!)).toEqual({ field: 'grafika', equals: ['van'] });
+    expect(wrap.querySelector('[data-condition]')?.textContent).toContain('Csak akkor töltse ki');
   });
 
   it('shows what was typed, the messages and a summary that links to the fields', () => {
@@ -76,15 +71,18 @@ describe('QuoteForm', () => {
     expect(document.getElementById('ak-email')?.getAttribute('aria-invalid')).toBe('true');
   });
 
-  it('shows one step at a time in wizard mode, the send button only on the last', () => {
-    const type = getQuoteType('egyeb');
-    const { container, rerender } = render(<QuoteForm type={type} token={TOKEN} today={TODAY} step={0} navigation={<button type="button">Tovább</button>} />);
-    const hidden = () => [...container.querySelectorAll('fieldset[data-step]')].map((s) => s.hasAttribute('hidden'));
-    expect(hidden()).toEqual([false, true, true]);
-    expect(screen.queryByRole('button', { name: 'Ajánlatkérés elküldése' })).toBeNull();
-    expect(screen.getByRole('button', { name: 'Tovább' })).toBeTruthy();
-    rerender(<QuoteForm type={type} token={TOKEN} today={TODAY} step={2} navigation={<button type="button">Vissza</button>} />);
-    expect(hidden()).toEqual([true, true, false]);
-    expect(screen.getByRole('button', { name: 'Ajánlatkérés elküldése' })).toBeTruthy();
+  it('carries the hidden parts the page script turns into steps', () => {
+    const { container } = render(<QuoteForm type={getQuoteType('betuk')} token={TOKEN} today={TODAY} />);
+    expect(container.querySelector('[data-wizard-stepper]')?.hasAttribute('hidden')).toBe(true);
+    const nav = container.querySelector('[data-wizard-nav]')!;
+    expect(nav.hasAttribute('hidden')).toBe(true);
+    expect([...nav.querySelectorAll('button')].map((b) => b.textContent)).toEqual(['Vissza', 'Tovább']);
+    expect(JSON.parse(container.querySelector<HTMLElement>('[data-step="0"]')!.dataset.requireOneOf!)).toEqual([
+      { names: ['f_feliratSzoveg', 'f_logo__email'], message: 'Adja meg a felirat szövegét, vagy töltse fel a logót.' },
+    ]);
+    const form = container.querySelector<HTMLFormElement>('form')!;
+    expect([form.dataset.quoteType, form.dataset.answered]).toEqual(['betuk', undefined]);
+    const answered = render(<QuoteForm type={getQuoteType('betuk')} token={TOKEN} today={TODAY} values={{ name: 'Minta Mária' }} />);
+    expect(answered.container.querySelector<HTMLFormElement>('form')!.dataset.answered).toBe('true');
   });
 });

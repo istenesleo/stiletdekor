@@ -13,7 +13,7 @@ describe('SiteHeader', () => {
     expect(within(menu).getAllByRole('link').map((a) => a.textContent)).toEqual(MAIN_NAV.map((l) => l.label));
     expect(within(menu).getByRole('link', { name: 'Webshop' }).getAttribute('aria-current')).toBe('page');
     expect(within(header).getAllByRole('link', { name: '+36 70 538 5030' })[0]!.getAttribute('href')).toBe('tel:+36705385030');
-    expect(within(header).getAllByRole('link', { name: 'Ajánlatkérés' })[0]!.getAttribute('href')).toBe('/#ajanlat');
+    expect(within(header).getAllByRole('link', { name: 'Ajánlatkérés' })[0]!.getAttribute('href')).toBe('/ajanlatkeres');
     expect(screen.getByRole('link', { name: 'Ugrás a tartalomra' }).getAttribute('href')).toBe('#tartalom');
     expect(header.classList.contains('sd-header--sticky')).toBe(true);
   });
@@ -34,7 +34,7 @@ describe('SiteHeader', () => {
     expect(panel.getAttribute('popover')).toBe('auto');
     // A closed popover is hidden from the accessibility tree, hence `hidden: true`.
     expect(within(panel).getByRole('link', { name: 'Referenciák', hidden: true })).toBeTruthy();
-    expect(within(panel).getByRole('link', { name: 'Ajánlatkérés', hidden: true }).getAttribute('href')).toBe('/#ajanlat');
+    expect(within(panel).getByRole('link', { name: 'Ajánlatkérés', hidden: true }).getAttribute('href')).toBe('/ajanlatkeres');
   });
 
   it('closes the popover when an item is chosen, where scripts run', () => {

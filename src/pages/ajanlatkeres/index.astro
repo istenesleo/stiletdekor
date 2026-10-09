@@ -1,0 +1,77 @@
+---
+// The start of the quote path: the nine job types as links (each opens its own wizard), and the quick callback
+// for those who would rather talk (docs/superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md, 3.1).
+import { QUOTE_TYPES } from '@/domain/catalog';
+import { COMPANY } from '@/domain/company';
+import Page from '@/layouts/Page.astro';
+import { CallbackForm } from '@/ui/CallbackForm/CallbackForm';
+import { JobTypePicker } from '@/ui/JobTypePicker/JobTypePicker';
+
+const types = QUOTE_TYPES.map((t) => ({ id: t.id, name: t.name, hint: t.description }));
+---
+
+<Page
+  title="Ajánlatkérés – Stilet Dekor"
+  description="Kérjen árajánlatot fóliázásra, cégérre, világító betűkre, rendezvénydíszletre vagy egyedi munkára."
+  currentHref="/ajanlatkeres"
+  actionBar={false}
+>
+  <section class="ak">
+    <h1>Ajánlatkérés</h1>
+    <p class="ak__lead">
+      Válassza ki, milyen munkáról van szó. A következő oldalon csak azt kérdezzük, ami az árajánlathoz kell; ha kéri,
+      kimegyünk és felmérjük a helyszínt.
+    </p>
+    <JobTypePicker types={types} hrefFor={(id: string) => `/ajanlatkeres/${id}`} legend="Milyen munkáról van szó?" />
+
+    <section class="ak__vh" id="visszahivas" aria-labelledby="vh-cim">
+      <h2 id="vh-cim">Inkább beszélne róla?</h2>
+      <p>
+        Adja meg a nevét és a telefonszámát, és hamarosan visszahívjuk. Vagy hívjon:{' '}
+        <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a>.
+      </p>
+      <CallbackForm token={crypto.randomUUID()} source="/ajanlatkeres#visszahivas" />
+    </section>
+  </section>
+</Page>
+
+<style>
+  .ak {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .ak__lead {
+    max-width: 44rem;
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-muted);
+  }
+  .ak__vh {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-line);
+  }
+  .ak__vh h2 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+  }
+  .ak__vh p {
+    margin: 0 0 var(--space-5);
+    color: var(--color-text-muted);
+  }
+  .ak__vh a {
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+</style>

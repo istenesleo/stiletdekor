@@ -12,7 +12,7 @@ describe('ActionBar', () => {
     expect(call!.getAttribute('aria-label')).toBe('Hívás: +36 70 538 5030');
     expect(call!.textContent).toBe('Hívás');
     expect(quote!.textContent).toBe('Ajánlatkérés');
-    expect(quote!.getAttribute('href')).toBe('/#ajanlat');
+    expect(quote!.getAttribute('href')).toBe('/ajanlatkeres');
     expect(bar.classList.contains('sd-actionbar--inline')).toBe(false);
   });
 

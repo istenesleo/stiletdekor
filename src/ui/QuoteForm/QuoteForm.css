@@ -85,3 +85,19 @@
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+.sd-quote__stepper[hidden],
+.sd-quote__nav[hidden],
+.sd-quote__send[hidden],
+.sd-quote__steperror[hidden],
+.sd-quote__condition[hidden] {
+  display: none;
+}
+.sd-quote__steperror {
+  margin: 0;
+  color: var(--color-signal-bad);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.sd-quote__condition {
+  margin: var(--space-2) 0 0;
+}
