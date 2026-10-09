@@ -1,5 +1,5 @@
 // npm run latvanytervek: builds the site, serves the build locally with wrangler, fetches every design and writes
-// "Arculati látványtervek.html" in the project root, one file that switches between them (scripts/latvanytervek.mjs).
+// "Arculati-latvanytervek.html" in the project root, one file that switches between them (scripts/latvanytervek.mjs).
 // The file is generated, so it is not committed; run this again after the designs change.
 import { spawn, spawnSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -12,7 +12,7 @@ import { beagyazas, CD_LINKEK, kapcsoloFajl, mockupDokumentum, oldalKiigazitasa,
 
 const PORT = 8790;
 const BASE = `http://127.0.0.1:${PORT}`;
-const KIMENET = 'Arculati látványtervek.html';
+const KIMENET = 'Arculati-latvanytervek.html';
 const CD_MAPPA = 'design/claude-design';
 
 /** A Claude Design file, self-contained: runtime inline, imported files along, prop defaults set. */

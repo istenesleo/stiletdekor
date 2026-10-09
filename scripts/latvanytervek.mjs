@@ -1,4 +1,4 @@
-// The local "Arculati látványtervek.html": one self-contained file that switches between the page designs and
+// The local "Arculati-latvanytervek.html": one self-contained file that switches between the page designs and
 // leads to the final brand choice: the decision sheet (scripts/dontolap.mjs), the Claude Design files (the
 // prototype in directions C, A and B, the tablo with its mixer, the design system, the components;
 // scripts/claude-design.mjs), the A and B mockups, the full directions X1–X6 and the brand elements G1–G4 in the

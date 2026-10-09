@@ -1,4 +1,4 @@
-// The decision sheet ("Döntőlap"): the first tab of "Arculati látványtervek.html". Every open choice of the final
+// The decision sheet ("Döntőlap"): the first tab of "Arculati-latvanytervek.html". Every open choice of the final
 // brand, its options, the tab where each can be seen, and our recommendation (design/claude-design/README.md).
 // Without scripts (the OneDrive preview) it is a form to read and tick; where scripts run, the ticked options add up
 // to a text to paste into the chat, and the browser remembers them.

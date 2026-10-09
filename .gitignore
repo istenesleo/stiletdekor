@@ -35,7 +35,7 @@ npm-debug.log*
 .idea/
 
 # the local switcher file of the page designs (npm run latvanytervek)
-Arculati látványtervek.html
+Arculati-latvanytervek.html
 
 # Claude Design handoff downloads (the extracted project files are committed in design/claude-design/)
 design/claude-design/*.zip

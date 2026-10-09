@@ -1,4 +1,4 @@
-// The Claude Design files (design/claude-design/*.dc.html) made ready to run inside "Arculati látványtervek.html":
+// The Claude Design files (design/claude-design/*.dc.html) made ready to run inside "Arculati-latvanytervek.html":
 // the runtime (support.js) goes inline, the files they import ride along as in-memory blobs (the runtime reads
 // window.__resources and window.__resourceBlobs before it fetches a sibling), a prop's default can be set (the
 // prototype's direction), and links between the files switch tabs of the switcher instead of opening a file.

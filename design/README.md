@@ -12,7 +12,7 @@ A Stilet Dekor design systemjének otthona. A brief a gyökérben: [`../DESIGN.m
 
 ## Arculati látványtervek: egy fájlban, váltóval
 
-Az `npm run latvanytervek` a projekt gyökerébe írja az **„Arculati látványtervek.html”** fájlt: dupla kattintással
+Az `npm run latvanytervek` a projekt gyökerébe írja az **„Arculati-latvanytervek.html”** fájlt: dupla kattintással
 megnyílik, felül gombokkal váltható, asztali vagy 390 px-es mobilnézetben. A fülek:
 
 - **Döntőlap** (az első): pontonként a végleges arculat (irány, márkaszín, betűpár, sarkok, fény, fő gomb,

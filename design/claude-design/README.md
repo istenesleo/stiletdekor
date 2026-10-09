@@ -3,7 +3,7 @@
 A Claude Design „Stiletdekor design mockups” projektjének exportja (handoff, 2026-10-08), a repó adatai és
 tokenjei alapján. A fájlok böngészőben nyílnak meg, internet kell hozzájuk: a `support.js` a React-et és a
 Babelt az unpkg-ről tölti, a betűket a Google Fonts adja. Kényelmesebb mindet egyszerre, váltóval nézni: az
-`npm run latvanytervek` által készített **„Arculati látványtervek.html”** tartalmazza őket a Döntőlappal
+`npm run latvanytervek` által készített **„Arculati-latvanytervek.html”** tartalmazza őket a Döntőlappal
 együtt (lásd `design/README.md`).
 
 | Fájl | Mi van benne |
