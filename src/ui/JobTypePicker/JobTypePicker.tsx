@@ -15,7 +15,9 @@ export interface JobTypeOption {
 export interface JobTypePickerProps extends Omit<HTMLAttributes<HTMLFieldSetElement>, 'onChange'> {
   types: readonly JobTypeOption[];
   value?: string;
-  onChange: (id: string) => void;
+  onChange?: (id: string) => void;
+  /** Link mode: every type is a link to this address (the quote page of the type), not a radio. Works without JavaScript. */
+  hrefFor?: (id: string) => string;
   /** The question, "Milyen munkáról van szó?" by default. */
   legend?: string;
   name?: string;
@@ -25,9 +27,19 @@ const pictogramFor = (id: string) => (id in JOB_PICTOGRAMS ? JOB_PICTOGRAMS[id a
 
 /**
  * First step of the quote wizard: the nine custom job types as selectable cards with pictograms.
+ * With hrefFor, the cards are links (the /ajanlatkeres page).
  * @category quote
  */
-export function JobTypePicker({ types, value, onChange, legend = 'Milyen munkáról van szó?', name, className, ...rest }: JobTypePickerProps) {
+export function JobTypePicker({
+  types,
+  value,
+  onChange,
+  hrefFor,
+  legend = 'Milyen munkáról van szó?',
+  name,
+  className,
+  ...rest
+}: JobTypePickerProps) {
   const auto = useId();
   const group = name ?? `sd-jobs${auto.replace(/:/g, '')}`;
   return (
@@ -36,14 +48,27 @@ export function JobTypePicker({ types, value, onChange, legend = 'Milyen munkár
       <div className="sd-jobs__grid">
         {types.map((t) => {
           const id = `${group}-${t.id}`;
+          const content = (
+            <>
+              <svg className="sd-job__pict" viewBox="0 0 48 36" aria-hidden="true" dangerouslySetInnerHTML={{ __html: pictogramFor(t.id) }} />
+              <span className="sd-job__name">{t.name}</span>{' '}
+              {t.hint && <span className="sd-job__hint">{t.hint}</span>}
+            </>
+          );
           return (
             <div key={t.id}>
-              <input type="radio" className="sd-vh" id={id} name={group} value={t.id} checked={t.id === value} onChange={() => onChange(t.id)} />
-              <label className="sd-job" htmlFor={id}>
-                <svg className="sd-job__pict" viewBox="0 0 48 36" aria-hidden="true" dangerouslySetInnerHTML={{ __html: pictogramFor(t.id) }} />
-                <span className="sd-job__name">{t.name}</span>{' '}
-                {t.hint && <span className="sd-job__hint">{t.hint}</span>}
-              </label>
+              {hrefFor ? (
+                <a className="sd-job sd-job--link" href={hrefFor(t.id)}>
+                  {content}
+                </a>
+              ) : (
+                <>
+                  <input type="radio" className="sd-vh" id={id} name={group} value={t.id} checked={t.id === value} onChange={() => onChange?.(t.id)} />
+                  <label className="sd-job" htmlFor={id}>
+                    {content}
+                  </label>
+                </>
+              )}
             </div>
           );
         })}

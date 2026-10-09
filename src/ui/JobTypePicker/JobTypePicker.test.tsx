@@ -32,4 +32,12 @@ describe('JobTypePicker', () => {
     const picts = [...container.querySelectorAll('.sd-job__pict')].map((svg) => svg.innerHTML);
     expect(picts).toEqual([JOB_PICTOGRAMS.kirakat, JOB_PICTOGRAMS.ceger, JOB_PICTOGRAMS.egyeb].map(serialize));
   });
+
+  it('links each type to its own page instead of a radio group, so it works without JavaScript', () => {
+    render(<JobTypePicker types={TYPES} hrefFor={(id) => `/ajanlatkeres/${id}`} />);
+    expect(screen.queryAllByRole('radio')).toEqual([]);
+    const link = screen.getByRole('link', { name: /Kirakat- és üvegfóliázás/ });
+    expect(link.getAttribute('href')).toBe('/ajanlatkeres/kirakat');
+    expect(screen.getAllByRole('link')).toHaveLength(TYPES.length);
+  });
 });

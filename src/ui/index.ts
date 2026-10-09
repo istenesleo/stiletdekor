@@ -65,6 +65,8 @@ export { OrderSubmit } from './OrderSubmit/OrderSubmit';
 export type { OrderSubmitProps } from './OrderSubmit/OrderSubmit';
 export { PriceBreakdown } from './PriceBreakdown/PriceBreakdown';
 export type { PriceBreakdownProps, PriceRow } from './PriceBreakdown/PriceBreakdown';
+export { QUOTE_STEPS, QuoteForm, quoteFieldDomId } from './QuoteForm/QuoteForm';
+export type { QuoteFormProps } from './QuoteForm/QuoteForm';
 export { QuantityStepper } from './QuantityStepper/QuantityStepper';
 export type { QuantityStepperProps } from './QuantityStepper/QuantityStepper';
 export { READINESS_SCALE, ReadinessLight } from './ReadinessLight/ReadinessLight';

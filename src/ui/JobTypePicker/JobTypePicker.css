@@ -63,3 +63,15 @@ input:checked + .sd-job .sd-job__pict {
   font-size: var(--text-xs);
   line-height: 1.4;
 }
+.sd-job--link {
+  color: inherit;
+  text-decoration: none;
+}
+.sd-job--link:hover .sd-job__pict,
+.sd-job--link:focus-visible .sd-job__pict {
+  color: var(--color-brand);
+}
+.sd-job--link:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
