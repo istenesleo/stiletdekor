@@ -56,8 +56,8 @@
   // upload is built: enable R2 in the dashboard, create the bucket, then restore this block here, in
   // "previews" and in env.production, and make UPLOADS required again in src/env.d.ts.
   // "r2_buckets": [{ "binding": "UPLOADS", "bucket_name": "stiletdekor-uploads-dev" }],
-  // Callback form: at most 5 posts per visitor (IP) per minute. Not inherited: repeated in every environment.
-  "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+  // The site's forms: at most 5 posts per visitor (IP) and form per minute. Not inherited: repeated in every environment.
+  "ratelimits": [{ "name": "FORM_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
   // Retries the workshop's notification e-mails every 15 minutes (src/server/callback/notify.ts).
   "triggers": { "crons": ["*/15 * * * *"] },
   "vars": {
@@ -77,7 +77,7 @@
   // Docs: https://developers.cloudflare.com/workers/previews/configuration/
   "previews": {
     "observability": { "enabled": true },
-    "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+    "ratelimits": [{ "name": "FORM_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
     "vars": {
       "PUBLIC_SITE_ENV": "dev",
       "SITE_THEME": "neon-muhely",
@@ -103,7 +103,7 @@
     // Same dev database as dev site A. Vars and bindings are not inherited, so they are repeated here.
     "galeria": {
       "name": "stiletdekor-galeria",
-      "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+      "ratelimits": [{ "name": "FORM_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
       // Both dev sites share one database: dev site A's cron is enough.
       "triggers": { "crons": [] },
       "observability": {
@@ -133,7 +133,7 @@
     // Bindings and vars are not inherited from the top level, so they are repeated here.
     "production": {
       "name": "stiletdekor-production",
-      "ratelimits": [{ "name": "CALLBACK_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
+      "ratelimits": [{ "name": "FORM_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
       "triggers": { "crons": ["*/15 * * * *"] },
       "d1_databases": [
         {

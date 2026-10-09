@@ -1,6 +1,7 @@
 // The callback requests in D1 (table callback_requests, migrations/0001_callback_requests.sql).
 import { isCallbackJobTypeId } from '@/domain/schemas';
-import { NOTIFY_LEASE_MS, NOTIFY_WINDOW_MS, type CallbackStore, type StoredCallback } from './store';
+import { d1NotificationQueue } from '../notify/queue';
+import type { CallbackStore, StoredCallback } from './store';
 
 interface CallbackRow {
   id: number;
@@ -26,10 +27,9 @@ function toStored(row: CallbackRow): StoredCallback {
   };
 }
 
-const isoBefore = (now: Date, ms: number) => new Date(now.getTime() - ms).toISOString();
-
 export function d1CallbackStore(db: D1Database): CallbackStore {
   return {
+    ...d1NotificationQueue(db, 'callback_requests', COLUMNS, toStored),
     async insert(request) {
       const inserted = await db
         .prepare(
@@ -53,40 +53,6 @@ export function d1CallbackStore(db: D1Database): CallbackStore {
         .first<{ id: number }>();
       if (!existing) throw new Error('The callback request was neither saved nor found.');
       return existing.id;
-    },
-
-    async claimForNotification(id, now) {
-      const row = await db
-        .prepare(
-          'UPDATE callback_requests SET notify_attempts = notify_attempts + 1, notify_last_attempt_at = ? ' +
-            'WHERE id = ? AND notified_at IS NULL AND (notify_last_attempt_at IS NULL OR notify_last_attempt_at < ?) ' +
-            `RETURNING ${COLUMNS}`,
-        )
-        .bind(now.toISOString(), id, isoBefore(now, NOTIFY_LEASE_MS))
-        .first<CallbackRow>();
-      return row ? toStored(row) : null;
-    },
-
-    async markNotified(id, now) {
-      await db
-        .prepare('UPDATE callback_requests SET notified_at = ?, notify_last_error = NULL WHERE id = ?')
-        .bind(now.toISOString(), id)
-        .run();
-    },
-
-    async recordNotificationFailure(id, error) {
-      await db
-        .prepare('UPDATE callback_requests SET notify_last_error = ? WHERE id = ?')
-        .bind(error.slice(0, 500), id)
-        .run();
-    },
-
-    async pendingNotificationIds(now) {
-      const { results } = await db
-        .prepare('SELECT id FROM callback_requests WHERE notified_at IS NULL AND created_at >= ? ORDER BY created_at, id LIMIT 50')
-        .bind(isoBefore(now, NOTIFY_WINDOW_MS))
-        .all<{ id: number }>();
-      return results.map((row) => row.id);
     },
   };
 }

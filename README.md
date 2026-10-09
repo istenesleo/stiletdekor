@@ -123,7 +123,7 @@ helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jog
 
 - **Tábla:** `migrations/0001_callback_requests.sql`. Helyben `npm run db:migrate:local`; a dev adatbázisba
   push előtt `npx wrangler d1 migrations apply DB --remote` (élesben `--env production` is).
-- **Beküldési korlát:** `CALLBACK_LIMITER` (60 másodpercenként 5 beküldés IP-címenként), minden környezetben.
+- **Beküldési korlát:** `FORM_LIMITER` (60 másodpercenként 5 beküldés IP-címenként és űrlaponként), minden környezetben.
 - **Értesítő e-mailek:** amíg nincs `EMAIL` kötés, a levelek a Worker naplójába mennek, és a kérés
   „elküldöttnek” számít. Valódi küldéshez a `stiletdekor.hu` domainnek a Cloudflare-en kell lennie (most a
   register.it névszerverein van, a levelezés a webnode-on; az MX rekordokat költözéskor át kell venni):

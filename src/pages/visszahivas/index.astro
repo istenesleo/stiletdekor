@@ -6,7 +6,8 @@ import { COMPANY } from '@/domain/company';
 import Page from '@/layouts/Page.astro';
 import { d1CallbackStore } from '@/server/callback/d1-store';
 import { notifyCallback } from '@/server/callback/notify';
-import { limiterAllows, type RejectedCallback, submitCallback } from '@/server/callback/submit';
+import { type RejectedCallback, submitCallback } from '@/server/callback/submit';
+import { limiterAllows } from '@/server/forms';
 import { mailerFor } from '@/server/notify/mailer';
 import { CallbackForm } from '@/ui/CallbackForm/CallbackForm';
 
@@ -20,7 +21,7 @@ if (Astro.request.method === 'POST') {
     store,
     now,
     newToken: () => crypto.randomUUID(),
-    allow: () => limiterAllows(env.CALLBACK_LIMITER, Astro.clientAddress),
+    allow: () => limiterAllows(env.FORM_LIMITER, `visszahivas:${Astro.clientAddress}`),
   });
   if (result.kind === 'accepted') {
     if (result.id !== null) {

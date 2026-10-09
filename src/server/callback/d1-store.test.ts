@@ -1,31 +1,22 @@
-// Runs against a real, in-memory D1 (wrangler's getPlatformProxy reads wrangler.jsonc and starts a local runtime).
-import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { getPlatformProxy } from 'wrangler';
+import { testDatabase } from '../test-d1';
 import { d1CallbackStore } from './d1-store';
 import type { NewCallback } from './store';
 
-const MIGRATION = readFileSync(new URL('../../../migrations/0001_callback_requests.sql', import.meta.url), 'utf8');
-const STATEMENTS = MIGRATION.replace(/--[^\n]*/g, '')
-  .split(';')
-  .map((statement) => statement.trim())
-  .filter(Boolean);
-
-let proxy: Awaited<ReturnType<typeof getPlatformProxy<Env>>>;
+let t: Awaited<ReturnType<typeof testDatabase>>;
 let db: D1Database;
 
 beforeAll(async () => {
-  proxy = await getPlatformProxy<Env>({ persist: false });
-  db = proxy.env.DB;
+  t = await testDatabase();
+  db = t.db;
 }, 60_000);
 
 afterAll(async () => {
-  await proxy?.dispose();
+  await t?.dispose();
 });
 
 beforeEach(async () => {
-  await db.prepare('DROP TABLE IF EXISTS callback_requests').run();
-  await db.batch(STATEMENTS.map((statement) => db.prepare(statement)));
+  await t.reset();
 });
 
 const T0 = new Date('2026-10-08T10:00:00.000Z');
