@@ -1,0 +1,182 @@
+---
+// One product of the webshop (prerendered): what it is, the configurator island (client:only, because the cart lives
+// in the browser), its prices, production and handover. Without JavaScript everything but the configurator shows,
+// with the quote and callback ways instead (docs/superpowers/specs/2026-10-09-webshop-4a-4b-design.md, 1. and 3.).
+import { env } from 'cloudflare:workers';
+import {
+  EXPRESS_LEAD_BUSINESS_DAYS,
+  EXPRESS_SURCHARGE_PERCENT,
+  MATERIAL_SPECS_NEED_REVIEW,
+  PRICES_ARE_PLACEHOLDERS,
+  SHIPPING_METHODS,
+  SHOP_PRODUCT_IDS,
+  SHOP_PRODUCTS,
+  type ShopProductId,
+  STANDARD_LEAD_BUSINESS_DAYS,
+} from '@/domain/catalog';
+import { formatHuf } from '@/domain/money';
+import { FINAL_PRICE_NOTICE } from '@/domain/orders';
+import { grossOf } from '@/domain/pricing';
+import { Configurator } from '@/islands/shop/Configurator';
+import { DISCOUNT_SUMMARY } from '@/islands/shop/price-rows';
+import Page from '@/layouts/Page.astro';
+import { productPriceTable } from '@/site/shop-ui';
+import { Notice } from '@/ui/Notice/Notice';
+import { CALLBACK_HREF, QUOTE_HREF, WEBSHOP_HREF } from '@/ui/navigation';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return SHOP_PRODUCT_IDS.map((termek) => ({ params: { termek } }));
+}
+
+const productId = Astro.params.termek as ShopProductId;
+const product = SHOP_PRODUCTS[productId];
+const prices = productPriceTable(productId);
+const showPlaceholders = (PRICES_ARE_PLACEHOLDERS || MATERIAL_SPECS_NEED_REVIEW) && env.PUBLIC_SITE_ENV !== 'production';
+const shipping = SHIPPING_METHODS.map((method) => {
+  const net = product.parcel === 'large' ? method.largeParcelPriceNet : method.priceNet;
+  return { name: method.name, description: method.description, price: net === null ? 'egyedi' : net === 0 ? 'ingyenes' : formatHuf(grossOf(net)) };
+});
+---
+
+<Page title={`${product.name} rendelés – Stilet Dekor`} description={product.shortDescription} currentHref={WEBSHOP_HREF}>
+  <article class="tp">
+    <nav class="tp__crumbs" aria-label="Morzsamenü">
+      <ol>
+        <li><a href={WEBSHOP_HREF}>Webshop</a></li>
+        <li aria-current="page">{product.name}</li>
+      </ol>
+    </nav>
+    <h1>{product.name}</h1>
+    <p class="tp__lead">{product.shortDescription}</p>
+    {
+      showPlaceholders && (
+        <Notice tone="warning" title="Helyőrző árak">
+          Az árak és az anyagadatok egyelőre becslések; élesítés előtt a műhely átírja őket.
+        </Notice>
+      )
+    }
+    <section class="tp__tool" aria-label="Összeállítás">
+      <Configurator client:only="react" productId={productId}>
+        <p slot="fallback" class="tp__loading">A konfigurátor betöltése…</p>
+      </Configurator>
+      <noscript>
+        <style is:inline>
+          .tp__loading {
+            display: none;
+          }
+        </style>
+        <p class="tp__nojs">
+          A rendeléshez JavaScript kell. Addig <a href={QUOTE_HREF}>kérjen ajánlatot</a>, vagy
+          <a href={CALLBACK_HREF}>kérjen visszahívást</a>.
+        </p>
+      </noscript>
+    </section>
+    <section class="tp__info">
+      <h2>Árak</h2>
+      <table class="tp__prices">
+        <caption class="sd-vh">{product.name} árai, bruttó</caption>
+        <tbody>
+          {
+            prices.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                <td>{row.price}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="tp__note">
+        Az árak bruttók, 27% ÁFÁ-val. Mennyiségi kedvezmény azonos tételből: {DISCOUNT_SUMMARY}. {FINAL_PRICE_NOTICE}
+      </p>
+      <h2>Gyártás és átvétel</h2>
+      <p>
+        Gyártási idő: {STANDARD_LEAD_BUSINESS_DAYS} munkanap a díjbekérő befizetésétől; expressz gyártással
+        {EXPRESS_LEAD_BUSINESS_DAYS} munkanap (+{EXPRESS_SURCHARGE_PERCENT}%), ha vállalható.
+      </p>
+      <ul class="tp__shipping">
+        {
+          shipping.map((s) => (
+            <li>
+              <strong>{s.name}</strong>: {s.price}. {s.description}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
+</Page>
+
+<style>
+  .tp {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--layout-gutter) var(--space-9);
+    display: grid;
+    gap: var(--space-5);
+  }
+  .tp__crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .tp__crumbs li + li::before {
+    content: '/';
+    margin-right: var(--space-2);
+  }
+  .tp__crumbs a,
+  .tp a {
+    color: var(--color-text);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  h2 {
+    margin: var(--space-5) 0 var(--space-2);
+    font-size: var(--text-lg);
+  }
+  .tp__lead,
+  .tp__note {
+    max-width: 44rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .tp__loading {
+    min-height: 32rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .tp__prices {
+    width: 100%;
+    max-width: 44rem;
+    border-collapse: collapse;
+  }
+  .tp__prices th,
+  .tp__prices td {
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-line);
+    text-align: left;
+    font-weight: var(--weight-regular);
+  }
+  .tp__prices td {
+    text-align: right;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .tp__shipping {
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+</style>

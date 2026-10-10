@@ -1,8 +1,8 @@
 // Short reference numbers the customer can read out on the phone: "AK-0142" (quote request), "VH-0087"
-// (callback request). The number is the row's id in its own D1 table, padded to at least four digits
-// (docs/superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md, 4.2).
+// (callback request), "R-0001" (webshop order). The number is the row's id in its own D1 table, padded to at least
+// four digits (docs/superpowers/specs/2026-10-08-weboldal-mukodesi-elvek-design.md, 4.2).
 
-export type ReferencePrefix = 'AK' | 'VH';
+export type ReferencePrefix = 'AK' | 'VH' | 'R';
 
 const MIN_DIGITS = 4;
 

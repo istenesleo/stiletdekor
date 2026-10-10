@@ -1,0 +1,130 @@
+---
+// The customer's order status page on a secret link (/rendeles/<token>): reference, status, what comes next, the
+// items and the totals, and no personal data, so a forwarded link reveals nothing. "?uj=1" adds the thank-you
+// panel right after the order was sent (docs/superpowers/specs/2026-10-09-webshop-4a-4b-design.md, 10.).
+import { env } from 'cloudflare:workers';
+import { SHIPPING_METHODS } from '@/domain/catalog';
+import { COMPANY } from '@/domain/company';
+import { FINAL_PRICE_NOTICE, orderNextStep } from '@/domain/orders';
+import { formatReference } from '@/domain/reference';
+import Page from '@/layouts/Page.astro';
+import { budapestDateTime } from '@/server/notify/format';
+import { d1OrderStore } from '@/server/order/d1-store';
+import { isStatusToken } from '@/server/order/token';
+import { Notice } from '@/ui/Notice/Notice';
+import { OrderStatusBadge } from '@/ui/OrderStatusBadge/OrderStatusBadge';
+import { PriceBreakdown, type PriceRow } from '@/ui/PriceBreakdown/PriceBreakdown';
+import { SuccessPanel } from '@/ui/SuccessPanel/SuccessPanel';
+
+const token = Astro.params.token;
+const order = isStatusToken(token) ? await d1OrderStore(env.DB).findByStatusToken(token) : null;
+// Unknown or malformed token: an empty 404 makes Astro show the site's 404 page.
+if (!order) return new Response(null, { status: 404 });
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+
+const reference = formatReference('R', order.id);
+const method = SHIPPING_METHODS.find((m) => m.id === order.shippingMethod);
+const fresh = Astro.url.searchParams.get('uj') === '1';
+const itemsGross = order.items.reduce((sum, item) => sum + item.grossTotal, 0);
+const rows: PriceRow[] = [
+  ...order.items.map((item) => ({
+    label: item.description,
+    detail: `${item.quantity} db · ${item.files.length > 0 ? item.files.map((file) => file.name).join(', ') : 'grafika e-mailben'}`,
+    amount: item.grossTotal,
+  })),
+  order.totals.shippingPriceOnRequest
+    ? { label: method?.name ?? 'Átvétel', amountText: 'egyedi' }
+    : { label: method?.name ?? 'Átvétel', amount: order.totals.grossTotal - itemsGross, kind: 'muted' as const },
+];
+const needsArtwork = order.items.some((item) => item.files.length === 0);
+const mailto = `mailto:${COMPANY.email}?subject=${encodeURIComponent(reference)}`;
+---
+
+<Page title={`${reference} rendelés – Stilet Dekor`} description="A rendelés állapota." actionBar={false} analytics={false} noindex>
+  <section class="rd">
+    {
+      fresh && (
+        <SuccessPanel
+          title="Köszönjük, megkaptuk a rendelését"
+          reference={reference}
+          referenceLabel="Rendelésszám"
+          nextSteps={[
+            'Ellenőrizzük a fájlt, az anyagot és a határidőt.',
+            'E-mailben visszaigazoljuk a végleges árat, és küldjük a díjbekérőt.',
+            'A gyártás a díjbekérő befizetése után indul.',
+          ]}
+        >
+          <Notice title="Mentse el ezt az oldalt">
+            Ezen a címen bármikor megnézheti a rendelés állapotát. A címet ne ossza meg mással.
+          </Notice>
+        </SuccessPanel>
+      )
+    }
+    <h1>{reference} rendelés</h1>
+    <p class="rd__meta">Beküldve: {budapestDateTime(order.createdAt)}</p>
+    <div class="rd__status">
+      <OrderStatusBadge status={order.status} />
+      <p>{orderNextStep(order.status, order.shippingMethod)}</p>
+    </div>
+    {
+      needsArtwork && (
+        <Notice tone="warning" title="A grafikát e-mailben várjuk">
+          Küldje el a <a href={mailto}>{COMPANY.email}</a> címre, a levél tárgyában a rendelésszámmal ({reference}).
+        </Notice>
+      )
+    }
+    <h2>Tételek</h2>
+    <PriceBreakdown
+      rows={rows}
+      total={order.totals.grossTotal}
+      totalLabel="Végösszeg, bruttó"
+      net={order.totals.netTotal}
+      vat={order.totals.vatTotal}
+      note={FINAL_PRICE_NOTICE}
+    />
+    <p class="rd__help">
+      Kérdése van? Hívjon: <a href={COMPANY.phone.href}>{COMPANY.phone.display}</a>, és mondja meg a rendelésszámot.
+    </p>
+  </section>
+</Page>
+
+<style>
+  .rd {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--layout-gutter) var(--space-9);
+    display: grid;
+    gap: var(--space-5);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  h2 {
+    margin: var(--space-4) 0 0;
+    font-size: var(--text-lg);
+  }
+  .rd__meta,
+  .rd__help {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .rd__status {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+  .rd__status p {
+    margin: 0;
+  }
+  .rd a {
+    color: var(--color-text);
+  }
+</style>

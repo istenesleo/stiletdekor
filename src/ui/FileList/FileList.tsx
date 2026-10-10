@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { formatNumberHu } from '@/domain/money';
+import { formatFileSize } from '@/domain/money';
 import { Badge, type BadgeTone } from '../Badge/Badge';
 import '../base.css';
 import { cx } from '../cx';
@@ -31,12 +31,7 @@ export interface FileListItem {
   statusText?: string;
 }
 
-/** "2,4 MB", "830 kB" (decimal units, like most operating systems). */
-export function formatFileSize(bytes: number): string {
-  return bytes >= 1_000_000
-    ? `${formatNumberHu(bytes / 1_000_000, 1)}\u00a0MB`
-    : `${formatNumberHu(Math.max(1, bytes / 1000), 0)}\u00a0kB`;
-}
+export { formatFileSize };
 
 export interface FileListProps extends HTMLAttributes<HTMLUListElement> {
   items: readonly FileListItem[];

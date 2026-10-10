@@ -11,9 +11,13 @@ interface Props {
   description: string;
   /** Design direction for this page only (the component specimen page); otherwise the deployment's SITE_THEME. */
   theme?: SiteThemeId;
+  /** Cookie-free measuring; off on pages whose address is a secret (the order status page). */
+  analytics?: boolean;
+  /** Never index this page, not even on production. */
+  noindex?: boolean;
 }
 
-const { title, description, theme: themeOverride } = Astro.props;
+const { title, description, theme: themeOverride, analytics = true, noindex = false } = Astro.props;
 
 // Only the production deployment may be indexed; dev and branch previews stay hidden.
 const indexable = env.PUBLIC_SITE_ENV === 'production';
@@ -21,7 +25,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
 // Design direction of this deployment (SITE_THEME var): selects the token set in tokens.css and its fonts.
 const theme = siteThemeOf(themeOverride ?? env.SITE_THEME);
 // Cookie-free measuring, only when this deployment has a Web Analytics token (src/site/analytics.ts).
-const beacon = analyticsBeacon(env.CF_BEACON_TOKEN);
+const beacon = analytics ? analyticsBeacon(env.CF_BEACON_TOKEN) : null;
 ---
 
 <!doctype html>
@@ -34,7 +38,7 @@ const beacon = analyticsBeacon(env.CF_BEACON_TOKEN);
     <link rel="stylesheet" href={theme.fontsHref} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {!indexable && <meta name="robots" content="noindex, nofollow" />}
+    {(!indexable || noindex) && <meta name="robots" content="noindex, nofollow" />}
     {canonical && <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />

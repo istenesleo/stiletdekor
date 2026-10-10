@@ -1,4 +1,4 @@
-// The site's menus: the defaults of SiteHeader and SiteFooter. Until the pages get their own routes, the items
+// The site's menus: the defaults of SiteHeader and SiteFooter. Until the pages get their own routes, the other items
 // point at sections of the home page, so they work from any page.
 
 /** A menu item. */
@@ -14,7 +14,11 @@ export interface FooterColumn {
 }
 
 /** The webshop's entry. */
-export const WEBSHOP_HREF = '/#webshop';
+export const WEBSHOP_HREF = '/webshop';
+
+/** The cart page and the checkout. */
+export const CART_HREF = '/kosar';
+export const CHECKOUT_HREF = '/penztar';
 
 /** The main menu in the header. */
 export const MAIN_NAV: readonly NavItem[] = [

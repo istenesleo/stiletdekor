@@ -25,6 +25,11 @@ export interface SiteHeaderProps extends HTMLAttributes<HTMLElement> {
   cartCount?: number;
   /** Opens the cart drawer. Without it there is no cart button. */
   onCartClick?: () => void;
+  /**
+   * Link to the cart page, when there is no onCartClick. Its item count comes from the page's small script
+   * (src/scripts/cart-badge.ts), so the header stays static HTML.
+   */
+  cartHref?: string;
   /** Stays at the top of the window while scrolling (default). Turn it off in previews. */
   sticky?: boolean;
   /** Target of the "Ugrás a tartalomra" skip link, the page's main content; null leaves the link out. */
@@ -49,6 +54,7 @@ export function SiteHeader({
   quoteHref = QUOTE_HREF,
   cartCount = 0,
   onCartClick,
+  cartHref,
   sticky = true,
   skipTo = '#tartalom',
   defaultMenuOpen = false,
@@ -93,9 +99,14 @@ export function SiteHeader({
         <ButtonLink className="sd-header__cta" href={quoteHref} size="sm">
           Ajánlatkérés
         </ButtonLink>
-        {onCartClick && (
+        {onCartClick ? (
           <IconButton icon="cart" label={`Kosár megnyitása, ${cartCount} tétel`} count={cartCount} aria-haspopup="dialog" onClick={onCartClick} />
-        )}
+        ) : cartHref ? (
+          <a className="sd-iconbtn sd-header__cart" href={cartHref} aria-label="Kosár" data-cart-link="">
+            <Icon name="cart" />
+            <span className="sd-iconbtn__count" aria-hidden="true" data-cart-count="" hidden />
+          </a>
+        ) : null}
         <button type="button" className="sd-iconbtn sd-header__menubtn" aria-label="Menü" popoverTarget={panelId}>
           <Icon name="menu" className="sd-header__open" />
           <Icon name="close" className="sd-header__close" />

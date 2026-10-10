@@ -44,3 +44,17 @@ export function formatNumberHu(value: number, maximumFractionDigits = 2): string
   }
   return formatter.format(value);
 }
+
+/** "12,5", "12.5" or "1 200" → a number; an unreadable text stays text, so a schema can say it is not a number. */
+export function parseNumberHu(text: string): number | string | null {
+  const compact = text.replace(/\s/g, '');
+  if (!compact) return null;
+  return /^-?\d+([.,]\d+)?$/.test(compact) ? Number(compact.replace(',', '.')) : text.trim();
+}
+
+/** "2,4 MB", "830 kB" (decimal units, like most operating systems). */
+export function formatFileSize(bytes: number): string {
+  return bytes >= 1_000_000
+    ? `${formatNumberHu(bytes / 1_000_000, 1)}\u00a0MB`
+    : `${formatNumberHu(Math.max(1, bytes / 1000), 0)}\u00a0kB`;
+}

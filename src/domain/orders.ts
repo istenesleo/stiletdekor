@@ -109,6 +109,24 @@ export const READY_MESSAGES: Readonly<Record<ShippingMethodId, string>> = {
   telepites: 'Elkészült, egyeztetjük a telepítés időpontját.',
 };
 
+/** What happens next, on the order's status page (/rendeles/[token]); "elkészült" comes from READY_MESSAGES. */
+export const ORDER_NEXT_STEPS: Readonly<Record<OrderStatus, string>> = {
+  beerkezett:
+    'Ellenőrizzük a fájlt, az anyagot és a határidőt, majd e-mailben visszaigazoljuk a végleges árat és küldjük a díjbekérőt. Fizetni csak a díjbekérő alapján kell.',
+  modositas: 'E-mailben megírtuk, mit kell módosítani. Ha megkaptuk a javítást, újra ellenőrizzük a rendelést.',
+  visszaigazolva: 'E-mailben elküldtük a végleges árat és a díjbekérőt. A gyártás a befizetés beérkezése után indul.',
+  gyartas: 'A befizetés megérkezett, a rendelés gyártás alatt van.',
+  elkeszult: 'A rendelés elkészült.',
+  teljesitve: 'A rendelést teljesítettük. Köszönjük, hogy minket választott.',
+  elutasitva: 'Ezt a rendelést nem tudtuk vállalni. Az okát e-mailben megírtuk.',
+  lemondva: 'A rendelést lemondták.',
+  lejart: 'A díjbekérő nem érkezett be a határidőig, ezért a rendelést lezártuk. Ha mégis kéri, írjon vagy hívjon minket.',
+};
+
+/** The status page's "what happens next" line for an order handed over by `shippingMethod`. */
+export const orderNextStep = (status: OrderStatus, shippingMethod: ShippingMethodId): string =>
+  status === 'elkeszult' ? READY_MESSAGES[shippingMethod] : ORDER_NEXT_STEPS[status];
+
 // ─── Unpaid orders ───────────────────────────────────────────────────────────────────────────────
 
 /** Calendar days after the confirmation before an unpaid order closes (proposal; open question in the brief). */

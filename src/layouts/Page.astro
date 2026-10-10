@@ -3,6 +3,7 @@
 import { ActionBar } from '@/ui/ActionBar/ActionBar';
 import { SiteFooter } from '@/ui/SiteFooter/SiteFooter';
 import { SiteHeader } from '@/ui/SiteHeader/SiteHeader';
+import { CART_HREF } from '@/ui/navigation';
 import type { SiteThemeId } from '@/site/themes';
 import Base from './Base.astro';
 
@@ -14,18 +15,27 @@ interface Props {
   /** The mobile action bar; off on form pages and in the checkout. */
   actionBar?: boolean;
   theme?: SiteThemeId;
+  /** Cookie-free measuring; off on pages whose address is a secret (the order status page). */
+  analytics?: boolean;
+  /** Never index this page, not even on production. */
+  noindex?: boolean;
 }
 
-const { title, description, currentHref, actionBar = true, theme } = Astro.props;
+const { title, description, currentHref, actionBar = true, theme, analytics, noindex } = Astro.props;
 ---
 
-<Base title={title} description={description} theme={theme}>
-  <SiteHeader currentHref={currentHref} />
+<Base title={title} description={description} theme={theme} analytics={analytics} noindex={noindex}>
+  <SiteHeader currentHref={currentHref} cartHref={CART_HREF} />
   <main id="tartalom" tabindex="-1">
     <slot />
   </main>
   <SiteFooter />
   {actionBar && <ActionBar />}
+  <script>
+    import { initCartBadge } from '@/scripts/cart-badge';
+
+    initCartBadge(document);
+  </script>
 </Base>
 
 <style>

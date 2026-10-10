@@ -1,15 +1,11 @@
 // The quote form as the browser posts it (also without JavaScript): FormData into the input of
 // QuoteRequestSchema, keeping what the visitor typed for the form to show again after an error.
 import { getQuoteType, type QuoteTypeId } from '@/domain/catalog';
+import { parseNumberHu } from '@/domain/money';
 import { EMAILED_SUFFIX, quoteFieldName } from '@/domain/quote-form';
 import { formSource, type QuoteFieldValue } from '@/domain/schemas';
 
-/** "12,5", "12.5" or "1 200" → a number; an unreadable text stays text, so the schema says it is not a number. */
-export function parseNumberHu(text: string): number | string | null {
-  const compact = text.replace(/\s/g, '');
-  if (!compact) return null;
-  return /^-?\d+([.,]\d+)?$/.test(compact) ? Number(compact.replace(',', '.')) : text.trim();
-}
+export { parseNumberHu };
 
 export interface QuoteRequestInput {
   quoteType: QuoteTypeId;

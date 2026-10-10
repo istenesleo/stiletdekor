@@ -1,0 +1,77 @@
+---
+// The webshop's entry: the six products with their lowest gross price. Prerendered; no script but the header's count.
+import Page from '@/layouts/Page.astro';
+import { productTiles } from '@/site/shop-ui';
+import { CategoryTile } from '@/ui/CategoryTile/CategoryTile';
+import { QUOTE_HREF, WEBSHOP_HREF } from '@/ui/navigation';
+
+export const prerender = true;
+
+const tiles = productTiles();
+---
+
+<Page
+  title="Webshop – Stilet Dekor"
+  description="Molinó, roll-up, matrica, plakát, tábla és vászonkép online: állítsa össze, töltse fel a grafikát, és küldje el a rendelést ellenőrzésre."
+  currentHref={WEBSHOP_HREF}
+>
+  <section class="ws">
+    <h1>Webshop</h1>
+    <p class="ws__lead">
+      Válassza ki a terméket, állítsa be a méretet és az anyagot, és töltse fel a grafikát. Elküldés után ellenőrizzük a
+      rendelést; fizetni csak a visszaigazolás után, a díjbekérő alapján kell.
+    </p>
+    <ul class="ws__grid">
+      {
+        tiles.map((tile) => (
+          <li>
+            <CategoryTile name={tile.name} price={tile.price} unit={tile.unit} product={tile.product} href={tile.href} />
+            <p>{tile.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="ws__quote">Fóliázás, cégér vagy egyedi munka? <a href={QUOTE_HREF}>Kérjen ajánlatot</a>.</p>
+  </section>
+</Page>
+
+<style>
+  .ws {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .ws__lead {
+    max-width: 44rem;
+    margin: 0 0 var(--space-6);
+    color: var(--color-text-muted);
+  }
+  .ws__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ws__grid p {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-muted);
+  }
+  .ws__quote {
+    margin: var(--space-8) 0 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-line);
+  }
+  .ws__quote a {
+    color: var(--color-text);
+  }
+</style>

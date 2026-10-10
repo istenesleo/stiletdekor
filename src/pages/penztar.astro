@@ -1,0 +1,49 @@
+---
+// The checkout (prerendered shell; the island reads the cart from the browser). No action bar here.
+import { Checkout } from '@/islands/shop/Checkout';
+import Page from '@/layouts/Page.astro';
+import { CALLBACK_HREF } from '@/ui/navigation';
+
+export const prerender = true;
+---
+
+<Page title="Pénztár – Stilet Dekor" description="Rendelés elküldése ellenőrzésre." actionBar={false} noindex>
+  <section class="pt">
+    <h1>Pénztár</h1>
+    <Checkout client:only="react">
+      <p slot="fallback" class="pt__loading">A pénztár betöltése…</p>
+    </Checkout>
+    <noscript>
+      <style is:inline>
+        .pt__loading {
+          display: none;
+        }
+      </style>
+      <p>A rendeléshez JavaScript kell. Addig <a href={CALLBACK_HREF}>kérjen visszahívást</a>.</p>
+    </noscript>
+  </section>
+</Page>
+
+<style>
+  .pt {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-6);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .pt__loading {
+    min-height: 40rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .pt a {
+    color: var(--color-text);
+  }
+</style>

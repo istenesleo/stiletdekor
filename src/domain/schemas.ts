@@ -1,29 +1,26 @@
 // Zod schemas shared by the client (forms, islands) and the server (API routes).
-// Every message a customer can see is Hungarian (magázó). Range checks for product configurations
-// live in pricing.validateConfiguration, so the schema and the price engine cannot disagree.
+// Every message a customer can see is Hungarian (magázó). The product configuration and cart item schemas live in
+// config-schemas.ts (the shop's islands load only those) and are re-exported here.
 
 import { z } from 'zod';
-import {
-  MATRICA,
-  MOLINO,
-  PLAKAT,
-  QUOTE_TYPE_IDS,
-  ROLLUP,
-  SHIPPING_METHOD_IDS,
-  TABLA,
-  VASZONKEP,
-  MAX_QUOTE_UPLOADS,
-  getQuoteType,
-  type QuoteFieldDef,
-} from './catalog';
+import { QUOTE_TYPE_IDS, SHIPPING_METHOD_IDS, MAX_QUOTE_UPLOADS, getQuoteType, type QuoteFieldDef } from './catalog';
+import { CartItemSchema, MAX_ORDER_ITEMS, MAX_UPLOADS_PER_ITEM, UploadIdSchema } from './config-schemas';
 import { budapestToday, isValidIsoDate, type IsoDate } from './leadtime';
 import { formatNumberHu } from './money';
-import { validateConfiguration, type ProductConfig } from './pricing';
+
+export {
+  CartItemSchema,
+  MAX_ORDER_ITEMS,
+  MAX_UPLOADS_PER_ITEM,
+  PreflightSummarySchema,
+  ProductConfigSchema,
+  UploadIdSchema,
+  type CartItem,
+  type PreflightSummary,
+  type _ProductConfigSchemaMatchesDomain,
+} from './config-schemas';
 
 // ─── Building blocks ─────────────────────────────────────────────────────────────────────────────
-
-const idsOf = <T extends readonly { readonly id: string }[]>(list: T) =>
-  list.map((entry) => entry.id) as unknown as readonly [T[number]['id'], ...T[number]['id'][]];
 
 /** Trimmed, non-empty string with a length cap. */
 const requiredText = (requiredMessage: string, max: number, maxMessage: string, min = 1) =>
@@ -41,145 +38,7 @@ const optionalText = (max: number, maxMessage: string) =>
 const isoDate = (requiredMessage: string) =>
   z.iso.date({ error: (issue) => (issue.input === undefined ? requiredMessage : 'Érvénytelen dátum.') });
 
-export const UploadIdSchema = z.uuid({ error: 'Érvénytelen feltöltés-azonosító.' });
-export const MAX_UPLOADS_PER_ITEM = 10;
 
-// ─── Product configuration ───────────────────────────────────────────────────────────────────────
-
-const quantity = z.number({ error: 'Adja meg a darabszámot.' });
-const express = z.boolean({ error: 'Adja meg, kér-e expressz gyártást.' });
-const widthCm = z.number({ error: 'Adja meg a szélességet centiméterben.' });
-const heightCm = z.number({ error: 'Adja meg a magasságot centiméterben.' });
-const orientation = z.enum(['allo', 'fekvo'], { error: 'Válasszon tájolást.' });
-const materialOf = <T extends readonly { readonly id: string }[]>(list: T) =>
-  z.enum(idsOf(list), { error: 'Válasszon anyagot.' });
-const formatOf = <T extends readonly { readonly id: string }[]>(list: T) =>
-  z.enum(idsOf(list), { error: 'Válasszon méretet.' });
-const addOnCount = z.number({ error: 'Adja meg a darabszámot.' });
-
-const MolinoConfigSchema = z.object({
-  productId: z.literal('molino'),
-  materialId: materialOf(MOLINO.materials),
-  edgeFinishId: z.enum(idsOf(MOLINO.edgeFinishes), { error: 'Válasszon szélkidolgozást.' }),
-  widthCm,
-  heightCm,
-  quantity,
-  express,
-});
-
-const RollupConfigSchema = z.object({
-  productId: z.literal('rollup'),
-  formatId: formatOf(ROLLUP.formats),
-  graphicOnly: z.boolean({ error: 'Adja meg, hogy teljes roll-upot vagy csak cseregrafikát kér.' }),
-  quantity,
-  express,
-});
-
-const MatricaConfigSchema = z.object({
-  productId: z.literal('matrica'),
-  materialId: materialOf(MATRICA.materials),
-  widthCm,
-  heightCm,
-  addOnIds: z.array(z.enum(idsOf(MATRICA.areaAddOns), { error: 'Ismeretlen opció.' }), {
-    error: 'Érvénytelen opciólista.',
-  }),
-  quantity,
-  express,
-});
-
-const paperFinish = z.enum(idsOf(PLAKAT.paperFinishes), { error: 'Válasszon papírfelületet (matt vagy fényes).' });
-
-const PlakatConfigSchema = z.discriminatedUnion(
-  'formatId',
-  [
-    z.object({
-      productId: z.literal('plakat'),
-      formatId: formatOf(PLAKAT.formats),
-      paperFinish,
-      orientation,
-      quantity,
-      express,
-    }),
-    z.object({
-      productId: z.literal('plakat'),
-      formatId: z.literal(PLAKAT.blueback.id),
-      widthCm,
-      heightCm,
-      quantity,
-      express,
-    }),
-    z.object({
-      productId: z.literal('plakat'),
-      formatId: z.literal(PLAKAT.custom.id),
-      paperFinish,
-      widthCm,
-      heightCm,
-      quantity,
-      express,
-    }),
-  ],
-  { error: 'Válasszon méretet.' },
-);
-
-const TablaConfigSchema = z.object({
-  productId: z.literal('tabla'),
-  materialId: materialOf(TABLA.materials),
-  widthCm,
-  heightCm,
-  addOnCounts: z.object({ furat: addOnCount, tavtarto: addOnCount }, { error: 'Érvénytelen opciók.' }),
-  quantity,
-  express,
-});
-
-const VaszonkepConfigSchema = z.discriminatedUnion(
-  'formatId',
-  [
-    z.object({ productId: z.literal('vaszonkep'), formatId: formatOf(VASZONKEP.formats), orientation, quantity, express }),
-    z.object({ productId: z.literal('vaszonkep'), formatId: z.literal('egyedi'), widthCm, heightCm, quantity, express }),
-  ],
-  { error: 'Válasszon méretet.' },
-);
-
-export const ProductConfigSchema = z
-  .discriminatedUnion(
-    'productId',
-    [MolinoConfigSchema, RollupConfigSchema, MatricaConfigSchema, PlakatConfigSchema, TablaConfigSchema, VaszonkepConfigSchema],
-    { error: 'Ismeretlen termék.' },
-  )
-  .superRefine((config, ctx) => {
-    for (const issue of validateConfiguration(config)) {
-      ctx.addIssue({ code: 'custom', path: issue.path, message: issue.message });
-    }
-  });
-
-// Compile-time guard: the schema's output must be exactly the domain's ProductConfig
-// (a mismatch fails `tsc`). Exported only so that unused-type lint rules stay quiet.
-type Equivalent<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
-type Assert<T extends true> = T;
-/** @internal */
-export type _ProductConfigSchemaMatchesDomain = Assert<Equivalent<z.output<typeof ProductConfigSchema>, ProductConfig>>;
-
-// ─── Cart item ───────────────────────────────────────────────────────────────────────────────────
-
-/** Client-side preflight result, stored for the workshop; informational only (not trusted). */
-export const PreflightSummarySchema = z.object({
-  dpi: z.number({ error: 'Érvénytelen felbontás.' }).int('Érvénytelen felbontás.').min(0, 'Érvénytelen felbontás.').max(100_000, 'Érvénytelen felbontás.'),
-  rating: z.enum(['kivalo', 'megfelelo', 'gyenge'], { error: 'Érvénytelen minősítés.' }),
-  aspectMismatch: z.boolean({ error: 'Érvénytelen arányadat.' }),
-  fitMode: z.enum(['fill', 'fit'], { error: 'Válassza ki, hogyan illesszük a képet.' }).optional(),
-});
-
-export const CartItemSchema = z.object(
-  {
-    config: ProductConfigSchema,
-    uploadIds: z
-      .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
-      .max(MAX_UPLOADS_PER_ITEM, `Tételenként legfeljebb ${MAX_UPLOADS_PER_ITEM} fájl tölthető fel.`)
-      .default([]),
-    preflight: PreflightSummarySchema.optional(),
-  },
-  { error: 'Érvénytelen kosártétel.' },
-);
 
 // ─── Customer data ───────────────────────────────────────────────────────────────────────────────
 
@@ -316,8 +175,9 @@ export const CallbackRequestSchema = z.object(
 
 // ─── Order ───────────────────────────────────────────────────────────────────────────────────────
 
-export const MAX_ORDER_ITEMS = 50;
 export const MAX_ORDER_NOTE_LENGTH = 2000;
+/** Photos of the site, with installation only (docs/brief.md 4.1). */
+export const MAX_SITE_PHOTOS = 10;
 
 /**
  * Sending an order is free of obligation: the workshop checks it and sends a proforma invoice, and
@@ -339,6 +199,11 @@ export const OrderRequestSchema = z
       shippingMethod: z.enum(SHIPPING_METHOD_IDS, { error: 'Válasszon átvételi módot.' }),
       /** With installation only: the customer asks for an on-site survey before production. */
       surveyRequested: z.boolean({ error: 'Érvénytelen érték.' }).default(false),
+      /** With installation only: photos of the site, so the installation can be priced. */
+      sitePhotoIds: z
+        .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
+        .max(MAX_SITE_PHOTOS, `Legfeljebb ${MAX_SITE_PHOTOS} helyszíni fotó tölthető fel.`)
+        .default([]),
       items: z
         .array(CartItemSchema, { error: 'A kosár üres.' })
         .min(1, 'A kosár üres.')
@@ -351,6 +216,9 @@ export const OrderRequestSchema = z
   .superRefine((order, ctx) => {
     if (order.surveyRequested && order.shippingMethod !== 'telepites') {
       ctx.addIssue({ code: 'custom', path: ['surveyRequested'], message: 'Helyszíni felmérést telepítéssel együtt kérhet.' });
+    }
+    if (order.sitePhotoIds.length > 0 && order.shippingMethod !== 'telepites') {
+      ctx.addIssue({ code: 'custom', path: ['sitePhotoIds'], message: 'Helyszíni fotót telepítéssel együtt küldhet.' });
     }
   });
 
@@ -548,8 +416,6 @@ export const QuoteRequestSchema = createQuoteRequestSchema();
 
 // ─── Types ───────────────────────────────────────────────────────────────────────────────────────
 
-export type PreflightSummary = z.output<typeof PreflightSummarySchema>;
-export type CartItem = z.output<typeof CartItemSchema>;
 export type Contact = z.output<typeof ContactSchema>;
 export type Address = z.output<typeof AddressSchema>;
 export type OrderRequest = z.output<typeof OrderRequestSchema>;
