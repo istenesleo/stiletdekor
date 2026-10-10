@@ -6,7 +6,7 @@ import { SiteHeader } from './SiteHeader';
 
 describe('SiteHeader', () => {
   it('shows the main menu with the current item, the phone, the quote button and a skip link', () => {
-    const { container } = render(<SiteHeader currentHref="/#webshop" />);
+    const { container } = render(<SiteHeader currentHref="/webshop" />);
     const header = screen.getByRole('banner');
     expect(container.firstElementChild).toBe(header);
     const menu = within(header).getAllByRole('navigation', { name: 'Főmenü' })[0]!;
@@ -25,6 +25,14 @@ describe('SiteHeader', () => {
     expect(onCartClick).toHaveBeenCalledOnce();
     rerender(<SiteHeader />);
     expect(screen.queryByRole('button', { name: /Kosár/ })).toBeNull();
+  });
+
+  it('links to the cart page, with a badge the page script fills in', () => {
+    render(<SiteHeader cartHref="/kosar" />);
+    const link = screen.getByRole('link', { name: 'Kosár' });
+    expect(link.getAttribute('href')).toBe('/kosar');
+    expect(link.hasAttribute('data-cart-link')).toBe(true);
+    expect(link.querySelector<HTMLElement>('[data-cart-count]')?.hidden).toBe(true);
   });
 
   it('opens the mobile menu as a popover, without any script', () => {
