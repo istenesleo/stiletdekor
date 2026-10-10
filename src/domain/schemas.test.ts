@@ -165,6 +165,18 @@ describe('OrderRequestSchema', () => {
     expect(parsed.items).toHaveLength(1);
   });
 
+  it('takes site photos with installation only', () => {
+    const parsed = OrderRequestSchema.parse({ ...order, shippingMethod: 'telepites', sitePhotoIds: [UUID_B] });
+    expect(parsed.sitePhotoIds).toEqual([UUID_B]);
+    expect(OrderRequestSchema.parse(order).sitePhotoIds).toEqual([]);
+    expect(issuesOf(OrderRequestSchema, { ...order, sitePhotoIds: [UUID_B] })).toEqual([
+      ['sitePhotoIds', 'Helyszíni fotót telepítéssel együtt küldhet.'],
+    ]);
+    expect(issuesOf(OrderRequestSchema, { ...order, shippingMethod: 'telepites', sitePhotoIds: Array(11).fill(UUID_B) })).toEqual([
+      ['sitePhotoIds', 'Legfeljebb 10 helyszíni fotó tölthető fel.'],
+    ]);
+  });
+
   it('accepts a company order and normalises the tax number', () => {
     const parsed = OrderRequestSchema.parse({
       ...order,

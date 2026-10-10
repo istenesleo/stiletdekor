@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatHuf, formatNumberHu, percentOf, roundHuf } from './money';
+import { formatFileSize, formatHuf, formatNumberHu, parseNumberHu, percentOf, roundHuf } from './money';
 
 /** Intl uses U+00A0 / U+202F as group and currency separators; compare with plain spaces. */
 const norm = (s: string) => s.replace(/[  ]/g, ' ');
@@ -59,5 +59,23 @@ describe('formatNumberHu', () => {
     expect(formatNumberHu(2)).toBe('2');
     expect(formatNumberHu(0.110889)).toBe('0,11');
     expect(formatNumberHu(29.75, 1)).toBe('29,8');
+  });
+});
+
+describe('parseNumberHu', () => {
+  it('reads Hungarian and English decimals and grouped thousands', () => {
+    expect(parseNumberHu('12,5')).toBe(12.5);
+    expect(parseNumberHu(' 1 200 ')).toBe(1200);
+    expect(parseNumberHu('3.75')).toBe(3.75);
+    expect(parseNumberHu('')).toBeNull();
+    expect(parseNumberHu('kb. 12')).toBe('kb. 12');
+  });
+});
+
+describe('formatFileSize', () => {
+  it('writes decimal kB and MB', () => {
+    expect(formatFileSize(2_400_000)).toBe('2,4\u00a0MB');
+    expect(formatFileSize(830_000)).toBe('830\u00a0kB');
+    expect(formatFileSize(10)).toBe('1\u00a0kB');
   });
 });

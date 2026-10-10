@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { SHIPPING_METHOD_IDS } from './catalog';
 import {
   FINAL_PRICE_NOTICE,
+  ORDER_NEXT_STEPS,
   ORDER_STATUSES,
   ORDER_STATUS_IDS,
   ORDER_SUBMIT_LABEL,
@@ -11,6 +12,7 @@ import {
   canTransition,
   getOrderStatus,
   nextStatuses,
+  orderNextStep,
   unpaidOrderClosesOn,
 } from './orders';
 
@@ -78,5 +80,14 @@ describe('unpaid orders', () => {
   it(`close ${UNPAID_ORDER_AUTO_CLOSE_DAYS} calendar days after the confirmation`, () => {
     expect(unpaidOrderClosesOn('2026-10-05')).toBe('2026-10-13');
     expect(unpaidOrderClosesOn('2026-12-28')).toBe('2027-01-05');
+  });
+});
+
+describe('orderNextStep', () => {
+  it('has a text for every status, and the ready text depends on the handover', () => {
+    for (const status of ORDER_STATUS_IDS) expect(ORDER_NEXT_STEPS[status].length).toBeGreaterThan(10);
+    expect(orderNextStep('beerkezett', 'futar')).toContain('díjbekérő');
+    expect(orderNextStep('elkeszult', 'szemelyes')).toBe('Elkészült, átveheti a műhelyben.');
+    expect(orderNextStep('elkeszult', 'telepites')).toBe('Elkészült, egyeztetjük a telepítés időpontját.');
   });
 });

@@ -318,6 +318,8 @@ export const CallbackRequestSchema = z.object(
 
 export const MAX_ORDER_ITEMS = 50;
 export const MAX_ORDER_NOTE_LENGTH = 2000;
+/** Photos of the site, with installation only (docs/brief.md 4.1). */
+export const MAX_SITE_PHOTOS = 10;
 
 /**
  * Sending an order is free of obligation: the workshop checks it and sends a proforma invoice, and
@@ -339,6 +341,11 @@ export const OrderRequestSchema = z
       shippingMethod: z.enum(SHIPPING_METHOD_IDS, { error: 'Válasszon átvételi módot.' }),
       /** With installation only: the customer asks for an on-site survey before production. */
       surveyRequested: z.boolean({ error: 'Érvénytelen érték.' }).default(false),
+      /** With installation only: photos of the site, so the installation can be priced. */
+      sitePhotoIds: z
+        .array(UploadIdSchema, { error: 'Érvénytelen fájllista.' })
+        .max(MAX_SITE_PHOTOS, `Legfeljebb ${MAX_SITE_PHOTOS} helyszíni fotó tölthető fel.`)
+        .default([]),
       items: z
         .array(CartItemSchema, { error: 'A kosár üres.' })
         .min(1, 'A kosár üres.')
@@ -351,6 +358,9 @@ export const OrderRequestSchema = z
   .superRefine((order, ctx) => {
     if (order.surveyRequested && order.shippingMethod !== 'telepites') {
       ctx.addIssue({ code: 'custom', path: ['surveyRequested'], message: 'Helyszíni felmérést telepítéssel együtt kérhet.' });
+    }
+    if (order.sitePhotoIds.length > 0 && order.shippingMethod !== 'telepites') {
+      ctx.addIssue({ code: 'custom', path: ['sitePhotoIds'], message: 'Helyszíni fotót telepítéssel együtt küldhet.' });
     }
   });
 

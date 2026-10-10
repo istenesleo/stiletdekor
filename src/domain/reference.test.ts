@@ -26,3 +26,11 @@ describe('parseReference', () => {
     }
   });
 });
+
+describe('webshop orders', () => {
+  it('are numbered with R', () => {
+    expect(formatReference('R', 7)).toBe('R-0007');
+    expect(parseReference(' R-0012 ', 'R')).toBe('R-0012');
+    expect(parseReference('AK-0012', 'R')).toBeNull();
+  });
+});
