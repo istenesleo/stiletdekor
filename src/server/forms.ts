@@ -7,8 +7,11 @@ export const HONEYPOT_FIELD = 'honlap';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+/** A UUID as text (upload ids, form tokens). */
+export const isUuid = (value: unknown): value is string => typeof value === 'string' && UUID.test(value);
+
 /** A one-time form token (a UUID) as the form sent it. */
-export const isFormToken = (value: unknown): value is string => typeof value === 'string' && UUID.test(value);
+export const isFormToken = isUuid;
 
 export const TOO_MANY_MESSAGE = `Túl sok kérés érkezett erről a címről. Kérjük, próbálja újra egy perc múlva, vagy hívjon: ${COMPANY.phone.display}.`;
 export const SAVE_FAILED_MESSAGE = `Most nem sikerült elküldeni. Kérjük, próbálja újra, vagy hívjon: ${COMPANY.phone.display}.`;

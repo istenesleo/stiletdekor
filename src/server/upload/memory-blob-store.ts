@@ -1,8 +1,8 @@
 // A BlobStore in memory, for the tests. Like R2, it refuses a stream whose length differs from the one given.
 import type { BlobStore } from './blob-store';
 
-export function memoryBlobStore(): BlobStore & { files: Map<string, { bytes: Uint8Array; contentType: string }> } {
-  const files = new Map<string, { bytes: Uint8Array; contentType: string }>();
+export function memoryBlobStore(): BlobStore & { files: Map<string, { bytes: Uint8Array<ArrayBuffer>; contentType: string }> } {
+  const files = new Map<string, { bytes: Uint8Array<ArrayBuffer>; contentType: string }>();
   return {
     files,
     async put(key, body, length, contentType) {

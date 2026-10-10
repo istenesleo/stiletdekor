@@ -30,8 +30,13 @@ declare namespace Cloudflare {
     ORDER_NOTIFY_EMAIL: string;
     /** Comma-separated extra origins allowed for POST /api/* besides the site's own origin. */
     ALLOWED_ORIGINS: string;
-    /** Rate limiter of the site's forms: at most 5 posts per visitor and form per minute (keys "visszahivas:<ip>", "ajanlat:<ip>"). */
+    /**
+     * Rate limiter of the site's forms: at most 5 posts per visitor and form per minute (keys "visszahivas:<ip>",
+     * "ajanlat:<ip>", "rendeles:<ip>").
+     */
     FORM_LIMITER: RateLimit;
+    /** Rate limiter of file uploads: at most 20 per visitor and minute (key "feltoltes:<ip>"). */
+    UPLOAD_LIMITER: RateLimit;
     /**
      * Email Service send binding for the workshop's notifications. Not bound yet: it needs the stiletdekor.hu
      * domain on Cloudflare (README, "Visszahívás és értesítő e-mailek"). Until then the e-mails go to the log.
