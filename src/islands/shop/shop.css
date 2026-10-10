@@ -123,3 +123,35 @@
   font-size: var(--text-sm);
   color: var(--color-text-muted);
 }
+
+.shop-checkout {
+  display: grid;
+  gap: var(--space-6);
+}
+.shop-checkout a {
+  color: var(--color-text);
+}
+.shop-checkout__errors {
+  padding: var(--space-4);
+  border: 2px solid var(--color-signal-bad);
+  border-radius: var(--radius-md);
+}
+.shop-checkout__errors:focus {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.shop-checkout__errors p,
+.shop-checkout__errors ul {
+  margin: 0;
+}
+.shop-checkout__errors ul {
+  margin-top: var(--space-2);
+  padding-left: var(--space-5);
+}
+.shop-checkout__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
