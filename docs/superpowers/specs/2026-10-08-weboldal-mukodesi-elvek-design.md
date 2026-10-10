@@ -184,7 +184,7 @@ Ennél több mező nincs. A beágyazott blokk és a `/visszahivas` oldal ugyanaz
 |---|---|
 | Tartalmi oldalak JavaScriptje | 0 KB keretrendszer-JS; kivétel csak a mérés jeladója (7. fejezet). A fejléc script nélkül működik |
 | Varázsló | Oldalanként legfeljebb ~70 KB (gzip); `client:visible` vagy `client:idle` |
-| Webshop eszközoldalai (termék, kosár, pénztár) | Oldalanként legfeljebb ~130 KB (gzip), `client:idle`; a fájlelemző csak fájlválasztáskor töltődik be, nem számít bele (2026-10-09) |
+| Webshop eszközoldalai (termék, kosár, pénztár) | Oldalanként legfeljebb ~130 KB (gzip), `client:only="react"`; a fájlelemző csak fájlválasztáskor töltődik be, nem számít bele (2026-10-09) |
 | LCP (mobil, 4G, p75) | ≤ 2,0 s |
 | CLS | ≤ 0,05 |
 | INP | ≤ 200 ms |

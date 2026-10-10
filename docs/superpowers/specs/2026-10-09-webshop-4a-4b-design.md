@@ -94,7 +94,7 @@ Minden terméknél van darabszám és expressz gyártás.
 ## 4. Kosár
 
 - **Tárolás:** a böngésző `localStorage`-ában, a `stilet-kosar` kulcson: `{ v: 1, items: [{ key, config, files:
-  [{ uploadId, name, size }], preflight?, addedAt }] }`. Személyes adat nincs benne. Árat nem tárol: azt mindig a
+  [{ uploadId, name, size, uploadedAt }], preflight?, addedAt }] }`. Személyes adat nincs benne. Árat nem tárol: azt mindig a
   konfigurációból számolja (`priceCart`).
 - **Ellenőrzés betöltéskor:** minden tételt a `CartItemSchema` ellenőriz. A sérült vagy már nem érvényes tétel
   kikerül, és egy üzenet jelzi: „Egy tétel már nem rendelhető így, ezért kikerült a kosárból.” Az ismeretlen
@@ -149,14 +149,15 @@ jön, a méret a `Content-Length` fejlécből derül ki.
    `feltoltes:<ip>`.
 3. **Tárhely:** ha nincs `UPLOADS` kötés, a válasz 503, és jelzi az e-mailes kerülőutat.
 4. **Méret:** a `Content-Length` kötelező, legfeljebb 95 MB (`MAX_UPLOAD_BYTES`). Ennél nagyobbra 413.
-5. **Típus:** a kiterjesztés szerepel az `ARTWORK_FILE_TYPES` listában. Az első 4 KB-ból a `detectArtworkFormat`
-   megállapítja a valódi formátumot, és ennek egyeznie kell a kiterjesztéssel (az AI, PDF és EPS rokonságát
-   kezeli). Eltérésnél 415.
+5. **Típus:** a kiterjesztés szerepel az `ARTWORK_FILE_TYPES` listában. Mentés után az első 4 KB-ból a
+   `detectArtworkFormat` megállapítja a valódi formátumot, és ennek illenie kell a kiterjesztéshez: ugyanaz a
+   formátum, vagy rokon (PDF, AI és EPS egymás között; két raszterkép, például PNG `.jpg` néven). Eltérésnél 415.
 
 **Tárolás:**
 
-- **Az R2-be:** véletlen kulccsal (`feltoltes/<uuid>`), a felismert tartalomtípussal. A törzset nem tölti
-  egészében a memóriába: az első bájtok ellenőrzése után továbbfolyatja (`FixedLengthStream`).
+- **Az R2-be:** véletlen kulccsal (`feltoltes/<uuid>`), a kiterjesztés szerinti tartalomtípussal. A törzset nem
+  tölti a memóriába, hanem egyenesen az R2-be írja. Utána az első 4 KB-ot visszaolvasva ellenőrzi a tartalmat
+  (5. lépés); ha nem egyezik, a fájlt törli.
 - **A D1 `uploads` táblájába:** a sor a metaadatokkal. A vásárló fájlneve csak metaadat, legfeljebb 200
   karakterre vágva.
 - **A válasz:** `201 { id, name, size, format }`.
@@ -218,7 +219,7 @@ műhely a kézi levelébe bemásolhassa.
 | Tábla | Tartalom |
 |---|---|
 | `uploads` | `id` (UUID), `r2_key`, `file_name`, `size_bytes`, `format`, `content_type`, `created_at`, `order_id`, `order_item_id` (helyszíni fotónál üres). Index a gazdátlan sorokra (`created_at`, ahol `order_id` üres) |
-| `orders` | `form_token` és `status_token` (egyediek), `status` (alapból `beerkezett`) · a vásárló adatai · számlázási cím · átvétel módja és címe · `survey_requested` · `note` · az összegek (`items_net`, `shipping_net`, `shipping_price_on_request`, `net_total`, `vat_total`, `gross_total`) · `price_json` (a teljes `CartPrice`) · `source` · `created_at` · az értesítés oszlopai, mint a `quote_requests` táblában |
+| `orders` | `form_token` és `status_token` (egyediek), `status` (alapból `beerkezett`), `site_origin` (a cím, ahová a rendelés érkezett; a levél linkjei erre mutatnak, a cronból küldve is) · a vásárló adatai · számlázási cím · átvétel módja és címe · `survey_requested` · `note` · az összegek (`items_net`, `shipping_net`, `shipping_price_on_request`, `net_total`, `vat_total`, `gross_total`) · `price_json` (a teljes `CartPrice`) · `source` · `created_at` · az értesítés oszlopai, mint a `quote_requests` táblában |
 | `order_items` | `order_id`, `position`, `product_id`, `description`, `config_json`, `quantity`, `express`, a tétel nettó/ÁFA/bruttó összege, `price_json`, `preflight_json` (a böngésző mérése, csak tájékoztató) |
 | `order_events` | `order_id`, `created_at`, `status_from` (létrehozáskor üres), `status_to`, `actor` (`vasarlo`, `muhely`, `rendszer`), `note`. A műhely-felület (4c) előzménylistája ebből épül |
 
@@ -318,8 +319,9 @@ A meglévő 15 perces cron két feladattal bővül:
 
 ## 14. Sebesség
 
-- **A termék-, a kosár- és a pénztároldal:** legfeljebb ~130 KB JavaScript (gzip), `client:idle`. A React és a
-  domainkód közös csomag, a három oldal között a böngésző gyorsítótárából jön.
+- **A termék-, a kosár- és a pénztároldal:** legfeljebb ~130 KB JavaScript (gzip), `client:only="react"`: a kosár
+  a böngészőben van, ezért nincs mit előre renderelni. A sziget helyét addig egy méretre foglalt helyőrző tartja
+  (CLS). A React és a domainkód közös csomag, a három oldal között a böngésző gyorsítótárából jön.
 - **A fájlelemző** (`pdf-lib`) külön csomag. Csak az első fájlválasztáskor töltődik be, ezért a keretbe nem
   számít bele.
 - **A `/webshop` és a többi tartalmi oldal:** 0 KB keretrendszer-JS. Csak a kosár darabszámát kiíró script fut
@@ -346,7 +348,8 @@ A keret 6. fejezete szerint, és ezen felül:
   - az `R` rendelésszám;
   - a feltöltés ellenőrzése: méret, kiterjesztés és tartalom egyezése;
   - az állapotoldal szövegei.
-- **Szerver** (Vitest, a helyi D1-gyel `test-d1.ts` és helyi R2-vel):
+- **Szerver** (Vitest, a helyi D1-gyel `test-d1.ts`; a fájltár a tesztekben memóriabeli, a valódi R2-t a böngészős
+  próba nézi):
   - a feltöltés és a letöltés szabályai;
   - a rendelés mentése: tranzakció, azonos token, fájlok kötése, foglalt fájl;
   - a gazdátlan fájlok törlése;
