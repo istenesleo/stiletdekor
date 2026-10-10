@@ -1,0 +1,96 @@
+/* The webshop islands: configurator, cart lines and drawer (the cart page and the checkout add theirs below). Tokens only. */
+
+.shop-cfg {
+  display: grid;
+  gap: var(--space-6);
+}
+.shop-cfg__options,
+.shop-cfg__summary {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+@media (min-width: 960px) {
+  .shop-cfg {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+    align-items: start;
+  }
+  .shop-cfg__summary {
+    position: sticky;
+    top: calc(var(--layout-header-height) + var(--space-4));
+  }
+}
+.shop-cfg__group {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.shop-cfg__group > legend,
+.shop-cfg__group > h3 {
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+}
+.shop-cfg__optional {
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+}
+.shop-cfg__files {
+  display: grid;
+  gap: var(--space-3);
+}
+.shop-cfg__wait {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.shop-lines {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.shop-lines__item {
+  display: grid;
+  gap: var(--space-2);
+}
+.shop-lines__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: end;
+}
+.shop-lines__tools a,
+.shop-drawer__foot a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-text);
+}
+.shop-lines__warn,
+.shop-lines__error {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+.shop-lines__warn {
+  color: var(--color-signal-warn);
+}
+.shop-lines__error {
+  color: var(--color-signal-bad);
+}
+
+.shop-drawer__foot {
+  display: grid;
+  gap: var(--space-3);
+}
+.shop-drawer__total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
