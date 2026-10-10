@@ -27,7 +27,8 @@ export async function testDatabase() {
       const { results } = await db
         .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'")
         .all<{ name: string }>();
-      for (const { name } of results.filter((t) => !t.name.startsWith('_cf_'))) {
+      // Children first: D1 enforces foreign keys, and the tables are listed in the order they were created.
+      for (const { name } of results.filter((t) => !t.name.startsWith('_cf_')).reverse()) {
         await db.prepare(`DROP TABLE IF EXISTS "${name}"`).run();
       }
       await db.batch(statements().map((statement) => db.prepare(statement)));
