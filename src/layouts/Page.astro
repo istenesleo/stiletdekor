@@ -14,12 +14,16 @@ interface Props {
   /** The mobile action bar; off on form pages and in the checkout. */
   actionBar?: boolean;
   theme?: SiteThemeId;
+  /** Cookie-free measuring; off on pages whose address is a secret (the order status page). */
+  analytics?: boolean;
+  /** Never index this page, not even on production. */
+  noindex?: boolean;
 }
 
-const { title, description, currentHref, actionBar = true, theme } = Astro.props;
+const { title, description, currentHref, actionBar = true, theme, analytics, noindex } = Astro.props;
 ---
 
-<Base title={title} description={description} theme={theme}>
+<Base title={title} description={description} theme={theme} analytics={analytics} noindex={noindex}>
   <SiteHeader currentHref={currentHref} />
   <main id="tartalom" tabindex="-1">
     <slot />
