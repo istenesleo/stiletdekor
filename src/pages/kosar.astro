@@ -1,0 +1,49 @@
+---
+// The cart (prerendered shell; the island reads the cart from the browser).
+import { CartPage } from '@/islands/shop/CartPage';
+import Page from '@/layouts/Page.astro';
+import { QUOTE_HREF } from '@/ui/navigation';
+
+export const prerender = true;
+---
+
+<Page title="Kosár – Stilet Dekor" description="A kosárba tett termékek." noindex>
+  <section class="kp">
+    <h1>Kosár</h1>
+    <CartPage client:only="react">
+      <p slot="fallback" class="kp__loading">A kosár betöltése…</p>
+    </CartPage>
+    <noscript>
+      <style is:inline>
+        .kp__loading {
+          display: none;
+        }
+      </style>
+      <p>A kosárhoz JavaScript kell. Addig <a href={QUOTE_HREF}>kérjen ajánlatot</a>.</p>
+    </noscript>
+  </section>
+</Page>
+
+<style>
+  .kp {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--layout-gutter) var(--space-9);
+  }
+  h1 {
+    margin: 0 0 var(--space-6);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-variation-settings: var(--font-variation-display);
+    font-weight: var(--weight-display);
+    line-height: var(--leading-snug);
+  }
+  .kp__loading {
+    min-height: 16rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+  .kp a {
+    color: var(--color-text);
+  }
+</style>

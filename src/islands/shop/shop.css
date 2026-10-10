@@ -94,3 +94,32 @@
   justify-content: space-between;
   margin: 0;
 }
+
+.shop-page {
+  display: grid;
+  gap: var(--space-6);
+}
+.shop-page__empty p {
+  margin: 0 0 var(--space-2);
+}
+.shop-page a {
+  color: var(--color-text);
+}
+.shop-page__summary {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 28rem;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-line);
+}
+.shop-page__total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-size: var(--text-lg);
+}
+.shop-page__small {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
