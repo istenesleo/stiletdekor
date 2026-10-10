@@ -8,7 +8,7 @@ import { applyScale } from '@/domain/artwork/units';
 import { MATRICA, MOLINO, type Orientation, PLAKAT, ROLLUP, type ShopProductId, TABLA, VASZONKEP } from '@/domain/catalog';
 import { formatNumberHu } from '@/domain/money';
 import { type FitMode, preflight } from '@/domain/preflight';
-import type { PreflightSummary } from '@/domain/schemas';
+import type { PreflightSummary } from '@/domain/config-schemas';
 
 export interface ArtworkSize {
   widthCm: number;

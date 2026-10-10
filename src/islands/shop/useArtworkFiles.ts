@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ArtworkAnalysis } from '@/domain/artwork/types';
 import type { CartFile } from '@/domain/cart';
-import { MAX_UPLOADS_PER_ITEM } from '@/domain/schemas';
+import { MAX_UPLOADS_PER_ITEM } from '@/domain/config-schemas';
 import { UPLOAD_FAILED_MESSAGE } from '@/domain/uploads';
 import { UploadError, uploadFile } from './upload-client';
 

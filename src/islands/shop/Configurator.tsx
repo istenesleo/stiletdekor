@@ -10,7 +10,7 @@ import { formatHuf } from '@/domain/money';
 import { FINAL_PRICE_NOTICE } from '@/domain/orders';
 import type { FitMode } from '@/domain/preflight';
 import { configDimensionsCm, tryPriceConfiguration } from '@/domain/pricing';
-import { MAX_ORDER_ITEMS } from '@/domain/schemas';
+import { MAX_ORDER_ITEMS } from '@/domain/config-schemas';
 import { Button } from '@/ui/Button/Button';
 import { DiscountHint } from '@/ui/DiscountHint/DiscountHint';
 import { FitPicker } from '@/ui/FitPicker/FitPicker';

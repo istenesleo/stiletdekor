@@ -2,7 +2,7 @@
 // browser's preflight per item. No prices (they are always calculated from the configuration) and no personal data
 // (docs/superpowers/specs/2026-10-09-webshop-4a-4b-design.md, 4.).
 import { z } from 'zod';
-import { MAX_ORDER_ITEMS, MAX_UPLOADS_PER_ITEM, PreflightSummarySchema, ProductConfigSchema, UploadIdSchema } from './schemas';
+import { MAX_ORDER_ITEMS, MAX_UPLOADS_PER_ITEM, PreflightSummarySchema, ProductConfigSchema, UploadIdSchema } from './config-schemas';
 import { isUploadExpired } from './uploads';
 
 const CartFileSchema = z.object({
