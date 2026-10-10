@@ -47,7 +47,7 @@ scripts/           # build-tokens.mjs (token → CSS, kontrasztellenőrzés)
 
 `/` · `/szolgaltatasok` · `/szolgaltatasok/[csoport]` · `/webshop` · `/webshop/[termek]` · `/ajanlatkeres` ·
 `/ajanlatkeres/[tipus]` · `/ajanlatkeres/koszonjuk` · `/visszahivas` · `/visszahivas/koszonjuk` · `/referenciak` ·
-`/referenciak/[felulet]` · `/rolunk` · `/kapcsolat` · `/kosar` · `/penztar` · `/rendeles/[azonosito]` · `/aszf` ·
+`/referenciak/[felulet]` · `/rolunk` · `/kapcsolat` · `/kosar` · `/penztar` · `/rendeles/[token]` · `/aszf` ·
 `/adatkezeles` · `/impresszum`
 
 Az oldalak működése (előállítás, navigáció, űrlapok, sebesség, mérés):
@@ -57,12 +57,11 @@ Az oldalak működése (előállítás, navigáció, űrlapok, sebesség, méré
 
 | Végpont | Feladat |
 |---|---|
-| `POST /api/uploads` | Fájl feltöltése R2-be (méret- és típusellenőrzés, magic bytes), metaadat D1-be, visszaad egy feltöltés-azonosítót |
-| `POST /api/price` | Szerveroldali árkalkuláció egy konfigurációra (ugyanaz a `domain/pricing.ts`) |
+| `POST /api/uploads` | Fájl feltöltése R2-be (méret, kiterjesztés, a tartalom első 4 KB-ja), metaadat D1-be, visszaad egy feltöltés-azonosítót |
+| `GET /api/uploads/[id]` | A műhely letöltő linkje: csak rendeléshez kötött fájl, 90 napig, csatolmányként |
 | `POST /api/orders` | Rendelés elküldése ellenőrzésre (fizetési kötelezettség nélkül): **a szerver újraáraz**, a kliens által küldött árat nem fogadja el |
-| `POST /api/quotes` | Egyedi ajánlatkérés (varázsló), igény szerint felméréssel (időpont nélkül, a műhely visszahív) |
 
-A visszahívás (`/visszahivas`) nem API-végpont: az oldal maga fogadja a POST-ot (sima HTML űrlap, JavaScript nélkül is), és 303-mal a köszönő oldalra irányít.
+Az árat a böngésző ugyanazzal a `domain/pricing.ts` kóddal számolja, ezért külön ár-végpont nincs. A visszahívás (`/visszahivas`) és az ajánlatkérés (`/ajanlatkeres/[tipus]`) nem API-végpont: az oldal maga fogadja a POST-ot (sima HTML űrlap, JavaScript nélkül is), és 303-mal a köszönő oldalra irányít.
 
 ## Biztonsági alapelvek
 
@@ -80,6 +79,6 @@ A visszahívás (`/visszahivas`) nem API-végpont: az oldal maga fogadja a POST-
   D1-et használják közös tesztadatbázisként. Minden nem éles oldal `noindex`.
 - **production:** később, az `env.production` blokk (`stiletdekor-production`), a `stiletdekor.hu` domainre
   kötve; build `CLOUDFLARE_ENV=production` mellett.
-- Az R2 (feltöltések) a fiókban még nincs bekapcsolva, ezért a kötés egyelőre ki van kommentelve.
+- Az R2 (feltöltések) a fiókban még nincs bekapcsolva, ezért a kötés egyelőre ki van kommentelve. Addig a feltöltés 503-at ad, és a vásárló e-mailben küldi a fájlt; helyi próbához a kötés ideiglenesen visszatehető.
 
 A részletes beállítási lépések a `README.md`-ben.

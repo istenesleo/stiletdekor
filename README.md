@@ -145,6 +145,42 @@ helyből futtatjuk (`npx wrangler d1 migrations apply DB --remote`), vagy D1-jog
   szerveroldali HTML, JavaScript nélkül egyetlen hosszú űrlap; a `src/scripts/quote-wizard.ts` (kb. 1 KB) bontja
   lépésekre. Fájlfeltöltés még nincs (az R2 nincs bekapcsolva): a fájlmezők helyén „e-mailben küldöm” jelölő áll.
 
+### Webshop: rendelések és feltöltések
+
+A működés: [`docs/superpowers/specs/2026-10-09-webshop-4a-4b-design.md`](docs/superpowers/specs/2026-10-09-webshop-4a-4b-design.md).
+
+- **Oldalak:** `/webshop`, `/webshop/<termek>`, `/kosar`, `/penztar` (előre generált oldalak React-szigettel), és
+  `/rendeles/<token>` (állapotoldal titkos linken, beküldés után `?uj=1`-gyel köszönő nézet).
+- **API:** `POST /api/uploads` (fájl R2-be), `GET /api/uploads/<id>` (a műhely letöltő linkje, 90 napig),
+  `POST /api/orders` (rendelés, a szerver újraáraz). Minden `/api` POST maga ellenőrzi az `Origin` fejlécet.
+- **Táblák:** `migrations/0003_orders.sql` (`orders` `R-…` számmal, `order_items`, `order_events`, `uploads`).
+- **Fájltár:** R2, `UPLOADS` kötés (`stiletdekor-uploads-dev`). Amíg az R2 nincs bekapcsolva, a kötés ki van
+  kommentelve: a feltöltés 503-at ad, és a vásárló a rendelés után e-mailben küldi a fájlt. Bekapcsolás után: a
+  tároló létrehozása, a kötés visszaírása a felső szinten, a `previews`-ban és az `env.galeria`-ban.
+- **Beküldési korlát:** `UPLOAD_LIMITER` (60 másodpercenként 20 feltöltés IP-címenként); a rendelés a
+  `FORM_LIMITER`-t használja (`rendeles:<ip>`).
+- **Cron:** a 15 perces feladat a rendelések leveleit is újraküldi, és törli a 3 napnál régebbi, rendeléshez nem
+  kötött feltöltéseket.
+- **Csomagméret:** a `npm run build` végén a `scripts/check-bundles.mjs` ellenőrzi, hogy a termék-, a kosár- és a
+  pénztároldal legfeljebb ~130 KB, a többi előre generált oldal legfeljebb 5 KB JavaScriptet tölt (gzip); a
+  fájlelemző (pdf-lib) csak fájlválasztáskor töltődik be, nem számít bele.
+- **Helyi próba feltöltéssel:** a `wrangler.jsonc` kikommentelt `r2_buckets` sorát ideiglenesen visszaírva
+  `npm run build`, majd a `.claude/launch.json` `worker` konfigurációja (`npx wrangler dev`, 8787-es port). Utána
+  `git checkout -- wrangler.jsonc`.
+
+Amíg nincs műhely-felület (4c), a rendelés állapotát kézzel lehet állítani a D1-ben:
+
+```sql
+-- A legutóbbi rendelések
+SELECT id, status, customer_name, gross_total, created_at FROM orders ORDER BY id DESC LIMIT 20;
+-- Visszaigazolva (az állapotoldal ezt mutatja)
+UPDATE orders SET status = 'visszaigazolva' WHERE id = 1;
+INSERT INTO order_events (order_id, created_at, status_from, status_to, actor) VALUES (1, datetime('now'), 'beerkezett', 'visszaigazolva', 'muhely');
+```
+
+E-mail-teszt: a levél a naplóba kerül, amíg a domain nincs a Cloudflare-en. Valódi levél teszteléséhez a
+`.dev.vars`-ban `ORDER_NOTIFY_EMAIL=leonardistenes@gmail.com`.
+
 ### Éles környezet (később)
 
 Az `env.production` blokk a végleges oldalé (`stiletdekor-production` Worker, www.stiletdekor.hu).
